@@ -1,0 +1,89 @@
+
+ <div id="coments12" class="container" style="background-color:#CCC;width:920px">
+        <ul class="c_ul_1">
+            <li>
+               <div style="background: rgb(113, 125, 97);color: #FFF;font-size: 15px;padding: 7px 10px;border-bottom: 3px solid #035600;margin-bottom: 10px">
+                
+                    User Comments              
+                </div>
+              
+            </li>
+            <li><?php
+                  	
+  
+                foreach($comment as $com) {
+                
+              ?> <div class="col-lg-12 c_pat_result_div">
+                   
+                    <div class="col-lg-10 c_no_padding"  style="padding-left: 10px">
+                        <div style="color: #0F7400;font-size: 18px;padding:5px 0px;font-weight: 500">
+                           <?php echo $com->pfirst_name." ".$com->plast_name; ?>
+                        </div>
+                        <div style="padding: 5px 0px;font-size: 13px;color: #3c3c3c">
+                            Commented Profile :&nbsp;&nbsp;&nbsp; <?php echo $com->dfirst_name." ".$com->dlast_name; ?>
+                        </div>
+                        <div style="padding: 10px 0px">
+                            <hr class="c_hr_1"/>
+                        </div>
+                        <div style="color: #075325;font-size: 13px">
+                            <?php echo $com->comment; ?>
+                        </div>
+                    </div>
+                    <div class="col-lg-2" style="padding-left: 25px">
+                        
+                        <div style="padding-top: 2px">
+                            
+                        </div>
+                        <div  class="col-lg-6">
+                             <img src="assets/img/doc_user.png" width="60px " >
+                        </div>
+                        
+                        
+                    </div>
+                    <div style="clear:both">
+                    </div>
+                    <div class="col-lg-offset-2"style="clear:both;margin-top: 10px">
+                         <div class="col-lg-4 col-lg-offset-4">
+                           <button class="c_pat_view_btn" onclick="user_view('<?php echo $com->pid; ?>')">View Profile</button>
+                        </div>
+                        <div class="col-lg-4">
+                            <button class="c_pat_view_btn" onclick="rem_com('<?php echo $com->cid; ?>')">Remove Comment</button>
+                        </div>
+
+
+                   </div>
+                </div><?php
+                
+            
+                }
+                        
+?>  </li>
+            <li>
+                <div class="col-lg-6 c_no_padding">
+                    <nav>
+                        <ul class="pagination">
+                            <li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                            <li><a href="#">2 <span class="sr-only">(current)</span></a></li>
+                            <li><a href="#">3 <span class="sr-only">(current)</span></a></li>
+                            <li><a href="#">4 <span class="sr-only">(current)</span></a></li>
+                            <li><a href="#">5 <span class="sr-only">(current)</span></a></li>
+                            <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-6">
+                    <div style="float: right;padding: 20px 0px">
+                        <span>Showing 1-10 of 20 results</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        
+        
+        
+ 
+    </div>
+
+
+

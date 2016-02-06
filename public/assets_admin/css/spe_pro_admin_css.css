@@ -1,0 +1,407 @@
+@charset "utf-8";
+/* CSS Document */
+.c_body{
+	background:#F9F9F9;
+	font-family:Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+}
+/*--- Special Custom Attributes Classes ---*/
+.c_no_padding{
+	padding-left:0px;
+	padding-right:0px;
+}
+.c_float_right{
+	float:right;
+}
+.c_href{
+	text-decoration:none;
+	color:#FFFFFF;	
+}
+.c_href:hover{
+	text-decoration:none;
+	color:#F4F4F4;
+}
+/*--- Special Custom Attributes Classes ---*/
+
+/*--- Font Styles ---*/
+.c_font_1{
+	color:#32A041;
+	font-size:15px;
+}
+.c_font_2{
+	color:#FFFFFF;
+	font-size:36px;
+	font-weight:200;
+}
+.c_font_4{
+	color:#39b54a;
+	font-size:33px;
+}
+.c_font_5{
+	color:#FFFFFF;
+	
+}
+/*--- Font Styles ---*/
+
+/*----- TextBox Styles ----- */
+.c_search_text_box{
+	margin-top:8px;
+	width:250px;
+	padding:7px;
+	border:0px;
+	background:rgba(255,255,255,0.57);
+	border-top-left-radius:12px;
+	border-bottom-left-radius:12px;
+}
+.c_search_text_box:focus{
+	outline:none;
+	box-shadow:0px 0px 10px #008201;
+}
+.c_text_box_1{
+	width:100%;
+	padding:7px 12px;
+	border-radius:12px;
+	border:1px solid #C4C4C4;
+	background:#FFFFFF;
+}
+.c_text_box_1:focus{
+	outline:none;
+	box-shadow:0px 0px 10px #008201;
+}
+/*--- Pop up boxes---*/
+.c_pop_up_box_1{
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0px;
+	z-index:999999;	
+}
+.c_pop_box_1_wrapper{
+	padding:8px;
+	background:#FFFFFF;
+	width:338px;
+	margin-top:10%;
+	box-shadow:0px 0px 10px #000000;
+}
+#c_sign_in_box {	
+	background-color: rgba( 57, 181, 74,0.9);
+	width: 322px;
+	height: 347px;
+	z-index: 40;
+	padding:5px 20px;
+}
+/*--- Pop up boxes ---*/
+.c_ul_1{
+	list-style:none;
+	padding:0px;
+}
+
+.c_button_1{
+	width:100%;
+	background:#228500;
+	border:1px solid #228500;
+	padding:10px 20px;
+	color:#FFFFFF;
+	font-size:25px;
+}
+.c_button_1:hover{
+	background:#2AA700;
+}
+.c_add_margin_20{
+	margin-bottom:20px;
+}
+.c_container{
+	background:#FFFFFF;
+	max-width:1280px;
+}
+.c_logo{
+	width:90px;
+}
+.c_admin_top_user{
+	background:#39b54a;
+	border-bottom-left-radius:10px;
+	padding:5px 10px;
+}
+.c_top_ul{
+	padding:0px;
+	list-style:none;
+	margin-bottom:0px;
+}
+.c_top_ul li{
+	display:inline-block;
+}
+.c_user_top_logo{
+	width:35px;
+	margin-right:10px;
+}
+.c_admin_left_nav{
+	max-width:250px;
+	color:#FFFFFF;
+}
+.c_admin_ul{
+	font-size:16px;
+}
+.c_admin_ul>li{
+	padding:7px 15px;
+	background:#39b54a;
+	border-bottom:2px solid #0F7400;
+}
+.c_admin_ul>li:hover{
+	background:#007C0E;
+	cursor:pointer;
+}
+.c_admin_ul_in{
+	font-size:13px;
+	list-style:none;
+	padding:0px;
+}
+.c_admin_ul_in>li{
+	padding:5px 20px;
+	padding-left:45px;
+}
+.c_admin_ul_in>li:hover{
+	background:#007C0E;
+}
+#admin_left_nav_doc:hover,#admin_left_nav_pat:hover{
+	background:#39b54a !important;
+}
+.glyphicon{
+	float:right;
+}
+.c_right_gly{
+	margin-top:3px;
+	margin-right:-140px;
+}
+#c_footer{
+	background:#39b54a;
+}
+#admin_home_div{
+	height:549px;
+	width:920px;
+	overflow-x:hidden;
+	overflow-y:scroll;
+	background:#E8E8E8;
+}
+
+#admin_home_div::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#admin_home_div::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#admin_home_div::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #39B54A;
+}
+.c_admin_ul_li{
+	background: #2ca02c;
+	padding-top: 10px !important;
+	padding-bottom: 10px !important;
+}
+
+.c_admin_li_sel{
+	background:#00890E;
+}
+
+
+.c_text_box_2{
+	width:800px;
+	height:150px;
+	padding:7px 12px;
+	border-radius:12px;
+	border:1px solid #C4C4C4;
+	background:#FFFFFF;
+}
+.active{
+	background: rgba(0, 0, 0, 0.71) !important;
+}
+.doc_admin_tab_active{
+	background:#2d502a !important;
+	box-shadow: 0px 5px 10px #000;
+}
+.doc_admin_tab_1{
+	font-size: 16px;
+	cursor: pointer;
+	background:#349641 ;
+}
+.doc_admin_tab_1:hover{
+	background:#2e873a;
+}
+.doc_admin_tab_1>p{
+	margin-bottom: 0px;
+	color: #FFF;
+	text-align: center;
+	padding: 10px 0px;
+}
+.doc_admin_tab_2{
+	background:rgba(82,158,75,0.18) ;
+}
+.doc_admin_hd_1{
+	font-weight: 500;
+	margin-top: 15px;
+	padding: 7px 0px;
+	font-size: 24px;
+	border-bottom: 2px solid #d62728;
+}
+.doc_form_group{
+	margin-bottom: 10px;
+}
+.doc_form_group>span{
+	float: left;
+	margin-bottom: 10px;
+}
+.doc_form_left{
+	padding-right: 10px;
+}
+.doc_form_right{
+	padding-left: 10px;
+}
+.c_select_box_1{
+	width:100%;
+	padding:7px 12px;
+	border-radius:12px;
+	border:1px solid #C4C4C4;
+	background:#FFFFFF;
+}
+.c_select_box_1:focus{
+	outline:none;
+	box-shadow:0px 0px 10px #008201;
+}
+.doc_profile_thumb{
+	height: 225px;
+	width:100%;
+	border: 2px solid #0F7400;
+}
+.doc_thumb_select_btn{
+	width: 100%;
+	padding: 7px 10px;
+	margin-top: 20px;
+	color: #FFF;
+	border: 1px solid #0F7400;
+	border-radius: 7px;
+	background: #4cae4c;
+}
+.doc_thumb_select_btn:focus{
+	outline: none;
+	background: #01A200;
+}
+
+.doc_admin_text_area{
+	width: 100%;
+	max-width: 100%;
+	height: 120px;
+	padding:7px 12px;
+	border-radius:12px;
+	border:1px solid #C4C4C4;
+	background:#FFFFFF;
+}
+.doc_admin_text_area:focus{
+	outline:none;
+	box-shadow:0px 0px 10px #008201;
+}
+
+.c_error_input_field_highlight{
+	background: rgb(255, 174, 121) !important;
+}
+.c_error_input_field_highlight::-webkit-input-placeholder {
+	color: #FFF !important;
+}
+
+
+/*-------------------------- patient admin CSS  --------------------------------------*/
+
+.pat_admin_tab_active{
+	background:#2d502a !important;
+	box-shadow: 0px 5px 10px #000;
+}
+.pat_admin_tab_1{
+	font-size: 16px;
+	cursor: pointer;
+	background:#349641 ;
+}
+.pat_admin_tab_1:hover{
+	background:#2e873a;
+}
+.pat_admin_tab_1>p{
+	margin-bottom: 0px;
+	color: #FFF;
+	text-align: center;
+	padding: 10px 0px;
+}
+.pat_admin_tab_2{
+	background:rgba(82,158,75,0.18) ;
+}
+
+.c_pat_result_div{
+	background: rgba(0, 76, 17, 0.14);
+	padding: 20px 10px;
+	margin-bottom: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.58);
+}
+.c_pat_result_div:hover{
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
+	border-radius: 5px;
+}
+.c_hr_1{
+	margin: 0px;
+	border:1px solid rgba(3,86,0,1.00);
+}
+.c_pat_view_btn{
+	width: 200px;
+	
+	padding: 7px;
+	background: #006d16;
+	border:1px solid #006d16;
+	border-radius: 3px;
+	color: #FFF;
+}
+.c_pat_view_btn1{
+	width: 100%;
+	
+	padding: 5px;
+	background: #006d16;
+	border:1px solid #006d16;
+	border-radius: 3px;
+	color: #FFF;
+}
+.c_ul_1{
+	list-style:none;
+	padding:0px;
+}
+
+.c_close_btn{
+	float:right;
+	position:fixed;
+	background:#FFFFFF;
+	border:0px;
+	padding:5px;
+	border-radius:20px;
+	margin-left:308px;
+	margin-top:-22px;
+	outline:none;
+}
+.c_close_btn>img{
+	width:25px;
+}
+
+.c_doc_box{
+
+	
+	background: rgba(0, 76, 17, 0.14);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.58);
+}
+.c_doc_box:hover{
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
+	border-radius: 5px;
+}
+
+
+/*--------------------------End patient admin CSS  --------------------------------------*/
