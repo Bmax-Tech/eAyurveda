@@ -59,7 +59,7 @@
                     <input type="text" class="c_text_box_1" spellcheck="false" name="city" onkeydown='only_alph(event)' onkeypress="remove_wrn('city')" onchange="remove_wrn('city')" autocomplete="off"/>
                 </li>
                 <li>
-                    <button type="button" class="c_sug_form_next_btn" onclick="change_sug_tab('1')">Next <img src="{{ URL::asset('assets/img/next.png') }}" style="width: 24px;margin-top: -3px;"></button>
+                    <button type="button" class="c_sug_form_next_btn" onclick="change_sug_tab('2')">Next <img src="{{ URL::asset('assets/img/next.png') }}" style="width: 24px;margin-top: -3px;"></button>
                 </li>
             </div>
             <div id="c_doc_sug_tab_2_div" style="display: none">
@@ -85,7 +85,9 @@
                     <textarea class="c_comment_textarea" name="add_doc_description"></textarea>
                 </li>
                 <li>
-                    <button type="button" class="c_sug_form_next_btn" onclick="change_sug_tab('2')">Next <img src="{{ URL::asset('assets/img/next.png') }}" style="width: 24px;margin-top: -3px;"></button>
+                    <button type="button" class="c_sug_form_next_btn" style="float: left" onclick="change_sug_tab('1')"><img src="{{ URL::asset('assets/img/back.png') }}" style="width: 24px;margin-top: -3px;"> Previous</button>
+
+                    <button type="button" class="c_sug_form_next_btn" onclick="change_sug_tab('3')">Next <img src="{{ URL::asset('assets/img/next.png') }}" style="width: 24px;margin-top: -3px;"></button>
                 </li>
             </div>
             <div id="c_doc_sug_tab_3_div" style="display: none">
@@ -125,7 +127,9 @@
                     <textarea class="c_comment_textarea" name="add_doc_description"></textarea>
                 </li>
                 <li>
-                    <button type="button" class="c_sug_form_next_btn" onclick="change_sug_tab('2')">Next <img src="{{ URL::asset('assets/img/next.png') }}" style="width: 24px;margin-top: -3px;"></button>
+                    <button type="button" class="c_sug_form_next_btn" style="float: left" onclick="change_sug_tab('2')"><img src="{{ URL::asset('assets/img/back.png') }}" style="width: 24px;margin-top: -3px;"> Previous</button>
+
+                    <button type="button" class="c_sug_form_next_btn" >Next <img src="{{ URL::asset('assets/img/next.png') }}" style="width: 24px;margin-top: -3px;"></button>
                 </li>
             </div>
         </ul>
