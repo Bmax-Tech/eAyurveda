@@ -1,0 +1,181 @@
+.navbar {
+    background: #f0f0f0;
+    border: none;
+    margin-bottom: 0px !important;
+}
+.navbar-nav>li{
+    margin:0px 0px;
+}
+.navbar-nav>li>a{
+    color:#999 !important;
+}
+.navbar-nav>.active>a{
+    color:#fff !important;
+    background:#00B000 !important;
+}
+.navbar-nav>li>a:hover{
+    color:#fff !important;
+    background: #008e00 !important;
+    transition:background-color 0.4s;
+}
+.topBarLogoDiv {
+    height: 120px;
+    width: 120px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
+    padding: 10px;
+    background-color: #F0F0F0;
+    border-bottom-right-radius: 90%;
+    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.05),-1px 4px 5px rgba(0,0,0,0.2);
+}
+.topBarLogo {
+    position: relative;
+    height: 85px;
+}
+.barLine {
+    border-bottom: 3px solid #00B000;
+    margin-left: 100px;
+    -moz-box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22);
+    -webkit-box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22);
+    box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22);
+}
+@media (min-width: 768px) {
+    .navbar-nav>li>a {
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+}
+
+#forumHeadTxt {
+    color:#999;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-weight: 300;
+    font-size: 28px;
+    margin-top: 12px;
+    margin-left: 150px;
+}
+#bodyContent {
+    /* aligning will only work for non-floated elements */
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    display: block;
+    float: none;
+}
+.forumHomeHead {
+    color:#666;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-weight: 300;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+
+#availableForumCatList {
+    margin: 20px 25px 20px 25px;
+    padding-bottom: 0px;
+}
+
+.catCard {
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    height: 250px;
+    width: 250px;
+    box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+}
+
+.catImageView {
+    position:relative;
+    padding: 5px 10px 5px 10px;
+    color: #fff;
+    font-size: 18px;
+    height: 100%;
+    width: 100%;
+    background: -moz-linear-gradient(top, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 81%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0,0,0,1) 10%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 81%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 10%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 81%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+}
+.catImageViewFrame {
+    border-radius: 3px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+.catImageBtnDiv {
+    position: absolute;
+    right:    5px;
+    bottom:   5px;
+}
+
+#txtSearchItem {
+    font-size: 20px;
+    height: 50px;
+    width: 75%;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-weight: 300;
+    padding-left: 10px;
+    padding-right: 10px;
+    border:1px solid #ccc;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    outline: none;
+}
+#txtSearchItem:hover {
+    border-color: #bbb;
+    transition: all .5s ease;
+}
+#txtSearchItem:focus {
+    border-color: #55aa55;
+    box-shadow: inset 0 0 8px rgba(0,255,0,.2);
+}
+#btnSearchItem {
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #EEE;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position:center;
+    border:1px solid #ccc;
+    height: 50px;
+    width: 50px;
+    padding: 16px 0px;
+    margin-left: -5px;
+    background-image:url('../img/ic_action_search.png');
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+#btnSearchItem:hover {
+    outline: 0;
+    background-color: #359f46;
+    background-image:url('../img/ic_action_searchw.png');
+    border-color: #34a334 #30a430 #228722 #2fa52f;
+    transition: all .5s ease;
+    box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+} #btnSearchItem:focus {
+      outline: 0;
+  }
+
+.btnSearchItemHovered {
+    background-color: #359f46 !important;
+    background-image:url('../img/ic_action_searchw.png') !important;
+    border-color: #34a334 #30a430 #228722 #2fa52f !important;
+    transition: all .5s ease !important;
+    box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15) !important;
+}
+
+#forumSearch {
+    margin-top: 25px;
+    text-align: center;
+}

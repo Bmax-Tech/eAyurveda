@@ -17,7 +17,6 @@ $result = $conn->query($sql);
 
 
 ?>
-
 <div>
     <div class="forumAdminHead">
         Add New Category
@@ -25,13 +24,16 @@ $result = $conn->query($sql);
     </div>
     <div id="addCategory">
         <div style="">
-            <form action="forum/addcategory" method="post" enctype="multipart/form-data">
+            {!! Form::open(array('url' => 'forum/addcategory')) !!}
             <div class="forumLeftCol">
                 <div class="forumTxtLabel">
                     Category Name
                 </div>
                 <div>
-                    <input type="text" name="catName" placeholder="Category (eg: Medicine)" class="forumCatNameTxt">
+                    {!! Form::text('catName','',array(
+                        'placeholder' => 'Category (eg: Medicine)',
+                        'class' => 'forumCatNameTxt'
+                    )) !!}
                 </div>
                 <div class="forumTxtLabel" style="margin-top: 20px;">
                     Category Description
@@ -55,9 +57,11 @@ $result = $conn->query($sql);
             </div>
 
             <div style="padding-top: 310px;">
-                <button id="forumCatSaveBtn" type="submit">Add Category</button>
+                {!! Form::submit('Add Category', array(
+                    'id' => 'forumCatSaveBtn'
+                )) !!}
             </div>
-            </form>
+            {!! Form::close() !!}
         </div>
     </div>
 
@@ -84,13 +88,12 @@ $result = $conn->query($sql);
                     </div>
                 </div>
 
-        <?php
+            <?php
             }
-        } else {
-            echo "0 results";
-        }
-        $conn->close(); ?>
-
+            } else {
+                echo "0 results";
+            }
+            $conn->close(); ?>
 
         <div class="catCard">
             <div class="catImageViewFrame" style="background-image: url('assets_social/img/forum_categories/medicine.jpg');">

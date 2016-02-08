@@ -1,23 +1,3 @@
-<?php
-
-$servername = "localhost";
-$username = "root";
-$password = "kitkat";
-$dbname = "ayurvedalk";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT catName, catDescription, imageURL FROM forumCategory";
-$result = $conn->query($sql);
-
-
-?>
-
 <div>
     <div class="forumAdminHead" style="position: relative;">
         Recently Posted
