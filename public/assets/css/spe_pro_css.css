@@ -706,5 +706,16 @@
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 	background-color: #39B54A;
 }
+.c_img_upload_btn{
+	background: #228500;
+	border: 1px solid #228500;
+	color: #FFF;
+	padding: 8px 15px;
+	width: 100%;
+	margin-top: 3px;
+}
+.c_img_upload_btn:hover{
+	background:#2AA700;
+}
 /* ----------  My Account Page ------------ */
 

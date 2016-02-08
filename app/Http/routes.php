@@ -27,6 +27,7 @@ Route::resource('/register/save','Front@register_patient');
 Route::resource('/login','Front@login');
 Route::resource('/logout','Front@logout');
 Route::resource('/forgotten_password','Front@forgotten_password');
+Route::resource('/update_user_profile','Front@update_account');
 
 //////////  Admin Side Routing //////////
 Route::get('/admin_panel_login','Admin_Front@admin_login');

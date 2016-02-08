@@ -13,6 +13,7 @@ use App\Images;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
@@ -66,7 +67,22 @@ class Front extends Controller
     }
 
     public function my_account(Request $request,$name){
-        return view('user_account',array('user_name' => $name));
+        if(isset($_COOKIE['user'])){
+            $user = json_decode($_COOKIE['user'], true);
+            $user_ob = User::find($user[0]['id']);
+            $patients_ob = Patients::whereUser_id($user[0]['id'])->first();
+
+            $sending_ob['id'] = $user[0]['id'];
+            $sending_ob['user_name'] = $user_ob->email;
+            $sending_ob['first_name'] = $patients_ob->first_name;
+            $sending_ob['last_name'] = $patients_ob->last_name;
+            $sending_ob['email'] = $patients_ob->email;
+            $sending_ob['contact_no'] = $patients_ob->contact_number;
+
+            return View::make('user_account', array('user_data' => $sending_ob));
+        }else{
+            return Redirect::to('/');
+        }
     }
 
     public function register_patient(Request $request){
@@ -177,4 +193,52 @@ class Front extends Controller
 
         return View::make('profile',array('doctor' => $main_doc_ob));
     }
+
+
+    // This function updates user profile details
+    public function update_account(Request $request){
+        //dd(Input::file('profile_img')[0]);
+        if(isset($_COOKIE['user'])){
+            $user = json_decode($_COOKIE['user'], true);
+            $user_ob = User::find($user[0]['id']);
+            $user_ob->email = Input::get('username');
+            $user_ob->save();
+
+            $patient_ob = Patients::whereUser_id($user[0]['id'])->first();
+            $patient_ob->first_name = Input::get('first_name');
+            $patient_ob->last_name = Input::get('last_name');
+            $patient_ob->contact_number = Input::get('contact_no');
+            $patient_ob->email = Input::get('email');
+            $patient_ob->save();
+
+            // Check Whether New Image Upload is Available or not
+            if(isset(Input::file('profile_img')[0])) {
+                // This function will upload image
+                self::upload_image($request, $user[0]['id']);
+
+                // Updates Database Images table Image_path with new path
+                $img_ob = Images::whereUser_id($user[0]['id'])->first();
+                $img_ob->image_path = "profile_images/user_images/user_profile_img_" . $user[0]['id'] . ".png";
+                $img_ob->save();
+            }
+
+            // Updates Cookie Details
+            $user_cookie = array(['id' => $user[0]['id'],'first_name' => Input::get('first_name'),'last_name' => Input::get('last_name')]);
+            setcookie('user',json_encode($user_cookie),time()+3600); // Cookie is set for 1 hour
+            // Updates Cookie Details
+
+            return Redirect::to('/myaccount/'.Input::get('first_name'));
+        }else{
+            return Redirect::to('/');
+        }
+    }
+
+    // This function Uploads images to Server '/public/profile_images/user_images/' Folder
+    public function upload_image(Request $request,$user_id){
+        $imageName = "user_profile_img_".$user_id.".png";
+        $destinationPath = base_path() . '/public/profile_images/user_images/';
+        Input::file('profile_img')[0]->move($destinationPath, $imageName);
+    }
+
+
 }

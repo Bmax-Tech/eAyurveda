@@ -597,3 +597,154 @@ function rem_more_t_op(){
 }
 
 //////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////
+///////////  My Account Page  ///////////////////
+
+function show_tabs(para_1){
+	if(para_1 == "SET") {
+		$("#c_user_ac_home").hide();
+		$("#c_user_ac_update").fadeIn(200,function(){
+			$(".c_my_ac_pic").slideUp();
+			$("#c_side_my_ac_panel").css("margin-top","0px");
+		});
+	}
+	if(para_1 == "HOME") {
+		$("#c_user_ac_update").hide();
+		$("#c_user_ac_home").fadeIn(200,function(){
+			$(".c_my_ac_pic").slideDown();
+			$("#c_side_my_ac_panel").css("margin-top","35px");
+		});
+	}
+};
+
+function get_image(para_1,para_2){
+	$("#"+para_2).trigger('click');
+};
+
+
+$(document).ready(function(){
+	$('.file_input').on('change', function(){ //on file input change
+		var div_id = $(this).attr("data-id");
+		var base_url = $(this).attr("data-icon");
+
+		if (window.File && window.FileReader && window.FileList && window.Blob) //check File API supported browser
+		{
+			//$('#thumb_output_'+id).html(''); //clear html of output element
+			var data = $(this)[0].files; //this file data
+			$.each(data, function(index, file){ //loop though each file
+				if(/(\.|\/)(gif|jpe?g|png)$/i.test(file.type)){ //check supported file type
+					var fRead = new FileReader(); //new filereader
+					fRead.onload = (function(file){ //trigger function on successful read
+						return function(e) {
+							//var img = $('<img/>').addClass('thumb').attr('src', e.target.result); //create image element
+							$('#'+div_id).css("background-image",'url("'+e.target.result+'")'); //append image to output element
+						};
+					})(file);
+					fRead.readAsDataURL(file); //URL representing the file's data.
+				}
+			});
+
+		}else{
+			alert("Your browser doesn't support File API!"); //if File API is absent
+		}
+	});
+
+
+});
+
+var up_AJAX_USERNAME=true;
+var up_AJAX_EMAIL=true;
+function check_update_existing(para_1,para_2){
+	var dataString = 'type='+para_1+'&data='+para_2;
+	var new_url = URL+'/'+para_1+'/'+para_2;
+	if(para_2.length>0) {
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			url: new_url,
+			data: dataString,
+			cache: false,
+			success: function (data) {
+				//console.log(data);
+				var cr_username = $("#hidden_username").val();
+				var cr_email = $("#hidden_email").val();
+
+				if($("input[name=username]").val() != cr_username || $("input[name=email]").val() != cr_email) {
+					if (data.msg == 'USING') {
+						if (para_1 == 'username') {
+							up_AJAX_USERNAME = false;
+						} else {
+							up_AJAX_EMAIL = false;
+						}
+
+						$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+						show_warning(para_1);
+					} else {
+
+						if (para_1 == 'username') {
+							up_AJAX_USERNAME = true;
+						} else {
+							up_AJAX_EMAIL = true;
+						}
+
+						if (para_2 == '') {
+							// This hides the warning
+							$('#wrn_' + para_1).html('enter ' + para_1);
+							$('#wrn_' + para_1).hide();
+						} else {
+							// This display right mark when the field is not duplicated
+							$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:green"></span>');
+							show_warning(para_1);
+						}
+					}
+				}
+			},
+			error: function (data) {
+				console.log('Error:', data);
+			}
+		});
+	}
+};
+
+
+
+function check_update_account(){
+	if(valid_length_input('username') || valid_length_input('first_name')  || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('contact_no') || !valid_phone_no('contact_no') || valid_length_input('email') || !valid_email('email')){
+		if(valid_length_input('username')){
+			$('#wrn_username').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid username');
+			show_warning('username');
+		}
+		if(valid_length_input('first_name')  || check_input_no_num('first_name')){
+			show_warning('first_name');
+		}
+		if(valid_length_input('last_name')  || check_input_no_num('last_name')){
+			show_warning('last_name');
+		}
+		if(valid_length_input('contact_no') || !valid_phone_no('contact_no')){
+			show_warning('contact_no');
+		}
+		if(valid_length_input('email') || !valid_email('email')){
+			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid email');
+			show_warning('email');
+		}
+
+		return false;
+	}else if(!AJAX_CHECK_EMAIL || !AJAX_CHECK_USERNAME) {
+		if (!AJAX_CHECK_EMAIL) {
+			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+			show_warning('email');
+		}
+		if (!AJAX_CHECK_USERNAME) {
+			$('#wrn_username').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+			show_warning('username');
+		}
+
+		return false;
+	}else{
+		return true;
+	}
+};
+
+/////////////////////////////////////////////////
