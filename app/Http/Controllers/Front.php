@@ -240,5 +240,87 @@ class Front extends Controller
         Input::file('profile_img')[0]->move($destinationPath, $imageName);
     }
 
+    public function add_doctor_save(Request $request ){
+        //dd($request);
+        $time_stamp =time();
+
+        // First Create Users Record
+        User::create([
+            'name' => Input::get('first_name'),
+            'email' => $time_stamp,
+            'password' => md5($time_stamp)
+        ]);
+        $user = User::whereEmail($time_stamp)->wherePassword(md5($time_stamp))->first();
+
+        // Second Images Record
+        Images::create([
+            'user_id' => $user->id,
+            'image_path' => 'profile_images/default_user_icon.png'
+        ]);
+
+        // Third Doctor Object Is Created
+        Doctors::create([
+            'user_id' => $user->id,
+            'doc_type' => 'NON_FORMAL',
+            'first_name' => Input::get('first_name'),
+            'last_name' => Input::get('last_name'),
+            'gender' => Input::get('gender'),
+            'dob' => '-',
+            'nic' => '-',
+            'address_1' => Input::get('address_1'),
+            'address_2' => Input::get('address_2'),
+            'city' => Input::get('city'),
+            'contact_number' => Input::get('contact_number'),
+            'email' => Input::get('email'),
+            'description' => Input::get('doc_description'),
+            'rating' => 0,
+            'tot_stars' => 0,
+            'rated_tot_users' => 0,
+            'reg_date' => new \DateTime()
+        ]);
+
+        $doc_ob = Doctors::whereUser_id($user->id)->first();
+
+        // Fourth add Non Formal Doctors
+        $user_cookie = json_decode($_COOKIE['user'], true);
+        Non_Formal_doctors::create([
+            'doctor_id' => $doc_ob->id,
+            'suggested_user' => $user_cookie[0]['id']
+        ]);
+
+        // Fifth Create Specialization
+        Specialization::create([
+            'doc_id' => $doc_ob->id,
+            'spec_1' => Input::get('specialized')[0],
+            'spec_2' => Input::get('specialized')[1],
+            'spec_3' => Input::get('specialized')[2],
+            'spec_4' => Input::get('specialized')[3],
+            'spec_5' => Input::get('specialized')[4],
+            'spec_6' => Input::get('specialized')[5],
+            'spec_7' => Input::get('specialized')[6],
+            'spec_8' => Input::get('specialized')[7],
+            'spec_9' => Input::get('specialized')[8],
+            'spec_10' => Input::get('specialized')[9]
+        ]);
+
+        // Sixth Create Treatments
+        Treatments::create([
+            'doc_id' => $doc_ob->id,
+            'treat_1' => Input::get('treatments')[0],
+            'treat_2' => Input::get('treatments')[1],
+            'treat_3' => Input::get('treatments')[2],
+            'treat_4' => Input::get('treatments')[3],
+            'treat_5' => Input::get('treatments')[4],
+            'treat_6' => Input::get('treatments')[5],
+            'treat_7' => Input::get('treatments')[6],
+            'treat_8' => Input::get('treatments')[7],
+            'treat_9' => Input::get('treatments')[8],
+            'treat_10' => Input::get('treatments')[9]
+        ]);
+
+
+        return Redirect::to('/adddoctor');
+        //return view('add_doctor',array('doc_save_success' => 'YES'));
+    }
 
 }

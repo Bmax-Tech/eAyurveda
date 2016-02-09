@@ -5,47 +5,33 @@
 <!-- Home Page Content -->
 <div class="container c_container c_no_padding">
     <div class="col-lg-12 c_no_padding" id="c_home_banner">
-        <div class="row">
-            <div class="col-lg-6" style="padding-top:30px">
-                <div class="wow slideInUp">
-                    <p style="background:rgba(85,85,85,0.87);font-size:30px;color:rgba(255,255,255,1.00);display:inline-block;padding:12px 20px;padding-left:60px">
-                        We Take Care of Your Health
-                    </p>
+        <div class="row owl-carousel owl-theme" id="home_slider" style="margin-left: 0px;margin-right: 0px">
+            <?php
+            for($i=1;$i<=5;$i++){
+            ?>
+            <div class="item">
+                <div class="col-lg-6" style="padding-top:30px;padding-left: 0px;padding-right: 0px">
+                    <div class="wow slideInUp">
+                        <p style="background:rgba(85,85,85,0.87);font-size:30px;color:rgba(255,255,255,1.00);display:inline-block;padding:12px 20px;padding-left:60px">
+                            We Take Care of Your Health
+                        </p>
+                    </div>
+                    <div class="wow slideInUp">
+                        <p style="background:rgba(0,0,0,0.87);font-size:30px;color:rgba(255,255,255,1.00);display:inline-block;padding:12px 20px;padding-left:60px">
+                            Consultation 24/7
+                        </p>
+                    </div>
                 </div>
-                <div class="wow slideInUp">
-                    <p style="background:rgba(0,0,0,0.87);font-size:30px;color:rgba(255,255,255,1.00);display:inline-block;padding:12px 20px;padding-left:60px">
-                        Consultation 24/7
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <!--<div id="c_sign_in_box">
-                    <ul class="c_ul_1">
-                        <li class="c_add_margin_20">
-                            <span class="c_font_2">Sign In</span>
-                        </li>
-                        <li class="c_add_margin_20">
-                            <input type="text" class="c_text_box_1" placeholder="username"/>
-                        </li>
-                        <li>
-                            <input type="text" class="c_text_box_1" placeholder="password"/>
-                        </li>
-                        <li style="text-align:right">
-                            <span class="c_font_3"><a href="#">forgotten password ?</a></span>
-                        </li>
-                        <li style="padding:0px 8px;margin-top:35px">
-                            <button type="button" class="c_button_1">Sign In</button>
-                        </li>
-                        <li style="text-align:center;margin-top:20px">
-                            <span class="c_font_3"><a href="#">Register with e-Ayurveda</a></span>
-                        </li>
-                    </ul>
-                </div>-->
-                <div class="c_sub_banner wow zoomIn">
-                    <span class="c_health_tip">Health Tip !</span>
-                    <p>"Ayurveda, an ancient system of illness prevention and treatment, centres on maintaining mind and body balance through healthy lifestyle practices that combine traditional and complementary medicine."</p>
+                <div class="col-lg-6" style="padding-right: 0px">
+                    <div class="c_sub_banner wow zoomIn">
+                        <span class="c_health_tip">Health Tip !</span>
+                        <p>"Ayurveda, an ancient system of illness prevention and treatment, centres on maintaining mind and body balance through healthy lifestyle practices that combine traditional and complementary medicine."</p>
+                    </div>
                 </div>
             </div>
+            <?php
+            }
+            ?>
         </div>
     </div>
 
@@ -58,12 +44,12 @@
             <li style="margin-left:15px;height:80px;vertical-align:text-top;margin-top:14px"><span class="c_font_4" style="bottom:10px">Featured Physicians</span></li>
         </ul>
         <div class="col-lg-12 c_no_padding" style="margin-top:-20px">
-            <ul class="c_top_ul">
+            <ul class="c_top_ul" id="featured_doc_slider">
                 <?php
-                for($i=1;$i<5;$i++){
+                for($i=1;$i<7;$i++){
                 ?>
                 <li>
-                    <div class="c_doc_box" <?php if($i!=4){ ?>style="margin-right:10px"<?php } ?>>
+                    <div class="c_doc_box item" <?php if($i!=4){ ?>style="margin-right:10px"<?php } ?>>
                         <ul class="c_ul_1" style="width:252px">
                             <li style="width:100%"><div align="center"><img src="assets/img/doc_user.png" width="70px"></div></li>
                             <li style="width:100%;margin-top:20px"><div class="c_font_5" style="text-align:center">Dr. Ananada Godagama</div></li>

@@ -14,6 +14,8 @@
     <link href="{{ URL::asset('assets/css/animate.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/spe_pro_css.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/datepicker/bootstrap_datepicker.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('assets/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('assets/owl-carousel/owl.theme.css') }}" rel="stylesheet" >
     <!-- Style Sheets End -->
 </head>
 
@@ -310,6 +312,7 @@
 <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/wow.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/sep_pro_js.js') }}"></script>
+<script src="{{ URL::asset('assets/owl-carousel/owl.carousel.js') }}"></script>
 <script>
     new WOW().init();
 </script>

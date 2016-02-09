@@ -24,6 +24,7 @@ Route::get('/advanced_search','Front@advanced_search');
 Route::get('/register','Front@register');
 Route::get('/profile/{doc_name}/{doc_id}','Front@view_profile');
 Route::get('/adddoctor','Front@add_doctor');
+Route::resource('/adddoctor/save','Front@add_doctor_save');
 Route::get('/myaccount/{name}','Front@my_account');
 Route::resource('/register/save','Front@register_patient');
 Route::resource('/login','Front@login');
