@@ -80,3 +80,13 @@ Route::post('/post_comment','AjaxControll@add_comments');
 Route::group(['middleware' => ['web']], function () {
     //
 });
+
+////////////////////////////////////////////////////////////////////////////
+// ------------------------  Forum Routes Start  ---------------------------
+
+
+Route::get('/forum','ForumController@returnHome');
+Route::get('/for_admin/{page_name}','ForumController@returnView');
+
+// -------------------------  Forum Routes End  ----------------------------
+///////////////////////////////////////////////////////////////////////////
