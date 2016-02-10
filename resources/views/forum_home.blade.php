@@ -68,5 +68,73 @@
             <input id="txtSearchItem" type="text" placeholder="Search forums">
             <input type="button" id="btnSearchItem">
         </div>
+        <div id="searchResults">
+            <div class="forumHomeHead" style="position: relative; margin-top: 25px !important; margin-left: 8%">
+                3 Search result(s) for 'bla bla'
+            </div>
+            <div id="resultList">
+
+                <div class="searchCard">
+                    <div>
+                        <div class="searchCardLeftPane">
+                            <div class="byUserDiv">from Sherlock</div>
+                            <div style="height: 50px;">
+                                <div class="upVotesDiv">5</div>
+                                <div class="numAnswersDiv">10</div>
+                                <div class="numViewsDiv">5</div>
+                            </div>
+                        </div>
+                        <div class="questionContentDiv">
+                            What is bla bla bla fdgkjdfhgkdfjg</br>
+                            and bla bla bla etc
+                        </div>
+                        <div class="questionActionsDiv">
+                            <input type="button" class="btnQuestionView">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="searchCard">
+                    <div>
+                        <div class="searchCardLeftPane">
+                            <div class="byUserDiv">from Sherlock</div>
+                            <div style="height: 50px;">
+                                <div class="upVotesDiv">5</div>
+                                <div class="numAnswersDiv">10</div>
+                                <div class="numViewsDiv">5</div>
+                            </div>
+                        </div>
+                        <div class="questionContentDiv">
+                            What is bla bla bla fdgkjdfhgkdfjg</br>
+                            and bla bla bla etc
+                        </div>
+                        <div class="questionActionsDiv">
+                            <input type="button" class="btnQuestionView">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="searchCard">
+                    <div>
+                        <div class="searchCardLeftPane">
+                            <div class="byUserDiv">from Sherlock</div>
+                            <div style="height: 50px;">
+                                <div class="upVotesDiv">5</div>
+                                <div class="numAnswersDiv">10</div>
+                                <div class="numViewsDiv">5</div>
+                            </div>
+                        </div>
+                        <div class="questionContentDiv">
+                            What is bla bla bla fdgkjdfhgkdfjg</br>
+                            and bla bla bla etc
+                        </div>
+                        <div class="questionActionsDiv">
+                            <input type="button" class="btnQuestionView">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 @stop

@@ -15,4 +15,5 @@ $(document).ready(function () {
     if (qvariable1 == "search") {
         document.getElementById('txtSearchItem').value = qvalue1;
     }
+
 });
