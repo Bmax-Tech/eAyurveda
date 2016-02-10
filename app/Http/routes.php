@@ -63,6 +63,7 @@ Route::post('/ajax/{type}/{data}','AjaxControll@register_page');
 Route::post('/ajax','AjaxControll@doc_search_page');
 Route::post('/ajax/{doc_id}','AjaxControll@get_doctor_comments');
 Route::post('/post_comment','AjaxControll@add_comments');
+Route::post('/get_comments_by_user','AjaxControll@get_comments_by_user');
 
 // -------------------------  Ajax Routes End  ----------------------------
 ///////////////////////////////////////////////////////////////////////////

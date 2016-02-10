@@ -323,6 +323,11 @@ $('#dob_input_box').datepicker({
     startView: 2,
     autoclose: true
 });
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
 </script>
 <!-- JavaScripts End -->
 

@@ -811,6 +811,50 @@ function show_tabs(para_1){
 	}
 };
 
+
+function get_user_comments_my_profile(){
+	var base_url = $("#base_url").val();
+	var star = $("#hidden_star_url").html();
+	var green_star = $("#hidden_green_star_url").html();
+
+	var new_url = '/get_comments_by_user';
+	//var dataString = $("#doctor_comment").serialize();
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url:new_url,
+		//data:dataString,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			var txt='';
+			for(var i=0;i<Object(data).length;i++){
+				txt=txt+'<div class="col-lg-12 c_no_padding" style="padding: 20px"><div class="c_comment_body" style="padding: 5px">';
+				txt=txt+'<div class="c_my_ac_doc_img" style="background-image:url('+base_url+data[i]["doc_img"]+')"></div>';
+				txt=txt+'<ul class="c_ul_1" style="margin-bottom: 0px;margin-left: 50px"><li style="height: 25px"><div class="col-lg-4 c_no_padding">';
+				for (var s = 1; s <= 5; s++) {
+					if (s <= data[i]['com_data']['rating']) {
+						txt = txt + '<img src="' + green_star + '" class="c_sm_star">';
+					} else {
+						txt = txt + '<img src="' + star + '" class="c_sm_star">';
+					}
+				}
+				txt=txt+'</div></li>';
+				txt=txt+'<li style="padding-top: 5px">'+data[i]["com_data"]["description"]+'</li><li style="padding-top: 10px;font-size: 13px;color: rgb(0, 109, 22)"><ul class="c_top_ul">';
+				txt=txt+'<li>Doctor : '+data[i]["doc_first_name"]+'&nbsp;'+data[i]["doc_last_name"]+'</li><li style="margin-left: 40px">Posted Date - '+data[i]["com_data"]["posted_date_time"]+'</li></ul></li></ul></div></div>';
+			}
+			$("#c_user_comments_load").html(txt);
+		}
+	});
+}
+
+$(document).ready(function(){
+	if($("#user_account_page").val() == "YES"){
+		get_user_comments_my_profile();
+	}
+});
+
+
 function get_image(para_1,para_2){
 	$("#"+para_2).trigger('click');
 };
@@ -940,3 +984,8 @@ function check_update_account(){
 };
 
 /////////////////////////////////////////////////
+
+// Image Map Item Pick
+function pick_location(para_1){
+	$("#location_txt").val(para_1);
+};

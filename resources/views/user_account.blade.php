@@ -5,6 +5,10 @@
     {{--<div class="col-lg-12 " style="margin-bottom:10px;margin-top: 5px;margin-left: 10px">
         <span class="c_font_2" style="color:#39B54A">My Account</span>
     </div>--}}
+    <input type="hidden" id="user_account_page" value="YES"/>
+    <input type="hidden" id="base_url" value="{{ URL::asset('') }}"/>
+    <span id="hidden_star_url" style="display: none">{{ URL::asset('assets/img/star.png') }}</span>
+    <span id="hidden_green_star_url" style="display: none">{{ URL::asset('assets/img/star_2.png') }}</span>
 
     <div class="col-lg-3">
         <div style="margin-bottom:10px;margin-top: 5px;margin-left: 10px">
@@ -13,7 +17,7 @@
         <div style="padding: 10px">
             <div class="c_my_ac_pic" style="background-image: url({{ URL::asset('profile_images/user_images/user_profile_img_'.$user_data['id'].'.png') }});height: 180px;width: 100%;background-size: 100%;background-position: center;background-repeat: no-repeat;background-color: rgba(42, 167, 0, 0.36)"></div>
             <div class="c_my_ac_pic" style="font-size: 23px;font-weight: 100">{{ $user_data['first_name'] }}</div>
-            <div class="c_my_ac_pic">buwanekab@gmail.com</div>
+            <div class="c_my_ac_pic">{{ $user_data['email'] }}</div>
             <div id="c_side_my_ac_panel" style="margin-top: 35px">
                 <ul class="c_ul_1">
                     <li>{{--<a href="{{ URL::asset('myaccount/'.$user_data['first_name'] ) }}" style="text-decoration: none">--}}<div class="c_ac_btn_1" onclick="show_tabs('HOME')"><img style="width: 35px;margin-right: 23px" src="{{ URL::asset('assets/img/home_icon.png') }}">Home</div>{{--</a>--}}</li>
@@ -28,37 +32,18 @@
         <div id="c_user_ac_home" >
             <ul class="c_ul_1">
                 <li style="padding-top: 10px">
-                    <div style="background: #39B54A;padding: 10px 40px;color: #FFF;border-bottom: 3px solid #035600;">
+                    <div style="background: #39B54A;padding: 10px 40px;color: #FFF;border-bottom: 3px solid #035600;border-bottom-left-radius: 50px">
                         <span style="font-size: 16px">Recently Posted Comments</span>
                     </div>
                 </li>
                 <li style="margin-top: 15px;padding: 10px 20px">
-                    <div class="c_my_ac_com_view">
-                        <?php for($i=0;$i<6;$i++){ ?>
-                        <div class="col-lg-12 c_no_padding" style="padding: 20px">
-                                <div class="c_comment_body" style="padding: 5px">
-                                    <div class="c_my_ac_doc_img" style="background-image:url({{ URL::asset('profile_images/user_images/user_profile_img_14.jpg') }})"></div>
-                                    <ul class="c_ul_1" style="margin-bottom: 0px;margin-left: 50px">
-                                        <li style="height: 25px">
-                                            <div class="col-lg-4 c_no_padding">
-                                                <img src="{{ URL::asset('assets/img/star_2.png') }}" class="c_sm_star">
-                                            </div>
-                                         </li>
-                                        <li style="padding-top: 5px">dfgdfgdg</li>
-                                        <li style="padding-top: 10px;font-size: 13px;color: rgb(0, 109, 22)">
-                                            <ul class="c_top_ul">
-                                                <li>by : bb&nbsp;bb</li>
-                                                <li style="margin-left: 40px">Posted Date - 4543543</li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-                        </div>
-                        <?php } ?>
+                    <div class="c_my_ac_com_view" id="c_user_comments_load">
+                        <!-- Load User Recent Posted Comments -->
                     </div>
                 </li>
                 <li style="padding-top: 20px">
-                    <div style="background: #39B54A;padding: 10px 40px;color: #FFF;border-bottom: 3px solid #035600;">                    <span style="font-size: 16px">Recently Viewed Doctors</span>
+                    <div style="background: #39B54A;padding: 10px 40px;color: #FFF;border-bottom: 3px solid #035600;border-bottom-left-radius: 50px">
+                        <span style="font-size: 16px">Recently Viewed Doctors</span>
                     </div>
                 </li>
                 <li style="margin-top: 15px;padding-left: 55px;padding-top: 10px">

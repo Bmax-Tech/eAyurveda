@@ -21,7 +21,7 @@ class Front extends Controller
 {
 
     public function index(){
-        return view('home');
+        return view('home',array('top_rated_docs' => self::get_top_rated_docs()));
     }
 
     // This function loads default results
@@ -131,10 +131,10 @@ class Front extends Controller
         }else {
             if(User::whereEmail($request->username)->first()) {
                 // Check whether password is incorrect
-                return view('home', array('password_error' => 'YES','pre_username'=>$request->username));
+                return view('home', array('password_error' => 'YES','pre_username'=>$request->username,'top_rated_docs' => self::get_top_rated_docs()));
             }else{
                 // Check whether username is incorrect
-                return view('home', array('username_error' => 'YES'));
+                return view('home', array('username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs()));
             }
         }
     }
@@ -143,7 +143,7 @@ class Front extends Controller
         unset($_COOKIE['user']);
         setcookie("user", "", time() - 3600);// Destroy the Cookie Session
 
-        return view('home');
+        return Redirect::to('/');
     }
 
     public function forgotten_password(Request $request){
@@ -160,16 +160,25 @@ class Front extends Controller
         }else {
             if(User::whereEmail($request->reset_ps_username)->first()) {
                 // Check whether email is incorrect
-                return view('home', array('reset_email_error' => 'YES','pre_username'=>$request->reset_ps_username));
+                return view('home', array('reset_email_error' => 'YES','pre_username'=>$request->reset_ps_username,'top_rated_docs' => self::get_top_rated_docs()));
             }else{
                 // Check whether username is incorrect
-                return view('home', array('reset_username_error' => 'YES'));
+                return view('home', array('reset_username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs()));
             }
         }
     }
 
     public function view_profile($doc_name,$doc_id){
         //$main_doc_ob = array();
+        // This set reciently viewed docs
+        /*if(isset($_COOKIE['reciently_views'])){
+            $rec_views = json_decode($_COOKIE['reciently_views'], true);
+            $rec_views[] = $doc_id;
+            setcookie('reciently_views', json_encode($rec_views), time() + 3600*2); // Cookie is set for 2 Days
+        }else {
+            $rec_views[] = $doc_id;
+            setcookie('reciently_views', json_encode($rec_views), time() + 3600*2); // Cookie is set for 2 Days
+        }*/
 
         $doctor = Doctors::find($doc_id);
         $img = Images::where('user_id',$doctor->user_id)->first();
@@ -322,5 +331,32 @@ class Front extends Controller
         return Redirect::to('/adddoctor');
         //return view('add_doctor',array('doc_save_success' => 'YES'));
     }
+
+
+
+    // ***************************************************************
+    // **********  Custom Functions **********************************
+
+    // This function returns the top rated doctors
+    public function get_top_rated_docs(){
+        $top_rated = Doctors::orderBy('rating','DESC')->limit(4)->get();
+        foreach($top_rated as $doc){
+            $temp['doc_id'] = $doc->id;
+            $temp['doc_first_name'] = $doc->first_name;
+            $temp['doc_last_name'] = $doc->last_name;
+            $temp['doc_address_2'] = $doc->address_2;
+            $temp['doc_city'] = $doc->city;
+            $temp['doc_rating'] = $doc->rating;
+
+            $img = Images::whereUser_id($doc->user_id)->first();
+            $temp['image_path'] = $img->image_path;
+
+            $rating_main[] = $temp;
+        }
+        return $rating_main;
+    }
+
+    // **********  Custom Functions **********************************
+    // ***************************************************************
 
 }

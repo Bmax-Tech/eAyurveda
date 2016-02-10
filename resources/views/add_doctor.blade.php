@@ -133,7 +133,7 @@
                 <div class="col-lg-7 c_no_padding" style="padding-right: 20px">
                     <ul class="c_ul_1" style="margin-bottom: 0px">
                         <li style="margin-top: 15px;margin-bottom:25px">
-                           <span class="c_font_2" style="color:#ffffff"><img src="{{ URL::asset('assets/img/visible_icon.png') }}" style="margin-right: 20px;margin-top: -8px">Profile Overview</span>
+                           <span class="c_font_2" style="color:#ffffff"><img src="{{ URL::asset('assets/img/visible_icon.png') }}" style="margin-right: 20px;margin-top: -8px">Profile Preview</span>
                         </li>
                         <li>
                             <ul class="c_top_ul" style="color: #FFF">
