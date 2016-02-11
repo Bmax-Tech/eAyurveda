@@ -6,6 +6,7 @@
 
 @section('forumHead')
     <script src="{{ URL::asset('assets/js/jquery-1.12.0.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ URL::asset('assets_social/js/forum_home.js') }}" type="text/javascript"></script>
 @stop
 
@@ -51,9 +52,9 @@
             </div>
 
             <div class="catCard">
-                <div class="catImageViewFrame" style="background-image: url('assets_social/img/forum_categories/general.jpg');">
+                <div class="catImageViewFrame" style="background-image: url('assets_social/img/forum_categories/products.jpg');">
                     <div class="catImageView">
-                        General
+                        Products
                     </div>
                 </div>
             </div>
@@ -65,8 +66,10 @@
         </div>
         <div style="height: 1px; background-color: #aaa; width: 100%; margin-top: 5px;"></div>
         <div id="forumSearch">
-            <input id="txtSearchItem" type="text" placeholder="Search forums">
-            <input type="button" id="btnSearchItem">
+            <form>
+                <input id="txtSearchItem" type="text" onkeyup="displayResults();" placeholder="Search forums">
+                <input type="submit" id="btnSearchItem">
+            </form>
         </div>
         <div id="searchResults">
             <div class="forumHomeHead" style="position: relative; margin-top: 25px !important; margin-left: 8%">

@@ -16,4 +16,18 @@ $(document).ready(function () {
         document.getElementById('txtSearchItem').value = qvalue1;
     }
 
+    function displayResults(){
+        var keyword = $("#txtSearchItem").val();
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            url: "{{ URL::route('forum/search/" + keyword + "') }}",
+            data:dataString,
+            cache: false,
+            success: function (data) {
+                $("#resultList").html="<h1>Fuck yeah!</h1>"
+            }
+        });
+    };
+
 });

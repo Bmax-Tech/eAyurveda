@@ -87,5 +87,7 @@ Route::group(['middleware' => ['web']], function () {
 Route::get('/forum','ForumController@returnHome');
 Route::get('/for_admin/{page_name}','ForumController@returnView');
 
+Route::post('/forum/search/{query}','ForumController@searchForum');
+
 // -------------------------  Forum Routes End  ----------------------------
 ///////////////////////////////////////////////////////////////////////////

@@ -19,4 +19,8 @@ class ForumController extends Controller
     function returnHome() {
         return view('forum_home');
     }
+
+    function searchForum(Request $request, $query) {
+
+    }
 }
