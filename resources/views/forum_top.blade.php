@@ -15,7 +15,7 @@
             <div>
                 <nav role="navigation" class="navbar navbar-default">
                     <div class="topBarLogoDiv">
-                        <img src="assets/img/logo_ico.png" class="topBarLogo">
+                        <img src="{{ URL::asset('assets/img/logo_ico.png') }}" class="topBarLogo">
                     </div>
 
                     <!-- toggle get grouped for better mobile display -->

@@ -142,9 +142,10 @@
     padding-left: 10px;
     padding-right: 10px;
     border:1px solid #ccc;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
     outline: none;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .15);
 }
 #txtSearchItem:hover {
     border-color: #bbb;
@@ -152,13 +153,14 @@
 }
 #txtSearchItem:focus {
     border-color: #55aa55;
-    box-shadow: inset 0 0 8px rgba(0,255,0,.2);
+    box-shadow: inset 0 0 8px rgba(0,255,0,.25);
+    box-shadow: 0 1px 0 rgba(85, 170, 85, .1), 0 2px 3px rgba(85,170,85, .15);
 }
 #btnSearchItem {
     overflow-y: hidden ! important;
     overflow-x: hidden ! important;
     background-color: #EEE;
-    background-size: contain;
+    background-size: 80%;
     background-repeat: no-repeat;
     background-position:center;
     border:1px solid #ccc;
@@ -167,8 +169,9 @@
     padding: 16px 0px;
     margin-left: -5px;
     background-image:url('../img/ic_action_search.png');
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .15);
 }
 #btnSearchItem:hover {
     outline: 0;
@@ -177,8 +180,10 @@
     border-color: #34a334 #30a430 #228722 #2fa52f;
     transition: all .5s ease;
     box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+    box-shadow: 0 1px 0 rgba(85, 170, 85, .1), 0 2px 3px rgba(85,170,85, .15);
 } #btnSearchItem:focus {
       outline: 0;
+      box-shadow: 0 1px 0 rgba(85, 170, 85, .1), 0 2px 3px rgba(85,170,85, .15);
   }
 
 .btnSearchItemHovered {

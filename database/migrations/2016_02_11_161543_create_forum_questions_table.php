@@ -15,7 +15,6 @@ class CreateForumQuestionsTable extends Migration
         Schema::create('forumQuestion', function (Blueprint $table) {
             $table->increments('qID');
             $table->text('qFrom');
-            $table->text('qSubject');
             $table->text('qBody');
             $table->boolean('qFlagged');
             $table->text('qCategory');

@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -87,7 +88,56 @@ Route::group(['middleware' => ['web']], function () {
 Route::get('/forum','ForumController@returnHome');
 Route::get('/for_admin/{page_name}','ForumController@returnView');
 
-Route::post('/forum/search/{query}','ForumController@searchForum');
+Route::get('/forum/search/{query}','ForumController@searchForum');
+Route::get('forum/getcategories/','ForumController@getCategories');
+Route::get('forum/questions/getrecent/','ForumController@getRecent');
+
+
+Route::get('/forum/view', function () {
+    $question = Request::get('question');
+    $questionResult = DB::table('forumQuestion')->where('qID', '=' , $question)->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->first();
+    $answerResultSet = DB::table('forumAnswer')->where('qID', '=' , $question)->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')->get();
+
+    return View::make('forum')->with('questionResult', $questionResult)->with('answerResultSet', $answerResultSet);
+
+});
+
+Route::post('/forum/submitanswer', function () {
+    $theSubject = Input::get('subjectText');
+    $theAnswer = Input::get('bodyText');
+    DB::table('forumanswer')->insert(
+        array('qID' => '1',
+            'aFrom' => 'patient1',
+            'aSubject' => $theSubject,
+            'aBody' => $theAnswer
+        ));
+    return Redirect::intended('/forum?question=1');
+});
+
+Route::post('/forum/sendnewsletter', 'ForumController@sendNewsletter');
+
+Route::post('/forum/addcategory', 'ForumController@addcategory');
+
+//Route::resource('/forum/addcategory','ForumController@addCategory()');
+
+
+Route::get('/messages/inbox/', function () {
+    $head = "received";
+    $current_user = "patient1";
+    $messages = DB::table('messages')->where('mTo', '=' , $current_user)->get();
+    return View::make('messages')
+        ->with('messages', $messages)
+        ->with('head', $head);
+});
+
+Route::get('/messages/sent/', function () {
+    $head = "sent";
+    $current_user = "patient1";
+    $messages = DB::table('messages')->where('mFrom', '=' , $current_user)->get();
+    return View::make('messages')
+        ->with('messages', $messages)
+        ->with('head', $head);
+});
 
 // -------------------------  Forum Routes End  ----------------------------
 ///////////////////////////////////////////////////////////////////////////

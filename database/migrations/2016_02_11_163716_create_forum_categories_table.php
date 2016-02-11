@@ -12,7 +12,7 @@ class CreateForumCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('forumcategory', function (Blueprint $table) {
+        Schema::create('forumCategory', function (Blueprint $table) {
             $table->text('catName');
             $table->text('catDescription');
             $table->text('imageURL');
@@ -27,6 +27,6 @@ class CreateForumCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('forumcategory');
+        Schema::drop('forumCategory');
     }
 }

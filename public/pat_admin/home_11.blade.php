@@ -30,6 +30,7 @@ $result = $conn->query($sql);
                     Category Name
                 </div>
                 <div>
+
                     {!! Form::text('catName','',array(
                         'placeholder' => 'Category (eg: Medicine)',
                         'class' => 'forumCatNameTxt'
@@ -39,7 +40,10 @@ $result = $conn->query($sql);
                     Category Description
                 </div>
                 <div>
-                    <textarea type="text" name="catDescription" placeholder="Describe the category" class="forumCatDescriptionTxt"></textarea>
+                    {!! Form::textarea('catDescription','',array(
+                        'placeholder' => 'Describe the category',
+                        'class' => 'forumCatDescriptionTxt'
+                    )) !!}
                 </div>
             </div>
             <div class="forumRightCol">
@@ -57,9 +61,11 @@ $result = $conn->query($sql);
             </div>
 
             <div style="padding-top: 310px;">
+
                 {!! Form::submit('Add Category', array(
                     'id' => 'forumCatSaveBtn'
                 )) !!}
+                {{ Form::hidden('hidden', 'home_11') }}
             </div>
             {!! Form::close() !!}
         </div>
@@ -81,8 +87,8 @@ $result = $conn->query($sql);
                         <div class="catImageView">
                             <?= $row["catName"] ?>
                             <div class="catImageBtnDiv">
-                                <button id="forumButton1" class="btnForumCard btnForumRed">Delete</button>
-                                <button id="forumButton1" class="btnForumCard btnForumOrange">Edit</button>
+                                <button id="forumButton1" class="btnForumCard btnForumRed"></button>
+                                {{--<button id="forumButton1" class="btnForumCard btnForumOrange"></button>--}}
                             </div>
                         </div>
                     </div>

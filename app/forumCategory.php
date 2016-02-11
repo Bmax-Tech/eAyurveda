@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class forumCategory extends Model
+class ForumCategory extends Model
 {
     //
     protected $fillable = [
