@@ -12,7 +12,7 @@ class CreateForumQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('forumQuestions', function (Blueprint $table) {
+        Schema::create('forumQuestion', function (Blueprint $table) {
             $table->increments('qID');
             $table->text('qFrom');
             $table->text('qSubject');
@@ -32,6 +32,6 @@ class CreateForumQuestionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('forum_questions');
+        Schema::drop('forumquestion');
     }
 }
