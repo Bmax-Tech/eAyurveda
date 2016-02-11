@@ -4,6 +4,7 @@
 .owl-pagination{
 	display: none;
 }
+
 /*--- Special Custom Attributes Classes ---*/
 .c_no_padding{
 	padding-left:0px;
@@ -719,6 +720,12 @@
 .c_img_upload_btn:hover{
 	background:#2AA700;
 }
+.c_add_doc_top_num{
+	background: rgba(255, 224, 0, 0.55);
+	border-radius: 40px;
+	padding: 10px 16px;
+}
+
 /* ----------  My Account Page ------------ */
 
 .c_pre_spec{

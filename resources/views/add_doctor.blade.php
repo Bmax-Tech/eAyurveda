@@ -9,6 +9,13 @@
             <li class="c_add_margin_20" style="margin-bottom:30px">
                 <img src="{{ URL::asset('assets/img/idea.png') }}" style="width: 45px;margin-top: -25px;margin-right: 15px;"><span class="c_font_2" style="color:#39B54A">Suggest Doctor to Community</span>
             </li>
+           {{-- <li>
+                <ul class="c_top_ul">
+                    <li><div class="c_add_doc_top_num">1</div></li>
+                    <li><div class="c_add_doc_top_num">2</div></li>
+                    <li><div class="c_add_doc_top_num">3</div></li>
+                </ul>
+            </li>--}}
             <li>
                 <ul class="c_top_ul">
                     <li><div class="c_sug_doc_tabs c_sug_doc_tabs_active" id="c_sug_1_tab" onclick="change_sug_tab('1')">Personal Info</div></li>

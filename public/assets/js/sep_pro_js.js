@@ -668,19 +668,20 @@ function validate_tab_change(para_1){
 			return true;
 		}
 	}else if(para_1 == 3){
-		var status='OK';
+		var status_spec=true;
+		var status_treat=true;
 		if(check_spec_and_treat('spec')){
-			status="OK";
+			status_spec=true;
 		}else{
-			status="NO";
+			status_spec=false;
 		}
 		if(check_spec_and_treat('treat')){
-			status="OK";
+			status_treat=true;
 		}else{
-			status="NO";
+			status_treat=false;
 		}
 
-		if(status=="OK"){
+		if(status_spec && status_treat){
 
 			// Set up preview panel
 			$("#c_pre_name").html($("input[name=first_name]").val()+" "+$("input[name=last_name]").val());

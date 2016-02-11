@@ -325,7 +325,9 @@ $('#dob_input_box').datepicker({
 });
 
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip({
+        placement: "top"
+    });
 })
 
 </script>
