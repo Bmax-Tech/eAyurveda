@@ -40,15 +40,22 @@ Route::get('/admin_panel/user_comments','Admin_Front@view_user_comments');
 Route::get('/admin_panel/customize/featured','Admin_Front@featured_doc');
 Route::get('/admin_panel/customize','Admin_Front@customize');
 Route::get('/admin_panel/user_view/{user_id}','Admin_Front@user_view');
+Route::get('/admin_panel/inapuser_view/{user_id}','Admin_Front@inapuser_view');
 Route::get('/admin_panel/user_view1','Admin_Front@add_comment');
 Route::get('/admin_panel/rem_com/{user_id}','Admin_Front@rem_com');
 Route::get('/admin_panel/users','Admin_Front@view_users');
+Route::get('/admin_panel/inapusers','Admin_Front@view_inapusers');
 Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@user_remove');
 //Route::get('/admin_panel/getdid/{user_id}','Admin_Front@getdid');
-Route::get('/testUrl/{user_id}', 'Admin_Front@getdocid');
 Route::get('/admin_panel/filterdoc/{user_id}/{user_id1}/{user_id2}','Admin_Front@filterdoc');
 Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@updatefet');
 Route::get('/admin_panel/test','Admin_Front@test');
+Route::get('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
+Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipA');
+Route::get('/admin/tipdel/{id}','Admin_Front@tipdel');
+
+
+
 // -----------------------  Main Page Routes End  -------------------------
 ///////////////////////////////////////////////////////////////////////////
 

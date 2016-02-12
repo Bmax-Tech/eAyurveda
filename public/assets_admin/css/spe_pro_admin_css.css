@@ -171,6 +171,10 @@
 	margin-top:3px;
 	margin-right:-140px;
 }
+.c_right_gly1{
+	margin-top:3px;
+	margin-right:-67px;
+}
 #c_footer{
 	background:#39b54a;
 }
@@ -377,31 +381,177 @@
 	padding:0px;
 }
 
-.c_close_btn{
-	float:right;
-	position:fixed;
-	background:#FFFFFF;
-	border:0px;
-	padding:5px;
-	border-radius:20px;
-	margin-left:308px;
-	margin-top:-22px;
-	outline:none;
-}
-.c_close_btn>img{
-	width:25px;
-}
 
-.c_doc_box{
+
+.pat_doc_box{
 
 	
 	background: rgba(0, 76, 17, 0.14);
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.58);
 }
-.c_doc_box:hover{
+.pat_doc_box:hover{
 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	border-radius: 5px;
 }
+#c_loading_msg{
+	display:none;
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0px;
+	z-index:999999;
+}
 
+.c_pop_box_1_wrapper1{
+	padding:8px;
+	background:#00890E;
+	width:338px;
+	margin-top:10%;
+	box-shadow:0px 0px 10px #000000;
+}
+
+#pat_imgload_1{
+	background-image:url(../img/pattern.jpg);
+}
+
+.pat_admin_text_area1{
+	width: 100%;
+	max-width: 100%;
+	height: 80px;
+	padding:7px 12px;
+	border-radius:12px;
+	border:1px solid #C4C4C4;
+	background:#FFFFFF;
+}
+.pat_admin_text_area1:focus{
+	outline:none;
+	box-shadow:0px 0px 10px #008201;
+
+}
+
+
+.pat_health_head{
+	padding: 5px 10px;
+	background: #39B54A;
+	color: #FFFFFF;
+	font-size: 12px;
+	box-shadow: 0px 0px 10px black;
+	margin-top: 33px;
+	position: absolute;
+	margin-left: 270px;
+	z-index:999980;
+
+}
+
+.pat_sub_banner{
+	background:rgba(0,0,0,0.80);
+	padding:15px;
+	text-align:center;
+	margin-top: 47px;
+	position: absolute;
+	margin-left: 287px;
+	width: auto;
+
+}
+.pat_sub_banner>p{
+	display:inline-block;
+	color:#FFFFFF;
+	font-size:8px;
+}
+.colortable{
+	background-color: #00890E;
+	color: white;
+}
+
+.pat_confirm1_box{
+	display:none;
+    width:100%;
+	height:100%;
+	position:fixed;
+	top:0px;
+	z-index:999990;
+}
+
+.pat_confirm1_box_wrapper{
+	padding:8px;
+	background:#f8f8f8;
+	width:338px;
+	margin-top:10%;
+
+	box-shadow:0px 0px 10px #000000;
+}
+
+.pat_close_btn{
+	float:right;
+	position:fixed;
+	background:#FFFFFF;
+	border:0px;
+	padding:0px;
+	border-radius:20px;
+	margin-left:352px;
+	margin-top:-16px;
+	outline:none;
+}
+.pat_close_btn>img{
+	width:25px;
+}
+
+.pat_view_btn_1{
+	width: 100px;
+	font-size:10px;
+	padding: 7px;
+	background: #006d16;
+	border:1px solid #006d16;
+	border-radius: 3px;
+	color: #FFF;
+}
+.pat_success1_box{
+	display:none;
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0px;
+	z-index:9999999;
+}
+
+.pat_success1_box_wrapper{
+	padding:8px;
+	background:#f8f8f8;
+	width:338px;
+	margin-top:10%;
+
+	box-shadow:0px 0px 10px #000000;
+}
+
+.over{
+	width:100%;
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
+.c_pat_view_btn_tip{
+	width: 120px;
+
+	padding: 2px;
+	background: #4CBC5B;
+	border:1px solid #006d16;
+	border-radius: 3px;
+	color: #FFF;
+}
+
+.c_pat_view_btn12{
+	width: 920px;
+
+	padding: 7px;
+	background: #006d16;
+	border:1px solid #006d16;
+	border-radius: 3px;
+	color: #FFF;
+}
+
+.customizeTableHead {
+	height: 30px;
+	background-color: #fff;
+}
 
 /*--------------------------End patient admin CSS  --------------------------------------*/
