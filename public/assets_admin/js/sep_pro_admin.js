@@ -4,10 +4,15 @@ $(document).ready(function(e) {
 	$("#admin_home_div").css("height",(win_height-104)+"px");
 });
 
+<<<<<<< HEAD
 var doc_s=false;var pat_s=false; var cus_s=false;
+=======
+var doc_s=false;var pat_s=false; var for_s=false;
+>>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
 $("#admin_left_nav_doc_btn").click(function(){
 	if(doc_s==false){
 		$("#admin_left_nav_pat").slideUp(100);
+		$("#admin_left_nav_for").slideUp(100);
 		$("#admin_left_nav_doc").slideDown(100);
 		$("#admin_left_nav_cus").slideUp(100);
 		$("#c_admin_span_1").addClass("glyphicon-menu-down");
@@ -15,7 +20,11 @@ $("#admin_left_nav_doc_btn").click(function(){
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
+<<<<<<< HEAD
 		doc_s=true; pat_s=false; cus_s=false;
+=======
+		doc_s=true;
+>>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
 	}
 	else{
 		$("#admin_left_nav_doc").slideUp(100);
@@ -25,12 +34,17 @@ $("#admin_left_nav_doc_btn").click(function(){
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
+<<<<<<< HEAD
 		doc_s=false;  pat_s=false; cus_s=false;
+=======
+		doc_s=false;
+>>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
 	}
 });
 $("#admin_left_nav_pat_btn").click(function(){
 	if(pat_s==false){
 		$("#admin_left_nav_doc").slideUp(100);
+		$("#admin_left_nav_for").slideUp(100);
 		$("#admin_left_nav_pat").slideDown(100);
 		$("#admin_left_nav_cus").slideUp(100);
 		$("#c_admin_span_2").addClass("glyphicon-menu-down");
@@ -38,7 +52,11 @@ $("#admin_left_nav_pat_btn").click(function(){
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
+<<<<<<< HEAD
 		pat_s=true; doc_s=false; cus_s=false;
+=======
+		pat_s=true;
+>>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
 	}
 	else{
 		$("#admin_left_nav_pat").slideUp(100);
@@ -48,6 +66,7 @@ $("#admin_left_nav_pat_btn").click(function(){
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
+<<<<<<< HEAD
 		pat_s=false; doc_s=false; cus_s=false;
 	}
 });
@@ -73,6 +92,33 @@ $("#admin_left_nav_cus_btn").click(function(){
 		$("#c_admin_span_2").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		cus_s=false; pat_s=false; doc_s=false;
+=======
+		pat_s=false;
+>>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
+	}
+});
+
+$("#admin_left_nav_for_btn").click(function(){
+	if(for_s==false){
+		$("#admin_left_nav_doc").slideUp(100);
+		$("#admin_left_nav_pat").slideUp(100);
+		$("#admin_left_nav_for").slideDown(100);
+		$("#c_admin_span_3").addClass("glyphicon-menu-down");
+		$("#c_admin_span_1").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_1").addClass("glyphicon-menu-right");
+		$("#c_admin_span_2").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_2").addClass("glyphicon-menu-right");
+		for_s=true;
+	}
+	else{
+		$("#admin_left_nav_for").slideUp(100);
+		$("#c_admin_span_2").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_2").addClass("glyphicon-menu-right");
+		$("#c_admin_span_1").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_1").addClass("glyphicon-menu-right");
+		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_3").addClass("glyphicon-menu-right");
+		for_s=false;
 	}
 });
 
@@ -108,6 +154,31 @@ function load_pat_page(para_1){
 		}
 	});
 };
+
+//Forum Home pages
+function load_for_page(para_1){
+	$.ajax({
+		type:'GET',
+		url:'for_admin/home_'+para_1+'.php',
+		cache: false,
+		success: function(data){
+			$("#admin_home_div").html(data);
+		}
+	});
+	//var dataString="user_id="+id;
+	//var new_url = '/admin_panel/removeusers/'+id;
+	//$.ajax({
+	//	type:'GET',
+	//	url:new_url,
+	//	data: dataString,
+	//	cache: false,
+	//	success: function(data){
+	//		//console.log(data);
+	//		$("#admin_home_div").html(data.page);
+	//	}
+	//});
+};
+
 
 function change_tab(para_1){
 	$(".c_admin_tabs").removeClass("active");

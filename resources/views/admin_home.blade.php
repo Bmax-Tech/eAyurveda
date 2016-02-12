@@ -74,6 +74,7 @@
                     <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Report</li>
                 </ul>
             </li>
+<<<<<<< HEAD
             <li id="admin_left_nav_cus_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/customize.png" style="width:20px"></li><li style="margin-left:10px">
                         <span class="glyphicon glyphicon-menu-right c_right_gly1" id="c_admin_span_3" aria-hidden="true"></span>
                        Customize Home
@@ -85,6 +86,23 @@
                     <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>custom_1</li>
                     <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>custom_2</li>
                 </ul>
+=======
+            <li id="admin_left_nav_for_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/forum_admin_icon.png" style="width:20px"></li><li style="margin-left:10px">
+                        <span class="glyphicon glyphicon-menu-right c_right_gly" id="c_admin_span_3" aria-hidden="true"></span>
+                        Forum
+                    </li></ul></li>
+            <li id="admin_left_nav_for" style="display:none;padding:0px">
+                <ul class="c_admin_ul_in">
+                    <li class="c_admin_ul_li" onClick="load_for_page('10.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Questions</li>
+                    <li class="c_admin_ul_li" onClick="load_for_page('11.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Categories</li>
+                    <li class="c_admin_ul_li" onClick="load_for_page('12.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Flagged Posts</li>
+                    <li class="c_admin_ul_li" onClick="load_for_page('13.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Newsletter</li>
+                </ul>
+            </li>
+            <li id="doc_cus_home"><ul class="c_top_ul"><li><img src="assets_admin/img/customize.png" style="width:20px"></li><li style="margin-left:10px">
+                        Customize Home
+                </li></ul>
+>>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
             </li>
         </ul>
     </div>

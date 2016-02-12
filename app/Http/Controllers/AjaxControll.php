@@ -206,7 +206,7 @@ class AjaxControll extends Controller
     }
 
     public function get_doctor_comments(Request $request,$doc_id){
-        $comments = Comments::where('doctor_id',$doc_id)->get();
+        $comments = Comments::where('doctor_id',$doc_id)->orderBy('id','DESC')->get();
         $count=1;
 
         foreach ($comments as $com) {
@@ -251,4 +251,24 @@ class AjaxControll extends Controller
         $res['response'] = "SUCCESS";
         return response()->json($res);
     }
+
+	// this function loads personally posted comments
+	public function get_comments_by_user(Request $request){
+		$user = json_decode($_COOKIE['user'], true);
+		$comments = Comments::whereUser_id($user[0]['id'])->orderBy('id','DESC')->limit(20)->get();
+
+		foreach($comments as $com){
+			$doc = Doctors::find($com->doctor_id);
+			$img = Images::whereUser_id($doc->user_id)->first();
+			$main_ob['com_data'] = $com;
+			$main_ob['doc_first_name'] = $doc->first_name;
+			$main_ob['doc_last_name'] = $doc->last_name;
+			$main_ob['doc_img'] = $img->image_path;
+
+			$res[] = $main_ob;
+		}
+
+
+		return response()->json($res);
+	}
 }
