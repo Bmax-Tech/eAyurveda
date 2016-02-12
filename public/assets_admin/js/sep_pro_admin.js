@@ -4,11 +4,9 @@ $(document).ready(function(e) {
 	$("#admin_home_div").css("height",(win_height-104)+"px");
 });
 
-<<<<<<< HEAD
 var doc_s=false;var pat_s=false; var cus_s=false;
-=======
-var doc_s=false;var pat_s=false; var for_s=false;
->>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
+var for_s=false;
+
 $("#admin_left_nav_doc_btn").click(function(){
 	if(doc_s==false){
 		$("#admin_left_nav_pat").slideUp(100);
@@ -20,11 +18,8 @@ $("#admin_left_nav_doc_btn").click(function(){
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
-<<<<<<< HEAD
 		doc_s=true; pat_s=false; cus_s=false;
-=======
-		doc_s=true;
->>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
+
 	}
 	else{
 		$("#admin_left_nav_doc").slideUp(100);
@@ -34,11 +29,8 @@ $("#admin_left_nav_doc_btn").click(function(){
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
-<<<<<<< HEAD
 		doc_s=false;  pat_s=false; cus_s=false;
-=======
-		doc_s=false;
->>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
+
 	}
 });
 $("#admin_left_nav_pat_btn").click(function(){
@@ -52,11 +44,7 @@ $("#admin_left_nav_pat_btn").click(function(){
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
-<<<<<<< HEAD
 		pat_s=true; doc_s=false; cus_s=false;
-=======
-		pat_s=true;
->>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
 	}
 	else{
 		$("#admin_left_nav_pat").slideUp(100);
@@ -66,7 +54,7 @@ $("#admin_left_nav_pat_btn").click(function(){
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
-<<<<<<< HEAD
+
 		pat_s=false; doc_s=false; cus_s=false;
 	}
 });
@@ -92,9 +80,7 @@ $("#admin_left_nav_cus_btn").click(function(){
 		$("#c_admin_span_2").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		cus_s=false; pat_s=false; doc_s=false;
-=======
-		pat_s=false;
->>>>>>> 9c09d8ec3425691f4b5f0a328b2e0016dc3da65f
+
 	}
 });
 
@@ -780,8 +766,8 @@ function confirm_addtip(){
 
 
 function display_priv(){
-	$("#tabdiv").hide();
-	$("#privbut").hide();
-	$("#preview").show();
+	$("#tabdiv").slideUp();
+	$("#privbut").slideUp();
+	$("#preview").slideDown();
 
 }
