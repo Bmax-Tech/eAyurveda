@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -11,7 +12,11 @@
 |
 */
 
+<<<<<<< HEAD
+// second comment
+=======
 // abdulla unais
+>>>>>>> refs/remotes/origin/master
 
 ////////////////////////////////////////////////////////////////////////
 // ---------------------  Main Page Routes Start  ----------------------
@@ -24,11 +29,13 @@ Route::get('/advanced_search','Front@advanced_search');
 Route::get('/register','Front@register');
 Route::get('/profile/{doc_name}/{doc_id}','Front@view_profile');
 Route::get('/adddoctor','Front@add_doctor');
+Route::resource('/adddoctor/save','Front@add_doctor_save');
 Route::get('/myaccount/{name}','Front@my_account');
 Route::resource('/register/save','Front@register_patient');
 Route::resource('/login','Front@login');
 Route::resource('/logout','Front@logout');
 Route::resource('/forgotten_password','Front@forgotten_password');
+Route::resource('/update_user_profile','Front@update_account');
 
 //////////  Admin Side Routing //////////
 Route::get('/admin_panel_login','Admin_Front@admin_login');
@@ -61,6 +68,7 @@ Route::post('/ajax/{type}/{data}','AjaxControll@register_page');
 Route::post('/ajax','AjaxControll@doc_search_page');
 Route::post('/ajax/{doc_id}','AjaxControll@get_doctor_comments');
 Route::post('/post_comment','AjaxControll@add_comments');
+Route::post('/get_comments_by_user','AjaxControll@get_comments_by_user');
 
 // -------------------------  Ajax Routes End  ----------------------------
 ///////////////////////////////////////////////////////////////////////////
@@ -79,3 +87,64 @@ Route::post('/post_comment','AjaxControll@add_comments');
 Route::group(['middleware' => ['web']], function () {
     //
 });
+
+////////////////////////////////////////////////////////////////////////////
+// ------------------------  Forum Routes Start  ---------------------------
+
+
+Route::get('/forum','ForumController@returnHome');
+Route::get('/for_admin/{page_name}','ForumController@returnView');
+
+Route::get('/forum/search/{query}','ForumController@searchForum');
+Route::get('forum/getcategories/','ForumController@getCategories');
+Route::get('forum/questions/getrecent/','ForumController@getRecent');
+
+
+Route::get('/forum/view', function () {
+    $question = Request::get('question');
+    $questionResult = DB::table('forumQuestion')->where('qID', '=' , $question)->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->first();
+    $answerResultSet = DB::table('forumAnswer')->where('qID', '=' , $question)->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')->get();
+
+    return View::make('forum')->with('questionResult', $questionResult)->with('answerResultSet', $answerResultSet);
+
+});
+
+Route::post('/forum/submitanswer', function () {
+    $theSubject = Input::get('subjectText');
+    $theAnswer = Input::get('bodyText');
+    DB::table('forumanswer')->insert(
+        array('qID' => '1',
+            'aFrom' => 'patient1',
+            'aSubject' => $theSubject,
+            'aBody' => $theAnswer
+        ));
+    return Redirect::intended('/forum?question=1');
+});
+
+Route::post('/forum/sendnewsletter', 'ForumController@sendNewsletter');
+
+Route::post('/forum/addcategory', 'ForumController@addcategory');
+
+//Route::resource('/forum/addcategory','ForumController@addCategory()');
+
+
+Route::get('/messages/inbox/', function () {
+    $head = "received";
+    $current_user = "patient1";
+    $messages = DB::table('messages')->where('mTo', '=' , $current_user)->get();
+    return View::make('messages')
+        ->with('messages', $messages)
+        ->with('head', $head);
+});
+
+Route::get('/messages/sent/', function () {
+    $head = "sent";
+    $current_user = "patient1";
+    $messages = DB::table('messages')->where('mFrom', '=' , $current_user)->get();
+    return View::make('messages')
+        ->with('messages', $messages)
+        ->with('head', $head);
+});
+
+// -------------------------  Forum Routes End  ----------------------------
+///////////////////////////////////////////////////////////////////////////
