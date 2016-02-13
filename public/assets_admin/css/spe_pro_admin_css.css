@@ -597,16 +597,24 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	background-color: #ff5d5d;
 	border-color: #ff3d3d #ff2d2d #ff1d1d #ff2d2d;
 	color:#fff;
+	overflow-y: hidden ! important;
+	overflow-x: hidden ! important;
+	background-size: 65%;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-image: url('../../assets_social/img/trash_awesome_w.png');
 }
 .btnForumRed:hover {
 	background-color: #ff4d4d;
 	border-color: #db3939 #dc2929 #d81e1e #dd2c2c;
+	background-image: url('../../assets_social/img/trash_awesome_w.png');
+	cursor: pointer;
 }
 
 .btnForumCard {
 	font-size:14px;
-	height:30px;
-	width:70px;
+	height:40px;
+	width:40px;
 	border-width:1px 1px 1px 1px;
 	border-radius:3px;
 	text-decoration: none;
@@ -614,7 +622,7 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 }
 
 #forumQuestionsDiv {
-	margin: 20px 40px 0 40px;
+	margin: 20px 0px 0 0px;
 }
 .questionCard {
 	background-color: #fff;

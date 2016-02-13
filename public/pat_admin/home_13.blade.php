@@ -11,10 +11,6 @@ echo $txt;
 <script type="text/javascript">
     $(document).ready(function() {
         $('#summernote').summernote({
-            onKeyup: function(e) {
-                var markupStr = $('#summernote').summernote('code');
-                $("#bodyTextArea").val(markupStr);
-            },
             height: 300,                 // set editor height
             minHeight: null,             // set minimum height of editor
             maxHeight: null,             // set maximum height of editor
@@ -30,23 +26,30 @@ echo $txt;
     </div>
     <div id="addCategory">
         <div style="">
-            <form action="forum/sendnewsletter" method="post" enctype="multipart/form-data">
+            {!! Form::open(array('url' => 'forum/sendnewsletter')) !!}
                 <div class="forumTxtLabel">
                     Subject
                 </div>
                 <div>
-                    <input type="text" name="subject" placeholder="" class="forumCatNameTxt">
+                    {!! Form::text('subject','',array(
+                       'class' => 'forumCatNameTxt'
+                   )) !!}
                 </div>
                 <div class="forumTxtLabel" style="margin-top: 20px; margin-bottom: 4px;">
                     Body Text
                 </div>
-                <div id="summernote" style=""></div>
-                <textarea id="bodyTextArea" name="bodyTextArea" ></textarea>
+            {!! Form::textarea('content','',array(
+                        'class' => 'forumCatDescriptionTxt',
+                        'id' => 'summernote'
+                    )) !!}
             <div>
-                <button id="forumCatSaveBtn" style="margin-bottom: 40px;" type="submit">Send Newsletter</button>
+                {!! Form::submit('Send Newsletter', array(
+                    'id' => 'forumCatSaveBtn',
+                    'style' => 'margin-bottom: 40px;'
+                )) !!}
             </div>
             <div class="spacer" style="clear: both;"></div>
-                </form>
+            {!! Form::close() !!}
         </div>
     </div>
     </div>
