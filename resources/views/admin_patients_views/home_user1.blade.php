@@ -16,8 +16,11 @@
                    
                     <div class="col-lg-10 c_no_padding" style="padding-left: 10px">
                         
-                        <div style="color: #0F7400;font-size: 30px;padding:5px 0px;font-weight: 500">
-                           <?php echo $patient->first_name." ".$patient->last_name;?>
+                        <div style="padding:5px 0px">
+                          <ul class="c_ul_1">
+                            <li style="color: #0F7400;font-weight: 500;font-size: 30px;"><?php echo $patient->first_name." ".$patient->last_name;?></li>
+                              <li>Email &nbsp:&nbsp  <?php echo $patient->email;?></li>
+                           </ul>
                         </div>
                         
                          <div style="padding: 10px 0px">
@@ -63,14 +66,7 @@
                          <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
                              <?php echo $patient->contact_number;?>
                          </div>
-                          <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                             <ul><li>
-                             Email
-                             </li></ul> 
-                         </div>
-                         <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                             <?php echo $patient->email;?>
-                         </div>
+
                           <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
                              <ul><li>
                              Register Date
@@ -86,7 +82,7 @@
                         <div style="padding-top: 2px">
                             
                         </div>
-                        <div  class="col-lg-6">
+                        <div  class="col-lg-6" >
                              <img src="assets/img/doc_user.png" width="60px " >
                         </div>
                         

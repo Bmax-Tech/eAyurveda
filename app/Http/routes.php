@@ -24,11 +24,13 @@ Route::get('/advanced_search','Front@advanced_search');
 Route::get('/register','Front@register');
 Route::get('/profile/{doc_name}/{doc_id}','Front@view_profile');
 Route::get('/adddoctor','Front@add_doctor');
+Route::resource('/adddoctor/save','Front@add_doctor_save');
 Route::get('/myaccount/{name}','Front@my_account');
 Route::resource('/register/save','Front@register_patient');
 Route::resource('/login','Front@login');
 Route::resource('/logout','Front@logout');
 Route::resource('/forgotten_password','Front@forgotten_password');
+Route::resource('/update_user_profile','Front@update_account');
 
 //////////  Admin Side Routing //////////
 Route::get('/admin_panel_login','Admin_Front@admin_login');
@@ -61,6 +63,7 @@ Route::post('/ajax/{type}/{data}','AjaxControll@register_page');
 Route::post('/ajax','AjaxControll@doc_search_page');
 Route::post('/ajax/{doc_id}','AjaxControll@get_doctor_comments');
 Route::post('/post_comment','AjaxControll@add_comments');
+Route::post('/get_comments_by_user','AjaxControll@get_comments_by_user');
 
 // -------------------------  Ajax Routes End  ----------------------------
 ///////////////////////////////////////////////////////////////////////////
@@ -79,3 +82,13 @@ Route::post('/post_comment','AjaxControll@add_comments');
 Route::group(['middleware' => ['web']], function () {
     //
 });
+
+////////////////////////////////////////////////////////////////////////////
+// ------------------------  Forum Routes Start  ---------------------------
+
+
+Route::get('/forum','ForumController@returnHome');
+Route::get('/for_admin/{page_name}','ForumController@returnView');
+
+// -------------------------  Forum Routes End  ----------------------------
+///////////////////////////////////////////////////////////////////////////

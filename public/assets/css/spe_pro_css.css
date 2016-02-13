@@ -1,6 +1,10 @@
 @charset "utf-8";
 /* CSS Document */
 
+.owl-pagination{
+	display: none;
+}
+
 /*--- Special Custom Attributes Classes ---*/
 .c_no_padding{
 	padding-left:0px;
@@ -315,7 +319,7 @@
 }
 .c_doc_box{
 	background:#39b54a;
-	padding:30px 0px;
+	padding:15px 0px;
 }
 .c_doc_box:hover{
 	cursor:pointer;
@@ -657,5 +661,118 @@
 	text-align: center;
 	background: #FFF;
 	border: 2px solid #39B54A;
+}
+
+/* ----------  My Account Page ------------ */
+.c_ac_btn_1{
+	background:#39B54A;
+	color: #FFF;
+	padding: 7px 20px;
+	cursor: pointer;
+	border-bottom: 1px solid #0F7400;
+}
+.c_ac_btn_1:hover{
+	background: #339a44;
+}
+.c_my_ac_doc_img{
+	width: 70px;
+	height: 70px;
+	background-size: 100%;
+	position: absolute;
+	border-radius: 100px;
+	margin-left: -40px;
+	margin-top: -20px;
+}
+.c_my_ac_com_view{
+	padding-left: 25px;
+	max-height: 300px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
+.c_my_ac_com_view::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.c_my_ac_com_view::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+.c_my_ac_com_view::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #39B54A;
+}
+.c_img_upload_btn{
+	background: #228500;
+	border: 1px solid #228500;
+	color: #FFF;
+	padding: 8px 15px;
+	width: 100%;
+	margin-top: 3px;
+}
+.c_img_upload_btn:hover{
+	background:#2AA700;
+}
+.c_add_doc_top_num{
+	background: rgba(255, 224, 0, 0.55);
+	border-radius: 40px;
+	padding: 10px 16px;
+}
+
+/* ----------  My Account Page ------------ */
+
+.c_pre_spec{
+	background: rgba(255, 255, 255, 0.61);
+	width: 100%;
+	margin-bottom: 5px;
+	border-radius: 5px;
+	padding: 4px 10px;
+}
+
+.c_pre_opt{
+	max-height: 130px;
+	overflow: hidden;
+	overflow-y:scroll;
+	padding-right: 10px
+}
+.c_pre_opt::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+.c_pre_opt::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+.c_pre_opt::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #b53800;
+}
+.c_pre_btn{
+	padding: 10px 50px;
+	background: #006d16;
+	font-size: 18px;
+	color: #FFF;
+	border: 1px solid #006d16;
+}
+.c_pre_btn:hover{
+	background: #00971a;
+	border: 1px solid #00971a;
+}
+
+#c_pre_description{
+	color: #000;
+	text-align: justify;
 }
 

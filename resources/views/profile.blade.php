@@ -126,7 +126,7 @@
                 $user = json_decode($_COOKIE['user'],true);
                 $user_id = $user[0]['id'];// Assign logged user`s id
                 ?>
-                <div class="c_comment_profile_icon" style="background-image:url({{ URL::asset('profile_images/user_images/user_profile_img_'.$user_id.'.jpg') }})"></div>
+                <div class="c_comment_profile_icon" style="background-image:url({{ URL::asset('profile_images/user_images/user_profile_img_'.$user_id.'.png') }})"></div>
                 <?php
                 }else{
                 ?>
