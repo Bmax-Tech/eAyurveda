@@ -990,3 +990,45 @@ function check_update_account(){
 function pick_location(para_1){
 	$("#location_txt").val(para_1);
 };
+
+
+//////////////////////////////////////////////////
+//  Side Helper  ////////////////////////////////
+var click_help=false;
+function side_helper(){
+
+		$(".c_side_helper").fadeOut();
+		$(".c_in_helper").show(function(){
+			$(".c_in_helper_1").fadeIn(200);
+			// Auto typing Section
+			$(".c_in_helper_2").typed({
+				strings: ["Hi.. I`m Dr.Travis</br>Do you want any help ?"],
+				typeSpeed: 40
+			});
+			$("#c_try_chat_btn").delay(3500).fadeIn();
+			$(".typed-cursor").hide();
+		});
+		click_help=true;
+};
+$(".c_in_helper").mouseenter(function(){
+	$("#c_in_help_close_btn").fadeIn();
+});
+$(".c_in_helper").mouseleave(function(){
+	$("#c_in_help_close_btn").fadeOut();
+});
+$("#c_in_help_close_btn").click(function(){
+	click_help=false;
+	$(".c_in_helper").hide();
+	$(".c_side_helper").fadeIn();
+});
+
+$("#c_try_chat_btn").click(function(){
+	$(".c_side_helper").fadeOut();
+	$(".c_in_helper").fadeOut();
+	$(".c_helper_chat").fadeIn();
+});
+$("#c_chat_close_btn").click(function(){
+	$(".c_helper_chat").fadeOut();
+	$(".c_side_helper").fadeIn();
+});
+/////////////////////////////////////////////////

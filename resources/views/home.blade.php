@@ -36,7 +36,7 @@
     </div>
 
     <!-- Featured Physician -->
-    <div class="col-lg-12 c_no_padding" id="c_home_doc_tabs">
+    <div id="featured" class="col-lg-12 c_no_padding c_home_doc_tabs">
         <ul class="c_top_ul">
             <li>
                 <img src="assets/img/doctor.png" style="width:80px">
@@ -72,7 +72,7 @@
     </div>
     <!-- Featured Physician -->
     <!-- Top Rated Physician -->
-    <div class="col-lg-12 c_no_padding" id="c_home_doc_tabs">
+    <div id="topRated" class="col-lg-12 c_no_padding c_home_doc_tabs">
         <ul class="c_top_ul">
             <li>
                 <img src="assets/img/doctor.png" style="width:80px">
@@ -127,7 +127,7 @@
     </div>
     <!-- Top Rated Physician -->
     <!-- Community Suggestions -->
-    <div class="col-lg-12 c_no_padding" id="c_home_com_sug">
+    <div id="community" class="col-lg-12 c_no_padding c_home_com_sug">
         <ul class="c_top_ul">
             <li>
                 <img src="assets/img/community.png" style="width:80px">
@@ -162,7 +162,7 @@
     </div>
     <!-- Community Suggestions -->
     <!-- Find by Area -->
-    <div class="col-lg-6 c_no_padding" style="margin-left:60px">
+    <div id="map" class="col-lg-6 c_no_padding" style="margin-left:60px">
         <ul class="c_top_ul">
             <li>
                 <img src="assets/img/map.png" style="width:223px;height:316px;margin-top:-110px" class="wow zoomIn" usemap="#Map">

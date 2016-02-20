@@ -19,7 +19,7 @@
     <!-- Style Sheets End -->
 </head>
 
-<body class="c_body">
+<body class="c_body" data-spy="scroll">
 <!-- Top Header -->
 <div class="container c_container">
     <div class="row">
@@ -204,10 +204,10 @@
 <!-- Side Nav Bar -->
 <div class="c_side_nav_bar">
     <ul class="c_ul_1">
-        <li class="c_side_bar_ul" id="featured_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/thumb_up.png') }}"></button></li>
-        <li class="c_side_bar_ul" id="top_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/star_up.png') }}"></button></li>
-        <li class="c_side_bar_ul" id="com_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/community_up.png') }}"></button></li>
-        <li class="c_side_bar_ul" id="loc_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/mark_up.png') }}"></button></li>
+        <a href="#featured"><li class="c_side_bar_ul" id="featured_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/thumb_up.png') }}"></button></li></a>
+        <a href="#topRated"><li class="c_side_bar_ul" id="top_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/star_up.png') }}"></button></li></a>
+        <a href="#community"><li class="c_side_bar_ul" id="com_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/community_up.png') }}"></button></li></a>
+        <a href="#map"><li class="c_side_bar_ul" id="loc_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/mark_up.png') }}"></button></li></a>
     </ul>
 </div>
 <!-- Side Nav Bar -->
@@ -307,12 +307,41 @@
 </div>
 <!-- Thanking Messages -->
 
+<!-- ***  Site Helper  *** -->
+<div class="c_side_helper" onclick="side_helper()">
+    <div title="Help" style="margin-left: 3px"><ul class="c_top_ul"><li><img src="{{ URL::asset('assets/img/doctor_icon.png') }}" width="25px"></li></ul></div>
+    <div style="color: #fff;margin-top: 3px">Help</div>
+</div>
+<div class="c_in_helper">
+    <img id="c_in_help_close_btn" src="{{ URL::asset('assets/img/close_3.png') }}">
+    <img src="{{ URL::asset('assets/img/doctor10.png') }}" width="120px">
+    <div class="c_in_helper_1">
+        <div class="c_in_helper_2"></div>
+        <button id="c_try_chat_btn" >try Out <span style="color: #000;font: 14px;font-weight: 500;font-style: italic">Live</span><span style="color: #fff;font-weight: 500;font-style: italic">Chat</span></button>
+    </div>
+</div>
+<div class="c_helper_chat">
+    <img src="{{ URL::asset('assets/img/chat_icon.png') }}" width="80px">
+    <div id="c_chat_close_btn"><img src="{{ URL::asset('assets/img/close_btn.png') }}" width="20px"></div>
+    <div style="width: 270px;height: 270px;background: #01A200;padding: 5px;border-top-left-radius: 10px;border-top-right-radius: 10px;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.64)">
+        <div style="background: #fff;width: 100%;height: 100%;border-top-left-radius: 7px;border-top-right-radius: 7px">
+            <div style="height: 90%;width: 100%"></div>
+            <div style="height: 10%;width: 100%">
+                <input type="text" style="width: 75%">
+                <button style="width: 20%">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ***  Site Helper  *** -->
+
 <!-- JavaScripts -->
 <script src="{{ URL::asset('assets/js/jquery-1.12.0.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/wow.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/sep_pro_js.js') }}"></script>
 <script src="{{ URL::asset('assets/owl-carousel/owl.carousel.js') }}"></script>
+<script src="{{ URL::asset('assets/typed/typed.js') }}"></script>
 <script>
     new WOW().init();
 </script>
@@ -328,6 +357,10 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip({
         placement: "top"
     });
+    // add tooltip animation
+    $('[data-toggle="tooltip"]').on('shown.bs.tooltip', function () {
+        $('.tooltip').addClass('wow pulse');
+    })
 })
 
 </script>

@@ -312,7 +312,7 @@
     margin-left: -60px;
     box-shadow: 0px 0px 10px black;
 }
-#c_home_doc_tabs{
+.c_home_doc_tabs{
 	margin-top:25px;
 	padding-left:60px;
 	padding-right:60px;
@@ -325,7 +325,7 @@
 	cursor:pointer;
 	background:#309A3F;
 }
-#c_home_com_sug {
+.c_home_com_sug {
 	margin-top:30px;
 	border-top:5px solid rgb( 57, 181, 74 );
 	border-bottom:5px solid rgb( 57, 181, 74 );	
@@ -371,7 +371,7 @@
 	padding-top: 8px;
 	box-shadow: 0px 0px 10px #000;
 }
-.c_side_nav_bar>ul>li{
+.c_side_nav_bar>ul>a>li{
 	padding: 10px 0px;
 }
 .c_side_nav_bar>ul>li:hover{
@@ -776,3 +776,110 @@
 	text-align: justify;
 }
 
+/*body::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+body::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+body::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #19b901;
+}*/
+
+/* Side Helper */
+.c_side_helper{
+	position: fixed;
+	z-index:10;
+	padding: 5px;
+	background: #3db43d;
+	right: 0px;
+	bottom: 100px;
+	border: 1px solid #0F7400;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	cursor: pointer;
+	box-shadow: 0px 0px 10px #000;
+}
+.c_in_helper{
+	display: none;
+	position: fixed;
+	z-index:10;
+	right: -10px;
+	bottom: 0px;
+}
+.c_in_helper_1{
+	display: none;
+	width: 200px;
+	height: 60px;
+	background: #d9d9d9;
+	position: fixed;
+	padding: 4px;
+	right: 65px;
+	bottom: 30px;
+	box-shadow: 0px 0px 10px #000;
+	border-radius: 20px;
+}
+.c_in_helper_1>div{
+	border-radius: 15px;
+	max-height: 100%;
+	max-width: 100%;
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	background: #fff;
+	font-weight: 500;
+}
+#c_in_help_close_btn{
+	width:20px;
+	display: none;
+	right: 0px;
+	position: fixed;
+	bottom: 185px;
+	cursor: pointer;
+}
+
+.c_helper_chat{
+	position: fixed;
+	right: 8px;
+	bottom: 0px;
+	z-index: 100000;
+	display: none;
+}
+#c_chat_close_btn{
+	box-shadow: 0px 0px 10px;
+	margin-bottom: -20px;
+	position: fixed;
+	right: 0px;
+	bottom: 275px;
+	background: #fff;
+	padding: 2px 3px 3px 3px;
+	border-radius: 20px;
+}
+#c_chat_close_btn>img{
+	cursor: pointer;
+}
+#c_try_chat_btn{
+	display: none;
+	background: #FF9200;
+	border: 1px solid #000;
+	border-radius: 5px;
+	color: #FFF;
+	padding: 4px 30px;
+	margin-top: -2px;
+	margin-left: 16px;
+}
+#c_try_chat_btn:hover{
+	background: #da7700;
+}
+#c_try_chat_btn:focus{
+	outline: none;
+}
+/* Side Helper */

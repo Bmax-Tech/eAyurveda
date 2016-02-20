@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Input;
 
 class AjaxControll extends Controller
 {
-    public $RESULTS_PER_PAGE = 3;// This is to set number of records shown in search results page (Each)
+    public $RESULTS_PER_PAGE = 4;// This is to set number of records shown in search results page (Each)
 
     public function register_page(Request $request,$type,$data){
         if($type == 'username')
