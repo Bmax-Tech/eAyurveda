@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Chat_data;
 use App\Comments;
 use App\Doctors;
 use App\Images;
@@ -269,6 +270,33 @@ class AjaxControll extends Controller
 		}
 
 
+		return response()->json($res);
+	}
+
+	// this function will handel chat message sending feature
+	public function send_chat_message_by_user(Request $request){
+		$user = json_decode($_COOKIE['user'], true);
+		$user_id = $user[0]['id'];
+
+		Chat_data::create([
+			'sender_id' => $user_id,
+			'receiver_id' => 0,
+			'message' => Input::get('message'),
+			'posted_date_time' =>  new \DateTime()
+		]);
+
+		$res['response'] = "SUCCESS";
+		return response()->json($res);
+	}
+
+	// this function will get chat messages feature
+	public function get_chat_message_by_user(Request $request){
+		$user = json_decode($_COOKIE['user'], true);
+		$user_id = $user[0]['id'];
+
+		$chat_data = Chat_data::where('sender_id','=',$user_id)->orwhere('receiver_id','=',$user_id)->get();
+
+		$res['chat_data'] = $chat_data;
 		return response()->json($res);
 	}
 }
