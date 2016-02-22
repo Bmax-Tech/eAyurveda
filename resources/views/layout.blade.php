@@ -19,7 +19,7 @@
     <!-- Style Sheets End -->
 </head>
 
-<body class="c_body">
+<body class="c_body" data-spy="scroll">
 <!-- Top Header -->
 <div class="container c_container">
     <div class="row">
@@ -204,10 +204,10 @@
 <!-- Side Nav Bar -->
 <div class="c_side_nav_bar">
     <ul class="c_ul_1">
-        <li class="c_side_bar_ul" id="featured_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/thumb_up.png') }}"></button></li>
-        <li class="c_side_bar_ul" id="top_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/star_up.png') }}"></button></li>
-        <li class="c_side_bar_ul" id="com_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/community_up.png') }}"></button></li>
-        <li class="c_side_bar_ul" id="loc_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/mark_up.png') }}"></button></li>
+        <a href="#featured"><li class="c_side_bar_ul" id="featured_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/thumb_up.png') }}"></button></li></a>
+        <a href="#topRated"><li class="c_side_bar_ul" id="top_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/star_up.png') }}"></button></li></a>
+        <a href="#community"><li class="c_side_bar_ul" id="com_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/community_up.png') }}"></button></li></a>
+        <a href="#map"><li class="c_side_bar_ul" id="loc_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/mark_up.png') }}"></button></li></a>
     </ul>
 </div>
 <!-- Side Nav Bar -->
@@ -307,12 +307,90 @@
 </div>
 <!-- Thanking Messages -->
 
+<!-- ***  Site Helper  *** -->
+<?php
+    // Check whether user in logged or not
+    $user_id=0;// If user is not logged user
+    if(isset($_COOKIE['user'])){
+        $user = json_decode($_COOKIE['user'],true);
+        $user_id = $user[0]['id'];// Assign logged user`s id
+    }
+?>
+<input type="hidden" name="user_id" id="hidden_user_id" value="<?php echo $user_id; ?>">
+<div class="c_side_helper" onclick="side_helper()">
+    <div style="margin-left: 3px"><ul class="c_top_ul"><li><img src="{{ URL::asset('assets/img/doctor_icon.png') }}" width="25px"></li></ul></div>
+    <div style="color: #fff;margin-top: 3px">Help</div>
+</div>
+<div class="c_in_helper">
+    <img id="c_in_help_close_btn" src="{{ URL::asset('assets/img/close_3.png') }}">
+    <img src="{{ URL::asset('assets/img/doctor10.png') }}" width="120px">
+    <div class="c_in_helper_1">
+        <div class="c_in_helper_2"></div>
+        <button id="c_try_chat_btn" >try Out <span style="color: #000;font-weight: 500;font-style: italic">Live</span><span style="color: #fff;font-weight: 500;font-style: italic">Chat</span></button>
+    </div>
+</div>
+<div class="c_helper_chat">
+    <img src="{{ URL::asset('assets/img/chat_icon.png') }}" width="80px">
+    <div id="c_chat_close_btn"><img src="{{ URL::asset('assets/img/close_btn.png') }}" width="20px"></div>
+    <div style="width: 280px;height: 300px;background: #F15822;padding: 5px;border-top-left-radius: 10px;border-top-right-radius: 10px;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.64)">
+        <div style="background: #fff;width: 100%;height: 100%;border-top-left-radius: 7px;border-top-right-radius: 7px">
+            <div class="c_chat_box">
+                {{--<table style="width: 100%">
+                <?php
+                    for($i=1;$i<2;$i++){
+                ?>
+                <tr><td>
+                <div class="c_chat_msg_row">
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 90%;"><div class="c_chat_msg_text_1">dsfsfdsfd sfdsfsdfsfsdff sdfsdfsf sad ad asd a</div></td>
+                            <td style="width: 10%"><img src="{{ URL::asset('assets/img/oparator_icon.jpg') }}" class="c_chat_icon_1"></td>
+                        </tr>
+                        <tr><td style="height: 17px"></td></tr>
+                    </table>
+                </div>
+                </td></tr>
+                <?php
+                    }
+                ?>
+                <?php
+                    for($i=1;$i<2;$i++){
+                ?>
+                <tr><td>
+                        <div class="c_chat_msg_row">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="width: 10%"><img src="{{ URL::asset('assets/img/user_chat.png') }}" class="c_chat_icon_2"></td>
+                                    <td style="width: 90%;"><div class="c_chat_msg_text_2">sdfs dsfdsfdsfsd fdsfsd f</div></td>
+                                </tr>
+                                <tr><td style="height: 17px"></td></tr>
+                            </table>
+                        </div>
+                </td></tr>
+                <?php
+                    }
+                ?>
+                </table>--}}
+            </div>
+            <div style="height: 10%;width: 100%;border-top: 1px solid #F15822">
+                <form id="chat_form" method="post" style="width: 100%;height: 100%">
+                    <input name="message" id="chat_message_txt" type="text" placeholder="Type Message Here" spellcheck="false" autocomplete="off">
+                    <div class="c_chat_send" id="chat_send"><img src="{{ URL::asset('assets/img/sent.png') }}" style="width:60%;margin: 0px 0px 0px 12px;height: 100%;"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="home_base_url" value="{{ URL::asset('assets/img') }}"/>
+<!-- ***  Site Helper  *** -->
+
 <!-- JavaScripts -->
 <script src="{{ URL::asset('assets/js/jquery-1.12.0.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/wow.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/sep_pro_js.js') }}"></script>
 <script src="{{ URL::asset('assets/owl-carousel/owl.carousel.js') }}"></script>
+<script src="{{ URL::asset('assets/typed/typed.js') }}"></script>
 <script>
     new WOW().init();
 </script>
@@ -328,6 +406,10 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip({
         placement: "top"
     });
+    // add tooltip animation
+    $('[data-toggle="tooltip"]').on('shown.bs.tooltip', function () {
+        $('.tooltip').addClass('wow pulse');
+    })
 })
 
 </script>

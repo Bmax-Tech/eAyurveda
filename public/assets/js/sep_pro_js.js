@@ -990,3 +990,119 @@ function check_update_account(){
 function pick_location(para_1){
 	$("#location_txt").val(para_1);
 };
+
+
+//////////////////////////////////////////////////
+//  Side Helper  ////////////////////////////////
+var click_help=false;
+function side_helper(){
+	var user_id = $('#hidden_user_id').val();
+	if(user_id == 0) {
+		$("#c_warning_msg").fadeIn(100);
+		$("#c_warning_msg").delay(800).fadeOut();
+	}else {
+		$(".c_side_helper").fadeOut();
+		$(".c_in_helper").show(function () {
+			$(".c_in_helper_1").fadeIn(200);
+			// Auto typing Section
+			$(".c_in_helper_2").typed({
+				strings: ["Hi.. I`m Dr. Jarvis</br>Do you want any help ?"],
+				typeSpeed: 40
+			});
+			$("#c_try_chat_btn").delay(3500).fadeIn();
+			$(".typed-cursor").hide();
+		});
+		click_help = true;
+	}
+};
+$(".c_in_helper").mouseenter(function(){
+	$("#c_in_help_close_btn").fadeIn();
+});
+$(".c_in_helper").mouseleave(function(){
+	$("#c_in_help_close_btn").fadeOut();
+});
+$("#c_in_help_close_btn").click(function(){
+	click_help=false;
+	$(".c_in_helper").hide();
+	$(".c_side_helper").fadeIn();
+});
+
+$("#c_try_chat_btn").click(function(){
+	$(".c_side_helper").fadeOut();
+	$(".c_in_helper").fadeOut();
+	$(".c_helper_chat").fadeIn();
+
+	// this will start chat session
+	get_chat_messages();
+	tid = setInterval(get_chat_messages, 5000);
+});
+$("#c_chat_close_btn").click(function(){
+	$(".c_helper_chat").fadeOut();
+	$(".c_side_helper").fadeIn();
+
+	// this will abort the timer
+	abortTimer();
+});
+
+/////////////  Chat Form  ///////////////////////
+
+$("#chat_send").click(function(){
+	send_chat();
+});
+
+$("#chat_form").submit(function(e){
+	send_chat();
+	e.preventDefault();
+});
+
+// send chat message
+function send_chat(){
+	var new_url = '/send_chat_message';
+	var dataString = $("#chat_form").serialize();
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		data: dataString,
+		cache: false,
+		success: function (data) {
+			$("#chat_message_txt").val('');
+			get_chat_messages();
+			$('.c_chat_box').animate({scrollTop: $('.c_chat_box')[0].scrollHeight}, 1000);
+		}
+	});
+};
+
+// get chat messages
+function get_chat_messages(){
+	var base_url = $("#home_base_url").val();
+	var new_url = '/get_chat_message';
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		cache: false,
+		success: function (data) {
+			var txt='<table style="width: 100%">';
+			for(var i=0;i<Object(data.chat_data).length;i++){
+				if(data.chat_data[i]["sender_id"] == 0) {
+					txt = txt + '<tr><td><div class="c_chat_msg_row"><table style="width: 100%"><tr><td style="width: 90%;"><div class="c_chat_msg_text_1">'+data.chat_data[i]["message"]+'</div></td>';
+					txt = txt + '<td style="width: 10%"><img src="'+base_url+'/oparator_icon.jpg" class="c_chat_icon_1"></td></tr><tr><td style="height: 17px"></td></tr></table></div></td></tr>';
+				}else{
+					txt = txt + '<tr><td><div class="c_chat_msg_row"><table style="width: 100%"><tr><td style="width: 10%"><img src="'+base_url+'/user_chat.png" class="c_chat_icon_2"></td>';
+					txt = txt + '<td style="width: 90%;"><div class="c_chat_msg_text_2">'+data.chat_data[i]["message"]+'</div></td></tr><tr><td style="height: 17px"></td></tr></table></div></td></tr>';
+				}
+			}
+
+			$(".c_chat_box").html(txt);
+		}
+	});
+};
+
+
+// set interval
+var tid='';// holds timer id
+function abortTimer() { // to be called when you want to stop the timer
+	clearInterval(tid);
+}
+/////////////////////////////////////////////////
