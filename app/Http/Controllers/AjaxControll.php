@@ -31,7 +31,7 @@ class AjaxControll extends Controller
         return response()->json($res);
     }
 
-    // This function is used for render and return doctor_results page to Ajax
+// This function is used for render and return doctor_results page to Ajax
     public function doc_search_page(Request $request){
 
         if(Input::get('advanced_search') == 'NO') {

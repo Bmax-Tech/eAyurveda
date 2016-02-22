@@ -1,21 +1,23 @@
 <div style="background: rgb(113, 125, 97);color: #FFF;font-size: 15px;padding: 7px 10px;border-bottom: 3px solid #035600;margin-bottom: 10px">
 	Manage Health Tips
 </div>
- <div class=" col-lg-12 c_no_padding" style="width:920px;margin-left:10px">
 
 
-     </div>
+<div class=" col-lg-12 c_no_padding" style="width:920px;margin-left:10px">
+</div>
+<div onclick="display_all_tip()"  style="width: 920px;background: #006d16;border:1px solid #006d16;border-radius: 3px;color: #FFF;height:20px" >
+	<ul class="c_top_ul"><li style="margin-left:50px">Existing Tips</li><li style="margin-left:50px">
+
+		</li></ul>
+
+</div>
+
+
 <div id="preview" style="display:none">
-	<div style="width: 920px;background: #006d16;border:1px solid #006d16;border-radius: 3px;color: #FFF;" >
-		<p id="tip1" style="padding-top: 4px">
-			preview
-		</p>
 
-	</div>
-	     <div  class="" style="margin-left:130px ">
-
- 				<div id="pat_imgload_1" class=" col-lg-12 " style="margin-top:10px;width: 600px;height:210px;background-color: #9acfea" onclick="load_cos_page1_via_ajax()">
-                    <div  style="margin-top: 15px;">
+	<div  class="" style="margin-left:130px ">
+         <div id="pat_imgload_1" class=" col-lg-12 " style="margin-top:10px;width: 600px;height:210px;background-color: #9acfea" >
+                <div  style="margin-top: 15px;">
 						<table style="width:170px;margin-left: -15px;">
 							<tr>
 								<td >
@@ -36,68 +38,59 @@
 
 							</tr>
 						</table>
-					</div>
-					<span class="pat_health_head">Health Tip !</span>
-					<div class="pat_sub_banner container" >
-                         <p id="tip1">
+				</div>
+				<span class="pat_health_head">Health Tip !</span>
+				<div class="pat_sub_banner container" >
+                        <p id="tip1">
 							 Health Tip Loads Here
-						 </p>
-
-					</div>
-		        </div>
+						</p>
+                </div>
 		  </div>
+	 </div>
 </div>
 
 
-			  <div id="tabdiv" Style="height:200px">
-				  <div style="width: 920px;background: #006d16;border:1px solid #006d16;border-radius: 3px;color: #FFF;" >
-					  <p id="tip1" style="padding-top: 4px;">
-						  table
-					  </p>
+ <div id="tabdiv" Style="height:200px">
 
-				  </div>
 				  <div class="col-lg-12" style="padding:0px 32px 0px 15px">
-					  <div class="col-lg-2" style="border-top: 2px solid rgb( 0, 0, 0 );border-left: 2px solid rgb( 0, 0, 0 );border-right:2px solid rgb( 0, 0, 0 );text-align:center;background-color: #C1BDBD">
+
+					  <div class="col-lg-2 customizeTableHead1" style=" border-top-left-radius:13px;">
 						  <b>Health tip</b>
 					  </div>
-					  <div class="col-lg-3" style="border-top: 2px solid rgb( 0, 0, 0 ); border-right:2px solid rgb( 0, 0, 0 );text-align:center;background-color: #C1BDBD">
+					  <div class="col-lg-3 customizeTableHead1" >
 						  <b>Header 1</b>
 					  </div>
-					  <div class="col-lg-3" style="border-top:2px solid rgb( 0, 0, 0 );border-right: 2px solid rgb( 0, 0, 0 );text-align:center;background-color: #C1BDBD">
+					  <div class="col-lg-3 customizeTableHead1" >
 						  <b> Header 2</b>
 					  </div>
-					  <div class="col-lg-4" style="border-top:2px solid rgb( 0, 0, 0 );border-right: 2px solid rgb( 0, 0, 0 );text-align:center;background-color: #C1BDBD">
+					  <div class="col-lg-4 customizeTableHead1" style="border-top-right-radius:13px;">
 						  <b>Quick Actions </b>
 					  </div>
 				  </div>
-				 <div id="" class="col-lg-12" Style="height:150px;overflow-y: scroll">
-					  <table id="" class="col-lg-12 over" style="border:2px solid rgb( 0, 0, 0 );background-color: #C1BDBD">
-
-
-
-						  <?php foreach($tipload as $tipset) {?>
-
-						  <tr  class="tipid_<?php echo $tipset->hid; ?> common" style="border:2px solid rgb( 0, 0, 0 );" onclick="tip_color('<?php echo $tipset->hid;?>')">
-							  <td class="col-lg-2 "><?php echo $tipset->tip; ?></td>
-							  <td class="col-lg-3 "><?php echo $tipset->discription_1; ?></td>
-							  <td class="col-lg-3 "><?php echo $tipset->discription_2; ?></td>
-							  <td class="col-lg-2 "><button type="button" name="update" onclick="get_tip_id('<?php echo $tipset->hid;?>','<?php echo $tipset->tip; ?>' ,'<?php echo $tipset->discription_1;?>','<?php echo $tipset->discription_2; ?>' )" class="c_pat_view_btn_tip" >Update</button></td>
-							  <td class="col-lg-2"><button type="button" name="delete" onclick="del_tip('<?php echo $tipset->hid;?>')" class="c_pat_view_btn_tip" >Delete</button></td>
-
+				  <div id="" class="col-lg-12" Style="height:184px;overflow-y: scroll">
+					  <table id="" class="col-lg-12 over tabledesign2" >
+                         <?php foreach($tipload as $tipset) {?>
+						  <tr  class="tipid_<?php echo $tipset->hid; ?> common" style="background-color:#fff;height:35px;border:1px solid #ddd;" onclick="tip_color('<?php echo $tipset->hid;?>')">
+							  <td class="col-lg-2 "> <div style="width:110px; overflow:hidden;"><?php echo $tipset->tip; ?></div></td>
+							  <td class="col-lg-3" style="border-left: 1px solid #ddd;"> <div style="width:180px; overflow:hidden;"><?php echo $tipset->discription_1; ?></div></td>
+							  <td class="col-lg-3" style="border-left: 1px solid #ddd;"> <div style="width:180px; overflow:hidden;"><?php echo $tipset->discription_2; ?></div></td>
+                              <td class="col-lg-1" style="border-left: 1px solid #ddd;"><button type="button" name="update" onclick="get_tip_id('<?php echo $tipset->hid;?>','<?php echo $tipset->tip; ?>' ,'<?php echo $tipset->discription_1;?>','<?php echo $tipset->discription_2; ?>' )" class="c_pat_view_btn_tip" ><img src="assets_admin\img\Edit-52.png" height="20px"> Update</button></td>
+							  <td ><button type="button" name="delete" onclick="del_tip('<?php echo $tipset->hid;?>')" class="c_pat_view_btn_tip" ><img src="assets_admin\img\Delete-52.png" height="20px">Delete</button></td>
 						  </tr>
-                          <?php } ?>
+                         <?php } ?>
 					  </table>
 				  </div>
 
 				  <input type="hidden" id="hidden_click_tip_id" value="0"/>
 				  <input type="hidden" id="hidden_click_tip_del_id" value="0"/>
 				  <input type="hidden" id="hidden_click_tip_up_status" value="false"/>
-				  </div>
+ </div>
 
 
-     <button type="button" id="privbut" onclick="display_priv()" class="c_pat_view_btn12" >Preview</button>
-     <button type="button" id="privbut" onclick="display_priv()" class="c_pat_view_btn12" >Health tips</button>
-	 <div class="container col-lg-12" style="margin-top: 20px">
+
+
+	 <div class="container col-lg-12" >
+
 
 		<div class="col-lg-6" style="margin-left: -14px;">
 		   <div class="col-lg-12" style="margin-top: 7px">
@@ -123,15 +116,15 @@
 			 <textarea  onkeyup="onChangetip();" id="tiptip" class="pat_admin_text_area1" name="tip"  style="width:830px;"></textarea>
 		 </div>
          <div class="col-lg-12" style="margin-top: 20px">
-			 <div  style="margin-left: 410px">
-				 <button type="button" onclick="tip_update_via_ajax()" class="c_pat_view_btn" >Refresh</button>
-			     <button type="button" onclick="confirm_addtip()" class="c_pat_view_btn" >Add</button>
-			 </div>
+			 <div  style="margin-left: 310px">
+				 <button type="button" onclick="display_priv()" class="c_pat_view_btn " style="width:100px"><img src="assets_admin\img\View-50.png" height="15px">Preview</button>
+				 <button type="button" onclick="tip_update_via_ajax()" class="c_pat_view_btn" style="width:100px"><img src="assets_admin\img\Refresh-52.png" height="15px"> Refresh</button>
+			     <button type="button" onclick="confirm_addtip()" class="c_pat_view_btn" ><img src="assets_admin\img\Add-48.png" height="15px">Add</button>
+			  </div>
 		 </div>
 
      </div>
 
- </div>
 
 <div id="featuredpoup" class="container pat_success1_box" >
 

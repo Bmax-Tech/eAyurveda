@@ -459,7 +459,7 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	font-size:8px;
 }
 .colortable{
-	background-color: #00890E;
+	background-color: #00890E !important;
 	color: white;
 }
 
@@ -551,7 +551,37 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 
 .customizeTableHead {
 	height: 30px;
-	background-color: #fff;
+	background-color: #777;
+	box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+    text-align:center;
+	color: white;
+	border-top:1px solid #ddd;
+	border-right: 1px solid #ddd
+
+}
+
+.tabledesign1{
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	border:1px solid #ddd;box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+}
+
+.customizeTableHead1{
+
+	height: 30px;
+	background-color: #777;
+	box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+	text-align:center;
+	color: white;
+	border-top:1px solid #ddd;
+	border-right: 1px solid #ddd
+}
+
+
+.tabledesign2{
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	border:1px solid #ddd;box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
 }
 
 /*--------------------------End patient admin CSS  --------------------------------------*/

@@ -11,6 +11,8 @@ use App\Doctors;
 use App\Http\Requests;
 use App\User;
 use App\Health_tips;
+use Illuminate\Pagination;
+
 
 class Admin_Front extends Controller
 {
@@ -111,6 +113,7 @@ class Admin_Front extends Controller
     public function user_remove12(){
         return view('costomize_home_views.home12');
     }
+
 
 
     public function customize(){
@@ -307,6 +310,12 @@ class Admin_Front extends Controller
         return response()->json($res);
     }
 
+
+
+
+    public function reg_admin(){
+        return view('costomize_home_views.adminregister');
+    }
 
 
 

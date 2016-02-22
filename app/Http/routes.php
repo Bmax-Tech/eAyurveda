@@ -57,6 +57,8 @@ Route::get('/admin_panel/test','Admin_Front@test');
 Route::get('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
 Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipA');
 Route::get('/admin/tipdel/{id}','Admin_Front@tipdel');
+Route::get('/reg_admin.php','Admin_Front@reg_admin');
+
 
 
 

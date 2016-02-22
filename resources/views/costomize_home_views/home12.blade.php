@@ -16,18 +16,18 @@
 
                            <div id="tabdiv" Style="height:250px;margin-top:20px">
                                <div class="col-lg-12"  style="padding:20px 32px 0px 15px;">
-                                   <div class="col-lg-4 customizeTableHead"  style=" border-top-left-radius:3px;border-top: 1px solid #ddd;box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);border-left: 1px solid #ddd;border-right:1px solid #ddd;text-align:center">
+                                   <div class="col-lg-4 customizeTableHead"  style=" border-top-left-radius:13px;border-left: 1px solid #ddd">
                                        <b>Doctor Name</b>
                                    </div>
-                                   <div class="col-lg-4 customizeTableHead" style="border-top: 1px solid #ddd; border-right:1px solid #ddd;box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);text-align:center">
+                                   <div class="col-lg-4 customizeTableHead">
                                        <b>Speciality</b>
                                    </div>
-                                   <div class="col-lg-4 customizeTableHead" style="border-top-right-radius:3px;border-top:1px solid #ddd;box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);border-right: 1px solid #ddd;text-align:center">
+                                   <div class="col-lg-4 customizeTableHead" style="border-top-right-radius:13px;">
                                        <b> Rating</b>
                                    </div>
                                </div>
                                <div id="maybe" class="col-lg-12" Style="height:200px;overflow-y: scroll">
-                               <table id="kawa" class="col-lg-12  " style="border-bottom-left-radius:3px; border-bottom-right-radius:3px;border:1px solid #ddd;box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);">
+                               <table id="kawa" class="col-lg-12  tabledesign1">
 
 
 
@@ -36,7 +36,7 @@
                                    <tr  class="trid_<?php echo $reg->id; ?> common" style="background-color:#fff;height:35px;border:1px solid #ddd;" onclick="getdocid('<?php echo $reg->id; ?>')">
                                        <td class="col-lg-4"><?php echo $reg->first_name; ?></td>
                                        <td class="col-lg-4" style="border-left: 1px solid #ddd;"><?php echo $reg->last_name; ?></td>
-                                       <td class="col-lg-4"  style="border-left: 1px solid #ddd;"><?php echo $reg->contact_number; ?></td>
+                                       <td class="col-lg-4" style="border-left: 1px solid #ddd;"><?php echo $reg->contact_number; ?></td>
                                    </tr>
                                    <?php } ?>
                                </table>
