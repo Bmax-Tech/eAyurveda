@@ -16,9 +16,19 @@
 .navbar-nav>li>a:hover{
     color:#fff !important;
     background: #008e00 !important;
-    transition:background-color 0.4s;
+    transition:all 0.4s !important;
+    background: -webkit-linear-gradient(left top, #008e00, #00a200) !important; /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #008e00, #00a200) !important; /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #008e00, #00a200) !important; /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #008e00, #00a200) !important; /* Standard syntax */
+    box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22) !important;
+}
+#navbarCollapse {
+    text-align: center;
+    margin-left: 0px;
 }
 .topBarLogoDiv {
+    z-index: 99;
     height: 120px;
     width: 120px;
     position: absolute;
@@ -36,15 +46,18 @@
 }
 .barLine {
     border-bottom: 3px solid #00B000;
-    margin-left: 100px;
     -moz-box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22);
     -webkit-box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22);
     box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22);
 }
+
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         padding-top: 18px;
         padding-bottom: 18px;
+    }
+    #navbarCollapse {
+        margin-left: 125px;
     }
 }
 
@@ -77,10 +90,11 @@
 #availableForumCatList {
     margin: 20px 25px 20px 25px;
     padding-bottom: 0px;
+    text-align: center;
 }
 
 .catCard {
-    float: left;
+    display:inline-block;
     margin-right: 15px;
     margin-bottom: 15px;
     border: 1px solid #888;
@@ -128,9 +142,10 @@
     padding-left: 10px;
     padding-right: 10px;
     border:1px solid #ccc;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
     outline: none;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .15);
 }
 #txtSearchItem:hover {
     border-color: #bbb;
@@ -138,13 +153,14 @@
 }
 #txtSearchItem:focus {
     border-color: #55aa55;
-    box-shadow: inset 0 0 8px rgba(0,255,0,.2);
+    box-shadow: inset 0 0 8px rgba(0,255,0,.25);
+    box-shadow: 0 1px 0 rgba(85, 170, 85, .1), 0 2px 3px rgba(85,170,85, .15);
 }
 #btnSearchItem {
     overflow-y: hidden ! important;
     overflow-x: hidden ! important;
     background-color: #EEE;
-    background-size: contain;
+    background-size: 80%;
     background-repeat: no-repeat;
     background-position:center;
     border:1px solid #ccc;
@@ -153,8 +169,9 @@
     padding: 16px 0px;
     margin-left: -5px;
     background-image:url('../img/ic_action_search.png');
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .15);
 }
 #btnSearchItem:hover {
     outline: 0;
@@ -163,8 +180,10 @@
     border-color: #34a334 #30a430 #228722 #2fa52f;
     transition: all .5s ease;
     box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+    box-shadow: 0 1px 0 rgba(85, 170, 85, .1), 0 2px 3px rgba(85,170,85, .15);
 } #btnSearchItem:focus {
       outline: 0;
+      box-shadow: 0 1px 0 rgba(85, 170, 85, .1), 0 2px 3px rgba(85,170,85, .15);
   }
 
 .btnSearchItemHovered {
@@ -178,4 +197,149 @@
 #forumSearch {
     margin-top: 25px;
     text-align: center;
+}
+
+#resultList {
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+.searchCard {
+    background-color: #fff;
+    margin: 0px auto 10px auto;
+    height: 100px;
+    width: 90%;
+    border:1px solid #E6E6E6;
+    border-radius: 4px;
+    box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+}
+.searchCard:hover {
+    cursor: pointer;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .1), 0 2px 10px rgba(0, 0, 0, .5);
+}
+
+.searchCardLeftPane {
+    width: 15%;
+    border-right: 1px solid #eaeaea;
+    display: inline-block;
+    float: left;
+}
+
+.byUserDiv {
+    text-align: center;
+    line-height: 42px;
+    width: 100%;
+    height: 49px;
+    overflow-y:auto;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.numViewsDiv, .upVotesDiv, .numAnswersDiv {
+    line-height: 75px;
+    text-align: center;
+    display: inline-block;
+    height: 49px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-size: 45%;
+    background-repeat: no-repeat;
+    background-position: 50% 20%;
+    opacity: .75;
+}
+
+.numViewsDiv {
+    width:31%;
+    background-image: url('../img/view_awesome.png');
+}
+.upVotesDiv {
+    width:31%;
+    background-image: url('../img/up_awesome.png');
+    border-right: 1px solid #eaeaea;
+}
+.numAnswersDiv {
+    width:32%;
+    background-image: url('../img/answer_awesome.png');
+    border-right: 1px solid #eaeaea;
+}
+.questionContentDiv {
+    padding-top: 5px;
+    padding-left: 10px;
+    height: 99px;
+    float: left;
+    width: 75%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.questionActionsDiv {
+    height: 99px;
+    float: right;
+    position: relative;
+}
+
+.btnQuestionView {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    height: 99px;
+    width: 65px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    border: 0px solid #ccc;
+    border-left: 1px solid #eee;
+    background-size: 40%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-image: url('../img/view_awesome.png');
+}
+.btnQuestionView:hover {
+    outline: 0;
+    background-color: #359f46 !important;
+    background-image: url('../img/view_awesome_w.png');
+    border-color: #34a334 #30a430 #228722 #2fa52f !important;
+    transition: background-color .5s ease;
+    transition: border-color .5s ease;
+    box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+} .btnQuestionView:focus {
+      outline: 0;
+  }
+.btnQuestionViewHovered {
+    background-color: #359f46 !important;
+    background-image: url('../img/view_awesome_w.png');
+    border-color: #34a334 #30a430 #228722 #2fa52f !important;
+    transition: background-color .5s ease;
+    transition: border-color .5s ease;
+    box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+}
+
+@media screen and (max-width: 1100px){
+    .searchCardLeftPane {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 960px){
+    .searchCardLeftPane {
+        display: none;
+    }
+    .catCard {
+        height: 150px;
+    }
+}
+
+@media screen and (max-width: 665px){
+    .catCard {
+        height: 100px;
+        width: 300px;
+    }
+    #forumHeadTxt {
+        text-align: center;
+        font-size: 20px;
+        margin-top: 5px;
+        margin-left: 85px;
+    }
 }
