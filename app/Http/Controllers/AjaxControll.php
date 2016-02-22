@@ -32,7 +32,7 @@ class AjaxControll extends Controller
         return response()->json($res);
     }
 
-    // This function is used for render and return doctor_results page to Ajax
+// This function is used for render and return doctor_results page to Ajax
     public function doc_search_page(Request $request){
 
         if(Input::get('advanced_search') == 'NO') {
@@ -59,15 +59,15 @@ class AjaxControll extends Controller
                    ->where(function ($q) use ($doc_name,$location,$spec,$treat) {
 					           $q->where('address_1', 'like', '%' . $location . '%')
 							                ->where(function ($q1) use ($doc_name,$spec,$treat) {
-												$q1->where('specialization','like','%'.$spec.'%') 
+												$q1->where('specialization','like','%'.$spec.'%')
 												            ->where(function ($q2) use ($doc_name,$treat) {
- 																 $q2->where('treatment','like','%'.$treat.'%') 
+ 																 $q2->where('treatment','like','%'.$treat.'%')
 																             ->where(function ($q4) use ($doc_name) {
  																				          $q4->where('first_name', 'like', '%' . $doc_name . '%')
 																						  ->orWhere('last_name', 'like', '%' . $doc_name . '%');
-																			})->paginate($this->RESULTS_PER_PAGE); 
-															})->paginate($this->RESULTS_PER_PAGE); 
-											})->paginate($this->RESULTS_PER_PAGE); 
+																			})->paginate($this->RESULTS_PER_PAGE);
+															})->paginate($this->RESULTS_PER_PAGE);
+											})->paginate($this->RESULTS_PER_PAGE);
 					})->paginate($this->RESULTS_PER_PAGE);
 
        }
@@ -153,7 +153,7 @@ class AjaxControll extends Controller
                    ->where(function ($q) use ($doc_name,$location,$spec) {
 					           $q->where('address_1', 'like', '%' . $location . '%')
 							                ->where(function ($q1) use ($doc_name,$spec) {
-												$q1->where('specialization','like','%'.$spec.'%'); 
+												$q1->where('specialization','like','%'.$spec.'%');
 											})->paginate($this->RESULTS_PER_PAGE); 
 					})->paginate($this->RESULTS_PER_PAGE); 
 					}
@@ -168,7 +168,7 @@ class AjaxControll extends Controller
 					})->paginate($this->RESULTS_PER_PAGE); 
 					}
 				else if($doc_name == '' && $location =='' &&  $spec != '' && $treat == ''){
-					  $doctors = \DB::table('doctors')->where('specialization', 'like', '%' . $spec . '%')->paginate($this->RESULTS_PER_PAGE);
+					  $doctors = \DB::table('doctors')->join('specialization', 'doctors.id', '=', 'specialization.doc_id')->where('spec_1', 'like', '%' . $spec . '%')->paginate($this->RESULTS_PER_PAGE);
 					}
 				else if($doc_name != '' && $location !='' &&  $spec == '' && $treat == ''){
 					  $doctors =  \DB::table('doctors')

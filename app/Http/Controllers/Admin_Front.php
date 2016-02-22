@@ -10,6 +10,9 @@ use App\Featured_doc;
 use App\Doctors;
 use App\Http\Requests;
 use App\User;
+use App\Health_tips;
+use Illuminate\Pagination;
+
 
 class Admin_Front extends Controller
 {
@@ -72,10 +75,20 @@ class Admin_Front extends Controller
 
     //display users and newly registered users
     public function view_users(Request $request){
-        $patients = Patients::all();
+        $patients = Patients::orderBy('first_name','asc')->get();;
         $patients1 = Patients::orderBy('reg_date','desc')->get();
    /*     $patients1= Patients::orderBy('reg_date','desc');*/
         $HTMLView = (String) view('admin_patients_views.home_1')->with(['comment'=>$patients,'comment1'=>$patients1]);
+        $res['com_data'] = $HTMLView;
+        return response()->json($res);
+    }
+
+    //display inapropriate users and newly registered users
+    public function view_inapusers(Request $request){
+        $patients = DB::table('patients')->where("spam_count",">=",4)->get();;
+
+        /*     $patients1= Patients::orderBy('reg_date','desc');*/
+        $HTMLView = (String) view('admin_patients_views.user_view')->with(['comment'=>$patients]);
         $res['com_data'] = $HTMLView;
         return response()->json($res);
     }
@@ -83,7 +96,10 @@ class Admin_Front extends Controller
 	//display edit featured doctor page
  public function featured_doc(Request $request){
 
-      $featured_doc = Featured_doc::all();
+
+     $featured_doc= DB::table('featured_doc')->join('doctors', 'featured_doc.did', '=', 'doctors.id')->orderBy('fid','asc')->get();
+
+     // $featured_doc = Featured_doc::all();
        $reg_doc = Doctors::all();
 
      $HTMLView = (String) view('costomize_home_views.home12')->with(['featured_doc1'=>$featured_doc,'reg_doctor'=>$reg_doc]);
@@ -99,8 +115,14 @@ class Admin_Front extends Controller
     }
 
 
+
     public function customize(){
-        return view('costomize_home_views.home1');
+
+        $tips =Health_tips::all();
+        $HTMLView = (String) view('costomize_home_views.home1')->with(['tipload'=>$tips]);
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+       // return view('costomize_home_views.home1');
     }
 
     //change admin patients
@@ -120,6 +142,14 @@ class Admin_Front extends Controller
         return response()->json($res);
     }
 
+    //load inapropriate user to the home_user1 page and display
+    public function inapuser_view(Request $request,$user_id){
+        $patient =DB::table('patients')->where("id","=",$user_id)->first();
+
+        $HTMLView = (String) view('admin_patients_views.home_user2')->with(['patient'=>$patient]);
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+    }
 
     public function test(){
         return view('admin_patients_views.test');
@@ -129,7 +159,9 @@ class Admin_Front extends Controller
 
 //filter doctors
     public function filterdoc(Request $request,$user_id,$user_id1,$user_id2){
-        $fetured_doc = Featured_doc::all();
+       // $featured_doc= DB::table('featured_doc') ->join('doctors', 'featured_doc.did', '=', 'doctors.id')->get();
+
+       // $fetured_doc = Featured_doc::all();
        /* if($user_id !="all" && $user_id1 !="all" && $user_id2 !="all"){
             $reg_doc = Doctor_model::whereSpec_id($user_id)->whereCity($user_id1)->whereAddress_1($user_id2)->get();
         }
@@ -166,19 +198,30 @@ class Admin_Front extends Controller
             $result->where('address_1','=',$user_id2);
          }
         $reg_doc=$result->get();
-        $HTMLView = (String) view('costomize_home_views.home12')->with(['featured_doc1'=>$fetured_doc,'reg_doctor'=>$reg_doc]);
-        $res['com_data'] = $HTMLView;
+       //  $HTMLView = (String) view('costomize_home_views.home12')->with(['reg_doctor'=>$reg_doc]);
+       // $res['com_data'] = $HTMLView;
+        $res['salika'] = $reg_doc;
         return response()->json($res);
     }
 
 
     //use to view remove comment
     public function rem_com(Request $request,$user_id){
-        Comments::where('id', $user_id)->delete();
+
+        $user =DB::table('comments')->where('id', $user_id)->first();
+       /* $count=$user->spam_count;*/
+        $uid=$user->user_id;
+        $user1= DB::table('patients')->where('id', $uid)->first();
+        $count=$user1->spam_count;
+        $count=$count+1;
 
 
-                $comments = DB::select('SELECT C.id AS cid,P.id AS pid, P.first_name AS pfirst_name , P.last_name AS plast_name , D.first_name AS dfirst_name,D.last_name AS dlast_name, C.description AS comment FROM comments C,patients P,doctors D WHERE C.user_id = P.id AND C.doctor_id = D.id');
-  
+        DB::table('patients')->where('id', $uid)->update(['spam_count' => $count]);
+
+/*        Comments::where('id', $user_id)->delete();*/
+        $comments = DB::select('SELECT C.id AS cid,P.id AS pid, P.first_name AS pfirst_name , P.last_name AS plast_name , D.first_name AS dfirst_name,D.last_name AS dlast_name, C.description AS comment FROM comments C,patients P,doctors D WHERE C.user_id = P.id AND C.doctor_id = D.id');
+
+
 
         $HTMLView = (String) view('admin_patients_views.home_2')->with(['comment'=>$comments]);
         $res['page'] = $HTMLView;
@@ -186,21 +229,19 @@ class Admin_Front extends Controller
     }
 
 
-//pass doc id
-    public function getdocid(Request $request,$user_id){
 
 
-        $ss=$user_id;
+    public function tipdel(Request $request,$id){
+        Health_tips::where('hid', $id)->delete();
 
+        $tips =Health_tips::all();
 
-        $fetured_doc = Featured_doc::all();
-        $reg_doc = Doctors::all();
-
-        $HTMLView = (String) view('costomize_home_views.home12')->with(['featured_doc1'=>$fetured_doc,'reg_doctor'=>$reg_doc,'id11'=>$ss]);
-        $res['com_data'] = $HTMLView;
+        $HTMLView = (String) view('costomize_home_views.home1')->with(['tipload'=>$tips]);
+        $res['page'] = $HTMLView;
         return response()->json($res);
     }
 
+//update featured doctor
 
     public function updatefet(Request $request,$count,$doc_id){
 
@@ -211,10 +252,11 @@ class Admin_Front extends Controller
 
         DB::table('featured_doc')->where('fid', $count)->update(['did' => $doc_id]);
 
-        $fetured_doc = Featured_doc::all();
+        $featured_doc= DB::table('featured_doc')->join('doctors', 'featured_doc.did', '=', 'doctors.id')->orderBy('fid','asc')->get();
+        //$fetured_doc = Featured_doc::all();
         $reg_doc = Doctors::all();
 
-        $HTMLView = (String) view('costomize_home_views.home12')->with(['featured_doc1'=>$fetured_doc,'reg_doctor'=>$reg_doc]);
+        $HTMLView = (String) view('costomize_home_views.home12')->with(['featured_doc1'=>$featured_doc,'reg_doctor'=>$reg_doc]);
         $res['com_data'] = $HTMLView;
         return response()->json($res);
     }
@@ -232,6 +274,52 @@ class Admin_Front extends Controller
     }
 
 
-	
+    public function tip(Request $request,$des1,$des2,$tip){
+       /* Input::get('header1');
+        Input::get('header12');
+        Input::get('tip');*/
+
+       Health_tips::create([
+            'tip' =>$des1,
+            'discription_1' =>$des2,
+            'discription_2' =>$tip
+        ]);
+
+        $tips =Health_tips::all();
+
+        $HTMLView = (String) view('costomize_home_views.home1')->with(['tipload'=>$tips]);
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+    }
+
+    public function tipA(Request $request,$des1,$des2,$tip,$hid){
+
+
+
+            $user = Health_tips::whereHid($hid)->first();
+
+        $user->tip= $tip;
+        $user->discription_1= $des1;
+        $user->discription_2= $des2;
+        $user->save();
+
+        $tips =Health_tips::all();
+
+        $HTMLView = (String) view('costomize_home_views.home1')->with(['tipload'=>$tips]);
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+    }
+
+
+
+
+    public function reg_admin(){
+        return view('costomize_home_views.adminregister');
+    }
+
+
+
+
+
 
 }
