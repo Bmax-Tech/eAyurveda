@@ -14,11 +14,6 @@ class Treatments extends Model
         'treat_3',
         'treat_4',
         'treat_5',
-        'treat_6',
-        'treat_7',
-        'treat_8',
-        'treat_9',
-        'treat_10',
         'created_at',
         'updated_at'
     ];

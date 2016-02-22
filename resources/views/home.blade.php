@@ -7,25 +7,25 @@
     <div class="col-lg-12 c_no_padding" id="c_home_banner">
         <div class="row owl-carousel owl-theme" id="home_slider" style="margin-left: 0px;margin-right: 0px">
             <?php
-            for($i=1;$i<=5;$i++){
+            foreach($health_tips as $tip){
             ?>
             <div class="item">
                 <div class="col-lg-6" style="padding-top:30px;padding-left: 0px;padding-right: 0px">
                     <div class="wow slideInUp">
                         <p style="background:rgba(85,85,85,0.87);font-size:30px;color:rgba(255,255,255,1.00);display:inline-block;padding:12px 20px;padding-left:60px">
-                            We Take Care of Your Health
+                            <?php echo $tip['tip']; ?>
                         </p>
                     </div>
                     <div class="wow slideInUp">
                         <p style="background:rgba(0,0,0,0.87);font-size:30px;color:rgba(255,255,255,1.00);display:inline-block;padding:12px 20px;padding-left:60px">
-                            Consultation 24/7
+                            <?php echo $tip['discription_1']; ?>
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-6" style="padding-right: 0px">
                     <div class="c_sub_banner wow zoomIn">
                         <span class="c_health_tip">Health Tip !</span>
-                        <p>"Ayurveda, an ancient system of illness prevention and treatment, centres on maintaining mind and body balance through healthy lifestyle practices that combine traditional and complementary medicine."</p>
+                        <p>"<?php echo $tip['discription_2']; ?>"</p>
                     </div>
                 </div>
             </div>

@@ -47,14 +47,37 @@ function only_alph(evt){
 };
 
 
-//function validate dob with nic
-function valid_nic_with_dob(para_1,para_2){
+//function validate dob with nic **********
+/*function valid_nic_with_dob(para_1,para_2){
 	var dob = $('input[name='+para_1+']').val();
 	var nic = $('input[name='+para_2+']').val();
 
-	//if(dob.substr(6,))
-}
+	// DOB Values
+	var dob_year = dob.substr(8,10);
+	var dob_month = dob.substr(0,2);
+	var dob_day = dob.substr(3,2);
 
+	// NIC Values
+	var nic_year = nic.substr(0,2);
+	var nic_days = nic.substr(2,3);
+
+	if(nic_year == dob_year){
+		var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+		var firstDate = new Date(dob.substr(6,10),01,01);
+		var secondDate = new Date(dob.substr(6,10),dob_month,dob_day);
+		//var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+		var millisBetween = secondDate.getTime() - firstDate.getTime();
+		var days = millisBetween / oneDay;
+
+		// Round down.
+		alert( Math.floor(days));
+
+		return true;
+	}else{
+		return false;
+	}
+}*/
+//function validate dob with nic end **********
 
 
 //function validate email address
@@ -191,16 +214,13 @@ function remove_wrn(para_1){
 };
 
 function valid_registration(){
-	if(valid_length_input('first_name') || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || $("#reg_gender").val() == 'select' || valid_length_input('dob') || valid_length_input('nic') || !valid_nic_no('nic') || valid_length_input('contact_number') || !valid_phone_no('contact_number') || valid_length_input('email') || !valid_email('email') || valid_length_input('username') || valid_length_input('password') || valid_length_input('confirm_password') || !valid_confirm_password('password','confirm_password')){
+	if(valid_length_input('first_name') || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('dob') || valid_length_input('nic') || !valid_nic_no('nic') || valid_length_input('contact_number') || !valid_phone_no('contact_number') || valid_length_input('email') || !valid_email('email') || valid_length_input('username') || valid_length_input('password') || valid_length_input('confirm_password') || !valid_confirm_password('password','confirm_password')){
 
 		if(valid_length_input('first_name') || check_input_no_num('first_name')){
 			show_warning('first_name');
 		}
 		if(valid_length_input('last_name')  || check_input_no_num('last_name')){
 			show_warning('last_name');
-		}
-		if($("#reg_gender").val() == 'select'){
-			show_warning('gender');
 		}
 		if(valid_length_input('dob')){
 			show_warning('dob');
@@ -212,9 +232,11 @@ function valid_registration(){
 			show_warning('contact_number');
 		}
 		if(valid_length_input('email') || !valid_email('email')){
+			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter email address');
 			show_warning('email');
 		}
 		if(valid_length_input('username')){
+			$('#wrn_username').html('enter username');
 			show_warning('username');
 		}
 		if(valid_length_input('password')){
@@ -296,6 +318,10 @@ function check_reg_existing(para_1,para_2){
 		$('#wrn_' + para_1).hide();
 		$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-remove" aria-hidden="true"  style="color:red"></span>');
 		show_warning(para_1);
+	}else if(para_1 == "username" && para_2.length == 0){
+		$('#wrn_' + para_1).html('enter ' + para_1);
+		$('#wrn_' + para_1).hide();
+		$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-remove" aria-hidden="true"  style="color:red"></span>');
 	}else if(para_2.length>0) {
 		$.ajax({
 			type: 'POST',
@@ -424,13 +450,23 @@ function filter_by_star_rating(para_1){
 	doc_load_ajax();
 };
 
+function filter_result_btn(){
+	$("#page_number_hidden").val(1);// Reset Page number into 1
+	$("#filter_star_rating").val(0);// Reset Star rating into 0
+	$(".c_filter_star").removeClass("c_filter_star_active");
+	$("#filter_loc_hidden").val($('input[name=district]:checked', '#filter_selections').val());
+	doc_load_ajax();
+}
+
 function filter_reset(){
 	$("#page_number_hidden").val(1);// Reset Page number into 1
 	$("#filter_star_rating").val(0);// Reset Star rating into 0
 	$(".c_filter_star").removeClass("c_filter_star_active");
+	$("#filter_loc_hidden").val('-');
 	$("#filter_selections").trigger('reset');
 	doc_load_ajax();
 };
+
 
 /* --- Ajax Requests ---*/
 
@@ -455,6 +491,7 @@ function clear_comment_post(){
 	$('#comment_description').val('');
 };
 
+var com_tabs=1;// Holds comments tab count
 function get_comments(){
 	var base_url = $('#base_url').val();
 	var star = $("#hidden_star_url").html();
@@ -475,8 +512,11 @@ function get_comments(){
 				});
 			}else {
 				data=data['DATA'];
-				var txt = '';
+
+
+				var txt = '<div class="col-lg-12 c_no_padding" id="com_tab_1">';/*this will add comments tabs*/
 				for (var i = 1; i <= Object.keys(data).length; i++) {
+
 					txt = txt + '<div class="col-lg-12 c_no_padding" style="padding: 20px"><div class="col-lg-1" style="padding: 5px"><div class="c_comment_profile_icon" style="background-image:url(' + base_url + data["comment_" + i]["user_img"]["image_path"] + ')"></div></div><div class="col-lg-11"><div class="c_comment_body"><ul class="c_ul_1" style="margin-bottom: 0px"><li style="height: 25px">';
 					txt = txt + '<div class="col-lg-4 c_no_padding">';
 					for (var s = 1; s <= 5; s++) {
@@ -488,6 +528,20 @@ function get_comments(){
 					}
 					txt = txt + '</div>';
 					txt = txt + '</li><li style="padding-top: 5px">' + data["comment_" + i]["comment"]["description"] + '</li><li style="padding-top: 10px;font-size: 13px;color: rgb(0, 109, 22)"><ul class="c_top_ul"><li>by : ' + data["comment_" + i]["user"]["first_name"] + '&nbsp;' + data["comment_" + i]["user"]["last_name"] + '</li><li style="margin-left: 40px">Posted Date - ' + data["comment_" + i]["comment"]["posted_date_time"] + '</li></ul></li></ul></div></div></div>';
+
+					/*this will add comments tabs*/
+					if(i%4 == 0) {
+						txt = txt + '</div>';
+						if(Object.keys(data).length != i) {
+							com_tabs++;
+							txt = txt + '<div class="col-lg-12 c_no_padding" id="com_tab_'+com_tabs+'" style="display:none">';
+						}
+					}
+				}
+
+				/*this will add comments tabs*/
+				if(Object.keys(data).length%4 != 0) {
+					txt = txt + '</div>';
 				}
 
 				$("#comments_load_div").html(txt);
@@ -495,6 +549,10 @@ function get_comments(){
 					$("#no_comments_div").hide();
 					$("#c_comments_count_span").html(Object.keys(data).length);
 					$("#comments_load_div").fadeIn();
+					if(Object.keys(data).length > 4){
+						$("#com_tab_back").show();
+						$("#com_tab_next").show();
+					}
 				});
 			}
 		}
@@ -506,6 +564,27 @@ $(document).ready(function(e) {
 		get_comments();
 	}
 });
+
+// comments tab change
+var current_tab=1;
+function change_com_tab(para_1){
+	if(para_1 == "-"){
+		if(current_tab > 1){
+			current_tab--;
+		}
+	}else{
+		if(current_tab < com_tabs){
+			current_tab++;
+		}
+	}
+	for(var i=1;i<=com_tabs;i++){
+		if(i != current_tab){
+			$("#com_tab_"+i).slideUp();
+		}else{
+			$("#com_tab_"+current_tab).slideDown();
+		}
+	}
+}
 
 function check_valid_comment(){
 	var user_id = $('#hidden_user_id').val();
@@ -523,6 +602,7 @@ function check_valid_comment(){
 };
 
 function submit_comment(){
+	com_tabs=1;
 	var new_url = '/post_comment';
 	var dataString = $("#doctor_comment").serialize();
 	$.ajax({
@@ -623,7 +703,7 @@ function check_spec_and_treat(para_1){
 
 function validate_tab_change(para_1){
 	if(para_1 == 1){
-		if(valid_length_input('first_name')  || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('address_1') || valid_length_input('address_2') || valid_length_input('city')) {
+		if(valid_length_input('first_name')  || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('address_1') || valid_length_input('address_2') || valid_length_input('city') || $("#district").val() == 'select') {
 			if (valid_length_input('first_name')  || check_input_no_num('first_name')) {
 				show_warning('first_name');
 			}
@@ -638,6 +718,9 @@ function validate_tab_change(para_1){
 			}
 			if (valid_length_input('city')) {
 				show_warning('city');
+			}
+			if($("#district").val() == 'select'){
+				show_warning('district');
 			}
 
 			return false;
@@ -719,10 +802,10 @@ function validate_tab_change(para_1){
 
 var sep_op=1;
 function add_more_op(){
-	if(sep_op < 10) {
+	if(sep_op < 5) {
 		sep_op++;
 		$("#spec_count").val(sep_op);
-		for (var i = 1; i <= 10; i++) {
+		for (var i = 1; i <= 5; i++) {
 			if (i <= sep_op) {
 				$("#spec_doc_" + i).fadeIn(300);
 			} else {
@@ -737,7 +820,7 @@ function rem_more_op(){
 	if(sep_op > 1) {
 		sep_op--;
 		$("#spec_count").val(sep_op);
-		for (var i = 1; i <= 10; i++) {
+		for (var i = 1; i <= 5; i++) {
 			if (i <= sep_op) {
 				$("#spec_doc_" + i).fadeIn(300);
 			} else {
@@ -750,10 +833,10 @@ function rem_more_op(){
 
 var treat_op=1;
 function add_more_t_op(){
-	if(treat_op < 10) {
+	if(treat_op < 5) {
 		treat_op++;
 		$("#treat_count").val(treat_op);
-		for (var i = 1; i <= 10; i++) {
+		for (var i = 1; i <= 5; i++) {
 			if (i <= treat_op) {
 				$("#treat_doc_" + i).fadeIn(300);
 			} else {
@@ -768,7 +851,7 @@ function rem_more_t_op(){
 	if(treat_op > 1) {
 		treat_op--;
 		$("#treat_count").val(treat_op);
-		for (var i = 1; i <= 10; i++) {
+		for (var i = 1; i <= 5; i++) {
 			if (i <= treat_op) {
 				$("#treat_doc_" + i).fadeIn(300);
 			} else {

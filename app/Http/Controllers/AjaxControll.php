@@ -37,11 +37,13 @@ class AjaxControll extends Controller
 
         if(Input::get('advanced_search') == 'NO') {
             // This executes when Normal search is used
-            if (Input::get('filter_star_rating') == 0) {
+            if (Input::get('filter_star_rating') == 0 && Input::get('filter_loc') == '-') {
                 $doctors = \DB::table('doctors')->where('first_name', 'like', '%' . Input::get('search_text_hidden') . '%')->orwhere('last_name', 'like', '%' . Input::get('search_text_hidden') . '%')->paginate($this->RESULTS_PER_PAGE);
-            } else {
+            } else if(Input::get('filter_star_rating') != 0) {
                 $doctors = \DB::table('doctors')->where('rating', '=', Input::get('filter_star_rating'))->paginate($this->RESULTS_PER_PAGE);
-            }
+            }else if(Input::get('filter_loc') != '-'){
+				$doctors = \DB::table('doctors')->where('district', '=', Input::get('district'))->paginate($this->RESULTS_PER_PAGE);
+			}
         }else{
             // This executes when Advanced Search is used By ^^^ Salika ^^^
 

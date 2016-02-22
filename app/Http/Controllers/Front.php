@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Formal_doctors;
+use App\HealthTip;
 use App\Non_Formal_doctors;
 use App\Patients;
 use App\Specialization;
@@ -21,7 +22,7 @@ class Front extends Controller
 {
 
     public function index(){
-        return view('home',array('top_rated_docs' => self::get_top_rated_docs()));
+        return view('home',array('top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
     }
 
     // This function loads default results
@@ -36,11 +37,6 @@ class Front extends Controller
 
     // This function loads results for advanced search options
     public function advanced_search(Request $request){
-        /*$advanced_search['doc_name'] = $request->doc_name;
-        $advanced_search['doc_speciality'] = $request->doc_speciality;
-        $advanced_search['doc_treatment'] = $request->doc_treatment;
-        $advanced_search['doc_location'] = $request->doc_location;*/
-
         return view('search',array('advanced' => "YES",
             'doc_name' => $request->doc_name,
             'doc_speciality' => $request->doc_speciality,
@@ -279,6 +275,7 @@ class Front extends Controller
             'address_1' => Input::get('address_1'),
             'address_2' => Input::get('address_2'),
             'city' => Input::get('city'),
+            'district' => Input::get('district'),
             'contact_number' => Input::get('contact_number'),
             'email' => Input::get('email'),
             'description' => Input::get('doc_description'),
@@ -304,12 +301,12 @@ class Front extends Controller
             'spec_2' => Input::get('specialized')[1],
             'spec_3' => Input::get('specialized')[2],
             'spec_4' => Input::get('specialized')[3],
-            'spec_5' => Input::get('specialized')[4],
-            'spec_6' => Input::get('specialized')[5],
+            'spec_5' => Input::get('specialized')[4]
+/*            'spec_6' => Input::get('specialized')[5],
             'spec_7' => Input::get('specialized')[6],
             'spec_8' => Input::get('specialized')[7],
             'spec_9' => Input::get('specialized')[8],
-            'spec_10' => Input::get('specialized')[9]
+            'spec_10' => Input::get('specialized')[9]*/
         ]);
 
         // Sixth Create Treatments
@@ -319,12 +316,12 @@ class Front extends Controller
             'treat_2' => Input::get('treatments')[1],
             'treat_3' => Input::get('treatments')[2],
             'treat_4' => Input::get('treatments')[3],
-            'treat_5' => Input::get('treatments')[4],
-            'treat_6' => Input::get('treatments')[5],
+            'treat_5' => Input::get('treatments')[4]
+/*            'treat_6' => Input::get('treatments')[5],
             'treat_7' => Input::get('treatments')[6],
             'treat_8' => Input::get('treatments')[7],
             'treat_9' => Input::get('treatments')[8],
-            'treat_10' => Input::get('treatments')[9]
+            'treat_10' => Input::get('treatments')[9]*/
         ]);
 
 
@@ -354,6 +351,15 @@ class Front extends Controller
             $rating_main[] = $temp;
         }
         return $rating_main;
+    }
+
+    public function get_health_tips(){
+        $health_tip_main = HealthTip::orderBy('hid','DESC')->get();
+        return $health_tip_main;
+    }
+
+    public function get_specialisations(){
+        //$spec = Specialization::;
     }
 
     // **********  Custom Functions **********************************

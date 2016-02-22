@@ -14,11 +14,6 @@ class Specialization extends Model
         'spec_3',
         'spec_4',
         'spec_5',
-        'spec_6',
-        'spec_7',
-        'spec_8',
-        'spec_9',
-        'spec_10',
         'created_at',
         'updated_at'
     ];

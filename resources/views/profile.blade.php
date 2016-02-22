@@ -37,11 +37,11 @@
             </ul>
         </div>
         <div class="col-lg-12" style="padding: 10px 30px 10px 30px">
-        <div class="col-lg-6 c_no_padding">
+        <div class="col-lg-4 c_no_padding">
             <ul class="c_ul_1">
                 <li><span style="font-size: 25px;color:#085426;">Specialized on</span></li>
                 <li style="padding-top: 20px">
-                    <div class="col-lg-6 c_no_padding">
+                    <div class="col-lg-12 c_no_padding">
                         <ul class="c_check_list">
                             <?php if(($doctor['spec_data']->spec_1) != ""){ ?><li>{{ $doctor['spec_data']->spec_1 }}</li><?php } ?>
                             <?php if(($doctor['spec_data']->spec_2) != ""){ ?><li>{{ $doctor['spec_data']->spec_2 }}</li><?php } ?>
@@ -50,23 +50,15 @@
                             <?php if(($doctor['spec_data']->spec_5) != ""){ ?><li>{{ $doctor['spec_data']->spec_5 }}</li><?php } ?>
                         </ul>
                     </div>
-                    <div class="col-lg-6 c_no_padding">
-                        <ul class="c_check_list">
-                            <?php if(($doctor['spec_data']->spec_6) != ""){ ?><li>{{ $doctor['spec_data']->spec_6 }}</li><?php } ?>
-                            <?php if(($doctor['spec_data']->spec_7) != ""){ ?><li>{{ $doctor['spec_data']->spec_7 }}</li><?php } ?>
-                            <?php if(($doctor['spec_data']->spec_8) != ""){ ?><li>{{ $doctor['spec_data']->spec_8 }}</li><?php } ?>
-                            <?php if(($doctor['spec_data']->spec_9) != ""){ ?><li>{{ $doctor['spec_data']->spec_9 }}</li><?php } ?>
-                            <?php if(($doctor['spec_data']->spec_10) != ""){ ?><li>{{ $doctor['spec_data']->spec_10 }}</li><?php } ?>
-                        </ul>
-                    </div>
+
                 </li>
             </ul>
         </div>
-        <div class="col-lg-6 c_no_padding">
+        <div class="col-lg-4 c_no_padding">
             <ul class="c_ul_1">
                 <li><span style="font-size: 25px;color:#085426;">Treatment Techniques</span></li>
                 <li style="padding-top: 20px">
-                    <div class="col-lg-6 c_no_padding">
+                    <div class="col-lg-12 c_no_padding">
                         <ul class="c_check_list">
                             <?php if(($doctor['treat_data']->treat_1) != ""){ ?><li>{{ $doctor['treat_data']->treat_1 }}</li><?php } ?>
                             <?php if(($doctor['treat_data']->treat_2) != ""){ ?><li>{{ $doctor['treat_data']->treat_2 }}</li><?php } ?>
@@ -75,13 +67,18 @@
                             <?php if(($doctor['treat_data']->treat_5) != ""){ ?><li>{{ $doctor['treat_data']->treat_5 }}</li><?php } ?>
                         </ul>
                     </div>
-                    <div class="col-lg-6 c_no_padding">
-                        <ul class="c_check_list">
-                            <?php if(($doctor['treat_data']->treat_6) != ""){ ?><li>{{ $doctor['treat_data']->treat_6 }}</li><?php } ?>
-                            <?php if(($doctor['treat_data']->treat_7) != ""){ ?><li>{{ $doctor['treat_data']->treat_7 }}</li><?php } ?>
-                            <?php if(($doctor['treat_data']->treat_8) != ""){ ?><li>{{ $doctor['treat_data']->treat_8 }}</li><?php } ?>
-                            <?php if(($doctor['treat_data']->treat_9) != ""){ ?><li>{{ $doctor['treat_data']->treat_9 }}</li><?php } ?>
-                            <?php if(($doctor['treat_data']->treat_10) != ""){ ?><li>{{ $doctor['treat_data']->treat_10 }}</li><?php } ?>
+
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-4 c_no_padding">
+            <ul class="c_ul_1">
+                <li><span style="font-size: 25px;color:#085426;">Consultation Times</span></li>
+                <li style="padding-top: 20px">
+                    <div class="col-lg-12 c_no_padding">
+                        <ul class="c_clock_list">
+                            <li>10:00 AM to 1:00 PM</li>
+                            <li>5:00 PM to 8:00 PM</li>
                         </ul>
                     </div>
                 </li>
@@ -90,7 +87,10 @@
         </div>
     </div>
     <div class="col-lg-12 c_no_padding" style="font-size: 20px;background: #39B54A;color: #FFF;border-bottom: 3px solid #035600;padding: 7px 0px 7px 25px">
-        <span>Comments</span><span id="c_comments_count_span">0</span>
+        <span>Comments</span>
+        <button type="button" id="com_tab_back" onclick="change_com_tab('-')"><img src="{{ URL::asset('assets/img/back.png') }}" width="30px"></button>
+        <button type="button" id="com_tab_next" onclick="change_com_tab('+')"><img src="{{ URL::asset('assets/img/next.png') }}" width="30px"></button>
+        <span id="c_comments_count_span">0</span>
     </div>
     <div class="col-lg-12 c_no_padding" id="user_comments_box">
         <div class="center-block" id="comments_loading">

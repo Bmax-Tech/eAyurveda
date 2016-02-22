@@ -311,6 +311,8 @@
     position: absolute;
     margin-left: -60px;
     box-shadow: 0px 0px 10px black;
+	border-top-right-radius: 20px;
+	border-bottom-left-radius: 20px;
 }
 .c_home_doc_tabs{
 	margin-top:25px;
@@ -360,6 +362,12 @@
 }
 .c_check_list>li{
 	margin-bottom:7px;
+}
+.c_clock_list{
+	list-style-image:url(../img/clock.png);
+}
+.c_clock_list>li{
+	margin-bottom: 7px;
 }
 
 .c_side_nav_bar{
@@ -458,12 +466,35 @@
 	border-radius: 5px !important;
 	border:1px solid #FFF;
 }
+#c_filter_loc_div{
+	height: 139px;
+	overflow-y: scroll;
+	margin: 5px 5px 5px 0px;
+}
+#c_filter_loc_div::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #39B54A;
+}
+#c_filter_loc_div::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #39B54A;
+}
+#c_filter_loc_div::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #085426;
+}
+
 .c_button_3{
 	border-radius: 7px;
 	width: 100%;
 	background: #085426;
 	border: 1px solid #228500;
-	padding: 10px 20px;
+	padding: 7px 20px;
 	color: #FFFFFF;
 	font-size: 20px;
 }
@@ -574,6 +605,28 @@
 	border-radius: 15px;
 	font-size: 16px;
 	margin-top: 3px;
+}
+#com_tab_back{
+	position: absolute;
+	right: 120px;
+	background: #39B54A;
+	border: 0px;
+	margin-top: -3px;
+	display: none;
+}
+#com_tab_back:focus{
+	outline: none;
+}
+#com_tab_next{
+	position: absolute;
+	right: 80px;
+	background: #39B54A;
+	border: 0px;
+	margin-top: -3px;
+	display: none;
+}
+#com_tab_next:focus{
+	outline: none;
 }
 .c_comment_textarea{
 	width: 100%;

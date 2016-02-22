@@ -34,11 +34,12 @@
                 ?>
                     <input type="hidden" name="advanced_search" value="NO">
                     <input type="hidden" name="search_text_hidden" id="search_text_hidden" value="{{ $search_text }}">
+                    <input type="hidden" name="filter_loc" id="filter_loc_hidden" value="-">
                 <?php
                 }
                 ?>
                 <input type="hidden" name="page" id="page_number_hidden" value="1">
-                <ul class="c_ul_1" style="margin-bottom: 0px">
+                <ul class="c_ul_1" style="background:#39B54A;margin-bottom: 0px">
                     <li><div class="c_search_filter_f">Total Doctors<span style="float: right" id="c_tot_doc_filter">0</span></div></li>
                     <li><hr class="c_hr_1"/></li>
                     <li><div class="c_search_filter_f" style="background: #288E36">Rating</div></li>
@@ -66,20 +67,40 @@
                         </div>
                     </li>
                     <li><hr class="c_hr_1"/></li>
-                    <li><div class="c_search_filter_f" style="background: #288E36">Location</div></li>
-                    <li>
-                        <div style="background:#39B54A;padding: 17px 13px;">
+                    <li><div class="c_search_filter_f" style="background: #288E36">District</div></li>
+                    <li style="background:#39B54A;">
+                        <div id="c_filter_loc_div" style="background:#39B54A;padding: 10px 13px;">
                             <ul class="c_ul_1" style="color: #FFF;padding-left: 5px;font-size: 13px;">
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Ampara">Ampara</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Anuradhapura">Anuradhapura</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Badulla">Badulla</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Batticaloa">Batticaloa</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Colombo">Colombo</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Galle">Galle</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Gampaha">Gampaha</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Hambantota">Hambantota</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Jaffna">Jaffna</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kalutara">Kalutara</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kandy">Kandy</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kegalle">Kegalle</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kilinochchi">Kilinochchi</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kurunegala">Kurunegala</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Mannar">Mannar</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Matale">Matale</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Matara">Matara</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Monaragala">Monaragala</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Mullaitivu">Mullaitivu</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Nuwara Eliya">Nuwara Eliya</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Polonnaruwa">Polonnaruwa</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Puttalam">Puttalam</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Ratnapura">Ratnapura</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Trincomalee">Trincomalee</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Vavuniya">Vavuniya</li>
                             </ul>
                         </div>
                     </li>
                     <li style="padding: 5px;background:#39B54A">
-                        <button type="button" class="c_button_3"><img src="assets/img/filter.png" style="width:20px">&nbsp;&nbsp;&nbsp;Filter</button>
+                        <button type="button" onclick="filter_result_btn()" class="c_button_3"><img src="assets/img/filter.png" style="width:20px">&nbsp;&nbsp;&nbsp;Filter</button>
                     </li>
                     <li style="padding: 5px;background:#39B54A;text-align: center;color: #FFF">
                         <span style="cursor: pointer" onclick="filter_reset()">Reset</span>

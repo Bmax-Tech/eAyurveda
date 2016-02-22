@@ -27,7 +27,7 @@
                 <div class="col-lg-12 c_no_padding">
                     <div class="col-lg-6 c_no_padding" style="padding-right:20px">
                         <ul class="c_ul_1">
-                            <li>
+                            {{--<li>
                                 <span>Gender</span><span class="c_warning_tips_reg" id="wrn_gender">select gender</span>
                             </li>
                             <li class="c_add_margin_20 c_form_margin_10">
@@ -36,6 +36,15 @@
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
                                 </select>
+                            </li>--}}
+                            <li>
+                                <span>Gender</span>
+                            </li>
+                            <li>
+                                <ul class="c_top_ul" style="margin-top: 10px;margin-left: 50px">
+                                    <li><input type="radio" name="gender" value="male" class="c_radio_btn" checked></li><li><span style="margin-left: 10px;margin-top: -5px">Male</span></li>
+                                    <li style="margin-left: 20px"><input type="radio" name="gender" value="female" class="c_radio_btn"></li><li><span style="margin-left: 10px;margin-top: -5px">Female</span></li>
+                                </ul>
                             </li>
                         </ul>
                     </div>

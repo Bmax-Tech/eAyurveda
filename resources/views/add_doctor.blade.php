@@ -64,6 +64,39 @@
                     <input type="text" class="c_text_box_1" spellcheck="false" name="city" onkeypress="remove_wrn('city')" onchange="remove_wrn('city')" autocomplete="off"/>
                 </li>
                 <li>
+                    <span>District</span><span class="c_warning_tips_reg" id="wrn_district"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> select district</span>
+                </li>
+                <li class="c_add_margin_20 c_form_margin_10">
+                    <select class="c_select_box_1" name="district" id="district" onchange="remove_wrn('district')">
+                        <option value="select">Select</option>
+                        <option value="Ampara">Ampara</option>
+                        <option value="Anuradhapura">Anuradhapura</option>
+                        <option value="Badulla">Badulla</option>
+                        <option value="Batticaloa">Batticaloa</option>
+                        <option value="Colombo">Colombo</option>
+                        <option value="Galle">Galle</option>
+                        <option value="Gampaha">Gampaha</option>
+                        <option value="Hambantota">Hambantota</option>
+                        <option value="Jaffna">Jaffna</option>
+                        <option value="Kalutara">Kalutara</option>
+                        <option value="Kandy">Kandy</option>
+                        <option value="Kegalle">Kegalle</option>
+                        <option value="Kilinochchi">Kilinochchi</option>
+                        <option value="Kurunegala">Kurunegala</option>
+                        <option value="Mannar">Mannar</option>
+                        <option value="Matale">Matale</option>
+                        <option value="Matara">Matara</option>
+                        <option value="Monaragala">Monaragala</option>
+                        <option value="Mullaitivu">Mullaitivu</option>
+                        <option value="Nuwara Eliya">Nuwara Eliya</option>
+                        <option value="Polonnaruwa">Polonnaruwa</option>
+                        <option value="Puttalam">Puttalam</option>
+                        <option value="Ratnapura">Ratnapura</option>
+                        <option value="Trincomalee">Trincomalee</option>
+                        <option value="Vavuniya">Vavuniya</option>
+                    </select>
+                </li>
+                <li>
                     <button type="button" class="c_sug_form_next_btn" onclick="change_sug_tab('2')">Next <img src="{{ URL::asset('assets/img/next.png') }}" style="width: 24px;margin-top: -3px;"></button>
                 </li>
             </div>
@@ -99,7 +132,7 @@
                 <li class="c_add_margin_20 c_form_margin_10">
                     <div class="col-lg-12 c_no_padding">
                         <div class="col-lg-9 c_no_padding">
-                            <?php for($i=1;$i<=10;$i++){ ?>
+                            <?php for($i=1;$i<=5;$i++){ ?>
                             <input type="text" class="c_text_box_1 c_spec_txt" id="spec_doc_<?php echo $i; ?>" <?php if($i>1){ echo 'style="display:none"'; } ?> onkeypress="remove_wrn('spec')" onchange="remove_wrn('spec')" spellcheck="false" name="specialized[]" autocomplete="off" placeholder="Specialization <?php echo $i; ?>"/>
                             <?php } ?>
                         </div>
@@ -112,7 +145,7 @@
                 <li class="c_add_margin_20 c_form_margin_10">
                     <div class="col-lg-12 c_no_padding">
                         <div class="col-lg-9 c_no_padding">
-                            <?php for($i=1;$i<=10;$i++){ ?>
+                            <?php for($i=1;$i<=5;$i++){ ?>
                             <input type="text" class="c_text_box_1 c_spec_txt" id="treat_doc_<?php echo $i; ?>" <?php if($i>1){ echo 'style="display:none"'; } ?> onkeypress="remove_wrn('treat')" onchange="remove_wrn('treat')" spellcheck="false" name="treatments[]" autocomplete="off" placeholder="Treatment <?php echo $i; ?>"/>
                             <?php } ?>
                         </div>
