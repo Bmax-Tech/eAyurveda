@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
@@ -105,6 +106,14 @@ class Front extends Controller
                     'reg_date' => new \DateTime()
                 ]);
 
+                // Create Image Instance
+                Images::create([
+                    'user_id' => $user->id,
+                    'image_path' => ''
+                ]);
+
+                self::send_email($request->first_name,$request->last_name,$request->username,$request->email);// Send an Email
+
                 return Redirect::to('/');
             } else {
 
@@ -127,10 +136,10 @@ class Front extends Controller
         }else {
             if(User::whereEmail($request->username)->first()) {
                 // Check whether password is incorrect
-                return view('home', array('password_error' => 'YES','pre_username'=>$request->username,'top_rated_docs' => self::get_top_rated_docs()));
+                return view('home', array('password_error' => 'YES','pre_username'=>$request->username,'top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
             }else{
                 // Check whether username is incorrect
-                return view('home', array('username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs()));
+                return view('home', array('username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
             }
         }
     }
@@ -156,10 +165,10 @@ class Front extends Controller
         }else {
             if(User::whereEmail($request->reset_ps_username)->first()) {
                 // Check whether email is incorrect
-                return view('home', array('reset_email_error' => 'YES','pre_username'=>$request->reset_ps_username,'top_rated_docs' => self::get_top_rated_docs()));
+                return view('home', array('reset_email_error' => 'YES','pre_username'=>$request->reset_ps_username,'top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
             }else{
                 // Check whether username is incorrect
-                return view('home', array('reset_username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs()));
+                return view('home', array('reset_username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
             }
         }
     }
@@ -358,8 +367,14 @@ class Front extends Controller
         return $health_tip_main;
     }
 
-    public function get_specialisations(){
-        //$spec = Specialization::;
+    public function send_email($first_name,$last_name,$user_name,$email_ad){
+        $subject['sub'] = "Welcome to eAyurveda.lk...";
+        $subject['email'] = $email_ad;
+        $subject['name'] = $first_name." ".$last_name;
+
+        Mail::send('emails.welcome_mail',['first_name' => $first_name,'last_name' => $last_name,'username' => $user_name],function($message) use ($subject){
+            $message->to($subject['email'],$subject['name'])->subject($subject['sub']);
+        });
     }
 
     // **********  Custom Functions **********************************
