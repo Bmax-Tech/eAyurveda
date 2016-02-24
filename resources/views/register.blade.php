@@ -115,6 +115,7 @@
                     <li>Comment Posting</li>
                     <li>Access to Community Forum</li>
                     <li>Health Tip Alerts</li>
+                    <li>Live Chat</li>
                 </ul>
             </li>
         </ul>

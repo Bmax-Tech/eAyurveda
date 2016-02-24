@@ -29,7 +29,6 @@ Route::get('/myaccount/{name}','Front@my_account');
 Route::resource('/register/save','Front@register_patient');
 Route::resource('/login','Front@login');
 Route::resource('/logout','Front@logout');
-Route::resource('/forgotten_password','Front@forgotten_password');
 Route::resource('/update_user_profile','Front@update_account');
 
 //////////  Admin Side Routing //////////
@@ -59,6 +58,9 @@ Route::get('/admin_panel/test','Admin_Front@test');
 ////////////////////////////////////////////////////////////////////////////
 // ------------------------  Ajax Routes Start  ---------------------------
 
+Route::post('/forgotten_password_check','AjaxControll@forgotten_password_check');
+Route::post('/forgotten_password_email','AjaxControll@forgotten_password_email');
+Route::post('/save_change_password','AjaxControll@change_forgotten_password');
 Route::post('/ajax/{type}/{data}','AjaxControll@register_page');
 Route::post('/ajax','AjaxControll@doc_search_page');
 Route::post('/ajax/{doc_id}','AjaxControll@get_doctor_comments');

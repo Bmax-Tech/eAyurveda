@@ -151,28 +151,6 @@ class Front extends Controller
         return Redirect::to('/');
     }
 
-    public function forgotten_password(Request $request){
-        $user = User::whereEmail($request->reset_ps_username)->first(); // Check users table Username field
-        $patient = Patients::whereEmail(($request->reset_ps_email))->first();// Check Patients table Email Field
-        // Check whether username and email are matching
-
-        if(isset($user) && isset($patient) && ($user->id == $patient->user_id)) {
-            $re_patient = User::find($user->id);// Select patient record from table
-            $re_patient->password = md5($request->reset_ps_password);
-            $re_patient->save();
-
-            return Redirect::to('/');
-        }else {
-            if(User::whereEmail($request->reset_ps_username)->first()) {
-                // Check whether email is incorrect
-                return view('home', array('reset_email_error' => 'YES','pre_username'=>$request->reset_ps_username,'top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
-            }else{
-                // Check whether username is incorrect
-                return view('home', array('reset_username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
-            }
-        }
-    }
-
     public function view_profile($doc_name,$doc_id){
         //$main_doc_ob = array();
         // This set reciently viewed docs

@@ -547,13 +547,30 @@
 	color: #FFF !important;
 }
 
-#c_forgotten_pass_box{
+#c_forgotten_pass_box,#c_access_code_box,#c_change_pass_box,#c_change_pass_suc_box{
 	display: none;
 	background-color: rgba( 57, 181, 74,0.9);
 	width: 322px;
 	height: 347px;
 	z-index: 40;
 	padding:5px 20px;
+}
+#c_fog_reset_loading{
+	display: none;
+	background-color: rgb(255, 255, 255);
+	border-radius: 10px;
+	width: 290px;
+	height: 260px;
+	z-index: 40;
+	padding: 68px 20px;
+	position: absolute;
+	margin-top: -280px;
+	margin-left: 16px;
+	box-shadow: 0px 0px 30px #000;
+}
+#c_fog_reset_img{
+	width: 150px;
+	margin-left: 50px;
 }
 
 /* Ajax Loading Search Results Page */

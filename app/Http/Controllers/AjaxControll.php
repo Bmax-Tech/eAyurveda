@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Input;
 
 class AjaxControll extends Controller
@@ -301,4 +302,77 @@ class AjaxControll extends Controller
 		$res['chat_data'] = $chat_data;
 		return response()->json($res);
 	}
+
+	// this function is to check user and password for password reset
+	public function forgotten_password_check(Request $request){
+		$user = User::whereEmail(Input::get('reset_ps_username'))->first(); // Check users table Username field
+		$patient = Patients::whereEmail((Input::get('reset_ps_email')))->first();// Check Patients table Email Field
+		// Check whether username and email are matching
+
+		if(isset($user) && isset($patient) && ($user->id == $patient->user_id)) {
+			/*$re_patient = User::find($user->id);// Select patient record from table
+			$re_patient->password = md5($request->reset_ps_password);
+			$re_patient->save();
+
+			$acc_code = strtoupper(substr(md5(rand()),0,6));
+			self::reset_password_send_mail($patient->first_name,$patient->last_name,$patient->email,$acc_code);
+
+			return Redirect::to('/');*/
+			$data['CHECK'] = "OK";
+
+			return response()->json($data);
+		}else {
+			if(User::whereEmail(Input::get('reset_ps_username'))->first()) {
+				// Check whether email is incorrect
+				$data['CHECK'] = "NO";
+				$data['ERROR'] = "EMAIL";
+
+				return response()->json($data);
+			}else{
+				// Check whether username is incorrect
+				$data['CHECK'] = "NO";
+				$data['ERROR'] = "USERNAME";
+
+				return response()->json($data);
+			}
+		}
+	}
+
+	public function forgotten_password_email(Request $request){
+		$patient = Patients::whereEmail((Input::get('reset_ps_email')))->first();// Get Patients table First Name and Last Name Field
+		$acc_code = strtoupper(substr(md5(rand()),0,6));// Generate Random Key in Upper Case Letters with 6 characters
+
+		$subject['sub'] = "Reset Password at eAyurveda.lk";
+		$subject['email'] = Input::get('reset_ps_email');
+		$subject['name'] = $patient->first_name.' '.$patient->last_name;
+
+		Mail::send('emails.password_reset_mail',['access_code' => $acc_code],function($message) use ($subject){
+			$message->to($subject['email'],$subject['name'])->subject($subject['sub']);
+		});
+
+		$data['CHECK'] = "YES";
+		$data['EMAIL'] = Input::get('reset_ps_email');
+		$data['ACCESS_KEY'] = $acc_code;
+
+		return response()->json($data);
+	}
+
+	public function change_forgotten_password(Request $request){
+		$user = User::whereEmail(Input::get('ch_user_name'))->first(); // Check users table Username field
+		$re_patient = User::find($user->id);// Select patient record from table
+		$re_patient->password = md5(Input::get('reset_ps_password'));
+		$re_patient->save();
+
+		$data['CHECK'] = "Changed";
+
+		return response()->json($data);
+	}
+
+	// ***************************************************************
+	// **********  Custom Functions **********************************
+
+
+
+	// **********  Custom Functions **********************************
+	// ***************************************************************
 }

@@ -46,40 +46,6 @@ function only_alph(evt){
 	}
 };
 
-
-//function validate dob with nic **********
-/*function valid_nic_with_dob(para_1,para_2){
-	var dob = $('input[name='+para_1+']').val();
-	var nic = $('input[name='+para_2+']').val();
-
-	// DOB Values
-	var dob_year = dob.substr(8,10);
-	var dob_month = dob.substr(0,2);
-	var dob_day = dob.substr(3,2);
-
-	// NIC Values
-	var nic_year = nic.substr(0,2);
-	var nic_days = nic.substr(2,3);
-
-	if(nic_year == dob_year){
-		var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-		var firstDate = new Date(dob.substr(6,10),01,01);
-		var secondDate = new Date(dob.substr(6,10),dob_month,dob_day);
-		//var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
-		var millisBetween = secondDate.getTime() - firstDate.getTime();
-		var days = millisBetween / oneDay;
-
-		// Round down.
-		alert( Math.floor(days));
-
-		return true;
-	}else{
-		return false;
-	}
-}*/
-//function validate dob with nic end **********
-
-
 //function validate email address
 function valid_email(para_1){
 	return EMAIL_PATTERN.test($("input[name="+para_1+"]").val());
@@ -156,6 +122,10 @@ $(".c_close_btn").click(function(){
 	$(".c_pop_up_box_1").fadeOut(100,function(){
 		$("#c_sign_in_box").show();
 		$("#c_forgotten_pass_box").hide();
+		$("#c_fog_reset_loading").hide();
+		$("#c_access_code_box").hide();
+		$("#c_change_pass_box").hide();
+		$("#c_change_pass_suc_box").hide();
 	});
 });
 
@@ -282,13 +252,103 @@ function add_input_box_wrn(para_1){
 /* --- Forgotten Password Form ---*/
 
 function check_forgotten_password_form(){
-	if(valid_length_input('reset_ps_username') || valid_length_input('reset_ps_email') || !valid_email('reset_ps_email') || valid_length_input('reset_ps_password') || valid_length_input('reset_ps_confirm_password') || !valid_confirm_password('reset_ps_password','reset_ps_confirm_password')){
+	$("#reset_ps_username").removeClass('c_error_input_field_highlight');
+	$("#reset_ps_email").removeClass('c_error_input_field_highlight');
+
+	if(valid_length_input('reset_ps_username') || valid_length_input('reset_ps_email')){
 		if(valid_length_input('reset_ps_username')){
 			add_input_box_wrn('reset_ps_username');
 		}
 		if(valid_length_input('reset_ps_email') || !valid_email('reset_ps_email')){
 			add_input_box_wrn('reset_ps_email');
 		}
+
+		return false;
+	}else{
+		check_username_email();
+		return true;
+	}
+};
+
+// Check username and email
+function check_username_email(){
+	var new_url = '/forgotten_password_check';
+	var dataString = $("#ps_reset_form_1").serialize();
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		data: dataString,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			// Some Error caught
+			if(data.CHECK == "NO"){
+				if(data.ERROR == "USERNAME"){
+					$("#reset_ps_username").addClass('c_error_input_field_highlight');
+				}else{
+					$("#reset_ps_email").addClass('c_error_input_field_highlight');
+				}
+			}else{
+				// No errors
+				send_reset_email();
+			}
+
+		},
+		error: function (data) {
+			console.log('Error:', data);
+		}
+	});
+}
+
+function go_back_state(){
+	$("#c_access_code_box").hide();
+	$("#c_forgotten_pass_box").fadeIn();
+}
+
+var ps_reset_access_code = '';// this holds password reset access code return from Ajax request
+// Send Password Reset Email to User
+function send_reset_email(){
+	$("#c_fog_reset_loading").fadeIn();
+
+	var new_url = '/forgotten_password_email';
+	var dataString = $("#ps_reset_form_1").serialize();
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		data: dataString,
+		cache: false,
+		success: function (data) {
+			$("#c_fog_reset_loading").hide();
+			//console.log(data);
+			if(data.CHECK == "YES"){
+				ps_reset_access_code = data.ACCESS_KEY;
+				$("#ac_email").html(data.EMAIL);
+				$("#c_forgotten_pass_box").hide();
+				$("#c_access_code_box").fadeIn();
+			}
+		},
+		error: function (data) {
+			console.log('Error:', data);
+		}
+	});
+}
+
+function password_acc_check(){
+	var access_code = $("#reset_ps_access_code").val();
+	if(access_code == ps_reset_access_code){
+		// if user entered access code matches
+		$("#c_access_code_box").hide();
+		$("#c_change_pass_box").fadeIn();
+	}else{
+		// not matching access code
+		$("#reset_ps_access_code").addClass('c_error_input_field_highlight');
+	}
+}
+
+function check_change_password_form(){
+	if(!valid_email('reset_ps_email') || valid_length_input('reset_ps_password') || valid_length_input('reset_ps_confirm_password') || !valid_confirm_password('reset_ps_password','reset_ps_confirm_password')){
 		if(valid_length_input('reset_ps_password')){
 			add_input_box_wrn('reset_ps_password');
 		}
@@ -298,11 +358,46 @@ function check_forgotten_password_form(){
 		if(!valid_confirm_password('reset_ps_password','reset_ps_confirm_password')){
 			add_input_box_wrn('reset_ps_confirm_password');
 		}
+
 		return false;
 	}else{
+		$("#hidden_username_rs").val($("#reset_ps_username").val());
+		$("#hidden_email_rs").val($("#reset_ps_email").val());
+
+		submit_password_change();
 		return true;
 	}
-};
+}
+
+// this function will submit password change details
+function submit_password_change(){
+	var new_url = '/save_change_password';
+	var dataString = $("#ps_reset_form_3").serialize();
+
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		data: dataString,
+		cache: false,
+		success: function (data) {
+			console.log(data);
+			if(data.CHECK == "Changed"){
+				$(".c_close_btn").hide();
+				$("#c_change_pass_box").hide();
+				$("#c_change_pass_suc_box").fadeIn();
+				$("#c_change_pass_suc_box").delay(1500).fadeOut(100,function(){
+					$("#c_sign_in_box").fadeIn();
+					$(".c_close_btn").show();
+				});
+			}
+		},
+		error: function (data) {
+			console.log('Error:', data);
+		}
+	});
+
+}
 
 /* --- Forgotten Password Form ---*/
 

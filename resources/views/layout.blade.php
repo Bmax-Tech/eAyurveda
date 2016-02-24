@@ -243,29 +243,88 @@
 
         <!-- Forgotten Password Form -->
         <div id="c_forgotten_pass_box" <?php if(isset($reset_email_error) || isset($reset_username_error)){ ?>style="display: block" <?php } ?>>
-            <form action="{{URL::to('forgotten_password')}}" method="post" onsubmit="return check_forgotten_password_form()">
+            <form id="ps_reset_form_1" method="post">
                 <ul class="c_ul_1">
                     <li class="c_add_margin_20">
                         <span class="c_font_2">Reset Password</span>
                     </li>
-                    <li style="margin-bottom: 7px">
-                        <input type="text" class="c_text_box_1 <?php if(isset($reset_username_error)){ echo 'c_error_input_field_highlight'; }?>"  <?php if(isset($reset_email_error)){?>value="<?php echo $pre_username; ?>" <?php } ?>  id="reset_ps_username" onkeypress="remove_highlight('reset_ps_username','c_error_input_field_highlight')" placeholder="username" name="reset_ps_username" autocomplete="off" spellcheck="false"/>
+                    <li style="margin-bottom: 20px">
+                        <input type="text" class="c_text_box_1" id="reset_ps_username" onkeypress="remove_highlight('reset_ps_username','c_error_input_field_highlight')" placeholder="username" name="reset_ps_username" autocomplete="off" spellcheck="false"/>
                     </li>
-                    <li style="margin-bottom: 7px">
-                        <input type="text" class="c_text_box_1 <?php if(isset($reset_email_error)){ echo 'c_error_input_field_highlight'; } ?>" id="reset_ps_email" onkeypress="remove_highlight('reset_ps_email','c_error_input_field_highlight')" placeholder="email" name="reset_ps_email" autocomplete="off" spellcheck="false"/>
+                    <li style="margin-bottom: 20px">
+                        <input type="text" class="c_text_box_1" id="reset_ps_email" onkeypress="remove_highlight('reset_ps_email','c_error_input_field_highlight')" placeholder="email" name="reset_ps_email" autocomplete="off" spellcheck="false"/>
                     </li>
-                    <li style="margin-bottom: 7px">
+                    <li style="margin-bottom: 20px">
+                        <div style="text-align: justify;color: #fff;padding: 0px 5px">
+                            In order to reset your password an access code is required. Email will be sent to your email address from eAyurveda.lk.
+                        </div>
+                    </li>
+                    <li style="padding:0px 8px;margin-top:20px">
+                        <button type="button" onclick="check_forgotten_password_form()" class="c_button_1">Get Access Code</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <!-- Forgotten Password Reset Loading -->
+        <div id="c_fog_reset_loading">
+           <img src="{{ URL::asset('assets/img/loading_3.gif') }}" id="c_fog_reset_img">
+            <div style="text-align: center;margin-top: 45px;font-size: 20px;">Sending Email</div>
+        </div>
+        <!-- Access Code Form -->
+        <div id="c_access_code_box">
+            <form id="ps_reset_form_2" method="post">
+                <ul class="c_ul_1">
+                    <li class="c_add_margin_20">
+                        <span class="c_font_2">Access Code</span>
+                    </li>
+                    <li style="margin-bottom: 30px;margin-top: 20px">
+                        <div style="color: #fff;padding: 0px 5px">An Email has been sent to <span id="ac_email">bxxxxxxxx@gmail.com</span>. Please wait for 5-10 seconds. <br/>If you don`t receive it. click <a href="#re-send" id="c_fog_reset_re_send" onclick="go_back_state()" style="color: #000">Re-send</a></div>
+                    </li>
+                    <li style="margin-bottom: 20px">
+                        <input type="text" class="c_text_box_1" id="reset_ps_access_code" onkeypress="remove_highlight('reset_ps_access_code','c_error_input_field_highlight')" placeholder="Access Code" name="reset_ps_access_code" autocomplete="off" spellcheck="false"/>
+                    </li>
+                    <li style="padding:0px 8px;margin-top:40px">
+                        <button type="button" onclick="password_acc_check()" class="c_button_1">Continue</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <!-- Forgotten Password Change -->
+        <div id="c_change_pass_box">
+            <form id="ps_reset_form_3" method="post">
+                <input type="hidden" id="hidden_username_rs" name="ch_user_name" value=""/>
+                <input type="hidden" id="hidden_email_rs" name="ch_email" value=""/>
+                <ul class="c_ul_1">
+                    <li class="c_add_margin_20">
+                        <span class="c_font_2">Change Password</span>
+                    </li>
+                    <li style="margin-bottom: 20px;margin-top: 40px">
                         <input type="password" class="c_text_box_1" id="reset_ps_password" onkeypress="remove_highlight('reset_ps_password','c_error_input_field_highlight')" placeholder="new password" name="reset_ps_password" autocomplete="off" spellcheck="false"/>
                     </li>
                     <li>
                         <input type="password" class="c_text_box_1" id="reset_ps_confirm_password" onkeypress="remove_highlight('reset_ps_confirm_password','c_error_input_field_highlight')" placeholder="confirm password" name="reset_ps_confirm_password" autocomplete="off" spellcheck="false"/>
                     </li>
-                    <li style="padding:0px 8px;margin-top:26px">
-                        <button type="submit" class="c_button_1">Reset</button>
+                    <li style="padding:0px 8px;margin-top:55px">
+                        <button type="button" onclick="check_change_password_form()" class="c_button_1">Submit</button>
                     </li>
                 </ul>
             </form>
         </div>
+        <!-- Password Change Success Message -->
+        <div id="c_change_pass_suc_box" style="padding: 80px 82px;">
+            <ul class="c_ul_1">
+                <li>
+                    <img src="{{ URL::asset('assets/img/ok.png') }}" style="width: 60px;margin-left: 45px;">
+                </li>
+                <li style="margin-top: 40px">
+                    <div style="color: #FFF;font-size: 14px">Password Change</div>
+                </li>
+                <li>
+                    <span class="c_font_2">Successful</span>
+                </li>
+            </ul>
+        </div>
+
     </div>
 </div>
 <!-- Pop Up Boxes -->
@@ -335,42 +394,7 @@
     <div style="width: 280px;height: 300px;background: #F15822;padding: 5px;border-top-left-radius: 10px;border-top-right-radius: 10px;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.64)">
         <div style="background: #fff;width: 100%;height: 100%;border-top-left-radius: 7px;border-top-right-radius: 7px">
             <div class="c_chat_box">
-                {{--<table style="width: 100%">
-                <?php
-                    for($i=1;$i<2;$i++){
-                ?>
-                <tr><td>
-                <div class="c_chat_msg_row">
-                    <table style="width: 100%">
-                        <tr>
-                            <td style="width: 90%;"><div class="c_chat_msg_text_1">dsfsfdsfd sfdsfsdfsfsdff sdfsdfsf sad ad asd a</div></td>
-                            <td style="width: 10%"><img src="{{ URL::asset('assets/img/oparator_icon.jpg') }}" class="c_chat_icon_1"></td>
-                        </tr>
-                        <tr><td style="height: 17px"></td></tr>
-                    </table>
-                </div>
-                </td></tr>
-                <?php
-                    }
-                ?>
-                <?php
-                    for($i=1;$i<2;$i++){
-                ?>
-                <tr><td>
-                        <div class="c_chat_msg_row">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td style="width: 10%"><img src="{{ URL::asset('assets/img/user_chat.png') }}" class="c_chat_icon_2"></td>
-                                    <td style="width: 90%;"><div class="c_chat_msg_text_2">sdfs dsfdsfdsfsd fdsfsd f</div></td>
-                                </tr>
-                                <tr><td style="height: 17px"></td></tr>
-                            </table>
-                        </div>
-                </td></tr>
-                <?php
-                    }
-                ?>
-                </table>--}}
+                <!-- Chat Details Load Here -->
             </div>
             <div style="height: 10%;width: 100%;border-top: 1px solid #F15822">
                 <form id="chat_form" method="post" style="width: 100%;height: 100%">
