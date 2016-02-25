@@ -283,7 +283,7 @@
     border-top-right-radius: 3px;
     position: absolute;
     bottom: 0px;
-    right: 0px;
+    right: -1px;
     height: 99px;
     width: 65px;
     overflow-y: hidden ! important;
@@ -314,6 +314,393 @@
     transition: background-color .5s ease;
     transition: border-color .5s ease;
     box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+}
+
+#loginNavigation {
+    padding-top:5px;
+    padding-right:40px;
+    width:360px;
+    height:100%;
+    float:right;
+}
+
+#loginName {
+    float:left;
+    margin:13px 30px 0px 0px;
+    font-family:'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-size:16px;
+    font-weight:400;
+    color:#444;
+    cursor:pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100px;
+    overflow: hidden;
+} #loginName:hover {
+      text-decoration:underline;
+      color:#333;
+  }
+
+.notificationCountZero, .notificationCountPlus {
+    text-align:center;
+    font-family:'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-size:18px;
+    font-weight:700;
+    line-height: 30px;
+    vertical-align: middle;
+    height:32px;
+    width:32px;
+    border:1px solid;
+    border-radius:2px;
+    float:left;
+    cursor:pointer;
+    transition:background-color .2s ease-out;
+    margin-right:40px;
+    margin-top:7px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.notificationCountZero {
+    color:#999;
+    background-color:#E5E5E5;
+    border-color: #D5D5D5 #CCC #BBB #CCC;
+} .notificationCountZero:hover {
+      color:#888;
+      background-color:#DDD;
+      border-color: #CCC #BBB #AAA #BBB;
+  }
+
+.notificationCountPlus {
+    color:#fff;
+    background-color: #359f46;
+    border-color: #34a334 #30a430 #228722 #2fa52f;
+}
+.notificationCountPlus:hover {
+    background-color: #339044;
+    border-color: #349334 #319631 #1e771e #2e962e;
+}
+
+#profilePic {
+    height:48px;
+    width:48px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    background-image: url('../images/users/profile_default.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    border-radius:24px;
+    cursor:pointer;
+    opacity:.8;
+    transition:opacity .2s ease-out;
+    z-index:-5;
+} #profilePic:hover {
+      opacity:1;
+      box-shadow: 0 0px 0 rgba(0,0,0,.2),0 1px 5px rgba(0,0,0,.15);
+  }
+
+#profileDropDown {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-color: rgba(0,0,0,.2);
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+    overflow: hidden;
+    position: absolute;
+    display:none;
+    right: 85px;
+    top: 66px;
+    width:300px;
+    height:auto; /* 181px; */
+    z-index:90;
+}
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #ddd;
+    right: 140px;
+    top:56px;
+    z-index:95;
+    display:none;
+    position: absolute;
+}
+
+.arrow-up2 {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #ddd;
+    right: 220px;
+    top:52px;
+    z-index:95;
+    display:none;
+}
+
+#dropHeader {
+    width:100%;
+    height:29px;
+    text-align:left;
+    line-height:28px;
+    vertical-align:middle;
+    font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
+    font-size:16px;
+    color:#666;
+    background-color:#eee;
+    border-bottom:1px solid #DDD;
+}
+
+#dropInnerContent {
+    font-family: 'Roboto', Tahoma, Arial;
+    font-size:14px;
+    text-align:left;
+    margin:10px;
+    color:#666;
+    height: 64px;
+}
+
+#innterProfilePic {
+    margin-right:15px;
+    float:left;
+    height:96px;
+    width:96px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    background-image: url('../images/users/profile_default.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+#innerEmail {
+    float: left;
+    width: 164px;
+    height: 19px;
+    overflow: hidden;
+    color:#aaa;
+}
+#innerFullName {
+    float: left;
+    width: 164px;
+    height: 19px;
+    overflow: hidden;
+}
+
+#dropButtons {
+    background-color:#eee;
+    width:100%;
+    margin-top:42px;
+    border-top:1px solid #ddd;
+    bottom:0px;
+}
+
+.BtnInnerLogout {
+    margin:10px;
+    font-family: 'Roboto', Tahoma;
+    font-size:14px;
+    height:35px;
+    width:90px;
+    background-color: #F5F5F5;
+    border:1px solid;
+    border-width:1px 1px 1px 1px;
+    border-color: #ddd #ccc #c5c5c5 #ccc;
+    border-radius:3px;
+    color:#555;
+    text-decoration: none;
+    transition:background-color 0.1s  ease-out;
+    cursor: default;
+}
+.BtnInnerLogout:hover {
+    color:#333;
+    background-color: #fff;
+} .BtnInnerLogout:focus {
+      outline: 0;
+  }
+
+.animateDrop {
+    animation: dropAnim .4s;
+    -moz-animation:dropAnim .4s;
+    -webkit-animation: dropAnim .4s;
+}
+
+#LoginButtonTopDiv {
+    padding-top:25px;
+    padding-right:40px;
+    float:right;
+}
+
+.loginButtonTop {
+    background-color: #5555ff;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #5252FF #4444FF #3333FF #4444FF;
+    height: 35px;
+    width: 80px;
+    font-family: 'Roboto', Tahoma, 'Roboto';
+    font-size: 16px;
+    color: #FFFFFF;
+}
+.loginButtonTop:hover {
+    background-color: #4444FF;
+    border-color: #4242FF #3333CC #2222BB #3333CC;
+    border-width: 2px 1px 2px 1px;
+}
+
+#notificationDropDown {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-color: rgba(0,0,0,.2);
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+    overflow: hidden;
+    position: absolute;
+    display:none;
+    right: 100px;
+    top: 62px;
+    width:400px;
+    height:auto; /* 181px; */
+    z-index:90;
+}
+#notifyHeader {
+    width:100%;
+    height:29px;
+    text-align:left;
+    line-height:28px;
+    vertical-align:middle;
+    font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
+    font-size:16px;
+    color:#666;
+    background-color:#eee;
+    border-bottom:1px solid #DDD;
+}
+.bottomPanel {
+    border-top:1px solid #e3e3e3;
+    font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
+    font-weight: 400;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background-color: #eee;
+}
+
+#btnNewMessage {
+    float: right;
+    position: relative;
+    margin: 6px;
+    background-color: #f5f5f5;
+    height: 20px;
+    width: 114px;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    line-height: 20px;
+    cursor: default;
+}
+#btnNewMessage:hover {
+    background-color: #fff;
+    border-color: #ccc;
+}
+#btnNewMsgIcon {
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-image: url('../images/ic_action_new_email.png');
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position-x:left;
+    background-position-y:center;
+    background-position: 5% 50%, center;
+    height: 24px;
+    width: 24px;
+    float: left;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+#notificationCards {
+    background-color: #fff;
+}
+.notifyCard {
+    background-color: #f9f9f9;
+    height: 96px;
+    margin: 7px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
+    color: #333;
+    text-align: left;
+    cursor: pointer;
+}
+.notifyCard:hover {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    box-shadow: 0 2px 15px rgba(0,0,0,.20);
+    transition: all .2s ease-out;
+}
+.notifyImage {
+    height:96px;
+    width: 96px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    position: relative;
+    float: left;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    /* background-image: url('../images/users/profile_default.jpg'); */
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.notifyFrom {
+    height: 19px;
+    width: 278px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    font-size: 13px;
+    font-weight: 700;
+    margin-left: 10px;
+    margin-top: 5px;
+    color: #444;
+}
+.notifyHead {
+    height: 19px;
+    width: 278px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    font-size: 13px;
+    font-weight: 400;
+    margin-left: 10px;
+    margin-top: 5px;
+    color: #555;
+}
+.notifyBody {
+    height: 38px;
+    width: 278px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    font-size: 13px;
+    font-weight: 400;
+    margin-left: 10px;
+    color: #666;
 }
 
 @media screen and (max-width: 1100px){
