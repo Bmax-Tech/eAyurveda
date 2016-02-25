@@ -46,19 +46,24 @@
         <div class="col-lg-12 c_no_padding" style="margin-top:-20px">
             <ul class="c_top_ul" id="featured_doc_slider">
                 <?php
-                for($i=1;$i<7;$i++){
+                    //echo '<pre>'.var_dump($featured_docs).'</pre>';
+                $i=1;
+                foreach($featured_docs as $f_cod){
                 ?>
                 <li>
                     <div class="c_doc_box item" <?php if($i!=4){ ?>style="margin-right:10px"<?php } ?>>
+                        <a href="{{ URL::asset('/profile/Dr.'.$f_cod['doc_first_name'].$f_cod['doc_last_name'].'/'.$f_cod['doc_id']) }}">
                         <ul class="c_ul_1" style="width:252px">
-                            <li style="width:100%"><div align="center"><img src="assets/img/doc_user.png" width="70px"></div></li>
-                            <li style="width:100%;margin-top:20px"><div class="c_font_5" style="text-align:center">Dr. Ananada Godagama</div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center">Specialized in neurology</div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px">Katugasthota, Kandy</div></li>
+                            <li style="width:100%"><div align="center"><img src="{{ URL::asset($f_cod['image_path']) }}" width="100px" height="94px"></div></li>
+                            <li style="width:100%;margin-top:20px"><div class="c_font_5" style="text-align:center">Dr. <?php echo $f_cod['doc_first_name']." ".$f_cod['doc_last_name'];  ?></div></li>
+                            <li style="width:100%;margin-top:7px"><div class="c_font_5" style="text-align:center">Specialized in neurology</div></li>
+                            <li style="width:100%;margin-top:7px"><div class="c_font_5" style="text-align:center;font-size:13px"><?php echo $f_cod['doc_address_2'].",&nbsp;".$f_cod['doc_city'];  ?></div></li>
                         </ul>
+                        </a>
                     </div>
                 </li>
                 <?php
+                    $i++;
                 }
                 ?>
             </ul>
@@ -107,7 +112,7 @@
                                     }
                                     ?>
                                 </div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px"><?php echo $doc['doc_address_2'].",".$doc['doc_city']; ?></div></li>
+                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px"><?php echo $doc['doc_address_2'].",&nbsp;".$doc['doc_city']; ?></div></li>
                         </ul>
                     </div>
                     </a>
@@ -137,18 +142,22 @@
         <div class="col-lg-12 c_no_padding" >
             <ul class="c_top_ul">
                 <?php
-                for($i=1;$i<=5;$i++){
+                $i=1;
+                foreach($community_sug as $com){
                 ?>
                 <li>
+                    <a href="{{ URL::asset('/profile/Dr.'.$com['doc_first_name'].$com['doc_last_name'].'/'.$com['doc_id']) }}">
                     <div class="c_com_sug_doc" <?php if($i!=5){ ?>style="margin-right:10px"<?php } ?>>
                         <ul class="c_ul_1" style="width:198px">
-                            <li style="width:100%"><div class="c_font_5" style="text-align:center">Dr. Ananada Godagama</div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center">Specialized in neurology</div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px">Katugasthota, Kandy</div></li>
+                            <li style="width:100%"><div class="c_font_5" style="text-align:center">Dr. <?php echo $com['doc_first_name']." ".$com['doc_last_name'];  ?></div></li>
+                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center"><?php echo $com['doc_address_2'].", ".$com['doc_city'];  ?></div></li>
+                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px"><img src="{{ URL::asset($com['image_path']) }}" style="width:30px;height: 30px;border-radius: 20px;border: 1px solid #fff;">&nbsp;&nbsp;<span style="font-style: italic"><?php echo $com['sug_user_name']; ?></span></div></li>
                         </ul>
                     </div>
+                    </a>
                 </li>
                 <?php
+                    $i++;
                 }
                 ?>
             </ul>

@@ -623,6 +623,11 @@
 	font-size: 16px;
 	margin-top: 3px;
 }
+#map-canvas{
+	height: 350px;
+	max-height: 350px;
+	border-radius: 10px;
+}
 #com_tab_back{
 	position: absolute;
 	right: 120px;

@@ -30,7 +30,7 @@
                 </div></li>
                 <li><?php if(($doctor['doctor_data']->doc_type) == "FORMAL"){ ?>Registered ID : <?php echo $doctor['formal_data']->ayurvedic_id; } ?></li>
                 <li style="padding: 10px 0px"><hr class="c_hr_1"/></li>
-                <li>Location : {{ $doctor['doctor_data']->address_1 }},&nbsp;{{ $doctor['doctor_data']->address_2 }},&nbsp;{{ $doctor['doctor_data']->city }}</li>
+                <li>Location : {{ $doctor['doctor_data']->address_1 }},&nbsp;{{ $doctor['doctor_data']->address_2 }},&nbsp;{{ $doctor['doctor_data']->city }},&nbsp;{{ $doctor['doctor_data']->district }}</li>
                 <li><div class="col-lg-6 c_no_padding">Mobile : {{ $doctor['doctor_data']->contact_number }}</div><div class="col-lg-6 c_no_padding">Email : {{ $doctor['doctor_data']->email }}</div></li>
                 <li style="margin-top: 30px"><span style="font-size: 25px;color:#085426;">Overview</span></li>
                 <li style="margin-top: 10px"><p class="c_no_padding" style="text-align: justify">{{ $doctor['doctor_data']->description }}</p></li>
@@ -86,6 +86,16 @@
         </div>
         </div>
     </div>
+    <!-- Google Maps -->
+    <div class="col-lg-12 c_no_padding" style="font-size: 20px;background: #39B54A;color: #FFF;border-bottom: 3px solid #035600;padding: 7px 0px 7px 25px">
+        <span>Location</span>
+    </div>
+    <div class="col-lg-12 c_no_padding" style="padding: 10px">
+        <div class="col-lg-12 c_no_padding"  id="map-canvas">
+
+        </div>
+    </div>
+    <!-- Google Maps -->
     <div class="col-lg-12 c_no_padding" style="font-size: 20px;background: #39B54A;color: #FFF;border-bottom: 3px solid #035600;padding: 7px 0px 7px 25px">
         <span>Comments</span>
         <button type="button" id="com_tab_back" onclick="change_com_tab('-')"><img src="{{ URL::asset('assets/img/back.png') }}" width="30px"></button>
@@ -192,4 +202,34 @@
     <span id="hidden_star_url" style="display: none">{{ URL::asset('assets/img/star.png') }}</span>
     <span id="hidden_green_star_url" style="display: none">{{ URL::asset('assets/img/star_2.png') }}</span>
 
+    <!-- Google Maps Scripts -->
+
+    <script type="text/javascript">
+        var gmap, mapCanvas, mapOptions = { zoomControl: true, streetViewControl: false, noClear: true };
+        var marker;
+
+        function mapInitialize( mapCenter, mapZoom ) {
+            mapOptions.center = mapCenter;
+            mapOptions.zoom = mapZoom;
+            mapCanvas.setAttribute( "style", "height:" + window.innerHeight + "px;" );
+            setTimeout( function() {
+                gmap = new google.maps.Map( mapCanvas, mapOptions );
+                //marker = new google.maps.Marker({position: mapCenter,map: gmap,icon: image_1});
+        }, 20 );
+
+
+        }
+        window.onorientationchange = function() {
+            mapInitialize( gmap.getCenter(), gmap.getZoom() );
+        }
+        function startup() {
+            setTimeout( function() {
+                mapCanvas = document.getElementById("map-canvas");
+                mapInitialize( new google.maps.LatLng(7.0917, 80.0000), 15 );
+            }, 125 );
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js" onload="startup()"></script>
+
+    <!-- Google Maps Scripts -->
 @stop

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Featured_doc;
 use App\Formal_doctors;
 use App\HealthTip;
 use App\Non_Formal_doctors;
@@ -23,7 +24,7 @@ class Front extends Controller
 {
 
     public function index(){
-        return view('home',array('top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
+        return view('home',array('top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips(),'featured_docs' => self::get_featured_docs(),'community_sug' => self::get_community_suggestions()));
     }
 
     // This function loads default results
@@ -136,10 +137,10 @@ class Front extends Controller
         }else {
             if(User::whereEmail($request->username)->first()) {
                 // Check whether password is incorrect
-                return view('home', array('password_error' => 'YES','pre_username'=>$request->username,'top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
+                return view('home', array('password_error' => 'YES','pre_username'=>$request->username,'top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips(),'featured_docs' => self::get_featured_docs(),'community_sug' => self::get_community_suggestions()));
             }else{
                 // Check whether username is incorrect
-                return view('home', array('username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips()));
+                return view('home', array('username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips(),'featured_docs' => self::get_featured_docs(),'community_sug' => self::get_community_suggestions()));
             }
         }
     }
@@ -289,11 +290,6 @@ class Front extends Controller
             'spec_3' => Input::get('specialized')[2],
             'spec_4' => Input::get('specialized')[3],
             'spec_5' => Input::get('specialized')[4]
-/*            'spec_6' => Input::get('specialized')[5],
-            'spec_7' => Input::get('specialized')[6],
-            'spec_8' => Input::get('specialized')[7],
-            'spec_9' => Input::get('specialized')[8],
-            'spec_10' => Input::get('specialized')[9]*/
         ]);
 
         // Sixth Create Treatments
@@ -304,16 +300,10 @@ class Front extends Controller
             'treat_3' => Input::get('treatments')[2],
             'treat_4' => Input::get('treatments')[3],
             'treat_5' => Input::get('treatments')[4]
-/*            'treat_6' => Input::get('treatments')[5],
-            'treat_7' => Input::get('treatments')[6],
-            'treat_8' => Input::get('treatments')[7],
-            'treat_9' => Input::get('treatments')[8],
-            'treat_10' => Input::get('treatments')[9]*/
         ]);
 
 
         return Redirect::to('/adddoctor');
-        //return view('add_doctor',array('doc_save_success' => 'YES'));
     }
 
 
@@ -338,6 +328,47 @@ class Front extends Controller
             $rating_main[] = $temp;
         }
         return $rating_main;
+    }
+
+    public function get_featured_docs(){
+        $featured = Featured_doc::all();
+        foreach($featured as $f_doc){
+            $doc_details = Doctors::whereId($f_doc->did)->first();
+            $temp['doc_id'] = $doc_details->id;
+            $temp['doc_first_name']  = $doc_details->first_name;
+            $temp['doc_last_name']  = $doc_details->last_name;
+            $temp['doc_address_2']  = $doc_details->address_2;
+            $temp['doc_city']  = $doc_details->city;
+
+            $img = Images::whereUser_id($doc_details->user_id)->first();
+            $temp['image_path'] = $img->image_path;
+
+            $featured_main[] = $temp;
+        }
+        return $featured_main;
+    }
+
+    public function get_community_suggestions(){
+        $com_sug = Doctors::whereDoc_type('NON_FORMAL')->orderBy('id','DESC')->limit(5)->get();
+        foreach($com_sug as $doc){
+            $temp['doc_id'] = $doc->id;
+            $temp['doc_first_name']  = $doc->first_name;
+            $temp['doc_last_name']  = $doc->last_name;
+            $temp['doc_address_2']  = $doc->address_2;
+            $temp['doc_city']  = $doc->city;
+
+            // Get suggested User
+            $non_formal = Non_Formal_doctors::whereDoctor_id($doc->id)->first();
+            $user = User::whereId($non_formal->suggested_user)->first();
+            $temp['sug_user_name'] = $user->name;
+
+            // User Image
+            $img = Images::whereUser_id($user->id)->first();
+            $temp['image_path'] = $img->image_path;
+
+            $featured_main[] = $temp;
+        }
+        return $featured_main;
     }
 
     public function get_health_tips(){
