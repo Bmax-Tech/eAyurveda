@@ -390,12 +390,12 @@
 }
 
 #profilePic {
-    height:48px;
-    width:48px;
+    height:44px;
+    width:44px;
     overflow-y: hidden ! important;
     overflow-x: hidden ! important;
     background-color: #fff;
-    background-image: url('../images/users/profile_default.jpg');
+    background-image: url('../../assets/img/user_red.jpg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: right;
@@ -480,7 +480,7 @@
     overflow-y: hidden ! important;
     overflow-x: hidden ! important;
     background-color: #fff;
-    background-image: url('../images/users/profile_default.jpg');
+    background-image: url('../../assets/img/user_red.jpg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: right;
@@ -707,6 +707,32 @@
     .searchCardLeftPane {
         display: none;
     }
+    #loginName {
+        display: none;
+
+    }
+    #loginNotifications {
+        position: absolute;
+        right: 65px;
+    }
+    #loginNavigation {
+        width: 130px;
+        padding-right: 20px;
+    }
+    .arrow-up {
+        right:48px;
+    }
+    #profileDropDown {
+        right:8px;
+    }
+    #notificationDropDown {
+        top:58px;
+        right: 0px;
+    }
+    .arrow-up2 {
+        top:48px;
+        right: 48px;
+    }
 }
 
 @media screen and (max-width: 960px){
@@ -730,3 +756,10 @@
         margin-left: 85px;
     }
 }
+
+@media screen and (max-width: 767px) {
+    #loginNavigation {
+        display: none;
+    }
+}
+

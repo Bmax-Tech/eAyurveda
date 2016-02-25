@@ -39,9 +39,11 @@
                             <li class="active"><a href="/forum">Forum</a></li>
                         </ul>
 
+                        <?php $admin_user = json_decode($_COOKIE['admin_user'],true); ?>
+
                         <div id="loginNavigation" runat="server" align="right">
                             <div>
-                                <div id="loginName" runat="server">FirstName</div>
+                                <div id="loginName" runat="server"><?php echo $admin_user[0]['first_name']; ?></div>
                             </div>
                             <div id="loginNotifications">
                                 <div id="notificationCount" title="Notification(s)" class="notificationCountZero" onclick="notificationDropDown()" runat="server">0</div>
@@ -71,12 +73,12 @@
                                         <div id="dropHeader"><div style="margin-left:20px;">Account</div></div>
                                         <div id="dropInnerContent">
                                             <div id="innterProfilePic"></div>
-                                            <div id="innerFullName" runat="server">Full Name</div>
+                                            <div id="innerFullName" runat="server"><?= $admin_user[0]['first_name']." Unais"; ?></div>
                                             <div id="innerEmail" runat="server">youremail@domain.com</div>
                                         </div>
                                         <div id="dropButtons">
                                             <div id="innerLogout">
-                                                <input type="button" id="Button1" formnovalidate class="BtnInnerLogout">
+                                                <input type="button" id="Button1" formnovalidate value="Log out" class="BtnInnerLogout">
                                             </div>
                                         </div>
                                     </div>

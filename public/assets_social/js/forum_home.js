@@ -73,12 +73,35 @@ $(document).on('click', function (e) {
 
 $(document).ready(function () {
     var keyword = $("#txtSearchItem").val();
+
+    var elm = document.createElement('div');
+    elm.setAttribute('class', 'forumHomeHead');
+    elm.setAttribute('style', 'position: relative; margin-top: 0px !important;');
+    elm.innerHTML = "Recently Posted";
+
+    var elm2 = document.createElement('div');
+    elm2.setAttribute('style', 'height: 1px; background-color: #aaa; width: 100%; margin: 5px 0 20px 0;');
+
     $.ajax({
         type:'GET',
         url:'forum/getcategories/',
         cache: true,
         success: function(data){
             $("#availableForumCatList").html(data.page);
+        }
+    });
+
+    var keyword = " ";
+    $.ajax({
+        type:'GET',
+        url:'forum/questions/browserecent/',
+        cache: true,
+        success: function(data){
+            $("#numSearchResults").hide();
+            $("#resultList").html(" ");
+            $("#resultList").append(elm);
+            $("#resultList").append(elm2);
+            $("#resultList").append(data.page);
         }
     });
 
@@ -142,9 +165,40 @@ function displayResults(){
         url:'forum/search/'+keyword+'/',
         cache: true,
         success: function(data){
+            $("#numSearchResults").show();
+            $("#resultList").html(" ");
             $("#resultList").html(data.page);
         }
     });
-};
+}
+
+function displayAndScroll(catN) {
+    $('html, body').animate({
+        scrollTop: $("#resultList").offset().top+5
+    }, 1000);
+
+    var cat = catN.toString();
+
+    var elm = document.createElement('div');
+    elm.setAttribute('class', 'forumHomeHead');
+    elm.setAttribute('style', 'position: relative; margin-top: 0px !important;');
+    elm.innerHTML = "Browse Category: " + cat;
+
+    var elm2 = document.createElement('div');
+    elm2.setAttribute('style', 'height: 1px; background-color: #aaa; width: 100%; margin: 5px 0 20px 0;');
+
+    $.ajax({
+        type:'GET',
+        url:'forum/browse/'+cat+'/',
+        cache: true,
+        success: function(data){
+            $("#numSearchResults").hide();
+            $("#resultList").html(" ");
+            $("#resultList").append(elm);
+            $("#resultList").append(elm2);
+            $("#resultList").append(data.page);
+        }
+    });
+}
 
 

@@ -92,6 +92,10 @@ Route::get('/for_admin/{page_name}','ForumController@returnView');
 Route::get('/forum/search/{query}','ForumController@searchForum');
 Route::get('forum/getcategories/','ForumController@getCategories');
 Route::get('forum/questions/getrecent/','ForumController@getRecent');
+Route::get('forum/questions/browserecent/','ForumController@browseRecent');
+Route::get('/forum/browse/{category}','ForumController@getBrowseCategory');
+Route::get('/forum/question/delete/{qid}','ForumController@deleteQuestion');
+Route::get('/forum/category/delete/{catname}','ForumController@deleteCategory');
 
 
 Route::get('/forum/view', function () {
@@ -116,15 +120,16 @@ Route::post('/forum/submitanswer', function () {
 });
 
 Route::post('/forum/sendnewsletter', 'ForumController@sendNewsletter');
+Route::resource('/forum/addcategory', 'ForumController@addcategory');
+Route::resource('/forum/postquestion', 'ForumController@postquestion');
 
-Route::post('/forum/addcategory', 'ForumController@addcategory');
 
 //Route::resource('/forum/addcategory','ForumController@addCategory()');
 
 
 Route::get('/messages/inbox/', function () {
     $head = "received";
-    $current_user = "patient1";
+    $current_user = "muabdulla@gmail.com";
     $messages = DB::table('messages')->where('mTo', '=' , $current_user)->get();
     return View::make('messages')
         ->with('messages', $messages)
@@ -133,7 +138,7 @@ Route::get('/messages/inbox/', function () {
 
 Route::get('/messages/sent/', function () {
     $head = "sent";
-    $current_user = "patient1";
+    $current_user = "muabdulla@gmail.com";
     $messages = DB::table('messages')->where('mFrom', '=' , $current_user)->get();
     return View::make('messages')
         ->with('messages', $messages)

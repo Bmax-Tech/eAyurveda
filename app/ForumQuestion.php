@@ -11,6 +11,7 @@ class ForumQuestion extends Model
     protected $fillable = [
         'qID',
         'qFrom',
+        'qSubject',
         'qBody',
         'qFlagged',
         'qCategory',
