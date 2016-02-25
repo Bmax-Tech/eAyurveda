@@ -6,8 +6,21 @@
 
 @section('forumHead')
     <script src="{{ URL::asset('assets/js/jquery-1.12.0.min.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::asset('assets_social/js/summernote.min.js') }}" type="text/javascript"></script>
+    <link rel="stylesheet"  href="{{ URL::asset('assets_social/css/summernote.css') }}">
     <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ URL::asset('assets_social/js/forum_home.js') }}" type="text/javascript"></script>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 200,
+                minHeight: null,             // set minimum height of editor
+                maxHeight: null,// set editor height
+                focus: false                  // set focus to editable area after initializing summernote
+            });
+        });
+    </script>
 @stop
 
 
@@ -77,7 +90,7 @@
         }
         .forumCatNameTxt {
             height:40px;
-            width:100%;
+            width:90%;
             border:1px solid #CCC;
             outline:none;
             border-radius:2px;
@@ -85,22 +98,54 @@
             padding-right:15px;
             font-size:14px;
             margin-top:5px;
+            margin-bottom: 10px;
             font-family: 'Open Sans', Arial;
         }
         .forumCatDescriptionTxt {
-            height:200px;
-            width:100%;
+            width:90%;
             border:1px solid #CCC;
             outline:none;
             border-radius:2px;
-            padding: 15px 15px 15px 15px;
-            font-size:14px;
-            margin-top:5px;
-            font-family: 'Open Sans', Arial;
+            margin:auto;
         }
         .forumCatNameTxt:focus, .forumCatDescriptionTxt:focus {
             border-color: #55aa55;
             box-shadow: inset 0 0 8px rgba(0,255,0,.2);
+        }
+        .catCard:hover {
+            cursor: pointer;
+        }
+        #forumCatSaveBtn {
+            height: 45px;
+            width: 90%;
+            background-color: #39b54a;
+            border:1px solid;
+            border-color: #3db43d #34b434 #2eb42e #2eb42e;
+            border-radius:3px;
+            margin-top: 17px;
+            font-size:16px;
+            font-family:'Open Sans', Tahoma, 'Roboto';
+            color:#fff;
+            transition: all 0.5s  ease-out;
+        }
+        #forumCatSaveBtn:hover {
+            background-color: #359f46;
+            border-color: #34a334 #30a430 #228722 #2fa52f;
+            border-width:2px 1px 2px 1px;
+            box-shadow: 0 0px 0 rgba(0, 0, 255, .2), 0 1px 5px rgba(0, 0, 255, .15);
+        }
+        .forumCatSelect {
+            height:40px;
+            width:90%;
+            border:1px solid #CCC;
+            outline:none;
+            border-radius:2px;
+            padding-left:15px;
+            padding-right:15px;
+            font-size:14px;
+            margin-top:20px;
+            margin-bottom: 10px;
+            font-family: 'Open Sans', Arial;
         }
     </style>
     <!-- Modal -->
@@ -113,25 +158,45 @@
                     Post new Question
                 </div>
                 <div style="height: 1px; background-color: #aaa; width: 100%; margin-top: 5px;"></div>
-                <div>
+                <div style="text-align: center">
                     {!! Form::open(array('url' => 'forum/postquestion')) !!}
                     <div>
+                        <select name="category" class="forumCatSelect" required="required">
+                            <option value="">-- Select Category --</option>
+                            <?php foreach($categories as $cat) {
+                            ?>
+                            <option value="$cat->catName"><?= $cat->catName ?></option>
+                            <?php
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div>
 
-                        {!! Form::text('catName','',array(
-                            'placeholder' => 'Title',
+                        {!! Form::text('title','',array(
+                            'placeholder' => 'Question Title',
                             'class' => 'forumCatNameTxt'
                         )) !!}
                     </div>
-                    <div>
-                        {!! Form::textarea('catDescription','',array(
-                            'placeholder' => 'Post yout question',
-                            'class' => 'forumCatDescriptionTxt'
-                        )) !!}
+                    <div style="width:90%;margin:auto; text-align: left;">
+                        {!! Form::textarea('body','',array(
+                        'class' => 'forumCatDescriptionTxt',
+                        'id' => 'summernote'
+                    )) !!}
                     </div>
+                    <div>
+                        {!! Form::submit('Post Question', array(
+                    'id' => 'forumCatSaveBtn',
+                    'style' => 'margin-bottom: 40px;'
+                )) !!}
+                    </div>
+                    <div class="spacer" style="clear: both;"></div>
+                    {!! Form::close() !!}
                 </div>
             </div>
 
         </div>
     </div>
+
     <button type="button" class="btn btn-info btn-lg floatingAction" data-toggle="modal" data-target="#myModal"></button>
 @stop

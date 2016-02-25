@@ -17,6 +17,20 @@ $result = $conn->query($sql);
 
 
 ?>
+<script src="{{ URL::asset('assets_social/js/bootbox.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+    function deleteCategory(catName) {
+        var cat = catName.toString();
+        $.ajax({
+            type:'GET',
+            url:'forum/category/delete/'+cat+'/',
+            cache: true,
+            success: function(data){
+                $("#availableForumCatList").html(data.page);
+            }
+        });
+    }
+</script>
 <div>
     <div class="forumAdminHead">
         Add New Category
@@ -24,7 +38,7 @@ $result = $conn->query($sql);
     </div>
     <div id="addCategory">
         <div style="">
-            {!! Form::open(array('url' => 'forum/addcategory')) !!}
+            {!! Form::open(array('url' => 'forum/addcategory', 'enctype' => 'multipart/form-data')) !!}
             <div class="forumLeftCol">
                 <div class="forumTxtLabel">
                     Category Name
@@ -56,7 +70,11 @@ $result = $conn->query($sql);
                 </div>
                 <div>
                     <button id="forumCatImgUploadBtn" type="button" onclick="$('#forumCatImgFileChooser').trigger('click');">Browse</button>
-                    <input type="file" name="forumCatImgFileChooser" id="forumCatImgFileChooser" style="display: none;">
+                    {{--<input type="file" name="forumCatImgFileChooser" id="forumCatImgFileChooser" style="display: none;">--}}
+                    {!! Form::file('catImage', array(
+                        'id' => 'forumCatImgFileChooser',
+                        'style' => 'display: none;'
+                    )) !!}
                 </div>
             </div>
 
@@ -87,7 +105,7 @@ $result = $conn->query($sql);
                         <div class="catImageView">
                             <?= $row["catName"] ?>
                             <div class="catImageBtnDiv">
-                                <button id="forumButton1" class="btnForumCard btnForumRed"></button>
+                                <button id="forumButton1" class="btnForumCard btnForumRed" onclick="bootbox.confirm('Are you sure you want to delete this category? All questions assigned to category will get removed.', function(result) {if (result) {deleteCategory('<?= $row["catName"] ?>')}});"></button>
                                 {{--<button id="forumButton1" class="btnForumCard btnForumOrange"></button>--}}
                             </div>
                         </div>
@@ -101,30 +119,7 @@ $result = $conn->query($sql);
             }
             $conn->close(); ?>
 
-        <div class="catCard">
-            <div class="catImageViewFrame" style="background-image: url('assets_social/img/forum_categories/medicine.jpg');">
-                <div class="catImageView">
-                    Medicine
-                    <div class="catImageBtnDiv">
-                        <button id="forumButton1" class="btnForumCard btnForumRed">Delete</button>
-                        <button id="forumButton1" class="btnForumCard btnForumOrange">Edit</button>
-                    </div>
-                </div>
-            </div>
 
-        </div>
-
-        <div class="catCard">
-            <div class="catImageViewFrame" style="background-image: url('assets_social/img/forum_categories/treatment.jpg');">
-                <div class="catImageView">
-                    Treatment
-                    <div class="catImageBtnDiv">
-                        <button id="forumButton1" class="btnForumCard btnForumRed">Delete</button>
-                        <button id="forumButton1" class="btnForumCard btnForumOrange">Edit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="spacer" style="clear: both;"></div>
     </div>

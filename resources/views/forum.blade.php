@@ -6,19 +6,36 @@
 
 @section('forumHead')
     <link rel="stylesheet" href="{{ URL::asset('assets_social/css/forum.css') }}">
+    <script src="{{ URL::asset('assets/js/jquery-1.12.0.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('assets_social/js/forum_home.js') }}"></script>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500"/>
     <style>
         #question-stats:before {
             z-index: -1;
+        }
+        .forumDetailsBar {
+            height: 40px;
+            background-color: #ddd;
+            -webkit-box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.22);
+            box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.22);
+            color:#888;
+            font-size: 15px;
+            overflow: hidden;
         }
     </style>
 @stop
 
 @section('body')
 
-<?php if($questionResult) { ?>
-
-
+<?php if($questionResult) {
+$numAns = 0;
+?>
+<div class="forumDetailsBar">
+    <div style="padding: 0px 50px 0 130px;line-height: 40px;">
+        Ayurveda.lk > Forum > <?= $questionResult->qCategory ?> > <?= $questionResult->qSubject ?>
+    </div>
+</div>
 <div id="root" class="page " style="padding-top: 50px;">
 
 
@@ -63,7 +80,10 @@
 
                 <!-- The Replies -->
                 <div class="replies">
-                    <?php foreach($answerResultSet as $answer) { ?>
+                    <?php
+                        foreach($answerResultSet as $answer) {
+                            $numAns++
+                    ?>
                     <div class="Comment Media">
 
                         <div class="Media__figure">
@@ -164,7 +184,7 @@
 
                 <div id="question-stats" class="Box utility-center">
                     <div>
-                        <strong>11</strong> replies with no best answer
+                        <strong><?= $numAns ?></strong> replies with no best answer
                     </div>
                 </div>
 

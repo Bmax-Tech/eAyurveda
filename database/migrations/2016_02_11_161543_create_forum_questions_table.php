@@ -16,11 +16,15 @@ class CreateForumQuestionsTable extends Migration
             $table->increments('qID');
             $table->text('qFrom');
             $table->text('qBody');
+            $table->text('qSubject');
             $table->boolean('qFlagged');
             $table->text('qCategory');
             $table->integer('upvotes');
             $table->integer('downvotes');
             $table->timestamps();
+            $table->foreign('qCategory')
+                ->references('catName')->on('forumCategory')
+                ->onDelete('cascade');
         });
     }
 
