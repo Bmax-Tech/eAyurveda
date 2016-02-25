@@ -38,7 +38,54 @@
                             <li><a href="#">About</a></li>
                             <li class="active"><a href="/forum">Forum</a></li>
                         </ul>
+
+                        <div id="loginNavigation" runat="server" align="right">
+                            <div>
+                                <div id="loginName" runat="server">FirstName</div>
+                            </div>
+                            <div id="loginNotifications">
+                                <div id="notificationCount" title="Notification(s)" class="notificationCountZero" onclick="notificationDropDown()" runat="server">0</div>
+                                <div id="UpArrowN" class="arrow-up2"></div>
+                                <div id="notificationDropDown">
+                                    <div>
+                                        <div id="notifyHeader">
+                                            <div style="margin-left:20px;">Notifications</div>
+                                        </div>
+                                        <div id="notificationCards">
+
+
+
+                                        </div>
+                                        <div style="height:45px;"></div>
+                                        <div class="bottomPanel">
+                                            <div id="btnNewMessage"><div id="btnNewMsgIcon"></div>New Message</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="loginProfile">
+                                <div id="profilePic" onclick="profileDropDown()" runat="server"></div>
+                                <div id="upArrow" class="arrow-up"></div>
+                                <div id="profileDropDown">
+                                    <div>
+                                        <div id="dropHeader"><div style="margin-left:20px;">Account</div></div>
+                                        <div id="dropInnerContent">
+                                            <div id="innterProfilePic"></div>
+                                            <div id="innerFullName" runat="server">Full Name</div>
+                                            <div id="innerEmail" runat="server">youremail@domain.com</div>
+                                        </div>
+                                        <div id="dropButtons">
+                                            <div id="innerLogout">
+                                                <input type="button" id="Button1" formnovalidate class="BtnInnerLogout">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
                 </nav>
                 <div class="barLine"></div>
             </div>

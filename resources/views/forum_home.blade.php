@@ -75,6 +75,33 @@
             outline: none !important;
 
         }
+        .forumCatNameTxt {
+            height:40px;
+            width:100%;
+            border:1px solid #CCC;
+            outline:none;
+            border-radius:2px;
+            padding-left:15px;
+            padding-right:15px;
+            font-size:14px;
+            margin-top:5px;
+            font-family: 'Open Sans', Arial;
+        }
+        .forumCatDescriptionTxt {
+            height:200px;
+            width:100%;
+            border:1px solid #CCC;
+            outline:none;
+            border-radius:2px;
+            padding: 15px 15px 15px 15px;
+            font-size:14px;
+            margin-top:5px;
+            font-family: 'Open Sans', Arial;
+        }
+        .forumCatNameTxt:focus, .forumCatDescriptionTxt:focus {
+            border-color: #55aa55;
+            box-shadow: inset 0 0 8px rgba(0,255,0,.2);
+        }
     </style>
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
@@ -82,15 +109,25 @@
 
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                <div class="forumHomeHead" style="position: relative;">
+                    Post new Question
                 </div>
-                <div class="modal-body">
-                    <p>Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div style="height: 1px; background-color: #aaa; width: 100%; margin-top: 5px;"></div>
+                <div>
+                    {!! Form::open(array('url' => 'forum/postquestion')) !!}
+                    <div>
+
+                        {!! Form::text('catName','',array(
+                            'placeholder' => 'Title',
+                            'class' => 'forumCatNameTxt'
+                        )) !!}
+                    </div>
+                    <div>
+                        {!! Form::textarea('catDescription','',array(
+                            'placeholder' => 'Post yout question',
+                            'class' => 'forumCatDescriptionTxt'
+                        )) !!}
+                    </div>
                 </div>
             </div>
 
