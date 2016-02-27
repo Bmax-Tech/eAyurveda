@@ -11,6 +11,7 @@ var PHONE_PATTERN = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[ ]?([0-9]{4})$/;//Use to 
 var NIC_PATTERN = /^\(?([0-9]{9})\)?[Vv]$/;//Use to check phone number pattern
 var AJAX_CHECK_EMAIL = true; // Status after checking email
 var AJAX_CHECK_USERNAME = true; // Status after checking username
+var PASSWORD_PATTERN = false;// Status of password pattern
 
 // function checks for input text is empty or not
 function valid_length_input(para_1){
@@ -69,6 +70,69 @@ function valid_confirm_password(para_1,para_2){
 		return false;
 	}
 };
+
+// function validate password field entered characters pattern
+$(".password_regx").on('keyup',function(){
+
+	if($(".password_regx").val().length  == 0){
+		$(".c_password_inputs").fadeOut();
+	}else{
+		$(".c_password_inputs").fadeIn();
+	}
+
+	// *****  All regex patterns ******
+
+	var lower_case = /^(?=.*[a-z]).+$/;
+	var user_case = /^(?=.*[A-Z]).+$/;
+	var nums = /^(?=.*[0-9]).+$/;
+	var special_chars = /^(?=.*[^\w\s]).+$/;
+
+	// *****  All regex patterns ******
+
+	if($(".password_regx").val().length > 7){
+		$("#in_ps_ch_1").css('color','#FFF700');
+		$("#in_ps_ch_1").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.');
+	}else{
+		$("#in_ps_ch_1").css('color','#FFF');
+		$("#in_ps_ch_1").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.');
+	}
+
+	var value_ps = $(".password_regx").val();
+
+	if(lower_case.test(value_ps)){
+		$("#in_ps_ch_2").css('color','#FFF700');
+		$("#in_ps_ch_2").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.');
+	}else{
+		$("#in_ps_ch_2").css('color','#FFF');
+		$("#in_ps_ch_2").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.');
+	}
+	if(user_case.test(value_ps)){
+		$("#in_ps_ch_3").css('color','#FFF700');
+		$("#in_ps_ch_3").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.');
+	}else{
+		$("#in_ps_ch_3").css('color','#FFF');
+		$("#in_ps_ch_3").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.');
+	}
+	if(nums.test(value_ps) || special_chars.test(value_ps)){
+		$("#in_ps_ch_4").css('color','#FFF700');
+		$("#in_ps_ch_4").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.');
+	}else{
+		$("#in_ps_ch_4").css('color','#FFF');
+		$("#in_ps_ch_4").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.');
+	}
+
+	// this will check all patterns are matching with enterd password
+	if($(".password_regx").val().length > 7 && lower_case.test(value_ps) && user_case.test(value_ps) && (nums.test(value_ps) || special_chars.test(value_ps))){
+		PASSWORD_PATTERN = true;
+	}else{
+		PASSWORD_PATTERN = false;
+	}
+
+});
+
+$(".password_regx").on('focusout',function() {
+	$(".c_password_inputs").fadeOut();
+});
 
 /* ********************************************************** */
 
@@ -184,7 +248,7 @@ function remove_wrn(para_1){
 };
 
 function valid_registration(){
-	if(valid_length_input('first_name') || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('dob') || valid_length_input('nic') || !valid_nic_no('nic') || valid_length_input('contact_number') || !valid_phone_no('contact_number') || valid_length_input('email') || !valid_email('email') || valid_length_input('username') || valid_length_input('password') || valid_length_input('confirm_password') || !valid_confirm_password('password','confirm_password')){
+	if(valid_length_input('first_name') || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('dob') || valid_length_input('nic') || !valid_nic_no('nic') || valid_length_input('contact_number') || !valid_phone_no('contact_number') || valid_length_input('email') || !valid_email('email') || valid_length_input('username') || valid_length_input('password') || valid_length_input('confirm_password') || !valid_confirm_password('password','confirm_password') || !PASSWORD_PATTERN){
 
 		if(valid_length_input('first_name') || check_input_no_num('first_name')){
 			show_warning('first_name');
@@ -218,6 +282,10 @@ function valid_registration(){
 		if(!valid_confirm_password('password','confirm_password')){
 			show_warning('confirm_password');
 		}
+		if(!PASSWORD_PATTERN){
+			$(".c_password_inputs").fadeIn();
+			return false;
+		}
 
 		return false;
 	}else if(!AJAX_CHECK_EMAIL || !AJAX_CHECK_USERNAME){
@@ -231,7 +299,8 @@ function valid_registration(){
 		}
 
 		return false;
-	}else{
+	}
+	else{
 		return true;
 	}
 
@@ -722,6 +791,176 @@ function submit_comment(){
 //////////////////////////////////////////////////
 /////////  Suggest Doctor Page ///////////////////
 
+
+// *******   Side Percentage Bar *******
+
+var com_am=0; // Completed Amount
+// this is to keep states of each fields
+var add_doc_fields = {
+	1:0,
+	2:0,
+	3:0,
+	4:0,
+	5:0,
+	6:0,
+	7:0,
+	8:0,
+	9:0,
+	10:0,
+	11:0
+};
+var getProperty = function (index) {
+	return add_doc_fields[index];
+};
+
+/* All on Change events will handle to get completed percentage amount */
+$(".add_doc").on('change',function(){
+	var f_id = $(this).attr('data-id');
+	// First check for add treatments or specializations
+	if(f_id < 10) {
+		if (getProperty(f_id) == 0) {
+			if ($(this).val().length > 0) {
+				check_com_am(f_id, '+');
+				add_doc_fields[f_id] = 1;// Set to lock sate
+			} else {
+				if (com_am > 0) {
+					check_com_am(f_id, '-');
+					add_doc_fields[f_id] = 0;// Set to default state
+				}
+			}
+		}
+		else if (getProperty(f_id) == 1 && $(this).val().length == 0) {
+			if (com_am > 0) {
+				check_com_am(f_id, '-');
+				add_doc_fields[f_id] = 0;// Set to default state
+			}
+		}
+	}else{
+		// if specializations
+		if(f_id == 10){
+			var status = check_s_and_t('spec');
+			if (getProperty(f_id) == 0) {
+				if(status){
+					check_com_am(f_id, '+');
+					add_doc_fields[f_id] = 1;// Set to lock sate
+				}
+			}else{
+				if(!status){
+					check_com_am(f_id, '-');
+					add_doc_fields[f_id] = 0;// Set to lock sate
+				}
+			}
+		}else{
+			// if treatments
+			var status = check_s_and_t('treat');
+			if (getProperty(f_id) == 0) {
+				if(status){
+					check_com_am(f_id, '+');
+					add_doc_fields[f_id] = 1;// Set to lock sate
+				}
+			}else{
+				if(!status){
+					check_com_am(f_id, '-');
+					add_doc_fields[f_id] = 0;// Set to lock sate
+				}
+			}
+		}
+	}
+	change_com_percentage();
+});
+
+$("#district").on('change',function(){
+	var f_id = $("#district").attr('data-id');
+	if(getProperty(f_id) == 0) {
+		if($("#district").val() != "select"){
+			check_com_am(f_id,'+');
+			add_doc_fields[f_id] = 1;// Set to lock sate
+		}else{
+			if(com_am > 0) {
+				check_com_am(f_id,'-');
+				add_doc_fields[f_id] = 0;// Set to default state
+			}
+		}
+	}else if(getProperty(f_id) == 1 && $(this).val() == "select"){
+		if(com_am > 0) {
+			check_com_am(f_id,'-');
+			add_doc_fields[f_id] = 0;// Set to default state
+		}
+	}
+	change_com_percentage();
+});
+
+function change_com_percentage(){
+	$("#c_completed_cir").removeAttr('class');
+	$("#c_completed_cir").addClass('c100');
+	$("#c_completed_cir").addClass('p'+com_am);
+	$("#c_completed_cir").addClass('big');
+	$("#c_completed_cir_am").html(com_am+"%");
+}
+
+function check_com_am(id,op){
+	if(id < 7){
+		if(op == '+'){
+			com_am=com_am+7;
+		}else{
+			com_am=com_am-7;
+		}
+	}else if(id < 9){
+		if(op == '+'){
+			com_am=com_am+12;
+		}else{
+			com_am=com_am-12;
+		}
+	}else if(id == 9){
+		if(op == '+'){
+			com_am=com_am+14;
+		}else{
+			com_am=com_am-14;
+		}
+	}else if(id > 9){
+		if(op == '+'){
+			com_am=com_am+10;
+		}else{
+			com_am=com_am-10;
+		}
+	}
+}
+
+function check_s_and_t(para_1){
+
+	if(para_1 == "spec"){
+		var skip=false;
+		var spec_count = $("#spec_count").val();
+		for(var i=1;i<=spec_count;i++){
+			if($("#spec_doc_"+i).val() == ""){
+				skip=true;
+			}
+		}
+
+		if(skip){
+			return false;
+		}else{
+			return true;
+		}
+	}else if(para_1 == "treat"){
+		var skip=false;
+		var treat_count = $("#treat_count").val();
+		for(var i=1;i<=treat_count;i++){
+			if($("#treat_doc_"+i).val() == ""){
+				skip=true;
+			}
+		}
+
+		if(skip){
+			return false;
+		}else{
+			return true;
+		}
+	}
+}
+
+// *******   Side Percentage Bar *******
+
 function change_sug_tab(para_1){
 	if(para_1 == 1){
 		$(".c_sug_doc_tabs").removeClass('c_sug_doc_tabs_active');
@@ -750,12 +989,7 @@ function change_sug_tab(para_1){
 		}
 	}else if(para_1 == 4){
 		if(validate_tab_change(1) && validate_tab_change(2) && validate_tab_change(3)) {
-			/*$(".c_sug_doc_tabs").removeClass('c_sug_doc_tabs_active');
-			 $("#c_sug_" + para_1 + "_tab").addClass('c_sug_doc_tabs_active');
-
-			 $("#c_doc_sug_tab_3_div").show();
-			 $("#c_doc_sug_tab_1_div").hide();
-			 $("#c_doc_sug_tab_2_div").hide();*/
+			show_profile_preview();
 		}
 	}
 };
@@ -796,6 +1030,8 @@ function check_spec_and_treat(para_1){
 	}
 }
 
+var status_spec=true; // status of specializations
+var status_treat=true; // status of treatments
 function validate_tab_change(para_1){
 	if(para_1 == 1){
 		if(valid_length_input('first_name')  || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('address_1') || valid_length_input('address_2') || valid_length_input('city') || $("#district").val() == 'select') {
@@ -846,8 +1082,6 @@ function validate_tab_change(para_1){
 			return true;
 		}
 	}else if(para_1 == 3){
-		var status_spec=true;
-		var status_treat=true;
 		if(check_spec_and_treat('spec')){
 			status_spec=true;
 		}else{
@@ -860,40 +1094,50 @@ function validate_tab_change(para_1){
 		}
 
 		if(status_spec && status_treat){
-
-			// Set up preview panel
-			$("#c_pre_name").html($("input[name=first_name]").val()+" "+$("input[name=last_name]").val());
-			$("#c_pre_gender").html($("input[name=gender]").val());
-			$("#c_pre_address_1").html($("input[name=address_1]").val());
-			$("#c_pre_address_2").html($("input[name=address_2]").val());
-			$("#c_pre_city").html($("input[name=city]").val());
-			$("#c_pre_contact_no").html($("input[name=contact_no]").val());
-			$("#c_pre_email").html($("input[name=email]").val());
-			$("#c_pre_description").html($("#doc_description").val());
-
-			var txt="";
-			var spec_count = $("#spec_count").val();
-			for(var i=1;i<=spec_count;i++){
-				txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#spec_doc_"+i).val()+'</div>';
-			}
-			$("#c_pre_spec_div").html(txt);
-
-			txt="";
-			var treat_count = $("#treat_count").val();
-			for(var i=1;i<=treat_count;i++){
-				txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#treat_doc_"+i).val()+'</div>';
-			}
-			$("#c_pre_treat_div").html(txt);
-
-
-			// Set up preview panel End
-
-			$("#c_preview_pop_up").fadeIn(function(){
-				$("#c_preview_pop_up_inner").slideDown();
-			});
+			return true;
+		}else{
+			return false;
 		}
 	}
 };
+
+/* This will show profile preview */
+function show_profile_preview(){
+	if(status_spec && status_treat){
+
+		// Set up preview panel
+		$("#c_pre_name").html($("input[name=first_name]").val()+" "+$("input[name=last_name]").val());
+		$("#c_pre_gender").html($("input[name=gender]").val());
+		$("#c_pre_address_1").html($("input[name=address_1]").val());
+		$("#c_pre_address_2").html($("input[name=address_2]").val());
+		$("#c_pre_city").html($("input[name=city]").val());
+		$("#c_pre_district").html($("#district").val());
+		$("#c_pre_contact_no").html($("input[name=contact_number]").val());
+		$("#c_pre_email").html($("input[name=email]").val());
+		$("#c_pre_description").html($("#doc_description").val());
+
+		var txt="";
+		var spec_count = $("#spec_count").val();
+		for(var i=1;i<=spec_count;i++){
+			txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#spec_doc_"+i).val()+'</div>';
+		}
+		$("#c_pre_spec_div").html(txt);
+
+		txt="";
+		var treat_count = $("#treat_count").val();
+		for(var i=1;i<=treat_count;i++){
+			txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#treat_doc_"+i).val()+'</div>';
+		}
+		$("#c_pre_treat_div").html(txt);
+
+
+		// Set up preview panel End
+
+		$("#c_preview_pop_up").fadeIn(function(){
+			$("#c_preview_pop_up_inner").slideDown();
+		});
+	}
+}
 
 var sep_op=1;
 function add_more_op(){
@@ -1284,3 +1528,80 @@ function abortTimer() { // to be called when you want to stop the timer
 	clearInterval(tid);
 }
 /////////////////////////////////////////////////
+
+
+/***********************************************/
+/*****************  Captcha   ******************/
+
+
+$(document).ready(function(){
+	if($("#register_page").val() == "YES") {
+		add_captcha_thumbs();
+	}
+});
+
+var captach_images = [];// used to store captcha images
+var count=0;//count index no for captcha
+var call_count=0;
+function get_api_images(para_1){
+	var apiKey = 'zcpen8bk54rtz7tw6kzbmhxq'; // my getty Api Key
+	$.ajax({
+			type:'GET',
+			url:"https://api.gettyimages.com/v3/search/images/creative?phrase="+para_1,
+			beforeSend: function (request)
+			{
+				request.setRequestHeader("Api-Key", apiKey);
+			}
+		}).done(function(data){
+			/*console.log(data);*/
+			for(var i = 0;i<3;i++)
+		 	{
+				 var index = Math.floor(Math.random() * ( 1 + 29 - 0 ) ) + 0;// get random index
+				 captach_images[count] = data.images[index].display_sizes[0].uri;
+				 count++;
+		 	}
+			call_count++;
+
+			// if second ajax call finish only
+			if(call_count == 2){
+				shuffle(captach_images);
+				for(var i=0;i<6;i++){
+					$("#cap_img_"+(i+1)).attr('src',captach_images[i]); // add images
+				}
+			}
+		}).fail(function(data){
+				alert(JSON.stringify(data,2))
+			}
+		);
+};
+
+function add_captcha_thumbs(){
+	get_api_images('dog');
+	get_api_images('leaf');
+}
+
+function shuffle(array) {
+	var currentIndex = array.length, temporaryValue, randomIndex;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+}
+
+$(".c_captcha_box").click(function(){
+	$(".c_captcha_pop_up").fadeToggle();
+});
+
+/*****************  Captcha   ******************/
+/***********************************************/

@@ -2,11 +2,10 @@
 @section('content')
 
 <!-- Registration Form -->
+<input type="hidden" id="register_page" value="YES"/>
 <div class="container c_container">
     <div class="col-lg-6" style="padding-top:10px">
         <form action="{{URL::to('register/save')}}" method="post" onsubmit="return valid_registration()" name="registration">
-
-        {{--{{ Form::open(array('method'=>'POST','routes'=>'register/save','onsubmit'=>'valid_registration()')) }}--}}
         <ul class="c_ul_1">
             <li class="c_add_margin_20" style="margin-bottom:30px">
                 <span class="c_font_2" style="color:#39B54A">Register</span>
@@ -27,16 +26,6 @@
                 <div class="col-lg-12 c_no_padding">
                     <div class="col-lg-6 c_no_padding" style="padding-right:20px">
                         <ul class="c_ul_1">
-                            {{--<li>
-                                <span>Gender</span><span class="c_warning_tips_reg" id="wrn_gender">select gender</span>
-                            </li>
-                            <li class="c_add_margin_20 c_form_margin_10">
-                                <select class="c_select_box_1" name="gender" id="reg_gender" onchange="remove_wrn('gender')">
-                                    <option value="select">Select</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-                            </li>--}}
                             <li>
                                 <span>Gender</span>
                             </li>
@@ -88,7 +77,7 @@
                 <span>Password</span><span class="c_warning_tips_reg" id="wrn_password">enter password</span>
             </li>
             <li class="c_add_margin_20 c_form_margin_10">
-                <input type="password" class="c_text_box_1" spellcheck="false" name="password" onkeypress="remove_wrn('password')" onchange="remove_wrn('password')" autocomplete="off"/>
+                <input type="password" class="c_text_box_1 password_regx" spellcheck="false" name="password" onkeypress="remove_wrn('password')" onchange="remove_wrn('password')" autocomplete="off"/>
             </li>
             <li>
                 <span>Confirm Password</span><span class="c_warning_tips_reg" id="wrn_confirm_password">enter valid confirm password</span>
@@ -96,12 +85,60 @@
             <li class="c_add_margin_20 c_form_margin_10">
                 <input type="password" class="c_text_box_1" spellcheck="false" name="confirm_password" onkeypress="remove_wrn('confirm_password')" onchange="remove_wrn('confirm_password')" autocomplete="off"/>
             </li>
+            <li style="padding:0px 8px;margin-top:35px">
+                <div class="c_captcha_pop_up">
+                    <div class="c_captcha_pop_up_in_1">
+                        <div class="col-lg-12 c_no_padding" id="c_captcha_pop_up_in_1_head">
+                            Select all pictures with dogs
+                        </div>
+                        <div class="col-lg-12 c_no_padding">
+                            <?php
+                                $count=1;// this holds number of images for captcha
+                                for($i=1;$i<4;$i++){
+                            ?>
+                                <div class="col-lg-4 c_no_padding cap_img"><img src="" id="cap_img_<?php echo $count; ?>"></div>
+                            <?php
+                                    $count++;
+                                }
+                            ?>
+                        </div>
+                        <div class="col-lg-12 c_no_padding" style="padding-top: 5px">
+                            <?php
+                                for($i=1;$i<4;$i++){
+                            ?>
+                                <div class="col-lg-4 c_no_padding cap_img"><img src="" id="cap_img_<?php echo $count; ?>"></div>
+                            <?php
+                                $count++;
+                                }
+                            ?>
+                        </div>
+
+                    </div>
+                    <div id="arrow_down"></div>
+                </div>
+                <div class="c_captcha_box">
+                    <div class="c_captcha_box_in_1">
+                        <img src="{{ URL::asset('assets/img/robot.png') }}" style="width: 30px;margin-right: 10px">I`m not a robot
+                        <img src="{{ URL::asset('assets/img/robot_qa.png') }}" style="width: 30px;float: right"><span style="float: right;margin-right: 10px;color: #ff332f">Verify Me</span>
+                    </div>
+                </div>
+            </li>
             <li style="padding:0px 8px;margin-top:55px">
                 <button type="submit" class="c_button_1">Register</button>
             </li>
         </ul>
+        <div class="c_password_inputs">
+            <div id="in_ps_div_1"></div>
+            <div id="in_ps_div_2">
+                <ul class="c_ul_1">
+                    <li id="in_ps_ch_1"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.</li>
+                    <li id="in_ps_ch_2"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.</li>
+                    <li id="in_ps_ch_3"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.</li>
+                    <li id="in_ps_ch_4"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.</li>
+                </ul>
+            </div>
+        </div>
         </form>
-        {{--{{ Form::close() }}--}}
     </div>
     <div class="col-lg-6">
         <ul class="c_ul_1" style="padding-top:10px">
