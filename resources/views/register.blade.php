@@ -86,17 +86,27 @@
                 <input type="password" class="c_text_box_1" spellcheck="false" name="confirm_password" onkeypress="remove_wrn('confirm_password')" onchange="remove_wrn('confirm_password')" autocomplete="off"/>
             </li>
             <li style="padding:0px 8px;margin-top:35px">
+                <!-- ***** Captcha ****** -->
                 <div class="c_captcha_pop_up">
                     <div class="c_captcha_pop_up_in_1">
                         <div class="col-lg-12 c_no_padding" id="c_captcha_pop_up_in_1_head">
-                            Select all pictures with dogs
+                            Select all pictures with <span id="c_select_name">dogs</span><img src="{{ URL::asset('assets/img/refresh.png') }}" onclick="refresh_captcha()" style="float: right;width: 20px;margin-right: 15px;cursor: pointer">
+                        </div>
+                        <div class="captcha_loading">
+                            <img src="{{ URL::asset('assets/img/loading_3.gif') }}">
+                            {{--<br/>
+                            <span style="font-size: 22px;color: #00B000">Loading</span>--}}
                         </div>
                         <div class="col-lg-12 c_no_padding">
                             <?php
                                 $count=1;// this holds number of images for captcha
                                 for($i=1;$i<4;$i++){
                             ?>
-                                <div class="col-lg-4 c_no_padding cap_img"><img src="" id="cap_img_<?php echo $count; ?>"></div>
+                                <div class="col-lg-4 c_no_padding cap_img">
+                                    <img src="" onclick="click_captcha('<?php echo $count; ?>')" id="cap_img_<?php echo $count; ?>">
+                                    <div class="captcha_img_select" id="cap_over_<?php echo $count; ?>" onclick="remove_captcha('<?php echo $count; ?>')"><img src="{{ URL::asset('assets/img/ok_2.png') }}" class="captcha_img_select_in"></div>
+                                    <input type="hidden" class="img_h" id="img_<?php echo $count; ?>" value="0"/>
+                                </div>
                             <?php
                                     $count++;
                                 }
@@ -106,22 +116,28 @@
                             <?php
                                 for($i=1;$i<4;$i++){
                             ?>
-                                <div class="col-lg-4 c_no_padding cap_img"><img src="" id="cap_img_<?php echo $count; ?>"></div>
+                                <div class="col-lg-4 c_no_padding cap_img">
+                                    <img src="" onclick="click_captcha('<?php echo $count; ?>')" id="cap_img_<?php echo $count; ?>">
+                                    <div class="captcha_img_select" id="cap_over_<?php echo $count; ?>" onclick="remove_captcha('<?php echo $count; ?>')"><img src="{{ URL::asset('assets/img/ok_2.png') }}" class="captcha_img_select_in"></div>
+                                    <input type="hidden" class="img_h" id="img_<?php echo $count; ?>" value="0"/>
+                                </div>
                             <?php
                                 $count++;
                                 }
                             ?>
                         </div>
-
+                        <button type="button" id="cpa_verify_btn">Verify</button>
                     </div>
                     <div id="arrow_down"></div>
                 </div>
                 <div class="c_captcha_box">
                     <div class="c_captcha_box_in_1">
                         <img src="{{ URL::asset('assets/img/robot.png') }}" style="width: 30px;margin-right: 10px">I`m not a robot
-                        <img src="{{ URL::asset('assets/img/robot_qa.png') }}" style="width: 30px;float: right"><span style="float: right;margin-right: 10px;color: #ff332f">Verify Me</span>
+                        <img class="cap_v_1" src="{{ URL::asset('assets/img/robot_qa.png') }}" style="width: 30px;float: right"><span class="cap_v_1" style="float: right;margin-right: 10px;color: #ff332f">Verify Me</span>
+                        <img class="cap_v_2" src="{{ URL::asset('assets/img/ok_3.png') }}" style="width: 30px;float: right"><span class="cap_v_2" style="float: right;margin-right: 10px;color: #228500">Verified</span>
                     </div>
                 </div>
+                <!-- ***** Captcha ****** -->
             </li>
             <li style="padding:0px 8px;margin-top:55px">
                 <button type="submit" class="c_button_1">Register</button>

@@ -12,6 +12,7 @@ var NIC_PATTERN = /^\(?([0-9]{9})\)?[Vv]$/;//Use to check phone number pattern
 var AJAX_CHECK_EMAIL = true; // Status after checking email
 var AJAX_CHECK_USERNAME = true; // Status after checking username
 var PASSWORD_PATTERN = false;// Status of password pattern
+var CAPTCHA_VERIFY = false;// Status of the captcha verification
 
 // function checks for input text is empty or not
 function valid_length_input(para_1){
@@ -284,24 +285,31 @@ function valid_registration(){
 		}
 		if(!PASSWORD_PATTERN){
 			$(".c_password_inputs").fadeIn();
+		}
+
+		return false;
+	}else {
+		check_reg_existing('email',$('input[name=email]').val());
+		check_reg_existing('username',$('input[name=username]').val());
+
+		if (!AJAX_CHECK_EMAIL || !AJAX_CHECK_USERNAME) {
+			if (!AJAX_CHECK_EMAIL) {
+				$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+				show_warning('email');
+			}
+			if (!AJAX_CHECK_USERNAME) {
+				$('#wrn_username').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+				show_warning('username');
+			}
+
 			return false;
-		}
+		} else if (!CAPTCHA_VERIFY) {
+			$(".c_captcha_pop_up").fadeToggle();
 
-		return false;
-	}else if(!AJAX_CHECK_EMAIL || !AJAX_CHECK_USERNAME){
-		if(!AJAX_CHECK_EMAIL){
-			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
-			show_warning('email');
+			return false;
+		} else {
+			return true;
 		}
-		if(!AJAX_CHECK_USERNAME){
-			$('#wrn_username').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
-			show_warning('username');
-		}
-
-		return false;
-	}
-	else{
-		return true;
 	}
 
 };
@@ -417,7 +425,7 @@ function password_acc_check(){
 }
 
 function check_change_password_form(){
-	if(!valid_email('reset_ps_email') || valid_length_input('reset_ps_password') || valid_length_input('reset_ps_confirm_password') || !valid_confirm_password('reset_ps_password','reset_ps_confirm_password')){
+	if(!valid_email('reset_ps_email') || valid_length_input('reset_ps_password') || valid_length_input('reset_ps_confirm_password') || !valid_confirm_password('reset_ps_password','reset_ps_confirm_password') || !PASSWORD_PATTERN){
 		if(valid_length_input('reset_ps_password')){
 			add_input_box_wrn('reset_ps_password');
 		}
@@ -426,6 +434,9 @@ function check_change_password_form(){
 		}
 		if(!valid_confirm_password('reset_ps_password','reset_ps_confirm_password')){
 			add_input_box_wrn('reset_ps_confirm_password');
+		}
+		if(!PASSWORD_PATTERN){
+			$(".c_password_inputs").fadeIn();
 		}
 
 		return false;
@@ -1533,6 +1544,17 @@ function abortTimer() { // to be called when you want to stop the timer
 /***********************************************/
 /*****************  Captcha   ******************/
 
+/* ****** Initialize Captcha Image Thems  ***** */
+var captcha_themes = [];
+captcha_themes.push(['dog','leaf']);
+captcha_themes.push(['parrot','bus']);
+captcha_themes.push(['ball','bicycle']);
+captcha_themes.push(['car','fish']);
+captcha_themes.push(['frog','spider']);
+captcha_themes.push(['lotus','book']);
+captcha_themes.push(['pen','ring']);
+var second_cap_op = '';
+/* ****** Initialize Captcha Image Thems  ***** */
 
 $(document).ready(function(){
 	if($("#register_page").val() == "YES") {
@@ -1540,7 +1562,8 @@ $(document).ready(function(){
 	}
 });
 
-var captach_images = [];// used to store captcha images
+var captcha_images = [];// used to store captcha images
+var captcha_type = [];// used to store images types
 var count=0;//count index no for captcha
 var call_count=0;
 function get_api_images(para_1){
@@ -1556,32 +1579,69 @@ function get_api_images(para_1){
 			/*console.log(data);*/
 			for(var i = 0;i<3;i++)
 		 	{
-				 var index = Math.floor(Math.random() * ( 1 + 29 - 0 ) ) + 0;// get random index
-				 captach_images[count] = data.images[index].display_sizes[0].uri;
-				 count++;
+			 	var index = Math.floor(Math.random() * ( 1 + 29 - 0 ) ) + 0;// get random index
+			 	captcha_images[count] = data.images[index].display_sizes[0].uri;
+
+				if(call_count == 0){
+					captcha_type[count] = 'DOG';
+				}else{
+					captcha_type[count] = 'LEAF';
+				}
+
+				count++;
 		 	}
 			call_count++;
 
+			// Asynchronously Call Second API Call
+			if(call_count == 1){
+				get_api_images(second_cap_op);
+			}
+
 			// if second ajax call finish only
 			if(call_count == 2){
-				shuffle(captach_images);
+				//console.log(captcha_type);
+				shuffle(captcha_images,captcha_type);
+				//console.log(captcha_type);
 				for(var i=0;i<6;i++){
-					$("#cap_img_"+(i+1)).attr('src',captach_images[i]); // add images
+					$("#cap_img_"+(i+1)).attr('src',captcha_images[i]); // add images
 				}
+				$(".captcha_loading").fadeOut();// remove captcha loading
 			}
 		}).fail(function(data){
-				alert(JSON.stringify(data,2))
+				console.log(JSON.stringify(data,2));
 			}
 		);
 };
 
 function add_captcha_thumbs(){
-	get_api_images('dog');
-	get_api_images('leaf');
+	$(".captcha_loading").fadeIn(); // add captcha loading
+
+	var index = Math.floor(Math.random() * ( 1 + (captcha_themes.length-1) - 0 ) ) + 0;// get random index
+	$("#c_select_name").html(captcha_themes[index][0]);// Set Selecting Theme
+	second_cap_op = captcha_themes[index][1];// set second loop theme value
+	get_api_images(captcha_themes[index][0]);// Selecting Theme
+
 }
 
-function shuffle(array) {
-	var currentIndex = array.length, temporaryValue, randomIndex;
+function refresh_captcha(){
+	// *** Reset to Default *********
+	captcha_images = [];// used to store captcha images
+	captcha_type = [];// used to store images types
+	count=0;//count index no for captcha
+	call_count=0;
+	$(".captcha_img_select").fadeOut();
+	$(".img_h").val(0);
+	CAPTCHA_VERIFY = false;
+	$(".c_captcha_box").css('background','rgba(255, 201, 66, 0.44)');
+	$(".cap_v_2").hide(1);
+	$(".cap_v_1").show(1);
+	// *** Reset to Default *********
+
+	add_captcha_thumbs();
+}
+
+function shuffle(array_1,array_2) {
+	var currentIndex = array_1.length, temporaryValue, randomIndex;
 
 	// While there remain elements to shuffle...
 	while (0 !== currentIndex) {
@@ -1591,16 +1651,68 @@ function shuffle(array) {
 		currentIndex -= 1;
 
 		// And swap it with the current element.
-		temporaryValue = array[currentIndex];
-		array[currentIndex] = array[randomIndex];
-		array[randomIndex] = temporaryValue;
+		temporaryValue = array_1[currentIndex];
+		array_1[currentIndex] = array_1[randomIndex];
+		array_1[randomIndex] = temporaryValue;
+
+		// this switches the images types
+		temporaryValue = array_2[currentIndex];
+		array_2[currentIndex] = array_2[randomIndex];
+		array_2[randomIndex] = temporaryValue;
 	}
 
-	return array;
+	//return array;
 }
 
 $(".c_captcha_box").click(function(){
 	$(".c_captcha_pop_up").fadeToggle();
+});
+
+// This function handles captcha image click
+function click_captcha(para_1){
+	$("#cap_over_"+para_1).fadeIn();
+	$("#img_"+para_1).val('1');
+};
+
+// This function removes cpatcha overflow
+function remove_captcha(para_1){
+	$("#cap_over_"+para_1).fadeOut();
+	$("#img_"+para_1).val('0');
+}
+
+// Do Captcha Verification
+$("#cpa_verify_btn").click(function(){
+	CAPTCHA_VERIFY = false;
+	var status=true;
+	var count=1;
+	for(var i=0;i<6;i++){
+		//console.log(captcha_type[i]);
+		var clicked_val = $("#img_"+count).val();
+		if(captcha_type[i] == "DOG") {
+			if (clicked_val == 0) {
+				status = false;
+			}
+		}else if(captcha_type[i] == "LEAF") {
+			if (clicked_val == 1) {
+				status = false;
+			}
+		}
+
+		count++;
+	}
+
+	if(status){
+		CAPTCHA_VERIFY = true;
+		$(".c_captcha_pop_up").fadeToggle();
+		$(".c_captcha_box").css('background','rgba(61, 180, 61, 0.51)');
+		$(".cap_v_1").hide(1);
+		$(".cap_v_2").fadeIn();
+	}else{
+		CAPTCHA_VERIFY = false;
+		$(".c_captcha_box").css('background','rgba(255, 201, 66, 0.44)');
+		$(".cap_v_2").hide(1);
+		$(".cap_v_1").show(1);
+	}
 });
 
 /*****************  Captcha   ******************/

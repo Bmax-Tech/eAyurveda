@@ -264,18 +264,32 @@
 .c_captcha_box_in_1{
 	font-size: 20px;
 }
+.captcha_loading{
+	background: rgba(255, 255, 255, 0.82);
+	position: absolute;
+	margin-top: 36px;
+	z-index: 999;
+	margin-left: 5px;
+	width: 93.5%;
+	text-align: center;
+	height: 68%;
+	padding: 110px 0px;
+}
+.cap_v_2{
+	display: none;
+}
 .c_captcha_pop_up{
 	display: none;
 	position: absolute;
 	width: 92%;
 	/* height: 300px; */
-	margin-top: -347px;
+	margin-top: -387px;
 }
 .c_captcha_pop_up_in_1{
 	border: 2px solid #0F7400;
 	padding: 10px;
 	width: 100%;
-	height: 322px;
+	height: 363px;
 	background: #FFE7AC;
 	border-radius: 10px;
 }
@@ -293,6 +307,7 @@
 .cap_img>img{
 	width: 100%;
 	height: 125px;
+	cursor: pointer;
 }
 #c_captcha_pop_up_in_1_head{
     background: #FF332F;
@@ -302,6 +317,38 @@
     margin-bottom: 10px;
     border-radius: 5px;
     color: #fff;
+}
+.captcha_img_select{
+	display: none;
+	background: rgba(0, 164, 216, 0.55);
+	position: absolute;
+	z-index: 999;
+	width: 85%;
+	height: 85%;
+	margin-top: -118px;
+	margin-left: 7px;
+	border: 2px solid #fff;
+	border-radius: 10px;
+	cursor: pointer;
+}
+.captcha_img_select_in{
+	width: 40px;
+	margin-left: 50px;
+	margin-top: 32px;
+}
+#cpa_verify_btn{
+	width: 98%;
+	background: #FF852F;
+	border: 0px;
+	color: #FFF;
+	padding: 5px;
+	font-size: 15px;
+	margin-left: 5px;
+	/* margin-right: 10px; */
+	margin-top: 5px;
+}
+#cpa_verify_btn:hover{
+	background: #df7314;
 }
 
 /* ---- Advanced Search Box ---- */

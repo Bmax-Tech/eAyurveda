@@ -299,7 +299,7 @@
                         <span class="c_font_2">Change Password</span>
                     </li>
                     <li style="margin-bottom: 20px;margin-top: 40px">
-                        <input type="password" class="c_text_box_1" id="reset_ps_password" onkeypress="remove_highlight('reset_ps_password','c_error_input_field_highlight')" placeholder="new password" name="reset_ps_password" autocomplete="off" spellcheck="false"/>
+                        <input type="password" class="c_text_box_1 password_regx" id="reset_ps_password" onkeypress="remove_highlight('reset_ps_password','c_error_input_field_highlight')" placeholder="new password" name="reset_ps_password" autocomplete="off" spellcheck="false"/>
                     </li>
                     <li>
                         <input type="password" class="c_text_box_1" id="reset_ps_confirm_password" onkeypress="remove_highlight('reset_ps_confirm_password','c_error_input_field_highlight')" placeholder="confirm password" name="reset_ps_confirm_password" autocomplete="off" spellcheck="false"/>
@@ -309,6 +309,17 @@
                     </li>
                 </ul>
             </form>
+            <div class="c_password_inputs" style="margin-left: 284px;bottom: 64.9%;right: 570px;">
+                <div id="in_ps_div_1" style="border-right: 25px solid #3D8EB4"></div>
+                <div id="in_ps_div_2" style="background: #3D8EB4">
+                    <ul class="c_ul_1">
+                        <li id="in_ps_ch_1"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.</li>
+                        <li id="in_ps_ch_2"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.</li>
+                        <li id="in_ps_ch_3"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.</li>
+                        <li id="in_ps_ch_4"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <!-- Password Change Success Message -->
         <div id="c_change_pass_suc_box" style="padding: 80px 82px;">
