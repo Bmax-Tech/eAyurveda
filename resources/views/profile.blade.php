@@ -208,13 +208,15 @@
         var gmap, mapCanvas, mapOptions = { zoomControl: true, streetViewControl: false, noClear: true };
         var marker;
 
+        var image_1 = '{{ URL::asset('assets/img/gps_pin.png') }}';
+
         function mapInitialize( mapCenter, mapZoom ) {
             mapOptions.center = mapCenter;
             mapOptions.zoom = mapZoom;
             mapCanvas.setAttribute( "style", "height:" + window.innerHeight + "px;" );
             setTimeout( function() {
                 gmap = new google.maps.Map( mapCanvas, mapOptions );
-                //marker = new google.maps.Marker({position: mapCenter,map: gmap,icon: image_1});
+                marker = new google.maps.Marker({position: mapCenter,map: gmap,icon: image_1});
         }, 20 );
 
 
