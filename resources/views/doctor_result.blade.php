@@ -1,9 +1,15 @@
 <?php
     foreach($doctors as $doc){
+
+        if($doc->doc_type == "NON_FORMAL"){
+            $img = URL::asset('profile_images/default_user_icon.png');
+        }else{
+            $img = URL::asset('profile_images/doctor_images/doc_profile_img_'.$doc->user_id.'.png');
+        }
 ?>
 <div class="col-lg-12 c_doc_result_div">
     <div class="col-lg-2 c_no_padding">
-       <img src="assets/img/doc_user.png" width="100%">
+       <img src="<?php echo $img; ?>" width="100%">
     </div>
     <div class="col-lg-7 c_no_padding" style="padding-left: 10px">
         <div style="color: #0F7400;font-size: 18px;padding:5px 0px;font-weight: 500">

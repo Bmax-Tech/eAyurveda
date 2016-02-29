@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Chat_data;
 use App\Comments;
 use App\Doctors;
 use App\Images;
@@ -11,11 +12,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Input;
 
 class AjaxControll extends Controller
 {
-    public $RESULTS_PER_PAGE = 3;// This is to set number of records shown in search results page (Each)
+    public $RESULTS_PER_PAGE = 4;// This is to set number of records shown in search results page (Each)
 
     public function register_page(Request $request,$type,$data){
         if($type == 'username')
@@ -36,11 +38,13 @@ class AjaxControll extends Controller
 
         if(Input::get('advanced_search') == 'NO') {
             // This executes when Normal search is used
-            if (Input::get('filter_star_rating') == 0) {
+            if (Input::get('filter_star_rating') == 0 && Input::get('filter_loc') == '-') {
                 $doctors = \DB::table('doctors')->where('first_name', 'like', '%' . Input::get('search_text_hidden') . '%')->orwhere('last_name', 'like', '%' . Input::get('search_text_hidden') . '%')->paginate($this->RESULTS_PER_PAGE);
-            } else {
+            } else if(Input::get('filter_star_rating') != 0) {
                 $doctors = \DB::table('doctors')->where('rating', '=', Input::get('filter_star_rating'))->paginate($this->RESULTS_PER_PAGE);
-            }
+            }else if(Input::get('filter_loc') != '-'){
+				$doctors = \DB::table('doctors')->where('district', '=', Input::get('district'))->paginate($this->RESULTS_PER_PAGE);
+			}
         }else{
             // This executes when Advanced Search is used By ^^^ Salika ^^^
 
@@ -58,15 +62,15 @@ class AjaxControll extends Controller
                    ->where(function ($q) use ($doc_name,$location,$spec,$treat) {
 					           $q->where('address_1', 'like', '%' . $location . '%')
 							                ->where(function ($q1) use ($doc_name,$spec,$treat) {
-												$q1->where('specialization','like','%'.$spec.'%') 
+												$q1->where('specialization','like','%'.$spec.'%')
 												            ->where(function ($q2) use ($doc_name,$treat) {
- 																 $q2->where('treatment','like','%'.$treat.'%') 
+ 																 $q2->where('treatment','like','%'.$treat.'%')
 																             ->where(function ($q4) use ($doc_name) {
  																				          $q4->where('first_name', 'like', '%' . $doc_name . '%')
 																						  ->orWhere('last_name', 'like', '%' . $doc_name . '%');
-																			})->paginate($this->RESULTS_PER_PAGE); 
-															})->paginate($this->RESULTS_PER_PAGE); 
-											})->paginate($this->RESULTS_PER_PAGE); 
+																			})->paginate($this->RESULTS_PER_PAGE);
+															})->paginate($this->RESULTS_PER_PAGE);
+											})->paginate($this->RESULTS_PER_PAGE);
 					})->paginate($this->RESULTS_PER_PAGE);
 
        }
@@ -152,7 +156,7 @@ class AjaxControll extends Controller
                    ->where(function ($q) use ($doc_name,$location,$spec) {
 					           $q->where('address_1', 'like', '%' . $location . '%')
 							                ->where(function ($q1) use ($doc_name,$spec) {
-												$q1->where('specialization','like','%'.$spec.'%'); 
+												$q1->where('specialization','like','%'.$spec.'%');
 											})->paginate($this->RESULTS_PER_PAGE); 
 					})->paginate($this->RESULTS_PER_PAGE); 
 					}
@@ -167,7 +171,7 @@ class AjaxControll extends Controller
 					})->paginate($this->RESULTS_PER_PAGE); 
 					}
 				else if($doc_name == '' && $location =='' &&  $spec != '' && $treat == ''){
-					  $doctors = \DB::table('doctors')->where('specialization', 'like', '%' . $spec . '%')->paginate($this->RESULTS_PER_PAGE);
+					  $doctors = \DB::table('doctors')->join('specialization', 'doctors.id', '=', 'specialization.doc_id')->where('spec_1', 'like', '%' . $spec . '%')->paginate($this->RESULTS_PER_PAGE);
 					}
 				else if($doc_name != '' && $location !='' &&  $spec == '' && $treat == ''){
 					  $doctors =  \DB::table('doctors')
@@ -206,7 +210,7 @@ class AjaxControll extends Controller
     }
 
     public function get_doctor_comments(Request $request,$doc_id){
-        $comments = Comments::where('doctor_id',$doc_id)->get();
+        $comments = Comments::where('doctor_id',$doc_id)->orderBy('id','DESC')->get();
         $count=1;
 
         foreach ($comments as $com) {
@@ -251,4 +255,124 @@ class AjaxControll extends Controller
         $res['response'] = "SUCCESS";
         return response()->json($res);
     }
+
+	// this function loads personally posted comments
+	public function get_comments_by_user(Request $request){
+		$user = json_decode($_COOKIE['user'], true);
+		$comments = Comments::whereUser_id($user[0]['id'])->orderBy('id','DESC')->limit(20)->get();
+
+		foreach($comments as $com){
+			$doc = Doctors::find($com->doctor_id);
+			$img = Images::whereUser_id($doc->user_id)->first();
+			$main_ob['com_data'] = $com;
+			$main_ob['doc_first_name'] = $doc->first_name;
+			$main_ob['doc_last_name'] = $doc->last_name;
+			$main_ob['doc_img'] = $img->image_path;
+
+			$res[] = $main_ob;
+		}
+
+
+		return response()->json($res);
+	}
+
+	// this function will handel chat message sending feature
+	public function send_chat_message_by_user(Request $request){
+		$user = json_decode($_COOKIE['user'], true);
+		$user_id = $user[0]['id'];
+
+		Chat_data::create([
+			'sender_id' => $user_id,
+			'receiver_id' => 0,
+			'message' => Input::get('message'),
+			'posted_date_time' =>  new \DateTime()
+		]);
+
+		$res['response'] = "SUCCESS";
+		return response()->json($res);
+	}
+
+	// this function will get chat messages feature
+	public function get_chat_message_by_user(Request $request){
+		$user = json_decode($_COOKIE['user'], true);
+		$user_id = $user[0]['id'];
+
+		$chat_data = Chat_data::where('sender_id','=',$user_id)->orwhere('receiver_id','=',$user_id)->get();
+
+		$res['chat_data'] = $chat_data;
+		return response()->json($res);
+	}
+
+	// this function is to check user and password for password reset
+	public function forgotten_password_check(Request $request){
+		$user = User::whereEmail(Input::get('reset_ps_username'))->first(); // Check users table Username field
+		$patient = Patients::whereEmail((Input::get('reset_ps_email')))->first();// Check Patients table Email Field
+		// Check whether username and email are matching
+
+		if(isset($user) && isset($patient) && ($user->id == $patient->user_id)) {
+			/*$re_patient = User::find($user->id);// Select patient record from table
+			$re_patient->password = md5($request->reset_ps_password);
+			$re_patient->save();
+
+			$acc_code = strtoupper(substr(md5(rand()),0,6));
+			self::reset_password_send_mail($patient->first_name,$patient->last_name,$patient->email,$acc_code);
+
+			return Redirect::to('/');*/
+			$data['CHECK'] = "OK";
+
+			return response()->json($data);
+		}else {
+			if(User::whereEmail(Input::get('reset_ps_username'))->first()) {
+				// Check whether email is incorrect
+				$data['CHECK'] = "NO";
+				$data['ERROR'] = "EMAIL";
+
+				return response()->json($data);
+			}else{
+				// Check whether username is incorrect
+				$data['CHECK'] = "NO";
+				$data['ERROR'] = "USERNAME";
+
+				return response()->json($data);
+			}
+		}
+	}
+
+	public function forgotten_password_email(Request $request){
+		$patient = Patients::whereEmail((Input::get('reset_ps_email')))->first();// Get Patients table First Name and Last Name Field
+		$acc_code = strtoupper(substr(md5(rand()),0,6));// Generate Random Key in Upper Case Letters with 6 characters
+
+		$subject['sub'] = "Reset Password at eAyurveda.lk";
+		$subject['email'] = Input::get('reset_ps_email');
+		$subject['name'] = $patient->first_name.' '.$patient->last_name;
+
+		Mail::send('emails.password_reset_mail',['access_code' => $acc_code],function($message) use ($subject){
+			$message->to($subject['email'],$subject['name'])->subject($subject['sub']);
+		});
+
+		$data['CHECK'] = "YES";
+		$data['EMAIL'] = Input::get('reset_ps_email');
+		$data['ACCESS_KEY'] = $acc_code;
+
+		return response()->json($data);
+	}
+
+	public function change_forgotten_password(Request $request){
+		$user = User::whereEmail(Input::get('ch_user_name'))->first(); // Check users table Username field
+		$re_patient = User::find($user->id);// Select patient record from table
+		$re_patient->password = md5(Input::get('reset_ps_password'));
+		$re_patient->save();
+
+		$data['CHECK'] = "Changed";
+
+		return response()->json($data);
+	}
+
+	// ***************************************************************
+	// **********  Custom Functions **********************************
+
+
+
+	// **********  Custom Functions **********************************
+	// ***************************************************************
 }

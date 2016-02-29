@@ -65,12 +65,13 @@
             <li id="admin_left_nav_pat_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/community_sm.png" style="width:20px"></li><li style="margin-left:10px">
                         <span class="glyphicon glyphicon-menu-right c_right_gly" id="c_admin_span_2" aria-hidden="true"></span>
                         Patient
-                    </li></ul></li>
+                    </li></ul>
+			</li>
             <li id="admin_left_nav_pat" style="display:none;padding:0px">
                 <ul class="c_admin_ul_in">
                     <li class="c_admin_ul_li" onClick="load_users_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>View Users</li>
                     <li class="c_admin_ul_li" onClick="load_comments_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>User Comments</li>
-                    <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Remove User</li>
+                    <li class="c_admin_ul_li" onClick="load_inapuser_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Inapropriate Users</li>
                     <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Report</li>
                 </ul>
             </li>
@@ -80,16 +81,27 @@
                     </li></ul></li>
             <li id="admin_left_nav_for" style="display:none;padding:0px">
                 <ul class="c_admin_ul_in">
-                    <li class="c_admin_ul_li" onClick="load_for_page('10')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Questions</li>
-                    <li class="c_admin_ul_li" onClick="load_for_page('11')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Categories</li>
-                    <li class="c_admin_ul_li" onClick="load_for_page('12')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Flagged Posts</li>
-                    <li class="c_admin_ul_li" onClick="load_for_page('13')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Newsletter</li>
+                    <li class="c_admin_ul_li" onClick="load_for_page('10.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Questions</li>
+                    <li class="c_admin_ul_li" onClick="load_for_page('11.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Categories</li>
+                    <li class="c_admin_ul_li" onClick="load_for_page('12.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Flagged Posts</li>
+                    <li class="c_admin_ul_li" onClick="load_for_page('13.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Newsletter</li>
                 </ul>
             </li>
-            <li id="doc_cus_home"><ul class="c_top_ul"><li><img src="assets_admin/img/customize.png" style="width:20px"></li><li style="margin-left:10px">
-                        Customize Home
-                </li></ul>
+			<li id="admin_left_nav_cus_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/customize.png" style="width:20px"></li><li style="margin-left:10px">
+                        <span class="glyphicon glyphicon-menu-right c_right_gly1" id="c_admin_span_3" aria-hidden="true"></span>
+                       Customize Home
+                    </li></ul></li>
+            <li id="admin_left_nav_cus" style="display:none;padding:0px">
+                <ul class="c_admin_ul_in">
+                    <li class="c_admin_ul_li" onClick="load_cos_page1_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Manage Featured Doctors</li>
+                    <li class="c_admin_ul_li" onClick="tip_update_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Manage Health tips</li>
+                    <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>custom_1</li>
+                    <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>custom_2</li>
+                </ul>
+            
+      
             </li>
+			
         </ul>
     </div>
     <div class="col-lg-9 c_no_padding" id="admin_home_div">

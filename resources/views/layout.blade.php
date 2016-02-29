@@ -14,10 +14,12 @@
     <link href="{{ URL::asset('assets/css/animate.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/spe_pro_css.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/datepicker/bootstrap_datepicker.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('assets/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('assets/owl-carousel/owl.theme.css') }}" rel="stylesheet" >
     <!-- Style Sheets End -->
 </head>
 
-<body class="c_body">
+<body class="c_body" data-spy="scroll">
 <!-- Top Header -->
 <div class="container c_container">
     <div class="row">
@@ -202,10 +204,10 @@
 <!-- Side Nav Bar -->
 <div class="c_side_nav_bar">
     <ul class="c_ul_1">
-        <li class="c_side_bar_ul" id="featured_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/thumb_up.png') }}"></button></li>
-        <li class="c_side_bar_ul" id="top_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/star_up.png') }}"></button></li>
-        <li class="c_side_bar_ul" id="com_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/community_up.png') }}"></button></li>
-        <li class="c_side_bar_ul" id="loc_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/mark_up.png') }}"></button></li>
+        <a href="#featured"><li class="c_side_bar_ul" id="featured_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/thumb_up.png') }}"></button></li></a>
+        <a href="#topRated"><li class="c_side_bar_ul" id="top_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/star_up.png') }}"></button></li></a>
+        <a href="#community"><li class="c_side_bar_ul" id="com_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/community_up.png') }}"></button></li></a>
+        <a href="#map"><li class="c_side_bar_ul" id="loc_sd_btn"><button class="c_side_nav_btn"><img src="{{ URL::asset('assets/img/mark_up.png') }}"></button></li></a>
     </ul>
 </div>
 <!-- Side Nav Bar -->
@@ -241,29 +243,99 @@
 
         <!-- Forgotten Password Form -->
         <div id="c_forgotten_pass_box" <?php if(isset($reset_email_error) || isset($reset_username_error)){ ?>style="display: block" <?php } ?>>
-            <form action="{{URL::to('forgotten_password')}}" method="post" onsubmit="return check_forgotten_password_form()">
+            <form id="ps_reset_form_1" method="post">
                 <ul class="c_ul_1">
                     <li class="c_add_margin_20">
                         <span class="c_font_2">Reset Password</span>
                     </li>
-                    <li style="margin-bottom: 7px">
-                        <input type="text" class="c_text_box_1 <?php if(isset($reset_username_error)){ echo 'c_error_input_field_highlight'; }?>"  <?php if(isset($reset_email_error)){?>value="<?php echo $pre_username; ?>" <?php } ?>  id="reset_ps_username" onkeypress="remove_highlight('reset_ps_username','c_error_input_field_highlight')" placeholder="username" name="reset_ps_username" autocomplete="off" spellcheck="false"/>
+                    <li style="margin-bottom: 20px">
+                        <input type="text" class="c_text_box_1" id="reset_ps_username" onkeypress="remove_highlight('reset_ps_username','c_error_input_field_highlight')" placeholder="username" name="reset_ps_username" autocomplete="off" spellcheck="false"/>
                     </li>
-                    <li style="margin-bottom: 7px">
-                        <input type="text" class="c_text_box_1 <?php if(isset($reset_email_error)){ echo 'c_error_input_field_highlight'; } ?>" id="reset_ps_email" onkeypress="remove_highlight('reset_ps_email','c_error_input_field_highlight')" placeholder="email" name="reset_ps_email" autocomplete="off" spellcheck="false"/>
+                    <li style="margin-bottom: 20px">
+                        <input type="text" class="c_text_box_1" id="reset_ps_email" onkeypress="remove_highlight('reset_ps_email','c_error_input_field_highlight')" placeholder="email" name="reset_ps_email" autocomplete="off" spellcheck="false"/>
                     </li>
-                    <li style="margin-bottom: 7px">
-                        <input type="password" class="c_text_box_1" id="reset_ps_password" onkeypress="remove_highlight('reset_ps_password','c_error_input_field_highlight')" placeholder="new password" name="reset_ps_password" autocomplete="off" spellcheck="false"/>
+                    <li style="margin-bottom: 20px">
+                        <div style="text-align: justify;color: #fff;padding: 0px 5px">
+                            In order to reset your password an access code is required. Email will be sent to your email address from eAyurveda.lk.
+                        </div>
                     </li>
-                    <li>
-                        <input type="password" class="c_text_box_1" id="reset_ps_confirm_password" onkeypress="remove_highlight('reset_ps_confirm_password','c_error_input_field_highlight')" placeholder="confirm password" name="reset_ps_confirm_password" autocomplete="off" spellcheck="false"/>
-                    </li>
-                    <li style="padding:0px 8px;margin-top:26px">
-                        <button type="submit" class="c_button_1">Reset</button>
+                    <li style="padding:0px 8px;margin-top:20px">
+                        <button type="button" onclick="check_forgotten_password_form()" class="c_button_1">Get Access Code</button>
                     </li>
                 </ul>
             </form>
         </div>
+        <!-- Forgotten Password Reset Loading -->
+        <div id="c_fog_reset_loading">
+           <img src="{{ URL::asset('assets/img/loading_3.gif') }}" id="c_fog_reset_img">
+            <div style="text-align: center;margin-top: 45px;font-size: 20px;">Sending Email</div>
+        </div>
+        <!-- Access Code Form -->
+        <div id="c_access_code_box">
+            <form id="ps_reset_form_2" method="post">
+                <ul class="c_ul_1">
+                    <li class="c_add_margin_20">
+                        <span class="c_font_2">Access Code</span>
+                    </li>
+                    <li style="margin-bottom: 30px;margin-top: 20px">
+                        <div style="color: #fff;padding: 0px 5px">An Email has been sent to <span id="ac_email">bxxxxxxxx@gmail.com</span>. Please wait for 5-10 seconds. <br/>If you don`t receive it. click <a href="#re-send" id="c_fog_reset_re_send" onclick="go_back_state()" style="color: #000">Re-send</a></div>
+                    </li>
+                    <li style="margin-bottom: 20px">
+                        <input type="text" class="c_text_box_1" id="reset_ps_access_code" onkeypress="remove_highlight('reset_ps_access_code','c_error_input_field_highlight')" placeholder="Access Code" name="reset_ps_access_code" autocomplete="off" spellcheck="false"/>
+                    </li>
+                    <li style="padding:0px 8px;margin-top:40px">
+                        <button type="button" onclick="password_acc_check()" class="c_button_1">Continue</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <!-- Forgotten Password Change -->
+        <div id="c_change_pass_box">
+            <form id="ps_reset_form_3" method="post">
+                <input type="hidden" id="hidden_username_rs" name="ch_user_name" value=""/>
+                <input type="hidden" id="hidden_email_rs" name="ch_email" value=""/>
+                <ul class="c_ul_1">
+                    <li class="c_add_margin_20">
+                        <span class="c_font_2">Change Password</span>
+                    </li>
+                    <li style="margin-bottom: 20px;margin-top: 40px">
+                        <input type="password" class="c_text_box_1 password_regx" id="reset_ps_password" onkeypress="remove_highlight('reset_ps_password','c_error_input_field_highlight')" placeholder="new password" name="reset_ps_password" autocomplete="off" spellcheck="false"/>
+                    </li>
+                    <li>
+                        <input type="password" class="c_text_box_1" id="reset_ps_confirm_password" onkeypress="remove_highlight('reset_ps_confirm_password','c_error_input_field_highlight')" placeholder="confirm password" name="reset_ps_confirm_password" autocomplete="off" spellcheck="false"/>
+                    </li>
+                    <li style="padding:0px 8px;margin-top:55px">
+                        <button type="button" onclick="check_change_password_form()" class="c_button_1">Submit</button>
+                    </li>
+                </ul>
+            </form>
+            <div class="c_password_inputs" style="margin-left: 284px;bottom: 64.9%;right: 570px;">
+                <div id="in_ps_div_1" style="border-right: 25px solid #3D8EB4"></div>
+                <div id="in_ps_div_2" style="background: #3D8EB4">
+                    <ul class="c_ul_1">
+                        <li id="in_ps_ch_1"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.</li>
+                        <li id="in_ps_ch_2"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.</li>
+                        <li id="in_ps_ch_3"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.</li>
+                        <li id="in_ps_ch_4"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Password Change Success Message -->
+        <div id="c_change_pass_suc_box" style="padding: 80px 82px;">
+            <ul class="c_ul_1">
+                <li>
+                    <img src="{{ URL::asset('assets/img/ok.png') }}" style="width: 60px;margin-left: 45px;">
+                </li>
+                <li style="margin-top: 40px">
+                    <div style="color: #FFF;font-size: 14px">Password Change</div>
+                </li>
+                <li>
+                    <span class="c_font_2">Successful</span>
+                </li>
+            </ul>
+        </div>
+
     </div>
 </div>
 <!-- Pop Up Boxes -->
@@ -305,11 +377,55 @@
 </div>
 <!-- Thanking Messages -->
 
+<!-- ***  Site Helper  *** -->
+<?php
+    // Check whether user in logged or not
+    $user_id=0;// If user is not logged user
+    if(isset($_COOKIE['user'])){
+        $user = json_decode($_COOKIE['user'],true);
+        $user_id = $user[0]['id'];// Assign logged user`s id
+    }
+?>
+<input type="hidden" name="user_id" id="hidden_user_id" value="<?php echo $user_id; ?>">
+<div class="c_side_helper" onclick="side_helper()">
+    <div style="margin-left: 3px"><ul class="c_top_ul"><li><img src="{{ URL::asset('assets/img/doctor_icon.png') }}" width="25px"></li></ul></div>
+    <div style="color: #fff;margin-top: 3px">Help</div>
+</div>
+<div class="c_in_helper">
+    <img id="c_in_help_close_btn" src="{{ URL::asset('assets/img/close_3.png') }}">
+    <img src="{{ URL::asset('assets/img/doctor10.png') }}" width="120px">
+    <div class="c_in_helper_1">
+        <div class="c_in_helper_2"></div>
+        <button id="c_try_chat_btn" >try Out <span style="color: #000;font-weight: 500;font-style: italic">Live</span><span style="color: #fff;font-weight: 500;font-style: italic">Chat</span></button>
+    </div>
+</div>
+<div class="c_helper_chat">
+    <img src="{{ URL::asset('assets/img/chat_icon.png') }}" width="80px">
+    <div id="c_chat_close_btn"><img src="{{ URL::asset('assets/img/close_btn.png') }}" width="20px"></div>
+    <div style="width: 280px;height: 300px;background: #F15822;padding: 5px;border-top-left-radius: 10px;border-top-right-radius: 10px;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.64)">
+        <div style="background: #fff;width: 100%;height: 100%;border-top-left-radius: 7px;border-top-right-radius: 7px">
+            <div class="c_chat_box">
+                <!-- Chat Details Load Here -->
+            </div>
+            <div style="height: 10%;width: 100%;border-top: 1px solid #F15822">
+                <form id="chat_form" method="post" style="width: 100%;height: 100%">
+                    <input name="message" id="chat_message_txt" type="text" placeholder="Type Message Here" spellcheck="false" autocomplete="off">
+                    <div class="c_chat_send" id="chat_send"><img src="{{ URL::asset('assets/img/sent.png') }}" style="width:60%;margin: 0px 0px 0px 12px;height: 100%;"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="home_base_url" value="{{ URL::asset('assets/img') }}"/>
+<!-- ***  Site Helper  *** -->
+
 <!-- JavaScripts -->
 <script src="{{ URL::asset('assets/js/jquery-1.12.0.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/wow.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/sep_pro_js.js') }}"></script>
+<script src="{{ URL::asset('assets/owl-carousel/owl.carousel.js') }}"></script>
+<script src="{{ URL::asset('assets/typed/typed.js') }}"></script>
 <script>
     new WOW().init();
 </script>
@@ -320,6 +436,17 @@ $('#dob_input_box').datepicker({
     startView: 2,
     autoclose: true
 });
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip({
+        placement: "top"
+    });
+    // add tooltip animation
+    $('[data-toggle="tooltip"]').on('shown.bs.tooltip', function () {
+        $('.tooltip').addClass('wow pulse');
+    })
+})
+
 </script>
 <!-- JavaScripts End -->
 

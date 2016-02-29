@@ -30,18 +30,18 @@
                 </div></li>
                 <li><?php if(($doctor['doctor_data']->doc_type) == "FORMAL"){ ?>Registered ID : <?php echo $doctor['formal_data']->ayurvedic_id; } ?></li>
                 <li style="padding: 10px 0px"><hr class="c_hr_1"/></li>
-                <li>Location : {{ $doctor['doctor_data']->address_1 }},&nbsp;{{ $doctor['doctor_data']->address_2 }},&nbsp;{{ $doctor['doctor_data']->city }}</li>
+                <li>Location : {{ $doctor['doctor_data']->address_1 }},&nbsp;{{ $doctor['doctor_data']->address_2 }},&nbsp;{{ $doctor['doctor_data']->city }},&nbsp;{{ $doctor['doctor_data']->district }}</li>
                 <li><div class="col-lg-6 c_no_padding">Mobile : {{ $doctor['doctor_data']->contact_number }}</div><div class="col-lg-6 c_no_padding">Email : {{ $doctor['doctor_data']->email }}</div></li>
                 <li style="margin-top: 30px"><span style="font-size: 25px;color:#085426;">Overview</span></li>
                 <li style="margin-top: 10px"><p class="c_no_padding" style="text-align: justify">{{ $doctor['doctor_data']->description }}</p></li>
             </ul>
         </div>
         <div class="col-lg-12" style="padding: 10px 30px 10px 30px">
-        <div class="col-lg-6 c_no_padding">
+        <div class="col-lg-4 c_no_padding">
             <ul class="c_ul_1">
                 <li><span style="font-size: 25px;color:#085426;">Specialized on</span></li>
                 <li style="padding-top: 20px">
-                    <div class="col-lg-6 c_no_padding">
+                    <div class="col-lg-12 c_no_padding">
                         <ul class="c_check_list">
                             <?php if(($doctor['spec_data']->spec_1) != ""){ ?><li>{{ $doctor['spec_data']->spec_1 }}</li><?php } ?>
                             <?php if(($doctor['spec_data']->spec_2) != ""){ ?><li>{{ $doctor['spec_data']->spec_2 }}</li><?php } ?>
@@ -50,23 +50,15 @@
                             <?php if(($doctor['spec_data']->spec_5) != ""){ ?><li>{{ $doctor['spec_data']->spec_5 }}</li><?php } ?>
                         </ul>
                     </div>
-                    <div class="col-lg-6 c_no_padding">
-                        <ul class="c_check_list">
-                            <?php if(($doctor['spec_data']->spec_6) != ""){ ?><li>{{ $doctor['spec_data']->spec_6 }}</li><?php } ?>
-                            <?php if(($doctor['spec_data']->spec_7) != ""){ ?><li>{{ $doctor['spec_data']->spec_7 }}</li><?php } ?>
-                            <?php if(($doctor['spec_data']->spec_8) != ""){ ?><li>{{ $doctor['spec_data']->spec_8 }}</li><?php } ?>
-                            <?php if(($doctor['spec_data']->spec_9) != ""){ ?><li>{{ $doctor['spec_data']->spec_9 }}</li><?php } ?>
-                            <?php if(($doctor['spec_data']->spec_10) != ""){ ?><li>{{ $doctor['spec_data']->spec_10 }}</li><?php } ?>
-                        </ul>
-                    </div>
+
                 </li>
             </ul>
         </div>
-        <div class="col-lg-6 c_no_padding">
+        <div class="col-lg-4 c_no_padding">
             <ul class="c_ul_1">
                 <li><span style="font-size: 25px;color:#085426;">Treatment Techniques</span></li>
                 <li style="padding-top: 20px">
-                    <div class="col-lg-6 c_no_padding">
+                    <div class="col-lg-12 c_no_padding">
                         <ul class="c_check_list">
                             <?php if(($doctor['treat_data']->treat_1) != ""){ ?><li>{{ $doctor['treat_data']->treat_1 }}</li><?php } ?>
                             <?php if(($doctor['treat_data']->treat_2) != ""){ ?><li>{{ $doctor['treat_data']->treat_2 }}</li><?php } ?>
@@ -75,13 +67,18 @@
                             <?php if(($doctor['treat_data']->treat_5) != ""){ ?><li>{{ $doctor['treat_data']->treat_5 }}</li><?php } ?>
                         </ul>
                     </div>
-                    <div class="col-lg-6 c_no_padding">
-                        <ul class="c_check_list">
-                            <?php if(($doctor['treat_data']->treat_6) != ""){ ?><li>{{ $doctor['treat_data']->treat_6 }}</li><?php } ?>
-                            <?php if(($doctor['treat_data']->treat_7) != ""){ ?><li>{{ $doctor['treat_data']->treat_7 }}</li><?php } ?>
-                            <?php if(($doctor['treat_data']->treat_8) != ""){ ?><li>{{ $doctor['treat_data']->treat_8 }}</li><?php } ?>
-                            <?php if(($doctor['treat_data']->treat_9) != ""){ ?><li>{{ $doctor['treat_data']->treat_9 }}</li><?php } ?>
-                            <?php if(($doctor['treat_data']->treat_10) != ""){ ?><li>{{ $doctor['treat_data']->treat_10 }}</li><?php } ?>
+
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-4 c_no_padding">
+            <ul class="c_ul_1">
+                <li><span style="font-size: 25px;color:#085426;">Consultation Times</span></li>
+                <li style="padding-top: 20px">
+                    <div class="col-lg-12 c_no_padding">
+                        <ul class="c_clock_list">
+                            <li>10:00 AM to 1:00 PM</li>
+                            <li>5:00 PM to 8:00 PM</li>
                         </ul>
                     </div>
                 </li>
@@ -89,8 +86,21 @@
         </div>
         </div>
     </div>
+    <!-- Google Maps -->
     <div class="col-lg-12 c_no_padding" style="font-size: 20px;background: #39B54A;color: #FFF;border-bottom: 3px solid #035600;padding: 7px 0px 7px 25px">
-        <span>Comments</span><span id="c_comments_count_span">0</span>
+        <span>Location</span>
+    </div>
+    <div class="col-lg-12 c_no_padding" style="padding: 10px">
+        <div class="col-lg-12 c_no_padding"  id="map-canvas">
+
+        </div>
+    </div>
+    <!-- Google Maps -->
+    <div class="col-lg-12 c_no_padding" style="font-size: 20px;background: #39B54A;color: #FFF;border-bottom: 3px solid #035600;padding: 7px 0px 7px 25px">
+        <span>Comments</span>
+        <button type="button" id="com_tab_back" onclick="change_com_tab('-')"><img src="{{ URL::asset('assets/img/back.png') }}" width="30px"></button>
+        <button type="button" id="com_tab_next" onclick="change_com_tab('+')"><img src="{{ URL::asset('assets/img/next.png') }}" width="30px"></button>
+        <span id="c_comments_count_span">0</span>
     </div>
     <div class="col-lg-12 c_no_padding" id="user_comments_box">
         <div class="center-block" id="comments_loading">
@@ -126,7 +136,7 @@
                 $user = json_decode($_COOKIE['user'],true);
                 $user_id = $user[0]['id'];// Assign logged user`s id
                 ?>
-                <div class="c_comment_profile_icon" style="background-image:url({{ URL::asset('profile_images/user_images/user_profile_img_'.$user_id.'.jpg') }})"></div>
+                <div class="c_comment_profile_icon" style="background-image:url({{ URL::asset('profile_images/user_images/user_profile_img_'.$user_id.'.png') }})"></div>
                 <?php
                 }else{
                 ?>
@@ -192,4 +202,36 @@
     <span id="hidden_star_url" style="display: none">{{ URL::asset('assets/img/star.png') }}</span>
     <span id="hidden_green_star_url" style="display: none">{{ URL::asset('assets/img/star_2.png') }}</span>
 
+    <!-- Google Maps Scripts -->
+
+    <script type="text/javascript">
+        var gmap, mapCanvas, mapOptions = { zoomControl: true, streetViewControl: false, noClear: true };
+        var marker;
+
+        var image_1 = '{{ URL::asset('assets/img/gps_pin.png') }}';
+
+        function mapInitialize( mapCenter, mapZoom ) {
+            mapOptions.center = mapCenter;
+            mapOptions.zoom = mapZoom;
+            mapCanvas.setAttribute( "style", "height:" + window.innerHeight + "px;" );
+            setTimeout( function() {
+                gmap = new google.maps.Map( mapCanvas, mapOptions );
+                marker = new google.maps.Marker({position: mapCenter,map: gmap,icon: image_1});
+        }, 20 );
+
+
+        }
+        window.onorientationchange = function() {
+            mapInitialize( gmap.getCenter(), gmap.getZoom() );
+        }
+        function startup() {
+            setTimeout( function() {
+                mapCanvas = document.getElementById("map-canvas");
+                mapInitialize( new google.maps.LatLng(7.0917, 80.0000), 15 );
+            }, 125 );
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js" onload="startup()"></script>
+
+    <!-- Google Maps Scripts -->
 @stop
