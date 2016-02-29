@@ -10,6 +10,7 @@ class Formal_doctors extends Model
         'id',
         'doctor_id',
         'ayurvedic_id',
+        'ayurvedic_reg_date',
         'registered_field',
         'approved_by',
         'created_at',

@@ -7,7 +7,7 @@
 	</div>
     <div class="col-lg-12 doc_admin_tab_2 c_no_padding" id="doc_reg_div">
             <div class="col-lg-2 doc_admin_menu_1 active cc1"  onclick="change_tab_doc('7')" style="margin-top:10px">
-                <p style="color:rgba(255,255,255,1)">Registered Details</p>
+                <p style="color:rgba(255,255,255,1)">Registered f Details</p>
             </div>
             <div class="col-lg-2 doc_admin_menu_2 cc1"   onclick="change_tab_doc('8')" style="margin-top:10px">
                 <p style="color:rgba(255,255,255,1)">Personal&nbsp; Details&nbsp;&nbsp;</p>
@@ -53,14 +53,7 @@
 					<span>Date of Birth</span>
 					<input class="c_text_box_1" type="date" autocomplete="off" spellcheck="false"/>
 				</div>
-				<div class="col-lg-6 doc_form_group c_no_padding doc_form_right">
-					<span>Gender</span>
-					<select class="c_select_box_1">
-						<option value="select">Select</option>
-						<option value="male">Male</option>
-						<option value="female">Female</option>
-					</select>
-				</div>
+
 			</div>
 			<div class="doc_form_group">
 				<span>NIC</span>

@@ -321,6 +321,7 @@ $('#dob_input_box').datepicker({
     autoclose: true
 });
 </script>
+
 <!-- JavaScripts End -->
 
 </body>

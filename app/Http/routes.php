@@ -31,14 +31,32 @@ Route::resource('/logout','Front@logout');
 Route::resource('/forgotten_password','Front@forgotten_password');
 
 //////////  Admin Side Routing //////////
+
+Route::get('/admin_doc/update_view/{id}','Admin_Front@change_to_edit_mode');
+Route::get('/admin_doc/profile_view/{id}','Admin_Front@view_doctor_profile');
+Route::post('/update_doc','Admin_Front@update_doc_t');
+//Route::get('/admin_doc/search_data/{id}/{gender}/{city}','Admin_Front@search_data');
+Route::get('/load_doc_update','Admin_Front@admin_update_page_view');
+Route::post('/admin_doc/search_data','Admin_Front@search_data');
+Route::post('/admin_doc/search_data_r','Admin_Front@search_data_r');
+Route::post('/admin_doc/search_data_up','Admin_Front@search_data_up');
+Route::post('/admin_doc/search_data_remove','Admin_Front@search_data_remove');
+Route::get('/load_doc_remove','Admin_Front@admin_remove_page_view');
+Route::get('/load_doc_confirm','Admin_Front@admin_confirm_page_view');
+Route::get('/load_doc_foreign','Admin_Front@admin_foreign_page_view');
+Route::post('/load_doc_foreign_search','Admin_Front@admin_foreign_page_search');
 Route::get('/admin_panel_login','Admin_Front@admin_login');
 Route::get('/admin_panel_home','Admin_Front@admin_home');
 Route::resource('/admin_login_auth','Admin_Front@admin_login_auth');
 Route::resource('/admin_logout','Admin_Front@logout');
-
-
 Route::get('/pat_admin/{page_name}','Admin_Front@pat_admin_page_view');
 Route::get('/admin_panel/user_comments','Admin_Front@view_user_comments');
+Route::resource('/admin_add_doc/register','Admin_Front@register_dov');
+Route::resource('/admin_add_foreign_doc/registers','Admin_Front@register_foreign_doc');
+Route::get('/admin_doc/remove_doc_view/{id}','Admin_Front@remove_doc');
+Route::resource('/admin_add_doc/update_vali','Admin_Front@update_vali');
+Route::resource('/admin_add_doc/unregister','Admin_Front@register_un_doc');
+Route::get('/doc_admin/{page_name}','Admin_Front@admin_page_view');
 Route::get('/admin_panel/customize/featured','Admin_Front@featured_doc');
 Route::get('/admin_panel/customize','Admin_Front@customize');
 Route::get('/admin_panel/user_view/{user_id}','Admin_Front@user_view');
@@ -51,6 +69,10 @@ Route::get('/testUrl/{user_id}', 'Admin_Front@getdocid');
 Route::get('/admin_panel/filterdoc/{user_id}/{user_id1}/{user_id2}','Admin_Front@filterdoc');
 Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@updatefet');
 Route::get('/admin_panel/test','Admin_Front@test');
+Route::get('/admin_panel_ho', function () {
+    return View::make('admin_home');
+});
+
 // -----------------------  Main Page Routes End  -------------------------
 ///////////////////////////////////////////////////////////////////////////
 
