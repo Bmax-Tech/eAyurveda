@@ -1,0 +1,765 @@
+.navbar {
+    background: #f0f0f0;
+    border: none;
+    margin-bottom: 0px !important;
+}
+.navbar-nav>li{
+    margin:0px 0px;
+}
+.navbar-nav>li>a{
+    color:#999 !important;
+}
+.navbar-nav>.active>a{
+    color:#fff !important;
+    background:#00B000 !important;
+}
+.navbar-nav>li>a:hover{
+    color:#fff !important;
+    background: #008e00 !important;
+    transition:all 0.4s !important;
+    background: -webkit-linear-gradient(left top, #008e00, #00a200) !important; /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #008e00, #00a200) !important; /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #008e00, #00a200) !important; /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #008e00, #00a200) !important; /* Standard syntax */
+    box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22) !important;
+}
+#navbarCollapse {
+    text-align: center;
+    margin-left: 0px;
+}
+.topBarLogoDiv {
+    z-index: 99;
+    height: 120px;
+    width: 120px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
+    padding: 10px;
+    background-color: #F0F0F0;
+    border-bottom-right-radius: 90%;
+    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.05),-1px 4px 5px rgba(0,0,0,0.2);
+}
+.topBarLogo {
+    position: relative;
+    height: 85px;
+}
+.barLine {
+    border-bottom: 3px solid #00B000;
+    -moz-box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22);
+    -webkit-box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22);
+    box-shadow: 0 2px 3px 0px rgba(7, 111, 0, 0.22);
+}
+
+@media (min-width: 768px) {
+    .navbar-nav>li>a {
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+    #navbarCollapse {
+        margin-left: 125px;
+    }
+}
+
+#forumHeadTxt {
+    color:#999;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-weight: 300;
+    font-size: 28px;
+    margin-top: 12px;
+    margin-left: 150px;
+}
+#bodyContent {
+    /* aligning will only work for non-floated elements */
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    display: block;
+    float: none;
+}
+.forumHomeHead {
+    color:#666;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-weight: 300;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+
+#availableForumCatList {
+    margin: 20px 25px 20px 25px;
+    padding-bottom: 0px;
+    text-align: center;
+}
+
+.catCard {
+    display:inline-block;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    height: 250px;
+    width: 250px;
+    box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+}
+
+.catImageView {
+    position:relative;
+    padding: 5px 10px 5px 10px;
+    color: #fff;
+    font-size: 18px;
+    height: 100%;
+    width: 100%;
+    background: -moz-linear-gradient(top, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 81%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0,0,0,1) 10%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 81%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 10%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 81%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+}
+.catImageViewFrame {
+    border-radius: 3px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+.catImageBtnDiv {
+    position: absolute;
+    right:    5px;
+    bottom:   5px;
+}
+
+#txtSearchItem {
+    font-size: 20px;
+    height: 50px;
+    width: 75%;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-weight: 300;
+    padding-left: 10px;
+    padding-right: 10px;
+    border:1px solid #ccc;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    outline: none;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .15);
+}
+#txtSearchItem:hover {
+    border-color: #bbb;
+    transition: all .5s ease;
+}
+#txtSearchItem:focus {
+    border-color: #55aa55;
+    box-shadow: inset 0 0 8px rgba(0,255,0,.25);
+    box-shadow: 0 1px 0 rgba(85, 170, 85, .1), 0 2px 3px rgba(85,170,85, .15);
+}
+#btnSearchItem {
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #EEE;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position:center;
+    border:1px solid #ccc;
+    height: 50px;
+    width: 50px;
+    padding: 16px 0px;
+    margin-left: -5px;
+    background-image:url('../img/ic_action_search.png');
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .15);
+}
+#btnSearchItem:hover {
+    outline: 0;
+    background-color: #359f46;
+    background-image:url('../img/ic_action_searchw.png');
+    border-color: #34a334 #30a430 #228722 #2fa52f;
+    transition: all .5s ease;
+    box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+    box-shadow: 0 1px 0 rgba(85, 170, 85, .1), 0 2px 3px rgba(85,170,85, .15);
+} #btnSearchItem:focus {
+      outline: 0;
+      box-shadow: 0 1px 0 rgba(85, 170, 85, .1), 0 2px 3px rgba(85,170,85, .15);
+  }
+
+.btnSearchItemHovered {
+    background-color: #359f46 !important;
+    background-image:url('../img/ic_action_searchw.png') !important;
+    border-color: #34a334 #30a430 #228722 #2fa52f !important;
+    transition: all .5s ease !important;
+    box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15) !important;
+}
+
+#forumSearch {
+    margin-top: 25px;
+    text-align: center;
+}
+
+#resultList {
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+.searchCard {
+    background-color: #fff;
+    margin: 0px auto 10px auto;
+    height: 100px;
+    width: 90%;
+    border:1px solid #E6E6E6;
+    border-radius: 4px;
+    box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+}
+.searchCard:hover {
+    cursor: pointer;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .1), 0 2px 10px rgba(0, 0, 0, .5);
+}
+
+.searchCardLeftPane {
+    width: 15%;
+    border-right: 1px solid #eaeaea;
+    display: inline-block;
+    float: left;
+}
+
+.byUserDiv {
+    text-align: center;
+    line-height: 42px;
+    width: 100%;
+    height: 49px;
+    overflow-y:auto;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.numViewsDiv, .upVotesDiv, .numAnswersDiv {
+    line-height: 75px;
+    text-align: center;
+    display: inline-block;
+    height: 49px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-size: 45%;
+    background-repeat: no-repeat;
+    background-position: 50% 20%;
+    opacity: .75;
+}
+
+.numViewsDiv {
+    width:31%;
+    background-image: url('../img/view_awesome.png');
+}
+.upVotesDiv {
+    width:31%;
+    background-image: url('../img/up_awesome.png');
+    border-right: 1px solid #eaeaea;
+}
+.numAnswersDiv {
+    width:32%;
+    background-image: url('../img/answer_awesome.png');
+    border-right: 1px solid #eaeaea;
+}
+.questionContentDiv {
+    padding-top: 5px;
+    padding-left: 10px;
+    height: 99px;
+    float: left;
+    width: 75%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.questionActionsDiv {
+    height: 99px;
+    float: right;
+    position: relative;
+}
+
+.btnQuestionView {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    position: absolute;
+    bottom: 0px;
+    right: -1px;
+    height: 99px;
+    width: 65px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    border: 0px solid #ccc;
+    border-left: 1px solid #eee;
+    background-size: 40%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-image: url('../img/view_awesome.png');
+}
+.btnQuestionView:hover {
+    outline: 0;
+    background-color: #359f46 !important;
+    background-image: url('../img/view_awesome_w.png');
+    border-color: #34a334 #30a430 #228722 #2fa52f !important;
+    transition: background-color .5s ease;
+    transition: border-color .5s ease;
+    box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+} .btnQuestionView:focus {
+      outline: 0;
+  }
+.btnQuestionViewHovered {
+    background-color: #359f46 !important;
+    background-image: url('../img/view_awesome_w.png');
+    border-color: #34a334 #30a430 #228722 #2fa52f !important;
+    transition: background-color .5s ease;
+    transition: border-color .5s ease;
+    box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+}
+
+#loginNavigation {
+    padding-top:5px;
+    padding-right:40px;
+    width:360px;
+    height:100%;
+    float:right;
+}
+
+#loginName {
+    float:left;
+    margin:13px 30px 0px 0px;
+    font-family:'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-size:16px;
+    font-weight:400;
+    color:#444;
+    cursor:pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100px;
+    overflow: hidden;
+} #loginName:hover {
+      text-decoration:underline;
+      color:#333;
+  }
+
+.notificationCountZero, .notificationCountPlus {
+    text-align:center;
+    font-family:'Segoe UI', 'Roboto', 'Helvetica Neue';
+    font-size:18px;
+    font-weight:700;
+    line-height: 30px;
+    vertical-align: middle;
+    height:32px;
+    width:32px;
+    border:1px solid;
+    border-radius:2px;
+    float:left;
+    cursor:pointer;
+    transition:background-color .2s ease-out;
+    margin-right:40px;
+    margin-top:7px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.notificationCountZero {
+    color:#999;
+    background-color:#E5E5E5;
+    border-color: #D5D5D5 #CCC #BBB #CCC;
+} .notificationCountZero:hover {
+      color:#888;
+      background-color:#DDD;
+      border-color: #CCC #BBB #AAA #BBB;
+  }
+
+.notificationCountPlus {
+    color:#fff;
+    background-color: #359f46;
+    border-color: #34a334 #30a430 #228722 #2fa52f;
+}
+.notificationCountPlus:hover {
+    background-color: #339044;
+    border-color: #349334 #319631 #1e771e #2e962e;
+}
+
+#profilePic {
+    height:44px;
+    width:44px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    background-image: url('../../assets/img/user_red.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    border-radius:24px;
+    cursor:pointer;
+    opacity:.8;
+    transition:opacity .2s ease-out;
+    z-index:-5;
+} #profilePic:hover {
+      opacity:1;
+      box-shadow: 0 0px 0 rgba(0,0,0,.2),0 1px 5px rgba(0,0,0,.15);
+  }
+
+#profileDropDown {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-color: rgba(0,0,0,.2);
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+    overflow: hidden;
+    position: absolute;
+    display:none;
+    right: 85px;
+    top: 66px;
+    width:300px;
+    height:auto; /* 181px; */
+    z-index:90;
+}
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #ddd;
+    right: 140px;
+    top:56px;
+    z-index:95;
+    display:none;
+    position: absolute;
+}
+
+.arrow-up2 {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #ddd;
+    right: 220px;
+    top:52px;
+    z-index:95;
+    display:none;
+}
+
+#dropHeader {
+    width:100%;
+    height:29px;
+    text-align:left;
+    line-height:28px;
+    vertical-align:middle;
+    font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
+    font-size:16px;
+    color:#666;
+    background-color:#eee;
+    border-bottom:1px solid #DDD;
+}
+
+#dropInnerContent {
+    font-family: 'Roboto', Tahoma, Arial;
+    font-size:14px;
+    text-align:left;
+    margin:10px;
+    color:#666;
+    height: 64px;
+}
+
+#innterProfilePic {
+    margin-right:15px;
+    float:left;
+    height:96px;
+    width:96px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    background-image: url('../../assets/img/user_red.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+#innerEmail {
+    float: left;
+    width: 164px;
+    height: 19px;
+    overflow: hidden;
+    color:#aaa;
+}
+#innerFullName {
+    float: left;
+    width: 164px;
+    height: 19px;
+    overflow: hidden;
+}
+
+#dropButtons {
+    background-color:#eee;
+    width:100%;
+    margin-top:42px;
+    border-top:1px solid #ddd;
+    bottom:0px;
+}
+
+.BtnInnerLogout {
+    margin:10px;
+    font-family: 'Roboto', Tahoma;
+    font-size:14px;
+    height:35px;
+    width:90px;
+    background-color: #F5F5F5;
+    border:1px solid;
+    border-width:1px 1px 1px 1px;
+    border-color: #ddd #ccc #c5c5c5 #ccc;
+    border-radius:3px;
+    color:#555;
+    text-decoration: none;
+    transition:background-color 0.1s  ease-out;
+    cursor: default;
+}
+.BtnInnerLogout:hover {
+    color:#333;
+    background-color: #fff;
+} .BtnInnerLogout:focus {
+      outline: 0;
+  }
+
+.animateDrop {
+    animation: dropAnim .4s;
+    -moz-animation:dropAnim .4s;
+    -webkit-animation: dropAnim .4s;
+}
+
+#LoginButtonTopDiv {
+    padding-top:25px;
+    padding-right:40px;
+    float:right;
+}
+
+.loginButtonTop {
+    background-color: #5555ff;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #5252FF #4444FF #3333FF #4444FF;
+    height: 35px;
+    width: 80px;
+    font-family: 'Roboto', Tahoma, 'Roboto';
+    font-size: 16px;
+    color: #FFFFFF;
+}
+.loginButtonTop:hover {
+    background-color: #4444FF;
+    border-color: #4242FF #3333CC #2222BB #3333CC;
+    border-width: 2px 1px 2px 1px;
+}
+
+#notificationDropDown {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-color: rgba(0,0,0,.2);
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+    overflow: hidden;
+    position: absolute;
+    display:none;
+    right: 100px;
+    top: 62px;
+    width:400px;
+    height:auto; /* 181px; */
+    z-index:90;
+}
+#notifyHeader {
+    width:100%;
+    height:29px;
+    text-align:left;
+    line-height:28px;
+    vertical-align:middle;
+    font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
+    font-size:16px;
+    color:#666;
+    background-color:#eee;
+    border-bottom:1px solid #DDD;
+}
+.bottomPanel {
+    border-top:1px solid #e3e3e3;
+    font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
+    font-weight: 400;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background-color: #eee;
+}
+
+#btnNewMessage {
+    float: right;
+    position: relative;
+    margin: 6px;
+    background-color: #f5f5f5;
+    height: 20px;
+    width: 114px;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    line-height: 20px;
+    cursor: default;
+}
+#btnNewMessage:hover {
+    background-color: #fff;
+    border-color: #ccc;
+}
+#btnNewMsgIcon {
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-image: url('../images/ic_action_new_email.png');
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position-x:left;
+    background-position-y:center;
+    background-position: 5% 50%, center;
+    height: 24px;
+    width: 24px;
+    float: left;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+#notificationCards {
+    background-color: #fff;
+}
+.notifyCard {
+    background-color: #f9f9f9;
+    height: 96px;
+    margin: 7px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
+    color: #333;
+    text-align: left;
+    cursor: pointer;
+}
+.notifyCard:hover {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    box-shadow: 0 2px 15px rgba(0,0,0,.20);
+    transition: all .2s ease-out;
+}
+.notifyImage {
+    height:96px;
+    width: 96px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    position: relative;
+    float: left;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    /* background-image: url('../images/users/profile_default.jpg'); */
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.notifyFrom {
+    height: 19px;
+    width: 278px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    font-size: 13px;
+    font-weight: 700;
+    margin-left: 10px;
+    margin-top: 5px;
+    color: #444;
+}
+.notifyHead {
+    height: 19px;
+    width: 278px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    font-size: 13px;
+    font-weight: 400;
+    margin-left: 10px;
+    margin-top: 5px;
+    color: #555;
+}
+.notifyBody {
+    height: 38px;
+    width: 278px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    font-size: 13px;
+    font-weight: 400;
+    margin-left: 10px;
+    color: #666;
+}
+
+@media screen and (max-width: 1100px){
+    .searchCardLeftPane {
+        display: none;
+    }
+    #loginName {
+        display: none;
+
+    }
+    #loginNotifications {
+        position: absolute;
+        right: 65px;
+    }
+    #loginNavigation {
+        width: 130px;
+        padding-right: 20px;
+    }
+    .arrow-up {
+        right:48px;
+    }
+    #profileDropDown {
+        right:8px;
+    }
+    #notificationDropDown {
+        top:58px;
+        right: 0px;
+    }
+    .arrow-up2 {
+        top:48px;
+        right: 48px;
+    }
+}
+
+@media screen and (max-width: 960px){
+    .searchCardLeftPane {
+        display: none;
+    }
+    .catCard {
+        height: 150px;
+    }
+}
+
+@media screen and (max-width: 665px){
+    .catCard {
+        height: 100px;
+        width: 300px;
+    }
+    #forumHeadTxt {
+        text-align: center;
+        font-size: 20px;
+        margin-top: 5px;
+        margin-left: 85px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #loginNavigation {
+        display: none;
+    }
+}
+

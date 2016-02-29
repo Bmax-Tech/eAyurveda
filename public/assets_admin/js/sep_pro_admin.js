@@ -112,12 +112,25 @@ function load_pat_page(para_1){
 //Forum Home pages
 function load_for_page(para_1){
 	$.ajax({
-		url:'pat_admin/home_'+para_1+'.php',
+		type:'GET',
+		url:'for_admin/home_'+para_1+'.php',
 		cache: false,
 		success: function(data){
 			$("#admin_home_div").html(data);
 		}
 	});
+	//var dataString="user_id="+id;
+	//var new_url = '/admin_panel/removeusers/'+id;
+	//$.ajax({
+	//	type:'GET',
+	//	url:new_url,
+	//	data: dataString,
+	//	cache: false,
+	//	success: function(data){
+	//		//console.log(data);
+	//		$("#admin_home_div").html(data.page);
+	//	}
+	//});
 };
 
 
