@@ -7330,8 +7330,8 @@ button[type=submit]:disabled, input[type=submit]:disabled {
 .num_votes {
     width: 75px;
     font-size: 18px;
-    margin-top: -8px;
-    margin-bottom: -3px;
+    margin-top: -2px;
+    margin-bottom: -2px;
 }
 
 .up_vote, .down_vote {

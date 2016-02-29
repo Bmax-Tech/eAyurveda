@@ -469,14 +469,14 @@
     text-align:left;
     margin:10px;
     color:#666;
-    height: 64px;
+    height: 28px;
 }
 
 #innterProfilePic {
     margin-right:15px;
     float:left;
-    height:96px;
-    width:96px;
+    height:60px;
+    width:60px;
     overflow-y: hidden ! important;
     overflow-x: hidden ! important;
     background-color: #fff;
@@ -619,7 +619,7 @@
 #btnNewMsgIcon {
     overflow-y: hidden ! important;
     overflow-x: hidden ! important;
-    background-image: url('../images/ic_action_new_email.png');
+    background-image: url('');
     background-size:contain;
     background-repeat: no-repeat;
     background-position-x:left;
@@ -638,9 +638,8 @@
 .notifyCard {
     background-color: #f9f9f9;
     height: 96px;
-    margin: 7px;
+    margin: -1px;
     border: 1px solid #e5e5e5;
-    border-radius: 3px;
     font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
     color: #333;
     text-align: left;
@@ -653,8 +652,8 @@
     transition: all .2s ease-out;
 }
 .notifyImage {
-    height:96px;
-    width: 96px;
+    height:100%;
+    width: 90px;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
     position: relative;
@@ -701,6 +700,10 @@
     font-weight: 400;
     margin-left: 10px;
     color: #666;
+}
+
+.note-group-select-from-files, .note-table, .note-fontname {
+    display: none !important;
 }
 
 @media screen and (max-width: 1100px){

@@ -10,6 +10,10 @@
     <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('assets_social/js/forum_home.js') }}"></script>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500"/>
+    <link href="{{ URL::asset('assets_social/css/summernote.css')}}" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet">
+    <script src="{{ URL::asset('assets_social/js/summernote.min.js')}}"></script>
+
     <style>
         #question-stats:before {
             z-index: -1;
@@ -23,7 +27,25 @@
             font-size: 15px;
             overflow: hidden;
         }
+        .note-btn {
+            width: auto !important;
+        }
+        .note-editor {
+            box-shadow: 1px 2px 0 1px rgba(0, 0, 0, .07) !important;
+            border: 1px solid #ddd !important;
+            margin-top: 10px;
+        }
     </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300,                 // set editor height
+                minHeight: null,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+                focus: false                  // set focus to editable area after initializing summernote
+            });
+        });
+    </script>
 @stop
 
 @section('body')
@@ -93,11 +115,13 @@ $numAns = 0;
                                 </a>
 
                             </div>
-                            <div style="width:75px;" align="center"><img class="up_vote" src="{{ URL::asset('assets/img/up_vote.png') }}">
+                            <div style="width:75px;" align="center">
+                                <img class="up_vote" src="{{ URL::asset('assets/img/up_vote.png') }}" onclick="upVote('<?= $answer->aid ?>')">
                             </div>
-                            <div class="num_votes" align="center"><?= ($answer->upVotes)-($answer->downVotes) ?></div>
-                            <div style="width:75px;" align="center"><img class="down_vote"
-                                                                         src="{{ URL::asset('assets/img/down_vote.png') }}"></div>
+                            <div class="num_votes" id="answer<?= $answer->aid ?>votes" align="center"><?= ($answer->upVotes)-($answer->downVotes) ?></div>
+                            <div style="width:75px;" align="center">
+                                <img class="down_vote" src="{{ URL::asset('assets/img/down_vote.png') }}" onclick="downVote('<?= $answer->aid ?>')">
+                            </div>
                         </div>
 
 
@@ -139,6 +163,7 @@ $numAns = 0;
                     <a href="" style="color: #7C97FF;">Sign in</a> or
                     <a href="" style="color: #7C97FF;">create an account</a> to participate in this forum.
                 </h4>
+
                 <article id="reply-form" class="Media">
 
                     <div class="Media__figure">
@@ -152,23 +177,22 @@ $numAns = 0;
                         <div style="width:75px;" align="center">patient1</div>
                     </div>
 
-
                     <div class="Media__body">
                         {!! Form::open(array('url' => 'forum/submitanswer')) !!}
-                            <input name="_token" type="hidden" value="">
-                            <input name="conversation_id" type="hidden" value="">
-                            <input name="channel" type="hidden" value="code-review">
                             <div class="form-group">
-                                {!! Form::text('subjectText', '', array(
-                                'placeholder' => 'Subject',
-                                'required' => 'required',
-                                'class' => 'subjectTextInput'
-                                )) !!}
-
-                                {!! Form::textarea('bodyText', '', array(
-                                'placeholder' => 'Type your described answer here',
-                                'required' => 'required'
-                                )) !!}
+                                <div>
+                                    {!! Form::text('subjectText', '', array(
+                                    'placeholder' => 'Title',
+                                    'required' => 'required',
+                                    'class' => 'subjectTextInput'
+                                    )) !!}
+                                </div>
+                                <div>
+                                    {!! Form::textarea('bodyText', '', array(
+                                    'id' => 'summernote',
+                                    'class' => 'bodyTextInput'
+                                    )) !!}
+                                </div>
                             </div>
                             <button type="submit" class="Button Button--Callout" data-single-click="">
                                 Post Your Reply

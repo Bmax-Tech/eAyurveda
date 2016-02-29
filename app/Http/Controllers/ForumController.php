@@ -149,6 +149,12 @@ class ForumController extends Controller
         $arr = explode("?", $catname, 2);
         $first = $arr[0];
 
+        $getCat = \DB::table('forumCategory')->where('catName', '=', $first)->get();
+        foreach($getCat as $get) {
+            $delete_image = $get->imageURL;
+        }
+
+        unlink(public_path('assets_social/img/forum_categories/'.$delete_image));
         \DB::table('forumCategory')->where('catName', '=', $first)->delete();
 
         $categories = \DB::table('forumCategory')->get();
@@ -170,6 +176,20 @@ class ForumController extends Controller
         $res['page'] = $HtmlView;
 
         return response()->json($res);
+    }
+
+    function upVoteAnswer(Request $request, $answerid) {
+        $arr = explode("?", $answerid, 2);
+        $first = $arr[0];
+
+        \DB::table('forumAnswer')->where('aid', $first)->increment('upVotes');
+    }
+
+    function downVoteAnswer(Request $request, $answerid) {
+        $arr = explode("?", $answerid, 2);
+        $first = $arr[0];
+
+        \DB::table('forumAnswer')->where('aid', $first)->increment('downVotes');
     }
 
     function sendNewsletter() {

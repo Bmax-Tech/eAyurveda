@@ -55,12 +55,19 @@
                                         </div>
                                         <div id="notificationCards">
 
-
+                                            <div class="notifyCard" onclick="window.location.href='viewmessage.aspx?message=id'">
+                                                <div class="notifyImage" style="background-image:url('')"></div>
+                                                <div class="notifyFrom">Admin</div>
+                                                <br />
+                                                <div class="notifyHead">Sample Head</div>
+                                                <br />
+                                                <div class="notifyBody">Sample Body</div>
+                                            </div>
 
                                         </div>
                                         <div style="height:45px;"></div>
                                         <div class="bottomPanel">
-                                            <div id="btnNewMessage"><div id="btnNewMsgIcon"></div>New Message</div>
+                                            <div id="btnNewMessage"><div id="btnNewMsgIcon"></div>View All</div>
                                         </div>
                                     </div>
                                 </div>
@@ -70,7 +77,6 @@
                                 <div id="upArrow" class="arrow-up"></div>
                                 <div id="profileDropDown">
                                     <div>
-                                        <div id="dropHeader"><div style="margin-left:20px;">Account</div></div>
                                         <div id="dropInnerContent">
                                             <div id="innterProfilePic"></div>
                                             <div id="innerFullName" runat="server"><?= $admin_user[0]['first_name']." Unais"; ?></div>

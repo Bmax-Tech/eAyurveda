@@ -201,4 +201,31 @@ function displayAndScroll(catN) {
     });
 }
 
+function upVote(aid) {
+    var votesDivID = "answer"+aid+"votes";
+    $.ajax({
+        type:'GET',
+        url:'answer/upvote/'+aid+'/',
+        cache: true,
+        success: function(){
+            var value = parseInt($("#"+votesDivID).text(), 10) + 1;
+            $("#"+votesDivID).text(value);
+        }
+    });
+}
+
+function downVote(aid) {
+    var votesDivID = "answer"+aid+"votes";
+    $.ajax({
+        type:'GET',
+        url:'answer/downvote/'+aid+'/',
+        cache: true,
+        success: function(){
+            var value = parseInt($("#"+votesDivID).text(), 10) - 1;
+            $("#"+votesDivID).text(value);
+        }
+    });
+}
+
+
 
