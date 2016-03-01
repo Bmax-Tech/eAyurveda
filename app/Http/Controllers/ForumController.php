@@ -28,13 +28,25 @@ class ForumController extends Controller
         ]);
     }
 
-    function getRecent() {
+    function getRecentQuestions() {
         $questions = \DB::table('forumQuestion')->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
         $HtmlView = (String) view('forum_question_result_admin')->with([
             'questions'=>$questions
         ]);
         $res['pagination'] = $questions;
         $res['page'] = $HtmlView;
+
+
+        return response()->json($res);
+    }
+
+    function getRecentAnswers() {
+        $answers = \DB::table('forumAnswer')->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')->get();
+        $HtmlView = view('forum_answer_result_admin')->with([
+            'answers'=>$answers
+        ]);
+        $res['pagination'] = $answers;
+        $res['page'] = $HtmlView->render();
 
 
         return response()->json($res);
@@ -149,6 +161,12 @@ class ForumController extends Controller
         $arr = explode("?", $catname, 2);
         $first = $arr[0];
 
+        $getCat = \DB::table('forumCategory')->where('catName', '=', $first)->get();
+        foreach($getCat as $get) {
+            $delete_image = $get->imageURL;
+        }
+
+        unlink(public_path('assets_social/img/forum_categories/'.$delete_image));
         \DB::table('forumCategory')->where('catName', '=', $first)->delete();
 
         $categories = \DB::table('forumCategory')->get();
@@ -170,6 +188,20 @@ class ForumController extends Controller
         $res['page'] = $HtmlView;
 
         return response()->json($res);
+    }
+
+    function upVoteAnswer(Request $request, $answerid) {
+        $arr = explode("?", $answerid, 2);
+        $first = $arr[0];
+
+        \DB::table('forumAnswer')->where('aid', $first)->increment('upVotes');
+    }
+
+    function downVoteAnswer(Request $request, $answerid) {
+        $arr = explode("?", $answerid, 2);
+        $first = $arr[0];
+
+        \DB::table('forumAnswer')->where('aid', $first)->increment('downVotes');
     }
 
     function sendNewsletter() {

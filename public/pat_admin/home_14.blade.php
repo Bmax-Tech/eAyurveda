@@ -57,7 +57,7 @@
         }
         .numAnswersDiv {
             width:32%;
-            background-image: url('{{ URL::asset('assets_social/img/down_awesome.png') }}');
+            background-image: url('{{ URL::asset('assets_social/img/answer_awesome.png') }}');
             border-right: 1px solid #eaeaea;
         }
         .questionContentDiv {
@@ -74,43 +74,6 @@
             height: 99px;
             float: right;
             position: relative;
-        }
-
-
-        .btnQuestionApprove {
-            position: absolute;
-            top: 33px;
-            right: -1px;
-            height: 33px;
-            width: 65px;
-            overflow-y: hidden ! important;
-            overflow-x: hidden ! important;
-            background-color: #fff;
-            border: 0px solid #ccc;
-            border-left: 1px solid #eee;
-            background-size: 40%;
-            background-repeat: no-repeat;
-            background-position: 50% 50%;
-            background-image: url('{{ URL::asset('assets_social/img/check_awesome.png') }}');
-        }
-        .btnQuestionApprove:hover {
-            outline: 0;
-            background-image: url('{{ URL::asset('assets_social/img/check_awesome_w.png') }}');
-            background-color: #359f46 !important;
-            border-color: #34a334 #30a430 #228722 #2fa52f !important;
-            transition: background-color .5s ease;
-            transition: border-color .5s ease;
-            box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
-        } .btnQuestionDelete:focus {
-              outline: 0;
-          }
-        .btnQuestionApproveHovered {
-            background-image: url('{{ URL::asset('assets_social/img/check_awesome_w.png') }}');
-            background-color: #359f46 !important;
-            border-color: #34a334 #30a430 #228722 #2fa52f !important;
-            transition: background-color .5s ease;
-            transition: border-color .5s ease;
-            box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
         }
 
         .btnQuestionView {
@@ -191,6 +154,44 @@
             box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
         }
 
+        .btnQuestionApprove {
+            position: absolute;
+            top: 33px;
+            right: -1px;
+            height: 33px;
+            width: 65px;
+            overflow-y: hidden ! important;
+            overflow-x: hidden ! important;
+            background-color: #fff;
+            border: 0px solid #ccc;
+            border-left: 1px solid #eee;
+            background-size: 40%;
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-image: url('{{ URL::asset('assets_social/img/check_awesome.png') }}');
+        }
+        .btnQuestionApprove:hover {
+            outline: 0;
+            background-image: url('{{ URL::asset('assets_social/img/check_awesome_w.png') }}');
+            background-color: #359f46 !important;
+            border-color: #34a334 #30a430 #228722 #2fa52f !important;
+            transition: background-color .5s ease;
+            transition: border-color .5s ease;
+            box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+        } .btnQuestionDelete:focus {
+              outline: 0;
+          }
+        .btnQuestionApproveHovered {
+            background-image: url('{{ URL::asset('assets_social/img/check_awesome_w.png') }}');
+            background-color: #359f46 !important;
+            border-color: #34a334 #30a430 #228722 #2fa52f !important;
+            transition: background-color .5s ease;
+            transition: border-color .5s ease;
+            box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+        }
+
+
+
         @media screen and (max-width: 1100px){
             .searchCardLeftPane {
                 display: none;
@@ -207,7 +208,7 @@
     <script type="text/javascript">
         $.ajax({
             type:'GET',
-            url:'forum/answers/getrecent/',
+            url:'forum/questions/getrecent/',
             cache: true,
             success: function(data){
                 $("#forumQuestionsDiv").html(data.page);
@@ -215,7 +216,7 @@
         });
     </script>
     <div class="forumAdminHead" style="position: relative;">
-        Flagged Answers
+        Flagged Questions
         <div style="position: absolute;right: 0;top: -5px;">
             <input type="text" class="txtSearchQuestion" style="background-image: url('assets_social/img/ic_action_search.png');" placeholder="Search Question">
         </div>

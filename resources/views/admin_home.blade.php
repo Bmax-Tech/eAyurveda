@@ -82,7 +82,8 @@
                 <ul class="c_admin_ul_in">
                     <li class="c_admin_ul_li" onClick="load_for_page('10.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Questions</li>
                     <li class="c_admin_ul_li" onClick="load_for_page('11.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Categories</li>
-                    <li class="c_admin_ul_li" onClick="load_for_page('12.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Flagged Posts</li>
+                    <li class="c_admin_ul_li" onClick="load_for_page('12.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Flagged Answers</li>
+                    <li class="c_admin_ul_li" onClick="load_for_page('14.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Flagged Questions</li>
                     <li class="c_admin_ul_li" onClick="load_for_page('13.blade')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Newsletter</li>
                 </ul>
             </li>

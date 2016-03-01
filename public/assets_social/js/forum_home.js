@@ -201,4 +201,54 @@ function displayAndScroll(catN) {
     });
 }
 
+function upVote(aid, user) {
+    if(user == "") {
+        $("#signInMessage").show();
+        $("#signInMessage").animate({
+            'margin-bottom': '15px'
+        });
+    } else {
+        var votesDivID = "answer"+aid+"votes";
+        $.ajax({
+            type:'GET',
+            url:'answer/upvote/'+aid+'/',
+            cache: true,
+            success: function(){
+                var value = parseInt($("#"+votesDivID).text(), 10) + 1;
+                $("#"+votesDivID).text(value);
+            }
+        });
+        $("#signInMessage").hide();
+    }
+}
+
+function downVote(aid, user) {
+    var votesDivID = "answer"+aid+"votes";
+    $.ajax({
+        type:'GET',
+        url:'answer/downvote/'+aid+'/',
+        cache: true,
+        success: function(){
+            var value = parseInt($("#"+votesDivID).text(), 10) - 1;
+            $("#"+votesDivID).text(value);
+        }
+    });
+}
+
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
+
 

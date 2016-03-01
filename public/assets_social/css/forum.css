@@ -1467,6 +1467,7 @@ table {
   text-align: center;
     color: #999;
     font-weight: 400;
+  font-size: 16px;
 }
 
 .utility-heading-top {
@@ -3184,7 +3185,7 @@ button + .Dropdown__menu {
 }
 
 .Button--Callout, .Button--Muted {
-  background: linear-gradient(to bottom, #00c0f9, #00b3ec);
+  background: linear-gradient(to bottom, #1CB700, #028800);
   padding: 15px 45px;
   color: #fff;
   border: none;
@@ -3192,11 +3193,11 @@ button + .Dropdown__menu {
 }
 
 .Button--Callout:hover, .Button--Muted:hover {
-  background: linear-gradient(to bottom, #00b0e5, #00a4d8)
+  background: linear-gradient(to bottom, #1ca300, #027c00);
 }
 
 .Button--Callout:focus, .Button--Muted:focus {
-  background: linear-gradient(to bottom, #0099c6, #00a4d8)
+  background: linear-gradient(to bottom, #1b9b00, #027300);
 }
 
 .Button--Muted {
@@ -7330,8 +7331,8 @@ button[type=submit]:disabled, input[type=submit]:disabled {
 .num_votes {
     width: 75px;
     font-size: 18px;
-    margin-top: -8px;
-    margin-bottom: -3px;
+    margin-top: -2px;
+    margin-bottom: -2px;
 }
 
 .up_vote, .down_vote {

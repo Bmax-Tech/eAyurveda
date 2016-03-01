@@ -91,8 +91,11 @@ Route::get('/for_admin/{page_name}','ForumController@returnView');
 
 Route::get('/forum/search/{query}','ForumController@searchForum');
 Route::get('forum/getcategories/','ForumController@getCategories');
-Route::get('forum/questions/getrecent/','ForumController@getRecent');
+Route::get('forum/questions/getrecent/','ForumController@getRecentQuestions');
+Route::get('forum/answers/getrecent/','ForumController@getRecentAnswers');
 Route::get('forum/questions/browserecent/','ForumController@browseRecent');
+Route::get('forum/answer/upvote/{answerid}','ForumController@upVoteAnswer');
+Route::get('forum/answer/downvote/{answerid}','ForumController@downVoteAnswer');
 Route::get('/forum/browse/{category}','ForumController@getBrowseCategory');
 Route::get('/forum/question/delete/{qid}','ForumController@deleteQuestion');
 Route::get('/forum/category/delete/{catname}','ForumController@deleteCategory');

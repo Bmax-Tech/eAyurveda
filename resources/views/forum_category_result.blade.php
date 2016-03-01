@@ -10,7 +10,7 @@ foreach($categories as $category) {
         </div>
     </div>
 </div>
-
 <?php }
 ?>
+
 

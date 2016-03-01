@@ -212,11 +212,13 @@
     border:1px solid #E6E6E6;
     border-radius: 4px;
     box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+    transition: all 0.2s ease-in-out;
+
 }
 .searchCard:hover {
     cursor: pointer;
     background-color: #f5f5f5;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, .1), 0 2px 10px rgba(0, 0, 0, .5);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .searchCardLeftPane {
@@ -469,14 +471,14 @@
     text-align:left;
     margin:10px;
     color:#666;
-    height: 64px;
+    height: 28px;
 }
 
 #innterProfilePic {
     margin-right:15px;
     float:left;
-    height:96px;
-    width:96px;
+    height:60px;
+    width:60px;
     overflow-y: hidden ! important;
     overflow-x: hidden ! important;
     background-color: #fff;
@@ -538,26 +540,26 @@
 }
 
 #LoginButtonTopDiv {
-    padding-top:25px;
-    padding-right:40px;
+    position: absolute;
+    top:10px;
+    right:20px;
     float:right;
 }
 
 .loginButtonTop {
-    background-color: #5555ff;
+    background-color: #4cc84c;
     border-radius: 3px;
     border-style: solid;
     border-width: 1px;
-    border-color: #5252FF #4444FF #3333FF #4444FF;
+    border-color: #4bc84b #37c837 #31c831 #3dc83d;
     height: 35px;
     width: 80px;
-    font-family: 'Roboto', Tahoma, 'Roboto';
-    font-size: 16px;
+    font-size: 15px;
     color: #FFFFFF;
 }
 .loginButtonTop:hover {
-    background-color: #4444FF;
-    border-color: #4242FF #3333CC #2222BB #3333CC;
+    background-color: #4cb94c;
+    border-color: #4ecd4e #38b938 #29a429 #3cb93c;
     border-width: 2px 1px 2px 1px;
 }
 
@@ -619,7 +621,7 @@
 #btnNewMsgIcon {
     overflow-y: hidden ! important;
     overflow-x: hidden ! important;
-    background-image: url('../images/ic_action_new_email.png');
+    background-image: url('');
     background-size:contain;
     background-repeat: no-repeat;
     background-position-x:left;
@@ -638,9 +640,8 @@
 .notifyCard {
     background-color: #f9f9f9;
     height: 96px;
-    margin: 7px;
+    margin: -1px;
     border: 1px solid #e5e5e5;
-    border-radius: 3px;
     font-family: 'Roboto', 'Open Sans', Tahoma, Arial;
     color: #333;
     text-align: left;
@@ -653,8 +654,8 @@
     transition: all .2s ease-out;
 }
 .notifyImage {
-    height:96px;
-    width: 96px;
+    height:100%;
+    width: 90px;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
     position: relative;
@@ -703,10 +704,18 @@
     color: #666;
 }
 
+.note-group-select-from-files, .note-table, .note-fontname {
+    display: none !important;
+}
+.alert-danger {
+    margin-bottom: -20px !important;
+}
+
 @media screen and (max-width: 1100px){
     .searchCardLeftPane {
         display: none;
     }
+
     #loginName {
         display: none;
 
@@ -755,11 +764,20 @@
         margin-top: 5px;
         margin-left: 85px;
     }
+
 }
 
 @media screen and (max-width: 767px) {
     #loginNavigation {
         display: none;
+    }
+    #LoginButtonTopDiv {
+        position: absolute;
+        top: 7px;
+        right: 75px;
+        float: right;
+        padding-top: 0px;
+        padding-right: 0px;
     }
 }
 
