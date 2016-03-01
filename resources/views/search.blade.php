@@ -35,12 +35,13 @@
                     <input type="hidden" name="advanced_search" value="NO">
                     <input type="hidden" name="search_text_hidden" id="search_text_hidden" value="{{ $search_text }}">
                     <input type="hidden" name="filter_loc" id="filter_loc_hidden" value="-">
+                    <input type="hidden" name="filter_spec" id="filter_spec_hidden" value="-">
                 <?php
                 }
                 ?>
                 <input type="hidden" name="page" id="page_number_hidden" value="1">
                 <ul class="c_ul_1" style="background:#39B54A;margin-bottom: 0px">
-                    <li><div class="c_search_filter_f">Total Doctors<span style="float: right" id="c_tot_doc_filter">0</span></div></li>
+                    <li><div class="c_search_filter_f">Total Doctors<span style="float: right;background: rgba(255, 255, 255, 0.52);padding: 2px 12px;border-radius: 10px;color: #1A942A;margin-top: -2px;" id="c_tot_doc_filter">0</span></div></li>
                     <li><hr class="c_hr_1"/></li>
                     <li><div class="c_search_filter_f" style="background: #288E36">Rating</div></li>
                     <li>
@@ -55,14 +56,19 @@
                     </li>
                     <li><hr class="c_hr_1"/></li>
                     <li><div class="c_search_filter_f" style="background: #288E36">Specialization</div></li>
-                    <li>
-                        <div style="background:#39B54A;padding: 17px 13px;">
+                    <li style="background:#39B54A;">
+                        <div id="c_filter_spec_div" style="background:#39B54A;padding: 10px 13px;">
                             <ul class="c_ul_1" style="color: #FFF;padding-left: 5px;font-size: 13px;">
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
+                                <?php
+                                    foreach($spec as $item)
+                                    {
+                                        if($item->spec_list != ""){
+                                ?>
+                                <li><input type="radio" name="specialization" class="c_check_box" value="{{ $item->spec_list }}">{{ $item->spec_list }}</li>
+                                <?php
+                                        }
+                                    }
+                                ?>
                             </ul>
                         </div>
                     </li>
@@ -131,7 +137,7 @@
                 }
                 ?>
             </li>
-            <li id="c_doctor_result_ajax_box">
+            <li id="c_doctor_result_ajax_box" style="height: 340px;min-height: 340px;">
                 <!--  Ajax Results Load Here -->
             </li>
             <li>
@@ -142,7 +148,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div style="float: right;padding: 20px 0px">
-                        <span>Showing <span id="c_page_no"></span> results</span>
+                        <span id="c_show_page_no">Showing <span id="c_page_no"></span> results</span>
                     </div>
                 </div>
             </li>

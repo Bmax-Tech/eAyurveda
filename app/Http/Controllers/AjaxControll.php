@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Chat_data;
 use App\Comments;
 use App\Doctors;
@@ -12,6 +13,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Input;
 
@@ -37,14 +40,44 @@ class AjaxControll extends Controller
     public function doc_search_page(Request $request){
 
         if(Input::get('advanced_search') == 'NO') {
+			//**********************************************************************
+			//************** Normal Search DataBase Queries are Here ***************
+			//**********************************************************************
+
             // This executes when Normal search is used
-            if (Input::get('filter_star_rating') == 0 && Input::get('filter_loc') == '-') {
-                $doctors = \DB::table('doctors')->where('first_name', 'like', '%' . Input::get('search_text_hidden') . '%')->orwhere('last_name', 'like', '%' . Input::get('search_text_hidden') . '%')->paginate($this->RESULTS_PER_PAGE);
+            if (Input::get('filter_star_rating') == 0 && Input::get('filter_loc') == '-' && Input::get('filter_spec') == '-') {
+				// **************
+				$query = "SELECT doc.*,spec.* FROM doctors AS doc INNER JOIN specialization AS spec on doc.id = spec.doc_id ";
+				$query = $query."WHERE doc.first_name LIKE '%".Input::get('search_text_hidden')."%' OR doc.last_name LIKE '%".Input::get('search_text_hidden')."%' ORDER BY doc.id";
+				// **************
             } else if(Input::get('filter_star_rating') != 0) {
-                $doctors = \DB::table('doctors')->where('rating', '=', Input::get('filter_star_rating'))->paginate($this->RESULTS_PER_PAGE);
-            }else if(Input::get('filter_loc') != '-'){
-				$doctors = \DB::table('doctors')->where('district', '=', Input::get('district'))->paginate($this->RESULTS_PER_PAGE);
+				// **************
+				$query = "SELECT doc.*,spec.* FROM doctors AS doc INNER JOIN specialization AS spec on doc.id = spec.doc_id ";
+				$query = $query."WHERE doc.rating = ".Input::get('filter_star_rating')." ORDER BY doc.id";
+				// **************
+            }else if(Input::get('filter_loc') != '-' && Input::get('filter_spec') == '-'){
+				// **************
+				$query = "SELECT doc.*,spec.* FROM doctors AS doc INNER JOIN specialization AS spec on doc.id = spec.doc_id ";
+				$query = $query."WHERE doc.district = '".Input::get('district')."' ORDER BY doc.id";
+				// **************
+			}else if(Input::get('filter_loc') == '-' && Input::get('filter_spec') != '-'){
+				// **************
+				$query = "SELECT doc.*,spec.* FROM doctors AS doc INNER JOIN specialization AS spec on doc.id = spec.doc_id ";
+				$query = $query."WHERE spec.spec_1 = '".Input::get('specialization')."' OR spec.spec_2 = '".Input::get('specialization')."' ";
+				$query = $query."OR spec.spec_3 = '".Input::get('specialization')."' OR spec.spec_4 = '".Input::get('specialization')."' OR spec.spec_5 = '".Input::get('specialization')."' ORDER BY doc.id";
+				// **************
+			}else if(Input::get('filter_loc') != '-' && Input::get('filter_spec') != '-'){
+				// **************
+				$query = "SELECT doc.*,spec.* FROM doctors AS doc INNER JOIN specialization AS spec on doc.id = spec.doc_id ";
+				$query = $query."WHERE doc.district = '".Input::get('district')."' AND (spec.spec_1 = '".Input::get('specialization')."' OR spec.spec_2 = '".Input::get('specialization')."' ";
+				$query = $query."OR spec.spec_3 = '".Input::get('specialization')."' OR spec.spec_4 = '".Input::get('specialization')."' OR spec.spec_5 = '".Input::get('specialization')."') ORDER BY doc.id";
+				// **************
 			}
+
+			//**********************************************************************
+			//************** Normal Search DataBase Queries are Here ***************
+			//**********************************************************************
+
         }else{
             // This executes when Advanced Search is used By ^^^ Salika ^^^
 
@@ -200,9 +233,17 @@ class AjaxControll extends Controller
             //**********************************************************************
             //**********************************************************************
         }
+
+		// ***************** DataBase Array Slicing and Pagination *****************
+		$all_doctors = DB::select(DB::raw($query));
+		$doctors = array_slice($all_doctors,$this->RESULTS_PER_PAGE*(Input::get('page',1)-1),$this->RESULTS_PER_PAGE);
+		$paginate_data = new LengthAwarePaginator($all_doctors,count($all_doctors),$this->RESULTS_PER_PAGE,
+				Paginator::resolveCurrentPage(),['path' => Paginator::resolveCurrentPath()]);
+		// ***************** DataBase Array Slicing and Pagination *****************
+
         // This will convert view into String, Which can parse through json object
         $HtmlView = (String) view('doctor_result')->with(['doctors'=>$doctors]);
-        $res['pagination'] = $doctors;
+        $res['pagination'] = $paginate_data;
         $res['page'] = $HtmlView;
 
         // Return Json Type Object

@@ -15,6 +15,7 @@ use App\Images;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -29,12 +30,12 @@ class Front extends Controller
 
     // This function loads default results
     public function search(){
-        return view('search',array('search_text' => ''));
+        return view('search',array('search_text' => '','spec' => self::get_specializations()));
     }
 
     // This function loads results according to user requests
     public function search_query(Request $request){
-        return view('search',array('search_text' => $request->search_text));
+        return view('search',array('search_text' => $request->search_text,'spec' => self::get_specializations()));
     }
 
     // This function loads results for advanced search options
@@ -115,7 +116,8 @@ class Front extends Controller
 
                 self::send_email($request->first_name,$request->last_name,$request->username,$request->email);// Send an Email
 
-                return Redirect::to('/');
+                //return Redirect::to('/');
+                return view('register', array('success_reg' => 'YES'));
             } else {
 
                 // Some error
@@ -384,6 +386,22 @@ class Front extends Controller
         Mail::send('emails.welcome_mail',['first_name' => $first_name,'last_name' => $last_name,'username' => $user_name],function($message) use ($subject){
             $message->to($subject['email'],$subject['name'])->subject($subject['sub']);
         });
+    }
+
+    // This function get unique specializations from DB
+    public function get_specializations(){
+        $query = "SELECT DISTINCT spec_1 AS 'spec_list' FROM specialization ";
+        $query = $query."UNION ";
+        $query = $query."SELECT DISTINCT spec_2 AS 'spec_list' FROM specialization ";
+        $query = $query."UNION ";
+        $query = $query."SELECT DISTINCT spec_3 AS 'spec_list' FROM specialization ";
+        $query = $query."UNION ";
+        $query = $query."SELECT DISTINCT spec_4 AS 'spec_list' FROM specialization ";
+        $query = $query."UNION ";
+        $query = $query."SELECT DISTINCT spec_5 AS 'spec_list' FROM specialization";
+
+        $spec = DB::select(DB::raw($query));
+        return $spec;
     }
 
     // **********  Custom Functions **********************************

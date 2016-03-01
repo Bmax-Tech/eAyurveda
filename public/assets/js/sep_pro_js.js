@@ -135,6 +135,7 @@ $(".password_regx").on('focusout',function() {
 	$(".c_password_inputs").fadeOut();
 });
 
+
 /* ********************************************************** */
 
 /* ******************  Home Page Sliders  ******************* */
@@ -561,37 +562,48 @@ function doc_load_ajax(){
 			// Pagination ///////////////////////////////////
 
 			var txt='';
-			if(data.pagination.total > data.pagination.per_page)
-			{
-				var pre_page_no=1;
-				var next_page_no=1;
-				if(data.pagination.current_page>1){
-					pre_page_no = data.pagination.current_page-1;
-				}
-				if(data.pagination.current_page<data.pagination.last_page){
-					next_page_no = data.pagination.current_page + 1;
-				}else{
-					next_page_no = data.pagination.current_page;
-				}
+			if(data.pagination.total > 0) {
+				if (data.pagination.total > data.pagination.per_page) {
+					var pre_page_no = 1;
+					var next_page_no = 1;
+					if (data.pagination.current_page > 1) {
+						pre_page_no = data.pagination.current_page - 1;
+					}
+					if (data.pagination.current_page < data.pagination.last_page) {
+						next_page_no = data.pagination.current_page + 1;
+					} else {
+						next_page_no = data.pagination.current_page;
+					}
 
-				txt=txt+'<ul class="pagination"><li><a href="#page_pre='+pre_page_no+'" onclick="pagination('+pre_page_no+')" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
-				for(var i=1;i<=data.pagination.last_page;i++)
-				{
-					txt=txt+'<li ';
-						if(data.pagination.current_page==i)
-						{
-							txt=txt+'class="active"';
+					txt = txt + '<ul class="pagination"><li><a href="#page_pre=' + pre_page_no + '" onclick="pagination(' + pre_page_no + ')" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+					for (var i = 1; i <= data.pagination.last_page; i++) {
+						txt = txt + '<li ';
+						if (data.pagination.current_page == i) {
+							txt = txt + 'class="active"';
 						}
-					txt=txt+'><a href="#page='+i+'" onclick="pagination('+i+')">'+i+' <span class="sr-only">(current)</span></a></li>';
+						txt = txt + '><a href="#page=' + i + '" onclick="pagination(' + i + ')">' + i + ' <span class="sr-only">(current)</span></a></li>';
+					}
+					txt = txt + '<li><a href="#page_next=' + next_page_no + '" onclick="pagination(' + next_page_no + ')" aria-label="Next"><span aria-hidden="true">»</span></a></li></ul>';
 				}
-				txt=txt+'<li><a href="#page_next='+next_page_no+'" onclick="pagination('+next_page_no+')" aria-label="Next"><span aria-hidden="true">»</span></a></li></ul>';
+
+				$("#c_show_page_no").html('Showing <span id="c_page_no"></span> results');
+				$("#search_doc_pagination_panel").html(txt);
+				var from_no = data.pagination.per_page*(data.pagination.current_page-1)+1;
+				var to_no = 1;
+				if(data.pagination.total > (data.pagination.per_page*data.pagination.current_page)){
+					to_no = data.pagination.per_page*data.pagination.current_page;
+				}else{
+					to_no = data.pagination.total;
+				}
+
+				txt = from_no+' - '+to_no+' of '+data.pagination.total;
+				$("#c_page_no").html(txt);
+				$("#c_tot_doc_filter").html(data.pagination.total);
+			}else{
+				// No results
+				$("#search_doc_pagination_panel").html('');
+				$("#c_show_page_no").html('No Results Found');
 			}
-
-
-			$("#search_doc_pagination_panel").html(txt);
-			txt = data.pagination.from+' - '+data.pagination.to+' of '+data.pagination.total;
-			$("#c_page_no").html(txt);
-			$("#c_tot_doc_filter").html(data.pagination.total);
 
 			// Pagination ///////////////////////////////////
 			/////////////////////////////////////////////////
@@ -629,7 +641,15 @@ function filter_result_btn(){
 	$("#page_number_hidden").val(1);// Reset Page number into 1
 	$("#filter_star_rating").val(0);// Reset Star rating into 0
 	$(".c_filter_star").removeClass("c_filter_star_active");
-	$("#filter_loc_hidden").val($('input[name=district]:checked', '#filter_selections').val());
+	// If district is clicked
+	if($('input[name=district]:checked', '#filter_selections').val() != null) {
+		$("#filter_loc_hidden").val($('input[name=district]:checked', '#filter_selections').val());
+	}
+	// If specialization is clicked
+	if($('input[name=specialization]:checked', '#filter_selections').val() != null) {
+		$("#filter_spec_hidden").val($('input[name=specialization]:checked', '#filter_selections').val());
+	}
+
 	doc_load_ajax();
 }
 
@@ -638,6 +658,7 @@ function filter_reset(){
 	$("#filter_star_rating").val(0);// Reset Star rating into 0
 	$(".c_filter_star").removeClass("c_filter_star_active");
 	$("#filter_loc_hidden").val('-');
+	$("#filter_spec_hidden").val('-');
 	$("#filter_selections").trigger('reset');
 	doc_load_ajax();
 };
