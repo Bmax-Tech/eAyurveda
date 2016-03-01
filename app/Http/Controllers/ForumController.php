@@ -28,13 +28,25 @@ class ForumController extends Controller
         ]);
     }
 
-    function getRecent() {
+    function getRecentQuestions() {
         $questions = \DB::table('forumQuestion')->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
         $HtmlView = (String) view('forum_question_result_admin')->with([
             'questions'=>$questions
         ]);
         $res['pagination'] = $questions;
         $res['page'] = $HtmlView;
+
+
+        return response()->json($res);
+    }
+
+    function getRecentAnswers() {
+        $answers = \DB::table('forumAnswer')->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')->get();
+        $HtmlView = view('forum_answer_result_admin')->with([
+            'answers'=>$answers
+        ]);
+        $res['pagination'] = $answers;
+        $res['page'] = $HtmlView->render();
 
 
         return response()->json($res);

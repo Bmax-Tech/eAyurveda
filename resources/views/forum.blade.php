@@ -44,15 +44,37 @@
                 maxHeight: null,             // set maximum height of editor
                 focus: false                  // set focus to editable area after initializing summernote
             });
+            $("#signInMessage").hide();
+            var ans = getUrlParameter('answer');
+            if($.isNumeric(ans)) {
+                $('html, body').animate({
+                    scrollTop: $("#answer" + ans).offset().top - 5
+                }, 1000);
+            }
+
         });
     </script>
 @stop
 
 @section('body')
 
-<?php if($questionResult) {
-$numAns = 0;
-?>
+    <?php
+    $user = "";
+    $login = false;
+    $firstname = "";
+    if (isset($_COOKIE['user'])) {
+        $user = json_decode($_COOKIE['user'], true);
+        $firstname = $user[0]['first_name'];
+        $login = true;
+    } else if (isset($_COOKIE['admin_user'])) {
+        $user = json_decode($_COOKIE['admin_user'], true);
+        $firstname = $user[0]['first_name'];
+        $login = true;
+    }
+
+    if($questionResult) {
+    $numAns = 0;
+    ?>
 <div class="forumDetailsBar">
     <div style="padding: 0px 50px 0 130px;line-height: 40px;">
         Ayurveda.lk > Forum > <?= $questionResult->qCategory ?> > <?= $questionResult->qSubject ?>
@@ -106,7 +128,8 @@ $numAns = 0;
                         foreach($answerResultSet as $answer) {
                             $numAns++
                     ?>
-                    <div class="Comment Media">
+
+                    <div id="answer<?= $answer->aid ?>" class="Comment Media">
 
                         <div class="Media__figure">
                             <div class="Thumbnail Thumbnail--medium Thumbnail--Circle">
@@ -116,11 +139,11 @@ $numAns = 0;
 
                             </div>
                             <div style="width:75px;" align="center">
-                                <img class="up_vote" src="{{ URL::asset('assets/img/up_vote.png') }}" onclick="upVote('<?= $answer->aid ?>')">
+                                <img class="up_vote" src="{{ URL::asset('assets/img/up_vote.png') }}" onclick="upVote('<?= $answer->aid ?>', '<?= $firstname ?>')">
                             </div>
                             <div class="num_votes" id="answer<?= $answer->aid ?>votes" align="center"><?= ($answer->upVotes)-($answer->downVotes) ?></div>
                             <div style="width:75px;" align="center">
-                                <img class="down_vote" src="{{ URL::asset('assets/img/down_vote.png') }}" onclick="downVote('<?= $answer->aid ?>')">
+                                <img class="down_vote" src="{{ URL::asset('assets/img/down_vote.png') }}" onclick="downVote('<?= $answer->aid ?>', '<?= $firstname ?>')">
                             </div>
                         </div>
 
@@ -158,11 +181,14 @@ $numAns = 0;
                 </div>
 
 
+                <div style="height: 1px; background-color: #ccc; width: 104%; margin-top: 5px; box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.22);"></div>
                 <!-- The Form to Leave a Reply -->
+                <?php if(!$login) { ?>
                 <h4 class="utility-center">
                     <a href="" style="color: #7C97FF;">Sign in</a> or
                     <a href="" style="color: #7C97FF;">create an account</a> to participate in this forum.
                 </h4>
+                <?php } ?>
 
                 <article id="reply-form" class="Media">
 
@@ -174,7 +200,11 @@ $numAns = 0;
                                 <img src="{{ URL::asset('assets/img/user_red.jpg') }}" class="utility-circle" alt="">
                             </a>
                         </div>
-                        <div style="width:75px;" align="center">patient1</div>
+                        <?php if($login) { ?>
+                            <div style="width:75px;padding-top: 5px;color:#888;font-size: 15px;" align="center"><?= $firstname ?></div>
+                        <?php } else { ?>
+                            <div style="width:75px;padding-top: 5px;color:#888;font-size: 15px;" align="center">Guest</div>
+                        <?php } ?>
                     </div>
 
                     <div class="Media__body">
@@ -194,7 +224,7 @@ $numAns = 0;
                                     )) !!}
                                 </div>
                             </div>
-                            <button type="submit" class="Button Button--Callout" data-single-click="">
+                            <button style="margin-bottom: 65px;" type="submit" class="Button Button--Callout" data-single-click="">
                                 Post Your Reply
                             </button>
 
@@ -219,6 +249,14 @@ $numAns = 0;
 
     </div>
 
+    <div id="signInMessage" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
+        <div class="container" style="text-align: left; position: relative;">
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Please <strong>Sign in</strong> to participate or vote in this thread
+            </div>
+        </div>
+    </div>
 
 </div>
 <?php } else {

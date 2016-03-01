@@ -212,11 +212,13 @@
     border:1px solid #E6E6E6;
     border-radius: 4px;
     box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+    transition: all 0.2s ease-in-out;
+
 }
 .searchCard:hover {
     cursor: pointer;
     background-color: #f5f5f5;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, .1), 0 2px 10px rgba(0, 0, 0, .5);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .searchCardLeftPane {
@@ -538,26 +540,26 @@
 }
 
 #LoginButtonTopDiv {
-    padding-top:25px;
-    padding-right:40px;
+    position: absolute;
+    top:10px;
+    right:20px;
     float:right;
 }
 
 .loginButtonTop {
-    background-color: #5555ff;
+    background-color: #4cc84c;
     border-radius: 3px;
     border-style: solid;
     border-width: 1px;
-    border-color: #5252FF #4444FF #3333FF #4444FF;
+    border-color: #4bc84b #37c837 #31c831 #3dc83d;
     height: 35px;
     width: 80px;
-    font-family: 'Roboto', Tahoma, 'Roboto';
-    font-size: 16px;
+    font-size: 15px;
     color: #FFFFFF;
 }
 .loginButtonTop:hover {
-    background-color: #4444FF;
-    border-color: #4242FF #3333CC #2222BB #3333CC;
+    background-color: #4cb94c;
+    border-color: #4ecd4e #38b938 #29a429 #3cb93c;
     border-width: 2px 1px 2px 1px;
 }
 
@@ -705,11 +707,15 @@
 .note-group-select-from-files, .note-table, .note-fontname {
     display: none !important;
 }
+.alert-danger {
+    margin-bottom: -20px !important;
+}
 
 @media screen and (max-width: 1100px){
     .searchCardLeftPane {
         display: none;
     }
+
     #loginName {
         display: none;
 
@@ -758,11 +764,20 @@
         margin-top: 5px;
         margin-left: 85px;
     }
+
 }
 
 @media screen and (max-width: 767px) {
     #loginNavigation {
         display: none;
+    }
+    #LoginButtonTopDiv {
+        position: absolute;
+        top: 7px;
+        right: 75px;
+        float: right;
+        padding-top: 0px;
+        padding-right: 0px;
     }
 }
 

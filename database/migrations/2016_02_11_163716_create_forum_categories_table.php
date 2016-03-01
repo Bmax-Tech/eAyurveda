@@ -54,6 +54,14 @@ class CreateForumCategoriesTable extends Migration
             $table->integer('qID');
             $table->timestamps();
         });
+
+        Schema::create('answerVote', function (Blueprint $table) {
+            $table->engine = "InnoDB";
+            $table->text('user');
+            $table->integer('answerID');
+            $table->integer('vote');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -63,6 +71,7 @@ class CreateForumCategoriesTable extends Migration
      */
     public function down()
     {
+        Schema::drop('answerVote');
         Schema::drop('forumSubscribe');
         Schema::drop('forumanswer');
         Schema::drop('forumQuestion');

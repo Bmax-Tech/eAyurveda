@@ -1,6 +1,3 @@
-<?php
-foreach($questions as $question) {
-?>
 <script src="{{ URL::asset('assets_social/js/bootbox.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
     function deleteQuestion(qid) {
@@ -14,7 +11,14 @@ foreach($questions as $question) {
             }
         });
     }
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 </script>
+
+<?php
+foreach($questions as $question) {
+?>
 <div class="searchCard">
     <div>
 
@@ -30,8 +34,9 @@ foreach($questions as $question) {
             <?= $question->qBody ?>
         </div>
         <div class="questionActionsDiv">
-            <input type="button" class="btnQuestionDelete" onclick="bootbox.confirm('Are you sure you want to delete this question?', function(result) {if (result) {deleteQuestion('<?= $question->qID ?>')}});">
-            <input type="button" class="btnQuestionView" onclick="window.location.href = '/forum/view?question=<?= $question->qID ?>'">
+            <input type="button" data-toggle="tooltip" data-container="body" data-placement="right" title="Delete" class="btnQuestionDelete" onclick="bootbox.confirm('Are you sure you want to delete this question?', function(result) {if (result) {deleteQuestion('<?= $question->qID ?>')}});">
+            <input type="button" data-toggle="tooltip" data-container="body" data-placement="right" title="Approve" class="btnQuestionApprove" onclick="bootbox.confirm('Are you sure you want to approve this question?', function(result) {if (result) {approveQuestion('<?= $question->qID ?>')}});">
+            <input type="button" data-toggle="tooltip" data-container="body" data-placement="right" title="View" class="btnQuestionView" onclick="window.location.href = '/forum/view?question=<?= $question->qID ?>'">
         </div>
     </div>
 </div>

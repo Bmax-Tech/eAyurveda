@@ -39,11 +39,23 @@
                             <li class="active"><a href="/forum">Forum</a></li>
                         </ul>
 
-                        <?php $admin_user = json_decode($_COOKIE['admin_user'],true); ?>
+                        <?php
+                            $login = false;
+                            $user = "";
+                            if(isset($_COOKIE['user'])){
+                                $user = json_decode($_COOKIE['user'],true);
+                                $login = true;
+                            } else if(isset($_COOKIE['admin_user'])) {
+                                $user = json_decode($_COOKIE['admin_user'],true);
+                                $login = true;
+                            }
+
+                            if($login) {
+                        ?>
 
                         <div id="loginNavigation" runat="server" align="right">
                             <div>
-                                <div id="loginName" runat="server"><?php echo $admin_user[0]['first_name']; ?></div>
+                                <div id="loginName" runat="server"><?php echo $user[0]['first_name']; ?></div>
                             </div>
                             <div id="loginNotifications">
                                 <div id="notificationCount" title="Notification(s)" class="notificationCountZero" onclick="notificationDropDown()" runat="server">0</div>
@@ -79,7 +91,11 @@
                                     <div>
                                         <div id="dropInnerContent">
                                             <div id="innterProfilePic"></div>
-                                            <div id="innerFullName" runat="server"><?= $admin_user[0]['first_name']." Unais"; ?></div>
+                                            <div id="innerFullName" runat="server">
+
+
+                                                <?= $user[0]['first_name']; ?>
+                                            </div>
                                             <div id="innerEmail" runat="server">youremail@domain.com</div>
                                         </div>
                                         <div id="dropButtons">
@@ -91,13 +107,22 @@
                                 </div>
                             </div>
                         </div>
-
+                        <?php } ?>
                     </div>
 
                 </nav>
                 <div class="barLine"></div>
             </div>
         </div>
+        <?php
+        if(!$login) {
+        ?>
+        <div id="LoginButtonTopDiv">
+            <input type="button" id="BtnLoginTop" class="loginButtonTop" value="Sign in" onclick="window.location = '';"
+                   formnovalidate/>
+        </div>
+        <?php     }
+        ?>
 
         @yield('body')
 
