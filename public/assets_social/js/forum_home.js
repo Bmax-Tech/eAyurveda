@@ -223,16 +223,24 @@ function upVote(aid, user) {
 }
 
 function downVote(aid, user) {
-    var votesDivID = "answer"+aid+"votes";
-    $.ajax({
-        type:'GET',
-        url:'answer/downvote/'+aid+'/',
-        cache: true,
-        success: function(){
-            var value = parseInt($("#"+votesDivID).text(), 10) - 1;
-            $("#"+votesDivID).text(value);
-        }
-    });
+    if(user == "") {
+        $("#signInMessage").show();
+        $("#signInMessage").animate({
+            'margin-bottom': '15px'
+        });
+    } else {
+        var votesDivID = "answer"+aid+"votes";
+        $.ajax({
+            type:'GET',
+            url:'answer/downvote/'+aid+'/',
+            cache: true,
+            success: function(){
+                var value = parseInt($("#"+votesDivID).text(), 10) - 1;
+                $("#"+votesDivID).text(value);
+            }
+        });
+        $("#signInMessage").hide();
+    }
 }
 
 var getUrlParameter = function getUrlParameter(sParam) {

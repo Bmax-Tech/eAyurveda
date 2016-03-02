@@ -100,8 +100,8 @@
             border-color: #34a334 #30a430 #228722 #2fa52f !important;
             transition: background-color .5s ease;
             transition: border-color .5s ease;
-            box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
-        } .btnQuestionDelete:focus {
+            box-shadow: 0 0px 0 rgba(0,255,0,.2),0 1px 5px rgba(0,255,0,.15);
+        } .btnQuestionApprove:focus {
               outline: 0;
           }
         .btnQuestionApproveHovered {
@@ -110,7 +110,7 @@
             border-color: #34a334 #30a430 #228722 #2fa52f !important;
             transition: background-color .5s ease;
             transition: border-color .5s ease;
-            box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+            box-shadow: 0 0px 0 rgba(0,255,0,.2),0 1px 5px rgba(0,255,0,.15);
         }
 
         .btnQuestionView {
@@ -178,7 +178,7 @@
             border-color: #db3939 #dc2929 #d81e1e #dd2c2c;
             transition: background-color .5s ease;
             transition: border-color .5s ease;
-            box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+            box-shadow: 0 0px 0 rgba(255,0,0,.2),0 1px 5px rgba(255,0,0,.15);
         } .btnQuestionDelete:focus {
               outline: 0;
           }
@@ -188,7 +188,7 @@
             border-color: #db3939 #dc2929 #d81e1e #dd2c2c;
             transition: background-color .5s ease;
             transition: border-color .5s ease;
-            box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+            box-shadow: 0 0px 0 rgba(255,0,0,.2),0 1px 5px rgba(255,0,0,.15);
         }
 
         @media screen and (max-width: 1100px){

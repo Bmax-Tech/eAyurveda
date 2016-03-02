@@ -229,21 +229,29 @@ class ForumController extends Controller
     }
 
     function sendNewsletter() {
-        $theSubject = Input::get('subject');
         $bodyText = Input::get('content');
+        $theSubject = Input::get('subject');
 
-        $content = $bodyText;
+        $users = \DB::table('users')->get();
 
-        $data = [
-            'content' => $content
-        ];
+        /* comment this method call later */
+        self::sendMailNewsletter($theSubject, $bodyText, "muabdulla@ymail.com");
 
-        Mail::send('mail-template', $data, function($message) {
-            $message->from('muabdulla@outlook.com', $name = null);
-            $message->sender('muabdulla@outlook.com', $name = null);
-            $message->to('muabdulla@gmail.com', $name = null);
+        foreach($users as $user) {
+            /* enable this method call later */
+            //self::sendMailNewsletter($theSubject, $bodyText, $user->email);
+        }
+
+        return Redirect::intended('/admin_panel_home/');
+    }
+
+    public function sendMailNewsletter($subject, $body, $toMail){
+        $data = array('bodyText' => $body);
+        Mail::queue('forum_mail.newsletter', $data, function($message) use ($subject, $toMail)
+        {
+            $message->from('muabdulla@outlook.com', 'Ayurveda.lk Newsletter');
+            $message->to($toMail)->subject($subject);
         });
-        return "$bodyText";
     }
 
 }

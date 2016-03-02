@@ -27,6 +27,83 @@
             font-size: 15px;
             overflow: hidden;
         }
+
+        .btnForumRight {
+            border-top-left-radius: 0px !important;
+            border-bottom-left-radius: 0px !important;
+        }
+        .btnForumMiddle {
+            border-radius: 0px !important;
+            margin-right: -1px !important;
+        }
+        .btnForumLeft {
+            border-top-right-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+            margin-right: -1px !important;
+        }
+
+        .btnForumStyle {
+            opacity: 0.5;
+            border-radius: 4px;
+            height: 40px;
+            width: 60px;
+            position: relative;
+            right: -16px;
+            overflow-y: hidden ! important;
+            overflow-x: hidden ! important;
+            background-color: #fff;
+            border-style:solid;
+            border-width: 1px;
+            border-color: #ccc;
+            background-size: 45%;
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+        }
+
+        .btnForumFlag {
+            background-image: url('{{ URL::asset('assets_social/img/flag_awesome.png') }}');
+        }
+        .btnForumFlag:hover {
+            outline: 0;
+            background-image: url('{{ URL::asset('assets_social/img/flag_awesome_w.png') }}');
+            background-color: #ff4d4d;
+            border-color: #e53a3a #e72929 #e71e1e #e92c2c;
+            transition: background-color .1s ease;
+            transition: border-color .1s ease;
+            box-shadow: 0 0px 0 rgba(255,0,0,.2),0 1px 5px rgba(255,0,0,.15);
+            opacity: 1;
+        }
+        .btnForumFlag:focus {
+            outline: 0;
+            opacity: 1;
+        }
+
+        .btnForumMarkBest {
+            background-image: url('{{ URL::asset('assets_social/img/star_awesome.png') }}');
+        }
+        .btnForumMarkBest:hover {
+            outline: 0;
+            background-image: url('{{ URL::asset('assets_social/img/star_awesome_w.png') }}');
+            background-color: #5555ff !important;
+            border-color: #5252FF #4444FF #3333FF #4444FF;
+            transition: background-color .5s ease;
+            transition: border-color .5s ease;
+            box-shadow: 0 0px 0 rgba(0,255,0,.2),0 1px 5px rgba(0,255,0,.15);
+            opacity: 1;
+        }
+        .btnForumMarkBest:focus {
+            outline: 0;
+            opacity: 1;
+        }
+
+
+        .Comment__footer {
+            margin-right: 15px !important;
+            padding: 0px 0px 0px 0px !important;
+            border: 0px solid #e9e9e9 !important;
+            background: #fff;
+        }
+
         .note-btn {
             width: auto !important;
         }
@@ -35,6 +112,19 @@
             border: 1px solid #ddd !important;
             margin-top: 10px;
         }
+        .up_vote:hover {
+            background-image: url('{{ URL::asset('assets_social/img/up_awesome_w.png') }}') !important;
+            background-color: #359f46 !important;
+            border-color: #34a334 #30a430 #228722 #2fa52f !important;
+            box-shadow: 0 0px 0 rgba(0,255,0,.2),0 1px 5px rgba(0,255,0,.15);
+        }
+        .down_vote:hover {
+            background-image: url('{{ URL::asset('assets_social/img/down_awesome_w.png') }}') !important;
+            background-color: #ff4d4d !important;
+            border-color: #e53a3a #e72929 #e71e1e #e92c2c !important;
+            box-shadow: 0 0px 0 rgba(0,255,0,.2),0 1px 5px rgba(0,255,0,.15);
+        }
+
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -52,6 +142,7 @@
                 }, 1000);
             }
 
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 @stop
@@ -93,9 +184,7 @@
                     <div class="Media__figure">
                         <div class="Thumbnail Thumbnail--medium Thumbnail--Circle">
                             <a href="" class="Media__figure">
-
-                                <img src="{{ URL::asset('assets/img/user_red.jpg') }}"
-                                     class="utility-circle" alt="">
+                                <img src="{{ URL::asset('assets/img/user_red.jpg')}}" class="utility-circle" alt="">
                             </a>
                         </div>
                     </div>
@@ -108,13 +197,14 @@
                                     </span>
                         </h5>
 
-
                         <div class="htmlFormattedForumText">
                             <p><?= $questionResult->qSubject ?></p>
                             <p><?= $questionResult->qBody ?></p>
                         </div>
 
-                        <footer class="Comment__footer"></footer>
+                        <footer class="Comment__footer" style="float: right;">
+
+                        </footer>
 
                     </div>
 
@@ -138,15 +228,16 @@
                                 </a>
 
                             </div>
-                            <div style="width:75px;" align="center">
-                                <img class="up_vote" src="{{ URL::asset('assets/img/up_vote.png') }}" onclick="upVote('<?= $answer->aid ?>', '<?= $firstname ?>')">
+                        </div>
+                        <div style="position: absolute;left: 15px;top:85px;width: 45px;height: 112px;">
+                            <div style="line-height: 0;" align="center">
+                                <input type="button" class="up_vote" style="background-image: url('{{ URL::asset('assets_social/img/up_awesome.png') }}');" onclick="upVote('<?= $answer->aid ?>', '<?= $firstname ?>')">
                             </div>
                             <div class="num_votes" id="answer<?= $answer->aid ?>votes" align="center"><?= ($answer->upVotes)-($answer->downVotes) ?></div>
-                            <div style="width:75px;" align="center">
-                                <img class="down_vote" src="{{ URL::asset('assets/img/down_vote.png') }}" onclick="downVote('<?= $answer->aid ?>', '<?= $firstname ?>')">
+                            <div style="line-height: 0;" align="center">
+                                <input type="button" class="down_vote" style="background-image: url('{{ URL::asset('assets_social/img/down_awesome.png') }}');" onclick="downVote('<?= $answer->aid ?>', '<?= $firstname ?>')">
                             </div>
                         </div>
-
 
                         <div class="Media__body">
 
@@ -169,7 +260,10 @@
                                 </div>
                             </div>
 
-
+                            <footer class="Comment__footer" style="float: right;">
+                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Mark as Best Answer" class="btnForumStyle btnForumMarkBest btnForumLeft">
+                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Flag Answer" class="btnForumStyle btnForumFlag btnForumRight">
+                            </footer>
                         </div>
 
                     </div>
