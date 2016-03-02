@@ -172,7 +172,7 @@ function displayResults(){
     });
 }
 
-function displayAndScroll(catN) {
+function displayAndScroll(catN, catname) {
     $('html, body').animate({
         scrollTop: $("#resultList").offset().top+5
     }, 1000);
@@ -182,7 +182,7 @@ function displayAndScroll(catN) {
     var elm = document.createElement('div');
     elm.setAttribute('class', 'forumHomeHead');
     elm.setAttribute('style', 'position: relative; margin-top: 0px !important;');
-    elm.innerHTML = "Browse Category: " + cat;
+    elm.innerHTML = "Browse Category: " + catname.toString();
 
     var elm2 = document.createElement('div');
     elm2.setAttribute('style', 'height: 1px; background-color: #aaa; width: 100%; margin: 5px 0 20px 0;');
@@ -223,16 +223,24 @@ function upVote(aid, user) {
 }
 
 function downVote(aid, user) {
-    var votesDivID = "answer"+aid+"votes";
-    $.ajax({
-        type:'GET',
-        url:'answer/downvote/'+aid+'/',
-        cache: true,
-        success: function(){
-            var value = parseInt($("#"+votesDivID).text(), 10) - 1;
-            $("#"+votesDivID).text(value);
-        }
-    });
+    if(user == "") {
+        $("#signInMessage").show();
+        $("#signInMessage").animate({
+            'margin-bottom': '15px'
+        });
+    } else {
+        var votesDivID = "answer"+aid+"votes";
+        $.ajax({
+            type:'GET',
+            url:'answer/downvote/'+aid+'/',
+            cache: true,
+            success: function(){
+                var value = parseInt($("#"+votesDivID).text(), 10) - 1;
+                $("#"+votesDivID).text(value);
+            }
+        });
+        $("#signInMessage").hide();
+    }
 }
 
 var getUrlParameter = function getUrlParameter(sParam) {
