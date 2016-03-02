@@ -11,6 +11,11 @@
             }
         });
     }
+
+    function confirmDelete(aid) {
+       //do code here
+    }
+
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
     });
@@ -35,7 +40,7 @@ foreach($answers as $answer) {
             <?= $answer->aBody ?>
         </div>
         <div class="questionActionsDiv">
-            <input type="button" data-toggle="tooltip" data-container="body" data-placement="right" title="Delete" class="btnQuestionDelete" onclick="bootbox.confirm('Are you sure you want to delete this question?', function(result) {if (result) {deleteAnswer('<?= $answer->qID ?>')}});">
+            <input type="button" data-toggle="tooltip" data-container="body" data-placement="right" title="Delete" class="btnQuestionDelete" onclick="confirmDelete('<?= $answer->qID ?>');">
             <input type="button" data-toggle="tooltip" data-container="body" data-placement="right" title="Approve" class="btnQuestionApprove" onclick="bootbox.confirm('Are you sure you want to approve this question?', function(result) {if (result) {approveAnswer('<?= $answer->qID ?>')}});">
             <input type="button" data-toggle="tooltip" data-container="body" data-placement="right" title="View in Forums" class="btnQuestionView" onclick="window.location.href = '/forum/view?question=<?= $answer->qID ?>&answer=<?= $answer->aid ?>'">
         </div>

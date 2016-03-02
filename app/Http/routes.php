@@ -110,17 +110,7 @@ Route::get('/forum/view', function () {
 
 });
 
-Route::post('/forum/submitanswer', function () {
-    $theSubject = Input::get('subjectText');
-    $theAnswer = Input::get('bodyText');
-    DB::table('forumanswer')->insert(
-        array('qID' => '1',
-            'aFrom' => 'patient1',
-            'aSubject' => $theSubject,
-            'aBody' => $theAnswer
-        ));
-    return Redirect::intended('/forum?question=1');
-});
+Route::post('/forum/submitanswer', 'ForumController@submitAnswer');
 
 Route::post('/forum/sendnewsletter', 'ForumController@sendNewsletter');
 Route::resource('/forum/addcategory', 'ForumController@addcategory');

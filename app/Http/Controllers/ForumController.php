@@ -21,6 +21,7 @@ class ForumController extends Controller
         return (String) view($first);
     }
 
+    /* Load Forum Homepage for users with categories */
     function returnHome() {
         $categories = \DB::table('forumCategory')->get();
         return view('forum_home')->with([
@@ -28,6 +29,7 @@ class ForumController extends Controller
         ]);
     }
 
+    /* Pass All recent Questions to ajax call*/
     function getRecentQuestions() {
         $questions = \DB::table('forumQuestion')->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
         $HtmlView = (String) view('forum_question_result_admin')->with([
@@ -40,6 +42,7 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
+    /* Get all recent answers */
     function getRecentAnswers() {
         $answers = \DB::table('forumAnswer')->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')->get();
         $HtmlView = view('forum_answer_result_admin')->with([
@@ -64,6 +67,7 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
+    /* search for forum questions, ajax call */
     function searchForum(Request $request, $query) {
         $arr = explode("?", $query, 2);
         $first = $arr[0];
@@ -80,6 +84,8 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
+
+    /* Browse questions by category */
     function getBrowseCategory(Request $request, $category) {
         $arr = explode("?", $category, 2);
         $first = $arr[0];
@@ -96,6 +102,7 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
+    /* adding new forum category */
     function addcategory() {
         $catName = Input::get('catName');
         $catDescription = Input::get('catDescription');
@@ -124,6 +131,20 @@ class ForumController extends Controller
         return Redirect::intended('/admin_panel_home/');
     }
 
+    /* Post an answer to question */
+    function submitAnswer() {
+        $theSubject = Input::get('subjectText');
+        $theAnswer = Input::get('bodyText');
+        \DB::table('forumanswer')->insert(
+            array('qID' => '1',
+                'aFrom' => 'patient1',
+                'aSubject' => $theSubject,
+                'aBody' => $theAnswer
+            ));
+        return Redirect::intended('/forum?question=1');
+    }
+
+    /* Post a new question */
     function postquestion() {
         $title = Input::get('title');
         $bodyText = Input::get('body');
@@ -140,6 +161,7 @@ class ForumController extends Controller
         return Redirect::intended('/forum');
     }
 
+    /* Delete post */
     function deleteQuestion(Request $request, $qid) {
         $arr = explode("?", $qid, 2);
         $first = $arr[0];
@@ -157,6 +179,7 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
+    /* Delete a category */
     function deleteCategory(Request $request, $catname) {
         $arr = explode("?", $catname, 2);
         $first = $arr[0];
@@ -179,6 +202,7 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
+    /* return all categories */
     function getCategories() {
         $categories = \DB::table('forumCategory')->get();
         $HtmlView = (String) view('forum_category_result')->with([
