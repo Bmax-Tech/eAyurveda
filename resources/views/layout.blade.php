@@ -310,7 +310,7 @@
                     </li>
                 </ul>
             </form>
-            <div class="c_password_inputs" style="margin-left: 284px;bottom: 64.9%;right: 570px;">
+            <div class="c_password_inputs" style="position: relative !important;margin-left: 284px;bottom: 64.2%;right: 15px;">
                 <div id="in_ps_div_1" style="border-right: 25px solid #3D8EB4"></div>
                 <div id="in_ps_div_2" style="background: #3D8EB4">
                     <ul class="c_ul_1">
