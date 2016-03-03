@@ -1,8 +1,11 @@
 // JavaScript Document
 
-/* ******************* Global Functions ********************* */
+/*
+ * ~~~~~~~~~~~~~~~~~~~~~
+ * Global Variables >>>>
+ * ~~~~~~~~~~~~~~~~~~~~~
+ */
 
-// Constant Variables
 var URL='/ajax';// Default Ajax Posting URL
 var ALPH_PATTERN = /^[A-Za-z]+$/;//Use to check alphabetical pattern
 var NUM_PATTERN = /[0-9]|\./;//Use to check numerical pattern
@@ -14,56 +17,82 @@ var AJAX_CHECK_USERNAME = true; // Status after checking username
 var PASSWORD_PATTERN = false;// Status of password pattern
 var CAPTCHA_VERIFY = false;// Status of the captcha verification
 
-// function checks for input text is empty or not
+/*
+ * ~~~~~~~~~~~~~~~~~~~~~
+ * Global Variables <<<<
+ * ~~~~~~~~~~~~~~~~~~~~~
+ */
+
+
+/*
+ * ~~~~~~~~~~~~~~~~~~~~~
+ * Global Functions >>>>
+ * ~~~~~~~~~~~~~~~~~~~~~
+ */
+/*
+ * function checks for input text is empty or not
+ */
 function valid_length_input(para_1){
 	if($("input[name="+para_1+"]").val().length == 0){
-		//return true when input field is empty
+		/* return true when input field is empty */
 		return true;
 	}else{
-		//return false when input field has some value
+		/* return false when input field has some value */
 		return false;
 	}
 };
 
-// function check whether input field contain only letter
+/*
+ *  function check whether input field contain only letter
+ */
 function check_input_no_num(para_1){
 	if(ALPH_PATTERN.test($("input[name="+para_1+"]").val())){
-		// if all are letters return true
+		/* if all are letters return true */
 		return false;
 	}else{
-		// if some numbers found return false
+		/* if some numbers found return false */
 		return true;
 	}
 };
 
-// function checks for Key Events is not a number
+/*
+ * function checks for Key Events is not a number
+ */
 function only_alph(evt){
 	var theEvent = evt || window.event;
 	var key = theEvent.keyCode || theEvent.which;
 	key = String.fromCharCode( key );
 	if(NUM_PATTERN.test(key)) {
-		//if number is found in keypress event ignore that value
+		/* if number is found in keypress event ignore that value */
 		theEvent.returnValue = false;
 		if(theEvent.preventDefault) theEvent.preventDefault();
 	}
 };
 
-//function validate email address
+/*
+ * function validate email address
+ */
 function valid_email(para_1){
 	return EMAIL_PATTERN.test($("input[name="+para_1+"]").val());
 }
 
-//function validate phone number
+/*
+ * function validate phone number
+ */
 function valid_phone_no(para_1){
 	return PHONE_PATTERN.test($("input[name="+para_1+"]").val());
 };
 
-//function validate NIC
+/*
+ * function validate NIC
+ */
 function valid_nic_no(para_1){
 	return NIC_PATTERN.test($("input[name="+para_1+"]").val());
 };
 
-//function validate password and confirm password matches
+/*
+ * function validate password and confirm password matches
+ */
 function valid_confirm_password(para_1,para_2){
 	if($("input[name="+para_1+"]").val() == $("input[name="+para_2+"]").val()){
 		return true;
@@ -72,7 +101,9 @@ function valid_confirm_password(para_1,para_2){
 	}
 };
 
-// function validate password field entered characters pattern
+/*
+ * function validate password field entered characters pattern
+ */
 $(".password_regx").on('keyup',function(){
 
 	if($(".password_regx").val().length  == 0){
@@ -81,14 +112,17 @@ $(".password_regx").on('keyup',function(){
 		$(".c_password_inputs").fadeIn();
 	}
 
-	// *****  All regex patterns ******
-
+	/* ~~~~~~~~~~~~~~~~~~
+	 * All regex patterns
+	 */
 	var lower_case = /^(?=.*[a-z]).+$/;
 	var user_case = /^(?=.*[A-Z]).+$/;
 	var nums = /^(?=.*[0-9]).+$/;
 	var special_chars = /^(?=.*[^\w\s]).+$/;
-
-	// *****  All regex patterns ******
+	/*
+	 * All regex patterns
+	 * ~~~~~~~~~~~~~~~~~~
+	 */
 
 	if($(".password_regx").val().length > 7){
 		$("#in_ps_ch_1").css('color','#FFF700');
@@ -122,7 +156,9 @@ $(".password_regx").on('keyup',function(){
 		$("#in_ps_ch_4").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.');
 	}
 
-	// this will check all patterns are matching with enterd password
+	/*
+	 * this will check all patterns are matching with entered password
+	 */
 	if($(".password_regx").val().length > 7 && lower_case.test(value_ps) && user_case.test(value_ps) && (nums.test(value_ps) || special_chars.test(value_ps))){
 		PASSWORD_PATTERN = true;
 	}else{
@@ -131,14 +167,24 @@ $(".password_regx").on('keyup',function(){
 
 });
 
+/*
+ * Close Regx Warning Message
+ */
 $(".password_regx").on('focusout',function() {
 	$(".c_password_inputs").fadeOut();
 });
 
+/*
+ * ~~~~~~~~~~~~~~~~~~~~~
+ * Global Functions <<<<
+ * ~~~~~~~~~~~~~~~~~~~~~
+ */
 
-/* ********************************************************** */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-/* ******************  Home Page Sliders  ******************* */
+/*
+ * Home Page Sliders
+ */
 $(document).ready(function() {
 
 	$("#featured_doc_slider").owlCarousel({
@@ -157,10 +203,10 @@ $(document).ready(function() {
 	});
 
 });
-/* ********************************************************** */
 
-
-// This is for advanced search drop down
+/*
+ * This is for advanced search drop down
+ */
 var ad_s=false;
 $("#c_advance_search_drop").click(function(){
 	if(ad_s){
@@ -206,7 +252,7 @@ $(document).ready(function(e) {
 		}
 	});
 
-	// This Scroll used in search result page
+	/* This Scroll used in search result page */
 	$(window).scroll(function () {
 		if($(window).scrollTop()>198 && $(window).width() >= 1183){
 			$("#c_search_filter_box").addClass("c_search_filter_box_fixed");
@@ -215,7 +261,7 @@ $(document).ready(function(e) {
 		}
 	});
 
-	// This Scroll is used in home page
+	/* This Scroll is used in home page */
 	$(window).scroll(function () {
 		if($(window).scrollTop() > 640 && $(window).scrollTop() < 1071 && $(window).width() >= 1183){
 			$(".c_side_bar_ul").removeClass("c_side_nav_active");
@@ -235,15 +281,17 @@ $(document).ready(function(e) {
 });
 
 
-/* --- Registration form validation start --- */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Registration form validation
+ */
 
-// This functions is to view inline warnings
+/* This functions is to view inline warnings */
 function show_warning(para_1){
 	//display the relevant span warning message
 	$("#wrn_"+para_1).show(0);
 };
 
-// This function is to hide warnings
+/* This function is to hide warnings */
 function remove_wrn(para_1){
 	//hide the relevant span warning message
 	$("#wrn_"+para_1).hide(0);
@@ -315,20 +363,28 @@ function valid_registration(){
 
 };
 
-/* --- Registration form validation end --- */
+/* Registration form validation
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
 
-/* ---  This removes highlighted textbox color ---*/
+/*
+ * This removes highlighted textbox color
+ */
 function remove_highlight(para_1,para_2){
 	$("#"+para_1).removeClass(para_2);
 }
-/* ---  This removes highlighted textbox color ---*/
 
+/*
+ * This removes highlighted textbox color
+ */
 function add_input_box_wrn(para_1){
 	$("#"+para_1).addClass('c_error_input_field_highlight');
 };
 
-/* --- Forgotten Password Form ---*/
-
+/*
+ * ~~~~~~~~~~~~~~~~~~~~~~~
+ * Forgotten Password Form
+ */
 function check_forgotten_password_form(){
 	$("#reset_ps_username").removeClass('c_error_input_field_highlight');
 	$("#reset_ps_email").removeClass('c_error_input_field_highlight');
@@ -348,7 +404,7 @@ function check_forgotten_password_form(){
 	}
 };
 
-// Check username and email
+/* Check username and email */
 function check_username_email(){
 	var new_url = '/forgotten_password_check';
 	var dataString = $("#ps_reset_form_1").serialize();
@@ -450,7 +506,7 @@ function check_change_password_form(){
 	}
 }
 
-// this function will submit password change details
+/* this function will submit password change details */
 function submit_password_change(){
 	var new_url = '/save_change_password';
 	var dataString = $("#ps_reset_form_3").serialize();
@@ -477,14 +533,18 @@ function submit_password_change(){
 			console.log('Error:', data);
 		}
 	});
-
 }
 
-/* --- Forgotten Password Form ---*/
+/*
+ * Forgotten Password Form
+ * ~~~~~~~~~~~~~~~~~~~~~~~
+ */
 
 
 
-/* --- Ajax Requests ---*/
+/* ~~~~~~~~~~~~~
+ * Ajax Requests
+ */
 
 function check_reg_existing(para_1,para_2){
 	var dataString = 'type='+para_1+'&data='+para_2;
@@ -542,7 +602,9 @@ function check_reg_existing(para_1,para_2){
 	}
 };
 
-// This function use to load doctors in search result page via Ajax
+/*
+ * This function use to load doctors in search result page via Ajax
+ */
 function doc_load_ajax(){
 	$("#c_loading_msg").fadeIn();
 	var dataString = $("#filter_selections").serialize();// this serialize the form in search results page
@@ -558,8 +620,10 @@ function doc_load_ajax(){
 			//console.log(data);
 			$("#c_doctor_result_ajax_box").html(data.page);
 
-			/////////////////////////////////////////////////
-			// Pagination ///////////////////////////////////
+			/* >>>>>>>>>>
+			 * Pagination
+			 * >>>>>>>>>>
+			 */
 
 			var txt='';
 			if(data.pagination.total > 0) {
@@ -605,8 +669,10 @@ function doc_load_ajax(){
 				$("#c_show_page_no").html('No Results Found');
 			}
 
-			// Pagination ///////////////////////////////////
-			/////////////////////////////////////////////////
+			/* <<<<<<<<<<
+			 * Pagination
+			 * <<<<<<<<<<
+			 */
 
 			$("#c_loading_msg").fadeOut();
 		},
@@ -617,13 +683,13 @@ function doc_load_ajax(){
 };
 
 $(document).ready(function(e){
-	// Check whether current page is Search results page or not
+	/* Check whether current page is Search results page or not */
 	if($("#doc_search_page").val()=='YES') {
 		doc_load_ajax(1);
 	}
 });
 
-// This handles pagination links requests via calling ajax method
+/* This handles pagination links requests via calling ajax method */
 function pagination(para_1){
 	$("#page_number_hidden").val(para_1);
 	doc_load_ajax();
@@ -663,11 +729,15 @@ function filter_reset(){
 	doc_load_ajax();
 };
 
+/*
+ * Ajax Requests
+ * ~~~~~~~~~~~~~
+ */
 
-/* --- Ajax Requests ---*/
-
-///////////////////////////////////////////////////
-/////////  Profile View Page  /////////////////////
+/*
+ * ~~~~~~~~~~~~~~~~~
+ * Profile View Page
+ */
 
 function comment_rate_star(para_1){
 	remove_wrn('star_rating');
@@ -761,7 +831,7 @@ $(document).ready(function(e) {
 	}
 });
 
-// comments tab change
+/* comments tab change */
 var current_tab=1;
 function change_com_tab(para_1){
 	if(para_1 == "-"){
@@ -816,15 +886,20 @@ function submit_comment(){
 	});
 };
 
-///////////////////////////////////////////////////
-/////////  Profile View Page  /////////////////////
+/*
+ * Profile View Page
+ * ~~~~~~~~~~~~~~~~~
+ */
+
+/*
+ * ~~~~~~~~~~~~~~~~~~~
+ * Suggest Doctor Page
+ */
 
 
-//////////////////////////////////////////////////
-/////////  Suggest Doctor Page ///////////////////
-
-
-// *******   Side Percentage Bar *******
+/*
+ * Side Percentage Bar
+ */
 
 var com_am=0; // Completed Amount
 // this is to keep states of each fields
@@ -991,7 +1066,9 @@ function check_s_and_t(para_1){
 	}
 }
 
-// *******   Side Percentage Bar *******
+/*
+ * Side Percentage Bar
+ */
 
 function change_sug_tab(para_1){
 	if(para_1 == 1){
@@ -1243,11 +1320,15 @@ function preview_submit(){
 	$("#c_add_doc_sub_btn").trigger('click');
 };
 
-//////////////////////////////////////////////////
+/*
+ * Suggest Doctor Page
+ * ~~~~~~~~~~~~~~~~~~~
+ */
 
-
-/////////////////////////////////////////////////
-///////////  My Account Page  ///////////////////
+/*
+ * ~~~~~~~~~~~~~~~
+ * My Account Page
+ */
 
 function show_tabs(para_1){
 	if(para_1 == "SET") {
@@ -1438,16 +1519,23 @@ function check_update_account(){
 	}
 };
 
-/////////////////////////////////////////////////
+/*
+ * My Account Page
+ * ~~~~~~~~~~~~~~~
+ */
 
-// Image Map Item Pick
+/*
+ * Image Map Item Pick
+ */
 function pick_location(para_1){
 	$("#location_txt").val(para_1);
 };
 
+/*
+ * ~~~~~~~~~~~
+ * Side Helper
+ */
 
-//////////////////////////////////////////////////
-//  Side Helper  ////////////////////////////////
 var click_help=false;
 function side_helper(){
 	var user_id = $('#hidden_user_id').val();
@@ -1498,7 +1586,9 @@ $("#c_chat_close_btn").click(function(){
 	abortTimer();
 });
 
-/////////////  Chat Form  ///////////////////////
+/*
+ * Chat Form >>>>>
+ */
 
 $("#chat_send").click(function(){
 	send_chat();
@@ -1509,7 +1599,7 @@ $("#chat_form").submit(function(e){
 	e.preventDefault();
 });
 
-// send chat message
+/* send chat message */
 function send_chat(){
 	var new_url = '/send_chat_message';
 	var dataString = $("#chat_form").serialize();
@@ -1527,7 +1617,7 @@ function send_chat(){
 	});
 };
 
-// get chat messages
+/* get chat messages */
 function get_chat_messages(){
 	var base_url = $("#home_base_url").val();
 	var new_url = '/get_chat_message';
@@ -1553,19 +1643,28 @@ function get_chat_messages(){
 	});
 };
 
+/*
+ * Chat Form >>>>>
+ */
 
-// set interval
+/* set interval */
 var tid='';// holds timer id
 function abortTimer() { // to be called when you want to stop the timer
 	clearInterval(tid);
 }
-/////////////////////////////////////////////////
 
+/*
+ * Side Helper
+ * ~~~~~~~~~~~
+ */
 
-/***********************************************/
-/*****************  Captcha   ******************/
+/*
+ * ~~~~~~~
+ * Captcha
+ */
 
-/* ****** Initialize Captcha Image Thems  ***** */
+/* Initialize Captcha Image Themes */
+
 var captcha_themes = [];
 captcha_themes.push(['dog','leaf']);
 captcha_themes.push(['parrot','bus']);
@@ -1575,7 +1674,8 @@ captcha_themes.push(['frog','spider']);
 captcha_themes.push(['lotus','book']);
 captcha_themes.push(['pen','ring']);
 var second_cap_op = '';
-/* ****** Initialize Captcha Image Thems  ***** */
+
+/* Initialize Captcha Image Themes */
 
 $(document).ready(function(){
 	if($("#register_page").val() == "YES") {
@@ -1661,17 +1761,20 @@ function refresh_captcha(){
 	add_captcha_thumbs();
 }
 
+/*
+ * This function will shuffle array Items
+ */
 function shuffle(array_1,array_2) {
 	var currentIndex = array_1.length, temporaryValue, randomIndex;
 
-	// While there remain elements to shuffle...
+	// While there remain elements to shuffle
 	while (0 !== currentIndex) {
 
-		// Pick a remaining element...
+		// Pick a remaining element
 		randomIndex = Math.floor(Math.random() * currentIndex);
 		currentIndex -= 1;
 
-		// And swap it with the current element.
+		// And swap it with the current element
 		temporaryValue = array_1[currentIndex];
 		array_1[currentIndex] = array_1[randomIndex];
 		array_1[randomIndex] = temporaryValue;
@@ -1681,27 +1784,25 @@ function shuffle(array_1,array_2) {
 		array_2[currentIndex] = array_2[randomIndex];
 		array_2[randomIndex] = temporaryValue;
 	}
-
-	//return array;
 }
 
 $(".c_captcha_box").click(function(){
 	$(".c_captcha_pop_up").fadeToggle();
 });
 
-// This function handles captcha image click
+/* This function handles captcha image click */
 function click_captcha(para_1){
 	$("#cap_over_"+para_1).fadeIn();
 	$("#img_"+para_1).val('1');
 };
 
-// This function removes cpatcha overflow
+/* This function removes cpatcha overflow */
 function remove_captcha(para_1){
 	$("#cap_over_"+para_1).fadeOut();
 	$("#img_"+para_1).val('0');
 }
 
-// Do Captcha Verification
+/* Do Captcha Verification */
 $("#cpa_verify_btn").click(function(){
 	CAPTCHA_VERIFY = false;
 	var status=true;
@@ -1718,7 +1819,6 @@ $("#cpa_verify_btn").click(function(){
 				status = false;
 			}
 		}
-
 		count++;
 	}
 
@@ -1736,5 +1836,7 @@ $("#cpa_verify_btn").click(function(){
 	}
 });
 
-/*****************  Captcha   ******************/
-/***********************************************/
+/*
+ * Captcha
+ * ~~~~~~~
+ */
