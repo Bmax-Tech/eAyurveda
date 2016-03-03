@@ -208,7 +208,7 @@
     <script type="text/javascript">
         $.ajax({
             type:'GET',
-            url:'forum/questions/getrecent/',
+            url:'forum/questions/getflagged/',
             cache: true,
             success: function(data){
                 $("#forumQuestionsDiv").html(data.page);

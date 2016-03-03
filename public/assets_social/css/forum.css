@@ -7376,7 +7376,18 @@ button[type=submit]:disabled, input[type=submit]:disabled {
   border-color: #5252FF #4444FF #3333FF #4444FF;
   box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
 }
-
+.upVoteHovered {
+  background-image: url('../../assets_social/img/up_awesome_w.png') !important;
+  background-color: #5555ff !important;
+  border-color: #5252FF #4444FF #3333FF #4444FF;
+  box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+}
+.downVoteHovered {
+  background-image: url('../../assets_social/img/down_awesome_w.png') !important;
+  background-color: #5555ff !important;
+  border-color: #5252FF #4444FF #3333FF #4444FF;
+  box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+}
 .forumDetailsBar {
   height: 40px;
   background-color: #ddd;

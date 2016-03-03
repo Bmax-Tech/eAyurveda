@@ -5,9 +5,8 @@ use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\DB;
 use Illuminate\Support\Facades\Redirect;
 use Mail;
-
-use Illuminate\Http\Request;
-
+use Request;
+use View;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -42,6 +41,20 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
+    /* Pass All flagged Questions to ajax call*/
+    function getFlaggedQuestions() {
+        $questions = \DB::table('forumQuestion')
+            ->join('forumquestionflags', 'forumQuestion.qID', '=', 'forumquestionflags.qID')
+            ->join('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
+        $HtmlView = (String) view('forum_question_result_admin')->with([
+            'questions'=>$questions
+        ]);
+        $res['pagination'] = $questions;
+        $res['page'] = $HtmlView;
+
+        return response()->json($res);
+    }
+
     /* Get all recent answers */
     function getRecentAnswers() {
         $answers = \DB::table('forumAnswer')->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')->get();
@@ -65,6 +78,14 @@ class ForumController extends Controller
 
 
         return response()->json($res);
+    }
+
+    function displayQuestion() {
+        $question = Request::get('question');
+        $questionResult = \DB::table('forumQuestion')->where('qID', '=' , $question)->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->first();
+        $answerResultSet = \DB::table('forumAnswer')->where('qID', '=' , $question)->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')->get();
+
+        return View::make('forum')->with('questionResult', $questionResult)->with('answerResultSet', $answerResultSet);
     }
 
     /* search for forum questions, ajax call */
@@ -108,8 +129,8 @@ class ForumController extends Controller
         $catDescription = Input::get('catDescription');
         $hidden = Input::get('hidden');
 
-        if (Input::hasFile('catImage'))
-        {
+        if (Input::hasFile('catImage')) {
+            /* User has selected an Image */
             $extension = Input::file('catImage')->getClientOriginalExtension();
             $imageName = $catName.".".$extension;
             $destinationPath = base_path() . '\public\assets_social\img\forum_categories';
@@ -121,6 +142,7 @@ class ForumController extends Controller
                     'imageURL' => $catName.".".$extension)
             );
         } else {
+            /* Submitted without uploading an image */
             \DB::table('forumCategory')->insert(
                 array('catName' => $catName,
                     'catDescription' => $catDescription,
@@ -132,16 +154,20 @@ class ForumController extends Controller
     }
 
     /* Post an answer to question */
-    function submitAnswer() {
-        $theSubject = Input::get('subjectText');
-        $theAnswer = Input::get('bodyText');
+    function submitAnswer(Request $request, $questionid, $userid, $subject, $body) {
+        $theSubject = $subject;
+        $theAnswer = $body;
+
+        $result = \DB::table('users')->select('email')->where('id', $userid)->first();
+        $email = $result->email;
+
         \DB::table('forumanswer')->insert(
-            array('qID' => '1',
-                'aFrom' => 'patient1',
+            array('qID' => $questionid,
+                'aFrom' => $email,
                 'aSubject' => $theSubject,
                 'aBody' => $theAnswer
             ));
-        return Redirect::intended('/forum?question=1');
+        return Request::__toString();
     }
 
     /* Post a new question */
@@ -214,6 +240,7 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
+    /* check and upVote an Answer */
     function upVoteAnswer(Request $request, $answerid, $userid) {
         $arr = explode("?", $answerid, 2);
         $aid = $arr[0];
@@ -231,7 +258,9 @@ class ForumController extends Controller
             $previousVote = $getVoted->value;
 
             if($previousVote == -1) {
-                \DB::table('forumAnswer')->where('aid', $aid)->increment('upVotes', 2);
+                \DB::table('forumAnswer')->where('aid', $aid)->increment('upVotes', 1);
+                \DB::table('forumAnswer')->where('aid', $aid)->decrement('downVotes', 1);
+
                 \DB::table('forumanswervotes')
                     ->where('aID', '=', $aid)->where('user', $uid)
                     ->update(['value' => 1]);
@@ -267,7 +296,8 @@ class ForumController extends Controller
             $previousVote = $getVoted->value;
 
             if($previousVote == 1) {
-                \DB::table('forumAnswer')->where('aid', $aid)->increment('downVotes', 2);
+                \DB::table('forumAnswer')->where('aid', $aid)->increment('downVotes', 1);
+                \DB::table('forumAnswer')->where('aid', $aid)->decrement('upVotes', 1);
                 \DB::table('forumanswervotes')
                     ->where('aID', '=', $aid)->where('user', $uid)
                     ->update(['value' => -1]);
@@ -337,11 +367,11 @@ class ForumController extends Controller
         $users = \DB::table('users')->get();
 
         /* comment this method call later */
-        self::sendMailNewsletter($theSubject, $bodyText, "muabdulla@ymail.com");
+        /*self::sendMailNewsletter($theSubject, $bodyText, "muabdulla@ymail.com");*/
 
         foreach($users as $user) {
             /* enable this method call later */
-            //self::sendMailNewsletter($theSubject, $bodyText, $user->email);
+            self::sendMailNewsletter($theSubject, $bodyText, $user->email);
         }
 
         return Redirect::intended('/admin_panel_home/');

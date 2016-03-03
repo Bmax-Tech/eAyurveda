@@ -214,6 +214,7 @@ function upVote(aid, user, elem) {
             url:'answer/upvote/'+aid+'/'+user+'/',
             cache: true,
             success: function(data){
+                /* Get the current value, incraese the returned value */
                 var value = parseInt($("#"+votesDivID).text(), 10) + parseInt(data);
                 $("#"+votesDivID).text(value);
 
@@ -224,6 +225,15 @@ function upVote(aid, user, elem) {
                     $("#DangerPop").animate({
                         'margin-bottom': '15px'
                     });
+
+                    /* mark buttons as voted */
+                    elem.className += " upVoteHovered";
+                    elem.setAttribute("data-original-title" , "Voted by you");
+
+                    /* unmark the other button as non voted */
+                    $("#answer"+aid+"DownVote").removeClass("downVoteHovered");
+                    $("#answer"+aid+"DownVote").attr("data-original-title", "Down Vote");
+
                 } else if(data == 1) {
                     $message = "You have <strong>Up Voted</strong> the post";
                     $("#successtitle").html($message);
@@ -231,6 +241,14 @@ function upVote(aid, user, elem) {
                     $("#SuccessPop").animate({
                         'margin-bottom': '15px'
                     });
+
+                    /* mark buttons as voted */
+                    elem.className += " upVoteHovered";
+                    elem.setAttribute("data-original-title" , "Voted by you");
+
+                    /* unmark the other button as non voted */
+                    $("#answer"+aid+"DownVote").removeClass("downVoteHovered");
+                    $("#answer"+aid+"DownVote").attr("data-original-title", "Down Vote");
                 } else if(data == 2) {
                     $message = "You have <strong>Changed your vote</strong> for the post";
                     $("#successtitle").html($message);
@@ -238,6 +256,14 @@ function upVote(aid, user, elem) {
                     $("#SuccessPop").animate({
                         'margin-bottom': '15px'
                     });
+
+                    /* mark buttons as voted */
+                    elem.className += " upVoteHovered";
+                    elem.setAttribute("data-original-title" , "Voted by you");
+
+                    /* unmark the other button as non voted */
+                    $("#answer"+aid+"DownVote").removeClass("downVoteHovered");
+                    $("#answer"+aid+"DownVote").attr("data-original-title", "Down Vote");
                 }
             }
         });
@@ -268,6 +294,15 @@ function downVote(aid, user, elem) {
                     $("#DangerPop").animate({
                         'margin-bottom': '15px'
                     });
+
+                    /* mark buttons as voted */
+                    elem.className += " downVoteHovered";
+                    elem.setAttribute("data-original-title" , "Voted by you");
+
+
+                    /* unmark the other button as non voted */
+                    $("#answer"+aid+"UpVote").removeClass("upVoteHovered");
+                    $("#answer"+aid+"UpVote").attr("data-original-title", "Up Vote");
                 } else if(data == -1) {
                     $message = "You have <strong>Down Voted</strong> the post";
                     $("#successtitle").html($message);
@@ -275,6 +310,15 @@ function downVote(aid, user, elem) {
                     $("#SuccessPop").animate({
                         'margin-bottom': '15px'
                     });
+
+                    /* mark buttons as voted */
+                    elem.className += " downVoteHovered";
+                    elem.setAttribute("data-original-title" , "Voted by you");
+
+                    /* unmark the other button as non voted */
+                    $("#answer"+aid+"UpVote").removeClass("upVoteHovered");
+                    $("#answer"+aid+"UpVote").attr("data-original-title", "Up Vote");
+
                 } else if(data == -2) {
                     $message = "You have <strong>Changed your vote</strong> for the post";
                     $("#successtitle").html($message);
@@ -282,6 +326,14 @@ function downVote(aid, user, elem) {
                     $("#SuccessPop").animate({
                         'margin-bottom': '15px'
                     });
+
+                    /* mark buttons as voted */
+                    elem.className += " downVoteHovered";
+                    elem.setAttribute("data-original-title" , "Voted by you");
+
+                    /* unmark the other button as non voted */
+                    $("#answer"+aid+"UpVote").removeClass("upVoteHovered");
+                    $("#answer"+aid+"UpVote").attr("data-original-title", "Up Vote");
                 }
             }
         });
@@ -411,6 +463,41 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
 };
+
+function timeDifference(current, previous) {
+
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+        return Math.round(elapsed/1000) + ' seconds ago';
+    }
+
+    else if (elapsed < msPerHour) {
+        return Math.round(elapsed/msPerMinute) + ' minutes ago';
+    }
+
+    else if (elapsed < msPerDay ) {
+        return Math.round(elapsed/msPerHour ) + ' hours ago';
+    }
+
+    else if (elapsed < msPerMonth) {
+        return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';
+    }
+
+    else if (elapsed < msPerYear) {
+        return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';
+    }
+
+    else {
+        return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';
+    }
+}
 
 
 

@@ -43,6 +43,7 @@ class CreateForumCategoriesTable extends Migration
             $table->integer('upVotes');
             $table->integer('downVotes');
             $table->boolean('bestAnswer');
+            $table->timestamp('postedOn');
             $table->timestamps();
         });
 

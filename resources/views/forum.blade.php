@@ -61,12 +61,12 @@
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#summernote').summernote({
+           /* $('#summernote').summernote({
                 height: 300,                 // set editor height
                 minHeight: null,             // set minimum height of editor
                 maxHeight: null,             // set maximum height of editor
                 focus: false                  // set focus to editable area after initializing summernote
-            });
+            });*/
             $("#signInMessage").hide();
             $("#AlreadyFlaggedMessage").hide();
             $("#FlagSuccess").hide();
@@ -81,6 +81,22 @@
 
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+        function postReply(uid) {
+            var question = getUrlParameter('question');
+            $subject = $("#subjectText").val();
+            $body = $("#summernote").val();
+
+
+            $.ajax({
+                type:'GET',
+                url: '/forum/submitanswer/'+question+'/'+uid+'/'+$subject+'/'+$body,
+                cache: true,
+                success: function(data){
+                    location.reload();
+                }
+            });
+        }
     </script>
 @stop
 
@@ -132,9 +148,9 @@
                     <div class="Media__body">
                         <h5>
                             <a href="https://google.com/+AbdullaUnais"><?= $questionResult->name ?></a>
-                                    <span class="utility-muted utility-text-light Comment__days-ago">
-                                        — 6 months ago
-                                    </span>
+                                    {{--<span class="utility-muted utility-text-light Comment__days-ago">--}}
+                                        {{--— 6 months ago--}}
+                                    {{--</span>--}}
                         </h5>
 
                         <div class="htmlFormattedForumText">
@@ -153,7 +169,7 @@
 
 
                 <!-- The Replies -->
-                <div class="replies">
+                <div class="replies" id="repliedAnswerList">
                     <?php
                         foreach($answerResultSet as $answer) {
                             $numAns++
@@ -171,11 +187,11 @@
                         </div>
                         <div style="position: absolute;left: 15px;top:85px;width: 45px;height: 112px;">
                             <div style="line-height: 0;" align="center">
-                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="left" title="Up Vote" class="up_vote" style="background-image: url('{{ URL::asset('assets_social/img/up_awesome.png') }}');" onclick="upVote('<?= $answer->aid ?>', '<?= $userid ?>', this);">
+                                <input id="answer<?= $answer->aid ?>UpVote" type="button" data-toggle="tooltip" data-container="body" data-placement="left" title="Up Vote" class="up_vote" style="background-image: url('{{ URL::asset('assets_social/img/up_awesome.png') }}');" onclick="upVote('<?= $answer->aid ?>', '<?= $userid ?>', this);">
                             </div>
                             <div class="num_votes" id="answer<?= $answer->aid ?>votes" align="center"><?= ($answer->upVotes)-($answer->downVotes) ?></div>
                             <div style="line-height: 0;" align="center">
-                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="left" title="Down Vote" class="down_vote" style="background-image: url('{{ URL::asset('assets_social/img/down_awesome.png') }}');" onclick="downVote('<?= $answer->aid ?>', '<?= $userid ?>', this);">
+                                <input id="answer<?= $answer->aid ?>DownVote" type="button" data-toggle="tooltip" data-container="body" data-placement="left" title="Down Vote" class="down_vote" style="background-image: url('{{ URL::asset('assets_social/img/down_awesome.png') }}');" onclick="downVote('<?= $answer->aid ?>', '<?= $userid ?>', this);">
                             </div>
                         </div>
 
@@ -185,11 +201,11 @@
                                 <a href=""><?= $answer->name ?></a>
 
 
-                                        <span class="utility-muted utility-text-light Comment__days-ago">
-                                            <a href="">
-                                                — 6 months ago
-                                            </a>
-                                        </span>
+                                        {{--<span class="utility-muted utility-text-light Comment__days-ago">--}}
+                                            {{--<a href="">--}}
+                                                {{--— 6 months ago--}}
+                                            {{--</a>--}}
+                                        {{--</span>--}}
                             </h5>
 
                             <!-- The Formatted Body Text -->
@@ -242,27 +258,19 @@
                     </div>
 
                     <div class="Media__body">
-                        {!! Form::open(array('url' => 'forum/submitanswer')) !!}
+
                             <div class="form-group">
                                 <div>
-                                    {!! Form::text('subjectText', '', array(
-                                    'placeholder' => 'Title',
-                                    'required' => 'required',
-                                    'class' => 'subjectTextInput'
-                                    )) !!}
+                                    <input type="text" id="subjectText" name="subjectText" placeholder="Title" required="required" class="subjectTextInput">
                                 </div>
                                 <div>
-                                    {!! Form::textarea('bodyText', '', array(
-                                    'id' => 'summernote',
-                                    'class' => 'bodyTextInput'
-                                    )) !!}
+                                    <textarea name="bodyText" id="summernote" placeholder="Type your answer here" class="bodyTextInput"></textarea>
                                 </div>
                             </div>
-                            <button style="margin-bottom: 65px;" type="submit" class="Button Button--Callout" data-single-click="">
+                            <button style="margin-bottom: 65px;" type="submit" class="Button Button--Callout" data-single-click="" onclick="postReply('<?= $userid ?>');">
                                 Post Your Reply
                             </button>
 
-                        {!! Form::close() !!}
                     </div>
 
                 </article>
@@ -273,6 +281,11 @@
                 <div id="question-stats" class="Box utility-center">
                     <div>
                         <strong><?= $numAns ?></strong> replies with no best answer
+                    </div>
+                </div>
+                <div id="question-stats" class="Box utility-center" style="margin-top: 15px;">
+                    <div>
+                        Thread marked as Not Solved
                     </div>
                 </div>
 

@@ -85,13 +85,16 @@ Route::group(['middleware' => ['web']], function () {
 ////////////////////////////////////////////////////////////////////////////
 // ------------------------  Forum Routes Start  ---------------------------
 
-
+/* Load the Forum Homepage */
 Route::get('/forum','ForumController@returnHome');
+
+/* Load the Admin Panels of Forum */
 Route::get('/for_admin/{page_name}','ForumController@returnView');
 
 Route::get('/forum/search/{query}','ForumController@searchForum');
 Route::get('forum/getcategories/','ForumController@getCategories');
 Route::get('forum/questions/getrecent/','ForumController@getRecentQuestions');
+Route::get('forum/questions/getflagged/','ForumController@getFlaggedQuestions');
 Route::get('forum/answers/getrecent/','ForumController@getRecentAnswers');
 Route::get('forum/questions/browserecent/','ForumController@browseRecent');
 Route::get('forum/answer/upvote/{answerid}/{userid}','ForumController@upVoteAnswer');
@@ -103,16 +106,9 @@ Route::get('/forum/question/delete/{qid}','ForumController@deleteQuestion');
 Route::get('/forum/category/delete/{catname}','ForumController@deleteCategory');
 
 
-Route::get('/forum/view', function () {
-    $question = Request::get('question');
-    $questionResult = DB::table('forumQuestion')->where('qID', '=' , $question)->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->first();
-    $answerResultSet = DB::table('forumAnswer')->where('qID', '=' , $question)->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')->get();
+Route::get('/forum/view', 'ForumController@displayQuestion');
 
-    return View::make('forum')->with('questionResult', $questionResult)->with('answerResultSet', $answerResultSet);
-
-});
-
-Route::post('/forum/submitanswer', 'ForumController@submitAnswer');
+Route::get('/forum/submitanswer/{questionid}/{userid}/{subject}/{body}', 'ForumController@submitAnswer');
 
 Route::post('/forum/sendnewsletter', 'ForumController@sendNewsletter');
 Route::resource('/forum/addcategory', 'ForumController@addcategory');
