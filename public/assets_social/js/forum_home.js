@@ -201,7 +201,7 @@ function displayAndScroll(catN, catname) {
     });
 }
 
-function upVote(aid, user) {
+function upVote(aid, user, elem) {
     if(user == "") {
         $("#signInMessage").show();
         $("#signInMessage").animate({
@@ -211,18 +211,41 @@ function upVote(aid, user) {
         var votesDivID = "answer"+aid+"votes";
         $.ajax({
             type:'GET',
-            url:'answer/upvote/'+aid+'/',
+            url:'answer/upvote/'+aid+'/'+user+'/',
             cache: true,
-            success: function(){
-                var value = parseInt($("#"+votesDivID).text(), 10) + 1;
+            success: function(data){
+                var value = parseInt($("#"+votesDivID).text(), 10) + parseInt(data);
                 $("#"+votesDivID).text(value);
+
+                if(data == 0) {
+                    $message = "You have already <strong>Up Voted</strong> the post";
+                    $("#dangertitle").html($message);
+                    $('#DangerPop').show(0).delay(5000).hide(0);
+                    $("#DangerPop").animate({
+                        'margin-bottom': '15px'
+                    });
+                } else if(data == 1) {
+                    $message = "You have <strong>Up Voted</strong> the post";
+                    $("#successtitle").html($message);
+                    $('#SuccessPop').show(0).delay(5000).hide(0);
+                    $("#SuccessPop").animate({
+                        'margin-bottom': '15px'
+                    });
+                } else if(data == 2) {
+                    $message = "You have <strong>Changed your vote</strong> for the post";
+                    $("#successtitle").html($message);
+                    $('#SuccessPop').show(0).delay(5000).hide(0);
+                    $("#SuccessPop").animate({
+                        'margin-bottom': '15px'
+                    });
+                }
             }
         });
         $("#signInMessage").hide();
     }
 }
 
-function downVote(aid, user) {
+function downVote(aid, user, elem) {
     if(user == "") {
         $("#signInMessage").show();
         $("#signInMessage").animate({
@@ -232,14 +255,145 @@ function downVote(aid, user) {
         var votesDivID = "answer"+aid+"votes";
         $.ajax({
             type:'GET',
-            url:'answer/downvote/'+aid+'/',
+            url:'answer/downvote/'+aid+'/'+user+'/',
             cache: true,
-            success: function(){
-                var value = parseInt($("#"+votesDivID).text(), 10) - 1;
+            success: function(data){
+                var value = parseInt($("#"+votesDivID).text(), 10) + parseInt(data);
                 $("#"+votesDivID).text(value);
+
+                if(data == 0) {
+                    $message = "You have already <strong>Down Voted</strong> the post";
+                    $("#dangertitle").html($message);
+                    $('#DangerPop').show(0).delay(5000).hide(0);
+                    $("#DangerPop").animate({
+                        'margin-bottom': '15px'
+                    });
+                } else if(data == -1) {
+                    $message = "You have <strong>Down Voted</strong> the post";
+                    $("#successtitle").html($message);
+                    $('#SuccessPop').show(0).delay(5000).hide(0);
+                    $("#SuccessPop").animate({
+                        'margin-bottom': '15px'
+                    });
+                } else if(data == -2) {
+                    $message = "You have <strong>Changed your vote</strong> for the post";
+                    $("#successtitle").html($message);
+                    $('#SuccessPop').show(0).delay(5000).hide(0);
+                    $("#SuccessPop").animate({
+                        'margin-bottom': '15px'
+                    });
+                }
             }
         });
         $("#signInMessage").hide();
+    }
+}
+
+function flagAnswer(aid, user, elem) {
+    if(user == "") {
+        $("#signInMessage").show();
+        $("#signInMessage").animate({
+            'margin-bottom': '15px'
+        });
+    } else {
+        bootbox.dialog({
+            message: "Are you sure you want to report this answer?",
+            title: "Report Answer",
+            buttons: {
+                danger: {
+                    label: "Report",
+                    className: "btn-danger",
+                    callback: function() {
+                        /* Ajax call to report the post */
+                        $.ajax({
+                            type:'GET',
+                            url:'answer/flaganswer/'+aid+'/'+user+'/',
+                            cache: true,
+                            success: function(data){
+                                if(data == "success") {
+                                    $('#FlagSuccess').show(0).delay(5000).hide(0);
+                                    $("#FlagSuccess").animate({
+                                        'margin-bottom': '15px'
+                                    });
+                                    elem.className += " btnForumFlagActive";
+                                    elem.setAttribute("data-original-title" , "Flagged by you");
+
+                                } else if(data == "denied") {
+                                    $('#AlreadyFlaggedMessage').show(0).delay(5000).hide(0);
+                                    $("#AlreadyFlaggedMessage").animate({
+                                        'margin-bottom': '15px'
+                                    });
+                                    elem.className += " btnForumFlagActive";
+                                    elem.title = "Flagged";
+                                    elem.setAttribute("data-original-title" , "Flagged by you");
+                                }
+                            }
+                        });
+                    }
+                },
+                main: {
+                    label: "Cancel",
+                    className: "btn-primary",
+                    callback: function() {
+                        show: false
+                    }
+                }
+            }
+        });
+    }
+}
+
+function flagQuestion(qid, user, elem) {
+    if(user == "") {
+        $("#signInMessage").show();
+        $("#signInMessage").animate({
+            'margin-bottom': '15px'
+        });
+    } else {
+        bootbox.dialog({
+            message: "Are you sure you want to report this question?",
+            title: "Report Question",
+            buttons: {
+                danger: {
+                    label: "Report",
+                    className: "btn-danger",
+                    callback: function() {
+                        /* Ajax call to report the post */
+                        $.ajax({
+                            type:'GET',
+                            url:'answer/flagquestion/'+qid+'/'+user+'/',
+                            cache: true,
+                            success: function(data){
+                                if(data == "success") {
+                                    $('#FlagSuccess').show(0).delay(5000).hide(0);
+                                    $("#FlagSuccess").animate({
+                                        'margin-bottom': '15px'
+                                    });
+                                    elem.className += " btnForumFlagActive";
+                                    elem.setAttribute("data-original-title" , "Flagged by you");
+
+                                } else if(data == "denied") {
+                                    $('#AlreadyFlaggedMessage').show(0).delay(5000).hide(0);
+                                    $("#AlreadyFlaggedMessage").animate({
+                                        'margin-bottom': '15px'
+                                    });
+                                    elem.className += " btnForumFlagActive";
+                                    elem.title = "Flagged";
+                                    elem.setAttribute("data-original-title" , "Flagged by you");
+                                }
+                            }
+                        });
+                    }
+                },
+                main: {
+                    label: "Cancel",
+                    className: "btn-primary",
+                    callback: function() {
+                        show: false
+                    }
+                }
+            }
+        });
     }
 }
 

@@ -27,7 +27,6 @@ class CreateForumCategoriesTable extends Migration
             $table->text('qFrom');
             $table->text('qBody');
             $table->text('qSubject');
-            $table->boolean('qFlagged');
             $table->integer('qCategory');
             $table->integer('upvotes');
             $table->integer('downvotes');
@@ -41,7 +40,6 @@ class CreateForumCategoriesTable extends Migration
             $table->text('aFrom');
             $table->text('aSubject');
             $table->text('aBody');
-            $table->boolean('aFlagged');
             $table->integer('upVotes');
             $table->integer('downVotes');
             $table->boolean('bestAnswer');
@@ -52,16 +50,27 @@ class CreateForumCategoriesTable extends Migration
             $table->engine = "InnoDB";
             $table->text('user');
             $table->integer('qID');
-            $table->timestamps();
         });
 
-        Schema::create('answerVote', function (Blueprint $table) {
+        Schema::create('forumAnswerVotes', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->text('user');
-            $table->integer('answerID');
-            $table->integer('vote');
-            $table->timestamps();
+            $table->integer('aID');
+            $table->integer('value');
         });
+
+        Schema::create('forumAnswerFlags', function (Blueprint $table) {
+            $table->engine = "InnoDB";
+            $table->text('user');
+            $table->integer('aID');
+        });
+
+        Schema::create('forumQuestionFlags', function (Blueprint $table) {
+            $table->engine = "InnoDB";
+            $table->text('user');
+            $table->integer('qID');
+        });
+
     }
 
     /**
@@ -71,6 +80,9 @@ class CreateForumCategoriesTable extends Migration
      */
     public function down()
     {
+        Schema::drop('forumQuestionFlags');
+        Schema::drop('forumAnswerFlags');
+        Schema::drop('forumAnswerVotes');
         Schema::drop('answerVote');
         Schema::drop('forumSubscribe');
         Schema::drop('forumanswer');

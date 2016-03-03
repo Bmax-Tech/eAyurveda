@@ -13,90 +13,12 @@
     <link href="{{ URL::asset('assets_social/css/summernote.css')}}" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet">
     <script src="{{ URL::asset('assets_social/js/summernote.min.js')}}"></script>
+    <script src="{{ URL::asset('assets_social/js/bootbox.min.js')}}"></script>
 
     <style>
         #question-stats:before {
             z-index: -1;
         }
-        .forumDetailsBar {
-            height: 40px;
-            background-color: #ddd;
-            -webkit-box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.22);
-            box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.22);
-            color:#888;
-            font-size: 15px;
-            overflow: hidden;
-        }
-
-        .btnForumRight {
-            border-top-left-radius: 0px !important;
-            border-bottom-left-radius: 0px !important;
-        }
-        .btnForumMiddle {
-            border-radius: 0px !important;
-            margin-right: -1px !important;
-        }
-        .btnForumLeft {
-            border-top-right-radius: 0px !important;
-            border-bottom-right-radius: 0px !important;
-            margin-right: -1px !important;
-        }
-
-        .btnForumStyle {
-            opacity: 0.5;
-            border-radius: 4px;
-            height: 40px;
-            width: 60px;
-            position: relative;
-            right: -16px;
-            overflow-y: hidden ! important;
-            overflow-x: hidden ! important;
-            background-color: #fff;
-            border-style:solid;
-            border-width: 1px;
-            border-color: #ccc;
-            background-size: 45%;
-            background-repeat: no-repeat;
-            background-position: 50% 50%;
-        }
-
-        .btnForumFlag {
-            background-image: url('{{ URL::asset('assets_social/img/flag_awesome.png') }}');
-        }
-        .btnForumFlag:hover {
-            outline: 0;
-            background-image: url('{{ URL::asset('assets_social/img/flag_awesome_w.png') }}');
-            background-color: #ff4d4d;
-            border-color: #e53a3a #e72929 #e71e1e #e92c2c;
-            transition: background-color .1s ease;
-            transition: border-color .1s ease;
-            box-shadow: 0 0px 0 rgba(255,0,0,.2),0 1px 5px rgba(255,0,0,.15);
-            opacity: 1;
-        }
-        .btnForumFlag:focus {
-            outline: 0;
-            opacity: 1;
-        }
-
-        .btnForumMarkBest {
-            background-image: url('{{ URL::asset('assets_social/img/star_awesome.png') }}');
-        }
-        .btnForumMarkBest:hover {
-            outline: 0;
-            background-image: url('{{ URL::asset('assets_social/img/star_awesome_w.png') }}');
-            background-color: #5555ff !important;
-            border-color: #5252FF #4444FF #3333FF #4444FF;
-            transition: background-color .5s ease;
-            transition: border-color .5s ease;
-            box-shadow: 0 0px 0 rgba(0,255,0,.2),0 1px 5px rgba(0,255,0,.15);
-            opacity: 1;
-        }
-        .btnForumMarkBest:focus {
-            outline: 0;
-            opacity: 1;
-        }
-
-
         .Comment__footer {
             margin-right: 15px !important;
             padding: 0px 0px 0px 0px !important;
@@ -112,19 +34,30 @@
             border: 1px solid #ddd !important;
             margin-top: 10px;
         }
-        .up_vote:hover {
-            background-image: url('{{ URL::asset('assets_social/img/up_awesome_w.png') }}') !important;
-            background-color: #359f46 !important;
-            border-color: #34a334 #30a430 #228722 #2fa52f !important;
-            box-shadow: 0 0px 0 rgba(0,255,0,.2),0 1px 5px rgba(0,255,0,.15);
+        .modal-header, .modal-body {
+            color:#888 !important;
         }
-        .down_vote:hover {
-            background-image: url('{{ URL::asset('assets_social/img/down_awesome_w.png') }}') !important;
-            background-color: #ff4d4d !important;
-            border-color: #e53a3a #e72929 #e71e1e #e92c2c !important;
-            box-shadow: 0 0px 0 rgba(0,255,0,.2),0 1px 5px rgba(0,255,0,.15);
+        .btn-primary {
+            background-color: #A9A9A9 !important;
+            border-color: #8A8A8A !important;
+            outline: none !important;
         }
-
+        .btn-primary:hover {
+            background-color: #939393 !important;
+            border-color: #747474 !important;
+        }
+        .btn-primary:active {
+            background-color: #727272 !important;
+            border-color: #5c5c5c !important;
+            outline: none !important;
+        }
+        .btn-danger,  .btn-danger:active{
+            outline: none !important;
+        }
+        .modal-dialog {
+            width: 400px !important;
+            margin: 20% auto !important;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -135,6 +68,10 @@
                 focus: false                  // set focus to editable area after initializing summernote
             });
             $("#signInMessage").hide();
+            $("#AlreadyFlaggedMessage").hide();
+            $("#FlagSuccess").hide();
+            $("#SuccessPop").hide();
+            $("#DangerPop").hide();
             var ans = getUrlParameter('answer');
             if($.isNumeric(ans)) {
                 $('html, body').animate({
@@ -153,13 +90,16 @@
     $user = "";
     $login = false;
     $firstname = "";
+    $userid = "";
     if (isset($_COOKIE['user'])) {
         $user = json_decode($_COOKIE['user'], true);
         $firstname = $user[0]['first_name'];
+        $userid = $user[0]['id'];
         $login = true;
     } else if (isset($_COOKIE['admin_user'])) {
         $user = json_decode($_COOKIE['admin_user'], true);
         $firstname = $user[0]['first_name'];
+        $userid = $user[0]['id'];
         $login = true;
     }
 
@@ -203,7 +143,7 @@
                         </div>
 
                         <footer class="Comment__footer" style="float: right;">
-
+                            <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Flag Answer" class="btnForumStyle btnForumFlag btnForumSingle"  onclick="flagQuestion('<?= $questionResult->qID ?>', '<?= $userid ?>', this);">
                         </footer>
 
                     </div>
@@ -231,11 +171,11 @@
                         </div>
                         <div style="position: absolute;left: 15px;top:85px;width: 45px;height: 112px;">
                             <div style="line-height: 0;" align="center">
-                                <input type="button" class="up_vote" style="background-image: url('{{ URL::asset('assets_social/img/up_awesome.png') }}');" onclick="upVote('<?= $answer->aid ?>', '<?= $firstname ?>')">
+                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="left" title="Up Vote" class="up_vote" style="background-image: url('{{ URL::asset('assets_social/img/up_awesome.png') }}');" onclick="upVote('<?= $answer->aid ?>', '<?= $userid ?>', this);">
                             </div>
                             <div class="num_votes" id="answer<?= $answer->aid ?>votes" align="center"><?= ($answer->upVotes)-($answer->downVotes) ?></div>
                             <div style="line-height: 0;" align="center">
-                                <input type="button" class="down_vote" style="background-image: url('{{ URL::asset('assets_social/img/down_awesome.png') }}');" onclick="downVote('<?= $answer->aid ?>', '<?= $firstname ?>')">
+                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="left" title="Down Vote" class="down_vote" style="background-image: url('{{ URL::asset('assets_social/img/down_awesome.png') }}');" onclick="downVote('<?= $answer->aid ?>', '<?= $userid ?>', this);">
                             </div>
                         </div>
 
@@ -262,7 +202,7 @@
 
                             <footer class="Comment__footer" style="float: right;">
                                 <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Mark as Best Answer" class="btnForumStyle btnForumMarkBest btnForumLeft">
-                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Flag Answer" class="btnForumStyle btnForumFlag btnForumRight">
+                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Flag Answer" class="btnForumStyle btnForumFlag btnForumRight" onclick="flagAnswer('<?= $answer->aid ?>', '<?= $userid ?>', this);">
                             </footer>
                         </div>
 
@@ -347,10 +287,43 @@
         <div class="container" style="text-align: left; position: relative;">
             <div class="alert alert-danger fade in">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                Please <strong>Sign in</strong> to participate or vote in this thread
+                <div>Please <strong>Sign in</strong> to participate or vote in this thread</div>
             </div>
         </div>
     </div>
+    <div id="AlreadyFlaggedMessage" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
+        <div class="container" style="text-align: left; position: relative;">
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div>You have already <strong>flagged</strong> this post</div>
+            </div>
+        </div>
+    </div>
+    <div id="FlagSuccess" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
+        <div class="container" style="text-align: left; position: relative;">
+            <div class="alert alert-warning fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div>Post is <strong>flagged</strong> for review</div>
+            </div>
+        </div>
+    </div>
+    <div id="SuccessPop" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
+        <div class="container" style="text-align: left; position: relative;">
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div id="successtitle"></div>
+            </div>
+        </div>
+    </div>
+    <div id="DangerPop" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
+        <div class="container" style="text-align: left; position: relative;">
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div id="dangertitle"></div>
+            </div>
+        </div>
+    </div>
+
 
 </div>
 <?php } else {

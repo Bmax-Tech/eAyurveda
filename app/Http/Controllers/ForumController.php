@@ -214,18 +214,120 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
-    function upVoteAnswer(Request $request, $answerid) {
+    function upVoteAnswer(Request $request, $answerid, $userid) {
         $arr = explode("?", $answerid, 2);
-        $first = $arr[0];
+        $aid = $arr[0];
 
-        \DB::table('forumAnswer')->where('aid', $first)->increment('upVotes');
+        $arr = explode("?", $userid, 2);
+        $uid = $arr[0];
+
+        $previousVote = 0;
+
+
+        /* Check if already voted */
+        $getVoted = \DB::table('forumanswervotes')->where('aID', '=', $aid)->where('user', $uid)->first();
+        if (count($getVoted) != 0) {
+            /* already voted */
+            $previousVote = $getVoted->value;
+
+            if($previousVote == -1) {
+                \DB::table('forumAnswer')->where('aid', $aid)->increment('upVotes', 2);
+                \DB::table('forumanswervotes')
+                    ->where('aID', '=', $aid)->where('user', $uid)
+                    ->update(['value' => 1]);
+                return 2;
+            }
+            return 0;
+        } else {
+            /* haven't voted before */
+            \DB::table('forumanswervotes')->insert(
+                array('aID' => $aid,
+                    'user' => $uid,
+                    'value' => 1
+                ));
+            \DB::table('forumAnswer')->where('aid', $aid)->increment('upVotes');
+            return 1;
+        }
     }
 
-    function downVoteAnswer(Request $request, $answerid) {
+    function downVoteAnswer(Request $request, $answerid, $userid) {
         $arr = explode("?", $answerid, 2);
-        $first = $arr[0];
+        $aid = $arr[0];
 
-        \DB::table('forumAnswer')->where('aid', $first)->increment('downVotes');
+        $arr = explode("?", $userid, 2);
+        $uid = $arr[0];
+
+        $previousVote = 0;
+
+
+        /* Check if already voted */
+        $getVoted = \DB::table('forumanswervotes')->where('aID', '=', $aid)->where('user', $uid)->first();
+        if (count($getVoted) != 0) {
+            /* already voted */
+            $previousVote = $getVoted->value;
+
+            if($previousVote == 1) {
+                \DB::table('forumAnswer')->where('aid', $aid)->increment('downVotes', 2);
+                \DB::table('forumanswervotes')
+                    ->where('aID', '=', $aid)->where('user', $uid)
+                    ->update(['value' => -1]);
+                return -2;
+            }
+            return 0;
+        } else {
+            /* haven't voted before */
+            \DB::table('forumanswervotes')->insert(
+                array('aID' => $aid,
+                    'user' => $uid,
+                    'value' => -1
+                ));
+            \DB::table('forumAnswer')->where('aid', $aid)->increment('downVotes');
+            return -1;
+        }
+    }
+
+    function flagAnswer(Request $request, $answerid, $userid) {
+        $arr = explode("?", $answerid, 2);
+        $aid = $arr[0];
+
+        $arr = explode("?", $userid, 2);
+        $uid = $arr[0];
+
+        /* Check if already flagged */
+        $getFlagged = \DB::table('forumanswerflags')->where('aid', '=', $aid)->where('user', $uid)->first();
+        if (count($getFlagged) != 0) {
+            /* already flagged */
+            return "denied";
+        } else {
+            /* haven't flagged before */
+            \DB::table('forumanswerflags')->insert(
+                array('aID' => $aid,
+                    'user' => $uid
+                ));
+            return "success";
+        }
+    }
+
+    function flagQuestion(Request $request, $questionid, $userid) {
+        $arr = explode("?", $questionid, 2);
+        $qid = $arr[0];
+
+        $arr = explode("?", $userid, 2);
+        $uid = $arr[0];
+
+        /* Check if already flagged */
+        $getFlagged = \DB::table('forumquestionflags')->where('qid', '=', $qid)->where('user', $uid)->first();
+        if (count($getFlagged) != 0) {
+            /* already flagged */
+            return "denied";
+        } else {
+            /* haven't flagged before */
+            \DB::table('forumquestionflags')->insert(
+                array('qID' => $qid,
+                    'user' => $uid
+                ));
+            return "success";
+        }
     }
 
     function sendNewsletter() {

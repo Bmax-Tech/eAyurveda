@@ -7364,6 +7364,106 @@ button[type=submit]:disabled, input[type=submit]:disabled {
   border-bottom-left-radius: 5px;
   border-top-color: #eee;
 }
+.up_vote:hover {
+  background-image: url('../../assets_social/img/up_awesome_w.png') !important;
+  background-color: #5555ff !important;
+  border-color: #5252FF #4444FF #3333FF #4444FF;
+  box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+}
+.down_vote:hover {
+  background-image: url('../../assets_social/img/down_awesome_w.png') !important;
+  background-color: #5555ff !important;
+  border-color: #5252FF #4444FF #3333FF #4444FF;
+  box-shadow: 0 0px 0 rgba(0,0,255,.2),0 1px 5px rgba(0,0,255,.15);
+}
+
+.forumDetailsBar {
+  height: 40px;
+  background-color: #ddd;
+  -webkit-box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.22);
+  color:#888;
+  font-size: 15px;
+  overflow: hidden;
+}
+
+.btnForumRight {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+.btnForumMiddle {
+  border-radius: 0px !important;
+  margin-right: -1px !important;
+}
+.btnForumSingle {
+  border-radius: 4px !important;
+}
+.btnForumLeft {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  margin-right: -1px !important;
+}
+
+.btnForumStyle {
+  opacity: 0.5;
+  border-radius: 4px;
+  height: 40px;
+  width: 60px;
+  position: relative;
+  right: -16px;
+  overflow-y: hidden ! important;
+  overflow-x: hidden ! important;
+  background-color: #fff;
+  border-style:solid;
+  border-width: 1px;
+  border-color: #ccc;
+  background-size: 45%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+.btnForumFlag {
+  background-image: url('../../assets_social/img/flag_awesome.png');
+}
+.btnForumFlag:hover {
+  outline: 0;
+  background-image: url('../../assets_social/img/flag_awesome_w.png');
+  background-color: #ff4d4d;
+  border-color: #e53a3a #e72929 #e71e1e #e92c2c;
+  transition: background-color .1s ease;
+  transition: border-color .1s ease;
+  box-shadow: 0 0px 0 rgba(255,0,0,.2),0 1px 5px rgba(255,0,0,.15);
+  opacity: 1;
+}
+.btnForumFlag:focus {
+  outline: 0;
+  opacity: 1;
+}
+.btnForumFlagActive {
+  background-image: url('../../assets_social/img/flag_awesome_w.png');
+  opacity: 1;
+  background-color: #e84646;
+  border-color: #e53a3a #e72929 #e71e1e #e92c2c;
+}
+
+.btnForumMarkBest {
+  background-image: url('../../assets_social/img/star_awesome.png');
+}
+.btnForumMarkBest:hover {
+  outline: 0;
+  background-image: url('../../assets_social/img/star_awesome_w.png');
+  background-color: #359f46 !important;
+  border-color: #309630 #30a430 #228722 #2fa52f !important;
+  transition: background-color .5s ease;
+  transition: border-color .5s ease;
+  box-shadow: 0 0px 0 rgba(0,255,0,.2),0 1px 5px rgba(0,255,0,.15);
+  opacity: 1;
+}
+.btnForumMarkBest:focus {
+  outline: 0;
+  opacity: 1;
+}
+
 
 @media only screen and (max-width: 400px) {
     .up_vote, .down_vote, .num_votes {
