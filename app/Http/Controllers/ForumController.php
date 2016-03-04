@@ -14,6 +14,8 @@ class ForumController extends Controller
 {
     public $RESULTS_PER_PAGE = 10;
     //
+
+    /* Load forum admin pages, return renddered data to Ajax call */
     function returnView(Request $request, $page_name) {
         $arr = explode(".", $page_name, 2);
         $first = $arr[0];
@@ -86,6 +88,7 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
+    /* Get and return all recent posts */
     function browseRecent() {
         $questions = \DB::table('forumQuestion')->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
         $HtmlView = (String) view('forum_question_result_admin')->with([
@@ -202,6 +205,8 @@ class ForumController extends Controller
                 'qCategory' => $category
             )
         );
+
+        /* send user to forum homepage */
         return Redirect::intended('/forum');
     }
 
@@ -251,7 +256,7 @@ class ForumController extends Controller
         return response()->json($res);
     }
 
-    /* Delete answer */
+    /* Delete answer AJAX call*/
     function deleteAnswer(Request $request, $aid) {
         $arr = explode("?", $aid, 2);
         $first = $arr[0];
@@ -369,6 +374,7 @@ class ForumController extends Controller
         }
     }
 
+    /* check previous votes and down vote answer */
     function downVoteAnswer(Request $request, $answerid, $userid) {
         $arr = explode("?", $answerid, 2);
         $aid = $arr[0];
@@ -377,7 +383,6 @@ class ForumController extends Controller
         $uid = $arr[0];
 
         $previousVote = 0;
-
 
         /* Check if already voted */
         $getVoted = \DB::table('forumanswervotes')->where('aID', '=', $aid)->where('user', $uid)->first();
@@ -406,6 +411,7 @@ class ForumController extends Controller
         }
     }
 
+    /* add insert to forumanswerflag, mark answer as spam */
     function flagAnswer(Request $request, $answerid, $userid) {
         $arr = explode("?", $answerid, 2);
         $aid = $arr[0];
@@ -428,6 +434,7 @@ class ForumController extends Controller
         }
     }
 
+    /* Flag a question, only one flag per user */
     function flagQuestion(Request $request, $questionid, $userid) {
         $arr = explode("?", $questionid, 2);
         $qid = $arr[0];
@@ -450,13 +457,14 @@ class ForumController extends Controller
         }
     }
 
+    /* Iterate through user emails and send a copy of email to every mail */
     function sendNewsletter() {
         $bodyText = Input::get('content');
         $theSubject = Input::get('subject');
 
         $users = \DB::table('users')->get();
 
-        /* comment this method call later */
+        /* method for testing, comment this method call later */
         /*self::sendMailNewsletter($theSubject, $bodyText, "muabdulla@ymail.com");*/
 
         foreach($users as $user) {
@@ -467,6 +475,7 @@ class ForumController extends Controller
         return Redirect::intended('/admin_panel_home/');
     }
 
+    /* Call this method to send any mail, pass parameters */
     public function sendMailNewsletter($subject, $body, $toMail){
         $data = array('bodyText' => $body);
         Mail::queue('forum_mail.newsletter', $data, function($message) use ($subject, $toMail)
