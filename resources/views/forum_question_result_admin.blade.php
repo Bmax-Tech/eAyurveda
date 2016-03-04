@@ -11,6 +11,17 @@
             }
         });
     }
+    function approveQuestion(qid) {
+        var questionID = qid.toString();
+        $.ajax({
+            type:'GET',
+            url:'forum/question/approve/'+questionID+'/',
+            cache: true,
+            success: function(data){
+                $("#forumQuestionsDiv").html(data.page);
+            }
+        });
+    }
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
     });

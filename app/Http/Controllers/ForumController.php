@@ -45,11 +45,29 @@ class ForumController extends Controller
     function getFlaggedQuestions() {
         $questions = \DB::table('forumQuestion')
             ->join('forumquestionflags', 'forumQuestion.qID', '=', 'forumquestionflags.qID')
-            ->join('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
+            ->join('users', 'forumQuestion.qfrom', '=', 'users.email')
+            ->where('forumQuestion.approvedStatus', '=', false)
+            ->get();
         $HtmlView = (String) view('forum_question_result_admin')->with([
             'questions'=>$questions
         ]);
         $res['pagination'] = $questions;
+        $res['page'] = $HtmlView;
+
+        return response()->json($res);
+    }
+
+    /* Pass All flagged Answers to ajax call*/
+    function getFlaggedAnswers() {
+        $answers = \DB::table('forumAnswer')
+            ->join('forumanswerflags', 'forumAnswer.aID', '=', 'forumanswerflags.aID')
+            ->join('users', 'forumAnswer.afrom', '=', 'users.email')
+            ->where('forumAnswer.approvedStatus', '=', false)
+            ->get();
+        $HtmlView = (String) view('forum_answer_result_admin')->with([
+            'answers'=>$answers
+        ]);
+        $res['pagination'] = $answers;
         $res['page'] = $HtmlView;
 
         return response()->json($res);
@@ -194,13 +212,85 @@ class ForumController extends Controller
 
         \DB::table('forumQuestion')->where('qID', '=', $first)->delete();
 
-        $questions = \DB::table('forumQuestion')->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
+        $questions = \DB::table('forumQuestion')
+            ->join('forumquestionflags', 'forumQuestion.qID', '=', 'forumquestionflags.qID')
+            ->join('users', 'forumQuestion.qfrom', '=', 'users.email')
+            ->where('forumQuestion.approvedStatus', '=', false)
+            ->get();
         $HtmlView = (String) view('forum_question_result_admin')->with([
             'questions'=>$questions
         ]);
         $res['pagination'] = $questions;
         $res['page'] = $HtmlView;
 
+
+        return response()->json($res);
+    }
+
+    /* Approve a post */
+    function approveQuestion(Request $request, $qid) {
+        $arr = explode("?", $qid, 2);
+        $first = $arr[0];
+
+        \DB::table('forumQuestion')
+            ->where('qID', '=', $first)
+            ->update(['approvedStatus' => true]);
+
+        $questions = \DB::table('forumQuestion')
+            ->join('forumquestionflags', 'forumQuestion.qID', '=', 'forumquestionflags.qID')
+            ->join('users', 'forumQuestion.qfrom', '=', 'users.email')
+            ->where('forumQuestion.approvedStatus', '=', false)
+            ->get();
+        $HtmlView = (String) view('forum_question_result_admin')->with([
+            'questions'=>$questions
+        ]);
+        $res['pagination'] = $questions;
+        $res['page'] = $HtmlView;
+
+
+        return response()->json($res);
+    }
+
+    /* Delete answer */
+    function deleteAnswer(Request $request, $aid) {
+        $arr = explode("?", $aid, 2);
+        $first = $arr[0];
+
+        \DB::table('forumAnswer')->where('aID', '=', $first)->delete();
+
+        $answers = \DB::table('forumAnswer')
+            ->join('forumanswerflags', 'forumAnswer.aID', '=', 'forumanswerflags.aID')
+            ->join('users', 'forumAnswer.afrom', '=', 'users.email')
+            ->where('forumAnswer.approvedStatus', '=', false)
+            ->get();
+        $HtmlView = (String) view('forum_answer_result_admin')->with([
+            'answers'=>$answers
+        ]);
+        $res['pagination'] = $answers;
+        $res['page'] = $HtmlView;
+
+        return response()->json($res);
+    }
+
+    /* Approve answer */
+    function approveAnswer(Request $request, $aid) {
+        $arr = explode("?", $aid, 2);
+        $first = $arr[0];
+
+        \DB::table('forumAnswer')
+            ->where('aID', '=', $first)
+            ->update(['approvedStatus' => true]);
+
+        $answers = \DB::table('forumAnswer')
+            ->join('forumanswerflags', 'forumAnswer.aID', '=', 'forumanswerflags.aID')
+            ->join('users', 'forumAnswer.afrom', '=', 'users.email')
+            ->where('forumAnswer.approvedStatus', '=', false)
+            ->get();
+        $HtmlView = (String) view('forum_answer_result_admin')->with([
+            'answers'=>$answers
+        ]);
+        $res['pagination'] = $answers;
+        $res['page'] = $HtmlView;
 
         return response()->json($res);
     }

@@ -28,8 +28,10 @@ class CreateForumCategoriesTable extends Migration
             $table->text('qBody');
             $table->text('qSubject');
             $table->integer('qCategory');
-            $table->integer('upvotes');
-            $table->integer('downvotes');
+            $table->integer('upvotes')->default(0);
+            $table->integer('downvotes')->default(0);
+            $table->boolean('approvedStatus')->default(false);
+            $table->timestamp('postedOn')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
 
@@ -40,10 +42,11 @@ class CreateForumCategoriesTable extends Migration
             $table->text('aFrom');
             $table->text('aSubject');
             $table->text('aBody');
-            $table->integer('upVotes');
-            $table->integer('downVotes');
-            $table->boolean('bestAnswer');
-            $table->timestamp('postedOn');
+            $table->integer('upVotes')->default(0);
+            $table->integer('downVotes')->default(0);
+            $table->boolean('bestAnswer')->default(false);
+            $table->boolean('approvedStatus')->default(false);
+            $table->timestamp('postedOn')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
 

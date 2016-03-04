@@ -95,6 +95,7 @@ Route::get('/forum/search/{query}','ForumController@searchForum');
 Route::get('forum/getcategories/','ForumController@getCategories');
 Route::get('forum/questions/getrecent/','ForumController@getRecentQuestions');
 Route::get('forum/questions/getflagged/','ForumController@getFlaggedQuestions');
+Route::get('forum/answers/getflagged/','ForumController@getFlaggedAnswers');
 Route::get('forum/answers/getrecent/','ForumController@getRecentAnswers');
 Route::get('forum/questions/browserecent/','ForumController@browseRecent');
 Route::get('forum/answer/upvote/{answerid}/{userid}','ForumController@upVoteAnswer');
@@ -103,6 +104,9 @@ Route::get('forum/answer/flaganswer/{answerid}/{userid}','ForumController@flagAn
 Route::get('forum/answer/flagquestion/{questionid}/{userid}','ForumController@flagQuestion');
 Route::get('/forum/browse/{category}','ForumController@getBrowseCategory');
 Route::get('/forum/question/delete/{qid}','ForumController@deleteQuestion');
+Route::get('/forum/question/approve/{qid}','ForumController@approveQuestion');
+Route::get('/forum/answer/delete/{aid}','ForumController@deleteAnswer');
+Route::get('/forum/answer/approve/{aid}','ForumController@approveAnswer');
 Route::get('/forum/category/delete/{catname}','ForumController@deleteCategory');
 
 
