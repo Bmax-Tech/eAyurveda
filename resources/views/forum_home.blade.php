@@ -63,6 +63,19 @@
         </div>
     </div>
     <style>
+        .close {
+            position: relative;
+            z-index: 99;
+            margin: 20px 25px;
+            padding-bottom: 5px !important;
+            border-radius: 100%;
+            height: 24px;
+            width: 24px;
+            background-color: #18E000 !important;
+            color: #0B4A00 !important;
+            opacity: .5 !important;
+        }
+
         .floatingAction {
             border:1px solid #348c45 !important;
             height:65px;
@@ -154,20 +167,28 @@
 
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="forumHomeHead" style="position: relative;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="forumHomeHead" style="position:relative;padding-top:20px;padding-left:40px;margin-top:0px !important;margin-left:0px;border-top-right-radius:5px;border-top-left-radius:5px;padding-bottom:15px;background-color:#00B000;color:#fff;border-bottom:1px solid #009A00;box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05),0px 3px 10px rgba(0,0,0,0.2);">
                     Post new Question
                 </div>
-                <div style="height: 1px; background-color: #aaa; width: 100%; margin-top: 5px;"></div>
                 <div style="text-align: center">
                     {!! Form::open(array('url' => 'forum/postquestion')) !!}
                     <div>
+                        <span style="float: left;margin-left: 6%;margin-top: 18px;margin-bottom: -18px;font-family: Arial;color: #aaa;">Select Category</span>
                         <select name="category" class="forumCatSelect" required="required">
-                            <option value="">-- Select Category --</option>
-                            <?php foreach($categories as $cat) {
-                            ?>
-                            <option value="$cat->catName"><?= $cat->catName ?></option>
                             <?php
-                                }
+                            foreach($categories as $cat) {
+                            if($cat->catID == 1) {
+                            ?>
+                                <option value="$cat->catName" selected><?= $cat->catName ?></option>
+
+                            <?php
+                            } else {
+                            ?>
+                                <option value="$cat->catName"><?= $cat->catName ?></option>
+                            <?php
+                            }
+                            }
                             ?>
                         </select>
                     </div>

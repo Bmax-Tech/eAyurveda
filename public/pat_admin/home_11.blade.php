@@ -18,6 +18,7 @@ $result = $conn->query($sql);
 
 ?>
 <script src="{{ URL::asset('assets_social/js/bootbox.min.js') }}" type="text/javascript"></script>
+<script src="{{ URL::asset('assets/js/jquery-1.12.0.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
     function deleteCategory(catName) {
         var cat = catName.toString();
@@ -29,6 +30,18 @@ $result = $conn->query($sql);
                 $("#availableForumCatList").html(data.page);
             }
         });
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#forumCatImageDiv").attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 </script>
 <div>
@@ -64,16 +77,14 @@ $result = $conn->query($sql);
                 <div class="forumTxtLabel" style="margin-bottom: 3px !important">
                     Select Image
                 </div>
-                <div id="forumCatImageDiv">
-                    <span style="display: inline-block;height: 100%;vertical-align: middle;"></span>
-                    <img src="assets_social/img/upload_image.png" style="display: inline-block;vertical-align: middle;width: 60px">
-                </div>
+                <img id="forumCatImageDiv" src="assets_social/img/upload_image.png">
                 <div>
                     <button id="forumCatImgUploadBtn" type="button" onclick="$('#forumCatImgFileChooser').trigger('click');">Browse</button>
                     {{--<input type="file" name="forumCatImgFileChooser" id="forumCatImgFileChooser" style="display: none;">--}}
                     {!! Form::file('catImage', array(
                         'id' => 'forumCatImgFileChooser',
-                        'style' => 'display: none;'
+                        'style' => 'display: none;',
+                        'onchange' => 'readURL(this);'
                     )) !!}
                 </div>
             </div>

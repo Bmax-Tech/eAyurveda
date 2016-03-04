@@ -8,16 +8,6 @@ echo $txt;
 <link href="assets_social/css/summernote.css" rel="stylesheet">
 <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet">
 <script src="assets_social/js/summernote.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#summernote').summernote({
-            height: 300,                 // set editor height
-            minHeight: null,             // set minimum height of editor
-            maxHeight: null,             // set maximum height of editor
-            focus: false                  // set focus to editable area after initializing summernote
-        });
-    });
-</script>
 
 <div>
     <div class="forumAdminHead">
@@ -54,3 +44,13 @@ echo $txt;
     </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            height: 300,                 // set editor height
+            minHeight: null,             // set minimum height of editor
+            maxHeight: null,             // set maximum height of editor
+            focus: false                  // set focus to editable area after initializing summernote
+        });
+    });
+</script>

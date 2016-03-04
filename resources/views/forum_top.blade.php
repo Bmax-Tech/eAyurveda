@@ -39,11 +39,23 @@
                             <li class="active"><a href="/forum">Forum</a></li>
                         </ul>
 
-                        <?php $admin_user = json_decode($_COOKIE['admin_user'],true); ?>
+                        <?php
+                            $login = false;
+                            $user = "";
+                            if(isset($_COOKIE['user'])){
+                                $user = json_decode($_COOKIE['user'],true);
+                                $login = true;
+                            } else if(isset($_COOKIE['admin_user'])) {
+                                $user = json_decode($_COOKIE['admin_user'],true);
+                                $login = true;
+                            }
+
+                            if($login) {
+                        ?>
 
                         <div id="loginNavigation" runat="server" align="right">
                             <div>
-                                <div id="loginName" runat="server"><?php echo $admin_user[0]['first_name']; ?></div>
+                                <div id="loginName" runat="server"><?php echo $user[0]['first_name']; ?></div>
                             </div>
                             <div id="loginNotifications">
                                 <div id="notificationCount" title="Notification(s)" class="notificationCountZero" onclick="notificationDropDown()" runat="server">0</div>
@@ -55,12 +67,19 @@
                                         </div>
                                         <div id="notificationCards">
 
-
+                                            <div class="notifyCard" onclick="window.location.href='viewmessage.aspx?message=id'">
+                                                <div class="notifyImage" style="background-image:url('')"></div>
+                                                <div class="notifyFrom">Admin</div>
+                                                <br />
+                                                <div class="notifyHead">Sample Head</div>
+                                                <br />
+                                                <div class="notifyBody">Sample Body</div>
+                                            </div>
 
                                         </div>
                                         <div style="height:45px;"></div>
                                         <div class="bottomPanel">
-                                            <div id="btnNewMessage"><div id="btnNewMsgIcon"></div>New Message</div>
+                                            <div id="btnNewMessage"><div id="btnNewMsgIcon"></div>View All</div>
                                         </div>
                                     </div>
                                 </div>
@@ -70,10 +89,13 @@
                                 <div id="upArrow" class="arrow-up"></div>
                                 <div id="profileDropDown">
                                     <div>
-                                        <div id="dropHeader"><div style="margin-left:20px;">Account</div></div>
                                         <div id="dropInnerContent">
                                             <div id="innterProfilePic"></div>
-                                            <div id="innerFullName" runat="server"><?= $admin_user[0]['first_name']." Unais"; ?></div>
+                                            <div id="innerFullName" runat="server">
+
+
+                                                <?= $user[0]['first_name']; ?>
+                                            </div>
                                             <div id="innerEmail" runat="server">youremail@domain.com</div>
                                         </div>
                                         <div id="dropButtons">
@@ -85,13 +107,22 @@
                                 </div>
                             </div>
                         </div>
-
+                        <?php } ?>
                     </div>
 
                 </nav>
                 <div class="barLine"></div>
             </div>
         </div>
+        <?php
+        if(!$login) {
+        ?>
+        <div id="LoginButtonTopDiv">
+            <input type="button" id="BtnLoginTop" class="loginButtonTop" value="Sign in" onclick="window.location = '';"
+                   formnovalidate/>
+        </div>
+        <?php     }
+        ?>
 
         @yield('body')
 
