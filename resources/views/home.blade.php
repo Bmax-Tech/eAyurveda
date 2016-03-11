@@ -150,7 +150,7 @@
                     <div class="c_com_sug_doc" <?php if($i!=5){ ?>style="margin-right:10px"<?php } ?>>
                         <ul class="c_ul_1" style="width:198px">
                             <li style="width:100%"><div class="c_font_5" style="text-align:center">Dr. <?php echo $com['doc_first_name']." ".$com['doc_last_name'];  ?></div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center"><?php echo $com['doc_address_2'].", ".$com['doc_city'];  ?></div></li>
+                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size: 12px;max-width: 198px"><?php echo $com['doc_address_2'].", ".$com['doc_city'];  ?></div></li>
                             <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px"><img src="{{ URL::asset($com['image_path']) }}" style="width:30px;height: 30px;border-radius: 20px;border: 1px solid #fff;">&nbsp;&nbsp;<span style="font-style: italic"><?php echo $com['sug_user_name']; ?></span></div></li>
                         </ul>
                     </div>

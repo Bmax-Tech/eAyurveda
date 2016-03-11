@@ -176,4 +176,41 @@
 </div>
 <!-- Registration Form -->
 
+<?php
+    if(isset($success_reg)){
+?>
+<script>
+    // This function will be using to redirect into a page
+    function change_window_location(para_1){
+        setTimeout(function(){
+            window.location = para_1;
+        },3000);
+    };
+
+    window.change_window_location("{{ URL::asset('') }}");
+</script>
+
+<!-- Thanking Messages -->
+<div class="container c_pop_up_box_2" id="c_thanking_msg" style="display: block">
+    <div class="center-block c_pop_box_1_wrapper" style="margin-top: 15%;width: 412px">
+        <div style="background: #DAA100;height: 145px;padding-top: 32px">
+
+            <div class="container c_no_padding col-lg-12">
+                <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><img src="{{ URL::asset('assets/img/thanking.png') }}" style="width: 80px"></div>
+                <div class="col-lg-8 c_no_padding" style="margin-top: -75px;margin-left: 114px">
+                    <ul class="c_ul_1">
+                        <li><span style="font-size: 27px;font-weight: 100;margin-left: 30px;color: #FFF">Thank you</span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF"> for your registering with us</span></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Thanking Messages -->
+<?php
+}
+?>
+
 @stop
