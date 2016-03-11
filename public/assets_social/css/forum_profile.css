@@ -1,0 +1,154 @@
+#topNavTabs {
+    padding-left: 50px;
+    padding-top: 50px;
+    padding-bottom: 10px;
+}
+.tab {
+    display: inline;
+    padding: 12px 60px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border:1px solid #ddd;
+    border-width: 3px 1px 1px 1px;
+    cursor: pointer;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    background-size: 15%;
+    background-repeat: no-repeat;
+    background-position: 10%;
+}
+.tab:hover {
+    border-top: 3px solid #bbb;
+    background-color: #f5f5f5;
+}
+#tab1 {
+    background-image: url('../../assets_social/img/profile_awesome_g.png');
+}
+#tab2 {
+    background-image: url('../../assets_social/img/activity_awesome_g.png');
+}
+#tab3 {
+    background-image: url('../../assets_social/img/stats_awesome_g.png');
+}
+#tab4 {
+    background-image: url('../../assets_social/img/messages_awesome_g.png');
+}
+
+/* Active ELement */
+.tabActive {
+    background-color: #eee;
+    border-top: 3px solid #00d600;
+    border-bottom: 1px solid #eee;
+}
+
+.tabActive1 {
+    background-image: url('../../assets_social/img/profile_awesome_active.png') !important;
+}
+.tabActive2 {
+    background-image: url('../../assets_social/img/activity_awesome_active.png') !important;
+}
+.tabActive3 {
+    background-image: url('../../assets_social/img/stats_awesome_active.png') !important;
+}
+.tabActive4 {
+    background-image: url('../../assets_social/img/messages_awesome_active.png') !important;
+}
+
+
+.tabActive:hover {
+    background-color: #eee !important;
+    border-top: 3px solid #00d600 !important;
+    border-bottom: 1px solid #eee !important;
+}
+
+#barThick {
+    height: 6px;
+    width: 100%;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    z-index: -99;
+    box-shadow: 0 0px 0 rgba(0, 0, 0, .2), 0 1px 2px rgba(0, 0, 0, .1);
+}
+
+.contentCard {
+    float:left;
+    background-color: #fff;
+    width: 49%;
+    border-radius: 2px;
+    display: block;
+    position: relative;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.11), 0 1px 6px rgba(0,0,0,0.18);
+    margin-top: 1%;
+}
+
+.contentCardHead {
+    font-size: 15px;
+    font-family: Roboto, "Helvetica Neue",Helvetica,Arial,sans-serif;;
+    width: 100%;
+    height: 36px;
+    padding: 8px 20px;
+    background-color: #eee;
+    border-bottom: 1px solid #E6E6E6;
+}
+.contentCardItem {
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    width: auto;
+    height: 50px;
+    border-bottom: 1px solid #eee;
+    line-height: 50px;
+    padding: 0px 0px 0px 20px;
+}
+.btnContentCardItem {
+    position: relative;
+    right: 0;
+    float: right;
+    height: 100%;
+    width: 50px;
+    overflow-y: hidden ! important;
+    overflow-x: hidden ! important;
+    background-color: #fff;
+    border: 0px solid #ccc;
+    border-left: 1px solid #eee;
+    outline: 0;
+    cursor: pointer;
+    background-size: 45%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-image: url('../img/view_awesome.png');
+}
+.btnContentCardItem:hover {
+    background-color: #359f46 !important;
+    background-image: url('../img/view_awesome_w.png');
+    border-color: #34a334 #30a430 #228722 #2fa52f !important;
+}
+
+
+@media screen and (max-width: 960px){
+    #topNavTabs {
+        padding-left: 70px;
+    }
+    .tab {
+        padding: 12px 40px;
+    }
+}
+
+@media screen and (max-width: 665px){
+    #topNavTabs {
+        padding-left: 85px;
+    }
+    .tab {
+        padding: 12px 20px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    #topNavTabs {
+        padding-left: 95px;
+    }
+    .tab {
+        padding: 12px 10px;
+    }
+}
+
