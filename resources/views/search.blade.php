@@ -105,8 +105,16 @@
                             </ul>
                         </div>
                     </li>
-                    <li style="padding: 5px;background:#39B54A">
+                    <li style="padding: 5px;background:#39B54A;height: 54px">
                         <button type="button" onclick="filter_result_btn()" class="c_button_3"><img src="assets/img/filter.png" style="width:20px">&nbsp;&nbsp;&nbsp;Filter</button>
+                        <div id="c_filter_no_select_wrn" style="display: none;position: relative; margin-top: -168px;">
+                            <div style="border-radius: 5px;padding: 4px;width: 240px; height: 100px; background: #CE2316; margin-left: 10px;">
+                                <div style="border-radius: 5px;background: #fff;width: 100%;height: 100%;text-align: center;padding-top: 30px">
+                                    <span style="font-size: 20px;">Please Select any Field</span>
+                                </div>
+                            </div>
+                            <div id="arrow_down" style="border-top:20px solid #CE2316"></div>
+                        </div>
                     </li>
                     <li style="padding: 5px;background:#39B54A;text-align: center;color: #FFF">
                         <span style="cursor: pointer" onclick="filter_reset()">Reset</span>

@@ -62,7 +62,7 @@ function only_alph(evt){
 	var theEvent = evt || window.event;
 	var key = theEvent.keyCode || theEvent.which;
 	key = String.fromCharCode( key );
-	if(NUM_PATTERN.test(key)) {
+	if(NUM_PATTERN.test(key) || evt.which == 32 || (evt.keyCode >= 96 && evt.keyCode <= 111)) {
 		/* if number is found in keypress event ignore that value */
 		theEvent.returnValue = false;
 		if(theEvent.preventDefault) theEvent.preventDefault();
@@ -716,7 +716,12 @@ function filter_result_btn(){
 		$("#filter_spec_hidden").val($('input[name=specialization]:checked', '#filter_selections').val());
 	}
 
-	doc_load_ajax();
+	if($('input[name=district]:checked', '#filter_selections').val() == null && $('input[name=specialization]:checked', '#filter_selections').val() == null){
+		$("#c_filter_no_select_wrn").fadeIn();
+		$("#c_filter_no_select_wrn").delay(600).fadeOut();
+	}else {
+		doc_load_ajax();
+	}
 }
 
 function filter_reset(){
