@@ -29,6 +29,15 @@ class ForumController extends Controller
             'categories'=>$categories
         ]);
     }
+    function returnProfile() {
+        return view('forum_profile');
+    }
+    function returnProfileView(Request $request, $page_name) {
+        $arr = explode(".", $page_name, 2);
+        $first = "forum_profile_views/".$arr[0];
+
+        return (String) view($first);
+    }
 
     /* Pass All recent Questions to ajax call*/
     function getRecentQuestions() {

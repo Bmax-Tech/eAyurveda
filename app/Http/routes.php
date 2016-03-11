@@ -87,9 +87,12 @@ Route::group(['middleware' => ['web']], function () {
 
 /* Load the Forum Homepage */
 Route::get('/forum','ForumController@returnHome');
+Route::get('/forum/profile','ForumController@returnProfile');
 
 /* Load the Admin Panels of Forum */
 Route::get('/for_admin/{page_name}','ForumController@returnView');
+Route::get('/forum/profilepage/{page_name}','ForumController@returnProfileView');
+
 
 Route::get('/forum/search/{query}','ForumController@searchForum');
 Route::get('forum/getcategories/','ForumController@getCategories');

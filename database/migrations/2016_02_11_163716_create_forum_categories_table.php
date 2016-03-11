@@ -75,6 +75,17 @@ class CreateForumCategoriesTable extends Migration
             $table->integer('qID');
         });
 
+        Schema::create('forumUser', function (Blueprint $table) {
+            $table->engine = "InnoDB";
+            $table->text('user');
+            $table->text('userType')->default("Member");
+            $table->boolean('verified')->default(false);
+            $table->integer('numQuestions');
+            $table->integer('numAnswers');
+            $table->integer('numBestAnswer');
+            $table->integer('reputationPoints');
+        });
+
     }
 
     /**
@@ -84,6 +95,7 @@ class CreateForumCategoriesTable extends Migration
      */
     public function down()
     {
+        Schema::drop('forumStats');
         Schema::drop('forumQuestionFlags');
         Schema::drop('forumAnswerFlags');
         Schema::drop('forumAnswerVotes');

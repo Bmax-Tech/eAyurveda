@@ -119,18 +119,6 @@ function load_for_page(para_1){
 			$("#admin_home_div").html(data);
 		}
 	});
-	//var dataString="user_id="+id;
-	//var new_url = '/admin_panel/removeusers/'+id;
-	//$.ajax({
-	//	type:'GET',
-	//	url:new_url,
-	//	data: dataString,
-	//	cache: false,
-	//	success: function(data){
-	//		//console.log(data);
-	//		$("#admin_home_div").html(data.page);
-	//	}
-	//});
 };
 
 
