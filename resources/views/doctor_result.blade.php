@@ -16,7 +16,10 @@
             Dr. {{$doc->first_name}} {{$doc->last_name}}
         </div>
         <div style="padding: 5px 0px;font-size: 13px;color: #3c3c3c">
-            Location :&nbsp;&nbsp;&nbsp;{{$doc->address_1}}, {{$doc->address_2}}, {{$doc->city}}
+            <span style="padding-right: 5px">Location </span>:&nbsp;&nbsp;&nbsp;{{$doc->address_1}}, {{$doc->address_2}}, {{$doc->city}}, {{$doc->district}}
+        </div>
+        <div style="padding: 0px 0px;font-size: 13px;color: #3c3c3c">
+            <span style="padding-right: 13px">District </span>:&nbsp;&nbsp;&nbsp;{{$doc->district}}
         </div>
         <div style="padding: 10px 0px">
             <hr class="c_hr_1"/>
@@ -49,15 +52,26 @@
         </div>
         <div style="margin-top: 10px">
             <ul style="color: #000;padding-left: 18px;font-size: 12px;list-style: disc">
-                <li>DFDFDF</li>
-                <li>DFDFDF</li>
+                <?php if(($doc->spec_1) != ""){ ?><li>{{ $doc->spec_1 }}</li><?php } ?>
+                <?php if(($doc->spec_2) != ""){ ?><li>{{ $doc->spec_2 }}</li><?php } ?>
+                <?php if(($doc->spec_3) != ""){ ?><li>{{ $doc->spec_3 }}</li><?php } ?>
+                <?php if(($doc->spec_4) != ""){ ?><li>{{ $doc->spec_4 }}</li><?php } ?>
+                <?php if(($doc->spec_5) != ""){ ?><li>{{ $doc->spec_5 }}</li><?php } ?>
             </ul>
         </div>
         <div>
-            <a href="/profile/Dr.{{$doc->first_name}}{{$doc->last_name}}/{{$doc->id}}" style="text-decoration: none;color: #FFF;"><button class="c_doc_view_btn">View Profile</button></a>
+            <a href="/profile/Dr.{{$doc->first_name}}{{$doc->last_name}}/{{$doc->doc_id}}" style="text-decoration: none;color: #FFF;"><button class="c_doc_view_btn">View Profile</button></a>
         </div>
     </div>
 </div>
+<?php
+    }
+    if(count($doctors) == 0){
+?>
+    <div style="margin: 30px">
+        <div style="font-size: 30px;color:#ff9715 ">Oops! No results were found.</div>
+        <div style="font-size: 14px;color: #828282;">We`re sorry, It`s seems as though we were not able to locate exactly what you were looking for. Please try to search again or contact our customer service</div>
+    </div>
 <?php
     }
 ?>

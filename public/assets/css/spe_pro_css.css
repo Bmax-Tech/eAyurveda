@@ -647,6 +647,29 @@
 	background-color: #085426;
 }
 
+#c_filter_spec_div{
+	height: 139px;
+	overflow-y: scroll;
+	margin: 5px 5px 5px 0px;
+}
+#c_filter_spec_div::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #39B54A;
+}
+#c_filter_spec_div::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #39B54A;
+}
+#c_filter_spec_div::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #085426;
+}
+
 .c_button_3{
 	border-radius: 7px;
 	width: 100%;
@@ -686,7 +709,7 @@
 
 .c_search_filter_box_fixed{
 	position: fixed;
-	top: 30px;
+	top: 22px;
 	width: 275px;
 	z-index: 9999999999;
 }
