@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Featured_doc;
 use App\Formal_doctors;
+use App\HealthTip;
 use App\Non_Formal_doctors;
 use App\Patients;
 use App\Specialization;
@@ -14,6 +16,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
@@ -21,7 +24,7 @@ class Front extends Controller
 {
 
     public function index(){
-        return view('home',array('top_rated_docs' => self::get_top_rated_docs()));
+        return view('home',array('top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips(),'featured_docs' => self::get_featured_docs(),'community_sug' => self::get_community_suggestions()));
     }
 
     // This function loads default results
@@ -36,11 +39,6 @@ class Front extends Controller
 
     // This function loads results for advanced search options
     public function advanced_search(Request $request){
-        /*$advanced_search['doc_name'] = $request->doc_name;
-        $advanced_search['doc_speciality'] = $request->doc_speciality;
-        $advanced_search['doc_treatment'] = $request->doc_treatment;
-        $advanced_search['doc_location'] = $request->doc_location;*/
-
         return view('search',array('advanced' => "YES",
             'doc_name' => $request->doc_name,
             'doc_speciality' => $request->doc_speciality,
@@ -109,6 +107,14 @@ class Front extends Controller
                     'reg_date' => new \DateTime()
                 ]);
 
+                // Create Image Instance
+                Images::create([
+                    'user_id' => $user->id,
+                    'image_path' => ''
+                ]);
+
+                self::send_email($request->first_name,$request->last_name,$request->username,$request->email);// Send an Email
+
                 return Redirect::to('/');
             } else {
 
@@ -131,10 +137,10 @@ class Front extends Controller
         }else {
             if(User::whereEmail($request->username)->first()) {
                 // Check whether password is incorrect
-                return view('home', array('password_error' => 'YES','pre_username'=>$request->username,'top_rated_docs' => self::get_top_rated_docs()));
+                return view('home', array('password_error' => 'YES','pre_username'=>$request->username,'top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips(),'featured_docs' => self::get_featured_docs(),'community_sug' => self::get_community_suggestions()));
             }else{
                 // Check whether username is incorrect
-                return view('home', array('username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs()));
+                return view('home', array('username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs(),'health_tips' => self::get_health_tips(),'featured_docs' => self::get_featured_docs(),'community_sug' => self::get_community_suggestions()));
             }
         }
     }
@@ -144,28 +150,6 @@ class Front extends Controller
         setcookie("user", "", time() - 3600);// Destroy the Cookie Session
 
         return Redirect::to('/');
-    }
-
-    public function forgotten_password(Request $request){
-        $user = User::whereEmail($request->reset_ps_username)->first(); // Check users table Username field
-        $patient = Patients::whereEmail(($request->reset_ps_email))->first();// Check Patients table Email Field
-        // Check whether username and email are matching
-
-        if(isset($user) && isset($patient) && ($user->id == $patient->user_id)) {
-            $re_patient = User::find($user->id);// Select patient record from table
-            $re_patient->password = md5($request->reset_ps_password);
-            $re_patient->save();
-
-            return Redirect::to('/');
-        }else {
-            if(User::whereEmail($request->reset_ps_username)->first()) {
-                // Check whether email is incorrect
-                return view('home', array('reset_email_error' => 'YES','pre_username'=>$request->reset_ps_username,'top_rated_docs' => self::get_top_rated_docs()));
-            }else{
-                // Check whether username is incorrect
-                return view('home', array('reset_username_error' => 'YES','top_rated_docs' => self::get_top_rated_docs()));
-            }
-        }
     }
 
     public function view_profile($doc_name,$doc_id){
@@ -279,6 +263,7 @@ class Front extends Controller
             'address_1' => Input::get('address_1'),
             'address_2' => Input::get('address_2'),
             'city' => Input::get('city'),
+            'district' => Input::get('district'),
             'contact_number' => Input::get('contact_number'),
             'email' => Input::get('email'),
             'description' => Input::get('doc_description'),
@@ -304,12 +289,7 @@ class Front extends Controller
             'spec_2' => Input::get('specialized')[1],
             'spec_3' => Input::get('specialized')[2],
             'spec_4' => Input::get('specialized')[3],
-            'spec_5' => Input::get('specialized')[4],
-            'spec_6' => Input::get('specialized')[5],
-            'spec_7' => Input::get('specialized')[6],
-            'spec_8' => Input::get('specialized')[7],
-            'spec_9' => Input::get('specialized')[8],
-            'spec_10' => Input::get('specialized')[9]
+            'spec_5' => Input::get('specialized')[4]
         ]);
 
         // Sixth Create Treatments
@@ -319,17 +299,11 @@ class Front extends Controller
             'treat_2' => Input::get('treatments')[1],
             'treat_3' => Input::get('treatments')[2],
             'treat_4' => Input::get('treatments')[3],
-            'treat_5' => Input::get('treatments')[4],
-            'treat_6' => Input::get('treatments')[5],
-            'treat_7' => Input::get('treatments')[6],
-            'treat_8' => Input::get('treatments')[7],
-            'treat_9' => Input::get('treatments')[8],
-            'treat_10' => Input::get('treatments')[9]
+            'treat_5' => Input::get('treatments')[4]
         ]);
 
 
         return Redirect::to('/adddoctor');
-        //return view('add_doctor',array('doc_save_success' => 'YES'));
     }
 
 
@@ -354,6 +328,62 @@ class Front extends Controller
             $rating_main[] = $temp;
         }
         return $rating_main;
+    }
+
+    public function get_featured_docs(){
+        $featured = Featured_doc::all();
+        foreach($featured as $f_doc){
+            $doc_details = Doctors::whereId($f_doc->did)->first();
+            $temp['doc_id'] = $doc_details->id;
+            $temp['doc_first_name']  = $doc_details->first_name;
+            $temp['doc_last_name']  = $doc_details->last_name;
+            $temp['doc_address_2']  = $doc_details->address_2;
+            $temp['doc_city']  = $doc_details->city;
+
+            $img = Images::whereUser_id($doc_details->user_id)->first();
+            $temp['image_path'] = $img->image_path;
+
+            $featured_main[] = $temp;
+        }
+        return $featured_main;
+    }
+
+    public function get_community_suggestions(){
+        $com_sug = Doctors::whereDoc_type('NON_FORMAL')->orderBy('id','DESC')->limit(5)->get();
+        foreach($com_sug as $doc){
+            $temp['doc_id'] = $doc->id;
+            $temp['doc_first_name']  = $doc->first_name;
+            $temp['doc_last_name']  = $doc->last_name;
+            $temp['doc_address_2']  = $doc->address_2;
+            $temp['doc_city']  = $doc->city;
+
+            // Get suggested User
+            $non_formal = Non_Formal_doctors::whereDoctor_id($doc->id)->first();
+            $user = User::whereId($non_formal->suggested_user)->first();
+            $temp['sug_user_name'] = $user->name;
+
+            // User Image
+            $img = Images::whereUser_id($user->id)->first();
+            $temp['image_path'] = $img->image_path;
+
+            $featured_main[] = $temp;
+        }
+        return $featured_main;
+    }
+
+    public function get_health_tips(){
+        $health_tip_main = HealthTip::orderBy('hid','DESC')->get();
+        return $health_tip_main;
+    }
+
+    public function send_email($first_name,$last_name,$user_name,$email_ad){
+        $subject['sub'] = "Welcome to eAyurveda.lk...";
+        $subject['email'] = $email_ad;
+        $subject['name'] = $first_name." ".$last_name;
+
+        Mail::send('emails.welcome_mail',['first_name' => $first_name,'last_name' => $last_name,'username' => $user_name],function($message) use ($subject){
+            $message->to($subject['email'],$subject['name'])->subject($subject['sub']);
+        });
     }
 
     // **********  Custom Functions **********************************

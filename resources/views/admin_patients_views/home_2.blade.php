@@ -47,7 +47,7 @@
                            <button class="c_pat_view_btn" onclick="user_view('<?php echo $com->pid; ?>')">View Profile</button>
                         </div>
                         <div class="col-lg-4">
-                            <button class="c_pat_view_btn" onclick="rem_com('<?php echo $com->cid; ?>')">Remove Comment</button>
+                            <button class="c_pat_view_btn" onclick="comment_pass_remove('<?php echo $com->cid; ?>')">Remove Comment</button>
                         </div>
 
 
@@ -79,11 +79,43 @@
                 </div>
             </li>
         </ul>
-        
-        
-        
+
+
+
+
+     <input type="hidden" id="hidden_click_com_id" value="0"/>
  
     </div>
+
+
+ <div id="featuredpoup" class="container pat_confirm1_box" >
+
+     <div class="center-block pat_confirm1_box_wrapper" style="margin-right: 55%;margin-top: 15%;width: 375px">
+         <button  class="pat_close_btn" onclick="feature_pop_close()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+         <div style="background: #4CBC5B;height: 145px;padding-top: 32px">
+
+             <div class="container c_no_padding col-lg-12">
+                 {{--  <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><h1>Confirm</h1></div>--}}
+                 <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
+                     <ul class="c_ul_1">
+                         <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Remove </span></li>
+
+                         <li> <div style="padding-top: 30px">
+                                 <div class="col-lg-3 ">
+                                     <button class="pat_view_btn_1" onclick="rem_com()" >Confirm</button>
+                                 </div>
+                                 <div class="col-lg-3" style="margin-left: 100px">
+                                     <button class="pat_view_btn_1" onclick="feature_pop_close()" >Cancel</button>
+                                 </div>
+                             </div>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
+
+         </div>
+     </div>
+ </div>
 
 
 

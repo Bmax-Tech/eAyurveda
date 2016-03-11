@@ -11,6 +11,8 @@ var PHONE_PATTERN = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[ ]?([0-9]{4})$/;//Use to 
 var NIC_PATTERN = /^\(?([0-9]{9})\)?[Vv]$/;//Use to check phone number pattern
 var AJAX_CHECK_EMAIL = true; // Status after checking email
 var AJAX_CHECK_USERNAME = true; // Status after checking username
+var PASSWORD_PATTERN = false;// Status of password pattern
+var CAPTCHA_VERIFY = false;// Status of the captcha verification
 
 // function checks for input text is empty or not
 function valid_length_input(para_1){
@@ -46,17 +48,6 @@ function only_alph(evt){
 	}
 };
 
-
-//function validate dob with nic
-function valid_nic_with_dob(para_1,para_2){
-	var dob = $('input[name='+para_1+']').val();
-	var nic = $('input[name='+para_2+']').val();
-
-	//if(dob.substr(6,))
-}
-
-
-
 //function validate email address
 function valid_email(para_1){
 	return EMAIL_PATTERN.test($("input[name="+para_1+"]").val());
@@ -80,6 +71,69 @@ function valid_confirm_password(para_1,para_2){
 		return false;
 	}
 };
+
+// function validate password field entered characters pattern
+$(".password_regx").on('keyup',function(){
+
+	if($(".password_regx").val().length  == 0){
+		$(".c_password_inputs").fadeOut();
+	}else{
+		$(".c_password_inputs").fadeIn();
+	}
+
+	// *****  All regex patterns ******
+
+	var lower_case = /^(?=.*[a-z]).+$/;
+	var user_case = /^(?=.*[A-Z]).+$/;
+	var nums = /^(?=.*[0-9]).+$/;
+	var special_chars = /^(?=.*[^\w\s]).+$/;
+
+	// *****  All regex patterns ******
+
+	if($(".password_regx").val().length > 7){
+		$("#in_ps_ch_1").css('color','#FFF700');
+		$("#in_ps_ch_1").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.');
+	}else{
+		$("#in_ps_ch_1").css('color','#FFF');
+		$("#in_ps_ch_1").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.');
+	}
+
+	var value_ps = $(".password_regx").val();
+
+	if(lower_case.test(value_ps)){
+		$("#in_ps_ch_2").css('color','#FFF700');
+		$("#in_ps_ch_2").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.');
+	}else{
+		$("#in_ps_ch_2").css('color','#FFF');
+		$("#in_ps_ch_2").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.');
+	}
+	if(user_case.test(value_ps)){
+		$("#in_ps_ch_3").css('color','#FFF700');
+		$("#in_ps_ch_3").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.');
+	}else{
+		$("#in_ps_ch_3").css('color','#FFF');
+		$("#in_ps_ch_3").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.');
+	}
+	if(nums.test(value_ps) || special_chars.test(value_ps)){
+		$("#in_ps_ch_4").css('color','#FFF700');
+		$("#in_ps_ch_4").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.');
+	}else{
+		$("#in_ps_ch_4").css('color','#FFF');
+		$("#in_ps_ch_4").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.');
+	}
+
+	// this will check all patterns are matching with enterd password
+	if($(".password_regx").val().length > 7 && lower_case.test(value_ps) && user_case.test(value_ps) && (nums.test(value_ps) || special_chars.test(value_ps))){
+		PASSWORD_PATTERN = true;
+	}else{
+		PASSWORD_PATTERN = false;
+	}
+
+});
+
+$(".password_regx").on('focusout',function() {
+	$(".c_password_inputs").fadeOut();
+});
 
 /* ********************************************************** */
 
@@ -133,6 +187,10 @@ $(".c_close_btn").click(function(){
 	$(".c_pop_up_box_1").fadeOut(100,function(){
 		$("#c_sign_in_box").show();
 		$("#c_forgotten_pass_box").hide();
+		$("#c_fog_reset_loading").hide();
+		$("#c_access_code_box").hide();
+		$("#c_change_pass_box").hide();
+		$("#c_change_pass_suc_box").hide();
 	});
 });
 
@@ -191,16 +249,13 @@ function remove_wrn(para_1){
 };
 
 function valid_registration(){
-	if(valid_length_input('first_name') || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || $("#reg_gender").val() == 'select' || valid_length_input('dob') || valid_length_input('nic') || !valid_nic_no('nic') || valid_length_input('contact_number') || !valid_phone_no('contact_number') || valid_length_input('email') || !valid_email('email') || valid_length_input('username') || valid_length_input('password') || valid_length_input('confirm_password') || !valid_confirm_password('password','confirm_password')){
+	if(valid_length_input('first_name') || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('dob') || valid_length_input('nic') || !valid_nic_no('nic') || valid_length_input('contact_number') || !valid_phone_no('contact_number') || valid_length_input('email') || !valid_email('email') || valid_length_input('username') || valid_length_input('password') || valid_length_input('confirm_password') || !valid_confirm_password('password','confirm_password') || !PASSWORD_PATTERN){
 
 		if(valid_length_input('first_name') || check_input_no_num('first_name')){
 			show_warning('first_name');
 		}
 		if(valid_length_input('last_name')  || check_input_no_num('last_name')){
 			show_warning('last_name');
-		}
-		if($("#reg_gender").val() == 'select'){
-			show_warning('gender');
 		}
 		if(valid_length_input('dob')){
 			show_warning('dob');
@@ -212,9 +267,11 @@ function valid_registration(){
 			show_warning('contact_number');
 		}
 		if(valid_length_input('email') || !valid_email('email')){
+			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter email address');
 			show_warning('email');
 		}
 		if(valid_length_input('username')){
+			$('#wrn_username').html('enter username');
 			show_warning('username');
 		}
 		if(valid_length_input('password')){
@@ -226,21 +283,33 @@ function valid_registration(){
 		if(!valid_confirm_password('password','confirm_password')){
 			show_warning('confirm_password');
 		}
-
-		return false;
-	}else if(!AJAX_CHECK_EMAIL || !AJAX_CHECK_USERNAME){
-		if(!AJAX_CHECK_EMAIL){
-			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
-			show_warning('email');
-		}
-		if(!AJAX_CHECK_USERNAME){
-			$('#wrn_username').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
-			show_warning('username');
+		if(!PASSWORD_PATTERN){
+			$(".c_password_inputs").fadeIn();
 		}
 
 		return false;
-	}else{
-		return true;
+	}else {
+		check_reg_existing('email',$('input[name=email]').val());
+		check_reg_existing('username',$('input[name=username]').val());
+
+		if (!AJAX_CHECK_EMAIL || !AJAX_CHECK_USERNAME) {
+			if (!AJAX_CHECK_EMAIL) {
+				$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+				show_warning('email');
+			}
+			if (!AJAX_CHECK_USERNAME) {
+				$('#wrn_username').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+				show_warning('username');
+			}
+
+			return false;
+		} else if (!CAPTCHA_VERIFY) {
+			$(".c_captcha_pop_up").fadeToggle();
+
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 };
@@ -260,13 +329,103 @@ function add_input_box_wrn(para_1){
 /* --- Forgotten Password Form ---*/
 
 function check_forgotten_password_form(){
-	if(valid_length_input('reset_ps_username') || valid_length_input('reset_ps_email') || !valid_email('reset_ps_email') || valid_length_input('reset_ps_password') || valid_length_input('reset_ps_confirm_password') || !valid_confirm_password('reset_ps_password','reset_ps_confirm_password')){
+	$("#reset_ps_username").removeClass('c_error_input_field_highlight');
+	$("#reset_ps_email").removeClass('c_error_input_field_highlight');
+
+	if(valid_length_input('reset_ps_username') || valid_length_input('reset_ps_email')){
 		if(valid_length_input('reset_ps_username')){
 			add_input_box_wrn('reset_ps_username');
 		}
 		if(valid_length_input('reset_ps_email') || !valid_email('reset_ps_email')){
 			add_input_box_wrn('reset_ps_email');
 		}
+
+		return false;
+	}else{
+		check_username_email();
+		return true;
+	}
+};
+
+// Check username and email
+function check_username_email(){
+	var new_url = '/forgotten_password_check';
+	var dataString = $("#ps_reset_form_1").serialize();
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		data: dataString,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			// Some Error caught
+			if(data.CHECK == "NO"){
+				if(data.ERROR == "USERNAME"){
+					$("#reset_ps_username").addClass('c_error_input_field_highlight');
+				}else{
+					$("#reset_ps_email").addClass('c_error_input_field_highlight');
+				}
+			}else{
+				// No errors
+				send_reset_email();
+			}
+
+		},
+		error: function (data) {
+			console.log('Error:', data);
+		}
+	});
+}
+
+function go_back_state(){
+	$("#c_access_code_box").hide();
+	$("#c_forgotten_pass_box").fadeIn();
+}
+
+var ps_reset_access_code = '';// this holds password reset access code return from Ajax request
+// Send Password Reset Email to User
+function send_reset_email(){
+	$("#c_fog_reset_loading").fadeIn();
+
+	var new_url = '/forgotten_password_email';
+	var dataString = $("#ps_reset_form_1").serialize();
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		data: dataString,
+		cache: false,
+		success: function (data) {
+			$("#c_fog_reset_loading").hide();
+			//console.log(data);
+			if(data.CHECK == "YES"){
+				ps_reset_access_code = data.ACCESS_KEY;
+				$("#ac_email").html(data.EMAIL);
+				$("#c_forgotten_pass_box").hide();
+				$("#c_access_code_box").fadeIn();
+			}
+		},
+		error: function (data) {
+			console.log('Error:', data);
+		}
+	});
+}
+
+function password_acc_check(){
+	var access_code = $("#reset_ps_access_code").val();
+	if(access_code == ps_reset_access_code){
+		// if user entered access code matches
+		$("#c_access_code_box").hide();
+		$("#c_change_pass_box").fadeIn();
+	}else{
+		// not matching access code
+		$("#reset_ps_access_code").addClass('c_error_input_field_highlight');
+	}
+}
+
+function check_change_password_form(){
+	if(!valid_email('reset_ps_email') || valid_length_input('reset_ps_password') || valid_length_input('reset_ps_confirm_password') || !valid_confirm_password('reset_ps_password','reset_ps_confirm_password') || !PASSWORD_PATTERN){
 		if(valid_length_input('reset_ps_password')){
 			add_input_box_wrn('reset_ps_password');
 		}
@@ -276,11 +435,49 @@ function check_forgotten_password_form(){
 		if(!valid_confirm_password('reset_ps_password','reset_ps_confirm_password')){
 			add_input_box_wrn('reset_ps_confirm_password');
 		}
+		if(!PASSWORD_PATTERN){
+			$(".c_password_inputs").fadeIn();
+		}
+
 		return false;
 	}else{
+		$("#hidden_username_rs").val($("#reset_ps_username").val());
+		$("#hidden_email_rs").val($("#reset_ps_email").val());
+
+		submit_password_change();
 		return true;
 	}
-};
+}
+
+// this function will submit password change details
+function submit_password_change(){
+	var new_url = '/save_change_password';
+	var dataString = $("#ps_reset_form_3").serialize();
+
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		data: dataString,
+		cache: false,
+		success: function (data) {
+			console.log(data);
+			if(data.CHECK == "Changed"){
+				$(".c_close_btn").hide();
+				$("#c_change_pass_box").hide();
+				$("#c_change_pass_suc_box").fadeIn();
+				$("#c_change_pass_suc_box").delay(1500).fadeOut(100,function(){
+					$("#c_sign_in_box").fadeIn();
+					$(".c_close_btn").show();
+				});
+			}
+		},
+		error: function (data) {
+			console.log('Error:', data);
+		}
+	});
+
+}
 
 /* --- Forgotten Password Form ---*/
 
@@ -296,6 +493,10 @@ function check_reg_existing(para_1,para_2){
 		$('#wrn_' + para_1).hide();
 		$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-remove" aria-hidden="true"  style="color:red"></span>');
 		show_warning(para_1);
+	}else if(para_1 == "username" && para_2.length == 0){
+		$('#wrn_' + para_1).html('enter ' + para_1);
+		$('#wrn_' + para_1).hide();
+		$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-remove" aria-hidden="true"  style="color:red"></span>');
 	}else if(para_2.length>0) {
 		$.ajax({
 			type: 'POST',
@@ -424,13 +625,23 @@ function filter_by_star_rating(para_1){
 	doc_load_ajax();
 };
 
+function filter_result_btn(){
+	$("#page_number_hidden").val(1);// Reset Page number into 1
+	$("#filter_star_rating").val(0);// Reset Star rating into 0
+	$(".c_filter_star").removeClass("c_filter_star_active");
+	$("#filter_loc_hidden").val($('input[name=district]:checked', '#filter_selections').val());
+	doc_load_ajax();
+}
+
 function filter_reset(){
 	$("#page_number_hidden").val(1);// Reset Page number into 1
 	$("#filter_star_rating").val(0);// Reset Star rating into 0
 	$(".c_filter_star").removeClass("c_filter_star_active");
+	$("#filter_loc_hidden").val('-');
 	$("#filter_selections").trigger('reset');
 	doc_load_ajax();
 };
+
 
 /* --- Ajax Requests ---*/
 
@@ -455,6 +666,7 @@ function clear_comment_post(){
 	$('#comment_description').val('');
 };
 
+var com_tabs=1;// Holds comments tab count
 function get_comments(){
 	var base_url = $('#base_url').val();
 	var star = $("#hidden_star_url").html();
@@ -475,8 +687,11 @@ function get_comments(){
 				});
 			}else {
 				data=data['DATA'];
-				var txt = '';
+
+
+				var txt = '<div class="col-lg-12 c_no_padding" id="com_tab_1">';/*this will add comments tabs*/
 				for (var i = 1; i <= Object.keys(data).length; i++) {
+
 					txt = txt + '<div class="col-lg-12 c_no_padding" style="padding: 20px"><div class="col-lg-1" style="padding: 5px"><div class="c_comment_profile_icon" style="background-image:url(' + base_url + data["comment_" + i]["user_img"]["image_path"] + ')"></div></div><div class="col-lg-11"><div class="c_comment_body"><ul class="c_ul_1" style="margin-bottom: 0px"><li style="height: 25px">';
 					txt = txt + '<div class="col-lg-4 c_no_padding">';
 					for (var s = 1; s <= 5; s++) {
@@ -488,6 +703,20 @@ function get_comments(){
 					}
 					txt = txt + '</div>';
 					txt = txt + '</li><li style="padding-top: 5px">' + data["comment_" + i]["comment"]["description"] + '</li><li style="padding-top: 10px;font-size: 13px;color: rgb(0, 109, 22)"><ul class="c_top_ul"><li>by : ' + data["comment_" + i]["user"]["first_name"] + '&nbsp;' + data["comment_" + i]["user"]["last_name"] + '</li><li style="margin-left: 40px">Posted Date - ' + data["comment_" + i]["comment"]["posted_date_time"] + '</li></ul></li></ul></div></div></div>';
+
+					/*this will add comments tabs*/
+					if(i%4 == 0) {
+						txt = txt + '</div>';
+						if(Object.keys(data).length != i) {
+							com_tabs++;
+							txt = txt + '<div class="col-lg-12 c_no_padding" id="com_tab_'+com_tabs+'" style="display:none">';
+						}
+					}
+				}
+
+				/*this will add comments tabs*/
+				if(Object.keys(data).length%4 != 0) {
+					txt = txt + '</div>';
 				}
 
 				$("#comments_load_div").html(txt);
@@ -495,6 +724,10 @@ function get_comments(){
 					$("#no_comments_div").hide();
 					$("#c_comments_count_span").html(Object.keys(data).length);
 					$("#comments_load_div").fadeIn();
+					if(Object.keys(data).length > 4){
+						$("#com_tab_back").show();
+						$("#com_tab_next").show();
+					}
 				});
 			}
 		}
@@ -506,6 +739,27 @@ $(document).ready(function(e) {
 		get_comments();
 	}
 });
+
+// comments tab change
+var current_tab=1;
+function change_com_tab(para_1){
+	if(para_1 == "-"){
+		if(current_tab > 1){
+			current_tab--;
+		}
+	}else{
+		if(current_tab < com_tabs){
+			current_tab++;
+		}
+	}
+	for(var i=1;i<=com_tabs;i++){
+		if(i != current_tab){
+			$("#com_tab_"+i).slideUp();
+		}else{
+			$("#com_tab_"+current_tab).slideDown();
+		}
+	}
+}
 
 function check_valid_comment(){
 	var user_id = $('#hidden_user_id').val();
@@ -523,6 +777,7 @@ function check_valid_comment(){
 };
 
 function submit_comment(){
+	com_tabs=1;
 	var new_url = '/post_comment';
 	var dataString = $("#doctor_comment").serialize();
 	$.ajax({
@@ -546,6 +801,176 @@ function submit_comment(){
 
 //////////////////////////////////////////////////
 /////////  Suggest Doctor Page ///////////////////
+
+
+// *******   Side Percentage Bar *******
+
+var com_am=0; // Completed Amount
+// this is to keep states of each fields
+var add_doc_fields = {
+	1:0,
+	2:0,
+	3:0,
+	4:0,
+	5:0,
+	6:0,
+	7:0,
+	8:0,
+	9:0,
+	10:0,
+	11:0
+};
+var getProperty = function (index) {
+	return add_doc_fields[index];
+};
+
+/* All on Change events will handle to get completed percentage amount */
+$(".add_doc").on('change',function(){
+	var f_id = $(this).attr('data-id');
+	// First check for add treatments or specializations
+	if(f_id < 10) {
+		if (getProperty(f_id) == 0) {
+			if ($(this).val().length > 0) {
+				check_com_am(f_id, '+');
+				add_doc_fields[f_id] = 1;// Set to lock sate
+			} else {
+				if (com_am > 0) {
+					check_com_am(f_id, '-');
+					add_doc_fields[f_id] = 0;// Set to default state
+				}
+			}
+		}
+		else if (getProperty(f_id) == 1 && $(this).val().length == 0) {
+			if (com_am > 0) {
+				check_com_am(f_id, '-');
+				add_doc_fields[f_id] = 0;// Set to default state
+			}
+		}
+	}else{
+		// if specializations
+		if(f_id == 10){
+			var status = check_s_and_t('spec');
+			if (getProperty(f_id) == 0) {
+				if(status){
+					check_com_am(f_id, '+');
+					add_doc_fields[f_id] = 1;// Set to lock sate
+				}
+			}else{
+				if(!status){
+					check_com_am(f_id, '-');
+					add_doc_fields[f_id] = 0;// Set to lock sate
+				}
+			}
+		}else{
+			// if treatments
+			var status = check_s_and_t('treat');
+			if (getProperty(f_id) == 0) {
+				if(status){
+					check_com_am(f_id, '+');
+					add_doc_fields[f_id] = 1;// Set to lock sate
+				}
+			}else{
+				if(!status){
+					check_com_am(f_id, '-');
+					add_doc_fields[f_id] = 0;// Set to lock sate
+				}
+			}
+		}
+	}
+	change_com_percentage();
+});
+
+$("#district").on('change',function(){
+	var f_id = $("#district").attr('data-id');
+	if(getProperty(f_id) == 0) {
+		if($("#district").val() != "select"){
+			check_com_am(f_id,'+');
+			add_doc_fields[f_id] = 1;// Set to lock sate
+		}else{
+			if(com_am > 0) {
+				check_com_am(f_id,'-');
+				add_doc_fields[f_id] = 0;// Set to default state
+			}
+		}
+	}else if(getProperty(f_id) == 1 && $(this).val() == "select"){
+		if(com_am > 0) {
+			check_com_am(f_id,'-');
+			add_doc_fields[f_id] = 0;// Set to default state
+		}
+	}
+	change_com_percentage();
+});
+
+function change_com_percentage(){
+	$("#c_completed_cir").removeAttr('class');
+	$("#c_completed_cir").addClass('c100');
+	$("#c_completed_cir").addClass('p'+com_am);
+	$("#c_completed_cir").addClass('big');
+	$("#c_completed_cir_am").html(com_am+"%");
+}
+
+function check_com_am(id,op){
+	if(id < 7){
+		if(op == '+'){
+			com_am=com_am+7;
+		}else{
+			com_am=com_am-7;
+		}
+	}else if(id < 9){
+		if(op == '+'){
+			com_am=com_am+12;
+		}else{
+			com_am=com_am-12;
+		}
+	}else if(id == 9){
+		if(op == '+'){
+			com_am=com_am+14;
+		}else{
+			com_am=com_am-14;
+		}
+	}else if(id > 9){
+		if(op == '+'){
+			com_am=com_am+10;
+		}else{
+			com_am=com_am-10;
+		}
+	}
+}
+
+function check_s_and_t(para_1){
+
+	if(para_1 == "spec"){
+		var skip=false;
+		var spec_count = $("#spec_count").val();
+		for(var i=1;i<=spec_count;i++){
+			if($("#spec_doc_"+i).val() == ""){
+				skip=true;
+			}
+		}
+
+		if(skip){
+			return false;
+		}else{
+			return true;
+		}
+	}else if(para_1 == "treat"){
+		var skip=false;
+		var treat_count = $("#treat_count").val();
+		for(var i=1;i<=treat_count;i++){
+			if($("#treat_doc_"+i).val() == ""){
+				skip=true;
+			}
+		}
+
+		if(skip){
+			return false;
+		}else{
+			return true;
+		}
+	}
+}
+
+// *******   Side Percentage Bar *******
 
 function change_sug_tab(para_1){
 	if(para_1 == 1){
@@ -575,12 +1000,7 @@ function change_sug_tab(para_1){
 		}
 	}else if(para_1 == 4){
 		if(validate_tab_change(1) && validate_tab_change(2) && validate_tab_change(3)) {
-			/*$(".c_sug_doc_tabs").removeClass('c_sug_doc_tabs_active');
-			 $("#c_sug_" + para_1 + "_tab").addClass('c_sug_doc_tabs_active');
-
-			 $("#c_doc_sug_tab_3_div").show();
-			 $("#c_doc_sug_tab_1_div").hide();
-			 $("#c_doc_sug_tab_2_div").hide();*/
+			show_profile_preview();
 		}
 	}
 };
@@ -621,9 +1041,11 @@ function check_spec_and_treat(para_1){
 	}
 }
 
+var status_spec=true; // status of specializations
+var status_treat=true; // status of treatments
 function validate_tab_change(para_1){
 	if(para_1 == 1){
-		if(valid_length_input('first_name')  || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('address_1') || valid_length_input('address_2') || valid_length_input('city')) {
+		if(valid_length_input('first_name')  || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('address_1') || valid_length_input('address_2') || valid_length_input('city') || $("#district").val() == 'select') {
 			if (valid_length_input('first_name')  || check_input_no_num('first_name')) {
 				show_warning('first_name');
 			}
@@ -638,6 +1060,9 @@ function validate_tab_change(para_1){
 			}
 			if (valid_length_input('city')) {
 				show_warning('city');
+			}
+			if($("#district").val() == 'select'){
+				show_warning('district');
 			}
 
 			return false;
@@ -668,8 +1093,6 @@ function validate_tab_change(para_1){
 			return true;
 		}
 	}else if(para_1 == 3){
-		var status_spec=true;
-		var status_treat=true;
 		if(check_spec_and_treat('spec')){
 			status_spec=true;
 		}else{
@@ -682,47 +1105,57 @@ function validate_tab_change(para_1){
 		}
 
 		if(status_spec && status_treat){
-
-			// Set up preview panel
-			$("#c_pre_name").html($("input[name=first_name]").val()+" "+$("input[name=last_name]").val());
-			$("#c_pre_gender").html($("input[name=gender]").val());
-			$("#c_pre_address_1").html($("input[name=address_1]").val());
-			$("#c_pre_address_2").html($("input[name=address_2]").val());
-			$("#c_pre_city").html($("input[name=city]").val());
-			$("#c_pre_contact_no").html($("input[name=contact_no]").val());
-			$("#c_pre_email").html($("input[name=email]").val());
-			$("#c_pre_description").html($("#doc_description").val());
-
-			var txt="";
-			var spec_count = $("#spec_count").val();
-			for(var i=1;i<=spec_count;i++){
-				txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#spec_doc_"+i).val()+'</div>';
-			}
-			$("#c_pre_spec_div").html(txt);
-
-			txt="";
-			var treat_count = $("#treat_count").val();
-			for(var i=1;i<=treat_count;i++){
-				txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#treat_doc_"+i).val()+'</div>';
-			}
-			$("#c_pre_treat_div").html(txt);
-
-
-			// Set up preview panel End
-
-			$("#c_preview_pop_up").fadeIn(function(){
-				$("#c_preview_pop_up_inner").slideDown();
-			});
+			return true;
+		}else{
+			return false;
 		}
 	}
 };
 
+/* This will show profile preview */
+function show_profile_preview(){
+	if(status_spec && status_treat){
+
+		// Set up preview panel
+		$("#c_pre_name").html($("input[name=first_name]").val()+" "+$("input[name=last_name]").val());
+		$("#c_pre_gender").html($("input[name=gender]").val());
+		$("#c_pre_address_1").html($("input[name=address_1]").val());
+		$("#c_pre_address_2").html($("input[name=address_2]").val());
+		$("#c_pre_city").html($("input[name=city]").val());
+		$("#c_pre_district").html($("#district").val());
+		$("#c_pre_contact_no").html($("input[name=contact_number]").val());
+		$("#c_pre_email").html($("input[name=email]").val());
+		$("#c_pre_description").html($("#doc_description").val());
+
+		var txt="";
+		var spec_count = $("#spec_count").val();
+		for(var i=1;i<=spec_count;i++){
+			txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#spec_doc_"+i).val()+'</div>';
+		}
+		$("#c_pre_spec_div").html(txt);
+
+		txt="";
+		var treat_count = $("#treat_count").val();
+		for(var i=1;i<=treat_count;i++){
+			txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#treat_doc_"+i).val()+'</div>';
+		}
+		$("#c_pre_treat_div").html(txt);
+
+
+		// Set up preview panel End
+
+		$("#c_preview_pop_up").fadeIn(function(){
+			$("#c_preview_pop_up_inner").slideDown();
+		});
+	}
+}
+
 var sep_op=1;
 function add_more_op(){
-	if(sep_op < 10) {
+	if(sep_op < 5) {
 		sep_op++;
 		$("#spec_count").val(sep_op);
-		for (var i = 1; i <= 10; i++) {
+		for (var i = 1; i <= 5; i++) {
 			if (i <= sep_op) {
 				$("#spec_doc_" + i).fadeIn(300);
 			} else {
@@ -737,7 +1170,7 @@ function rem_more_op(){
 	if(sep_op > 1) {
 		sep_op--;
 		$("#spec_count").val(sep_op);
-		for (var i = 1; i <= 10; i++) {
+		for (var i = 1; i <= 5; i++) {
 			if (i <= sep_op) {
 				$("#spec_doc_" + i).fadeIn(300);
 			} else {
@@ -750,10 +1183,10 @@ function rem_more_op(){
 
 var treat_op=1;
 function add_more_t_op(){
-	if(treat_op < 10) {
+	if(treat_op < 5) {
 		treat_op++;
 		$("#treat_count").val(treat_op);
-		for (var i = 1; i <= 10; i++) {
+		for (var i = 1; i <= 5; i++) {
 			if (i <= treat_op) {
 				$("#treat_doc_" + i).fadeIn(300);
 			} else {
@@ -768,7 +1201,7 @@ function rem_more_t_op(){
 	if(treat_op > 1) {
 		treat_op--;
 		$("#treat_count").val(treat_op);
-		for (var i = 1; i <= 10; i++) {
+		for (var i = 1; i <= 5; i++) {
 			if (i <= treat_op) {
 				$("#treat_doc_" + i).fadeIn(300);
 			} else {
@@ -990,3 +1423,297 @@ function check_update_account(){
 function pick_location(para_1){
 	$("#location_txt").val(para_1);
 };
+
+
+//////////////////////////////////////////////////
+//  Side Helper  ////////////////////////////////
+var click_help=false;
+function side_helper(){
+	var user_id = $('#hidden_user_id').val();
+	if(user_id == 0) {
+		$("#c_warning_msg").fadeIn(100);
+		$("#c_warning_msg").delay(800).fadeOut();
+	}else {
+		$(".c_side_helper").fadeOut();
+		$(".c_in_helper").show(function () {
+			$(".c_in_helper_1").fadeIn(200);
+			// Auto typing Section
+			$(".c_in_helper_2").typed({
+				strings: ["Hi.. I`m Dr. Jarvis</br>Do you want any help ?"],
+				typeSpeed: 40
+			});
+			$("#c_try_chat_btn").delay(3500).fadeIn();
+			$(".typed-cursor").hide();
+		});
+		click_help = true;
+	}
+};
+$(".c_in_helper").mouseenter(function(){
+	$("#c_in_help_close_btn").fadeIn();
+});
+$(".c_in_helper").mouseleave(function(){
+	$("#c_in_help_close_btn").fadeOut();
+});
+$("#c_in_help_close_btn").click(function(){
+	click_help=false;
+	$(".c_in_helper").hide();
+	$(".c_side_helper").fadeIn();
+});
+
+$("#c_try_chat_btn").click(function(){
+	$(".c_side_helper").fadeOut();
+	$(".c_in_helper").fadeOut();
+	$(".c_helper_chat").fadeIn();
+
+	// this will start chat session
+	get_chat_messages();
+	tid = setInterval(get_chat_messages, 5000);
+});
+$("#c_chat_close_btn").click(function(){
+	$(".c_helper_chat").fadeOut();
+	$(".c_side_helper").fadeIn();
+
+	// this will abort the timer
+	abortTimer();
+});
+
+/////////////  Chat Form  ///////////////////////
+
+$("#chat_send").click(function(){
+	send_chat();
+});
+
+$("#chat_form").submit(function(e){
+	send_chat();
+	e.preventDefault();
+});
+
+// send chat message
+function send_chat(){
+	var new_url = '/send_chat_message';
+	var dataString = $("#chat_form").serialize();
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		data: dataString,
+		cache: false,
+		success: function (data) {
+			$("#chat_message_txt").val('');
+			get_chat_messages();
+			$('.c_chat_box').animate({scrollTop: $('.c_chat_box')[0].scrollHeight}, 1000);
+		}
+	});
+};
+
+// get chat messages
+function get_chat_messages(){
+	var base_url = $("#home_base_url").val();
+	var new_url = '/get_chat_message';
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		cache: false,
+		success: function (data) {
+			var txt='<table style="width: 100%">';
+			for(var i=0;i<Object(data.chat_data).length;i++){
+				if(data.chat_data[i]["sender_id"] == 0) {
+					txt = txt + '<tr><td><div class="c_chat_msg_row"><table style="width: 100%"><tr><td style="width: 90%;"><div class="c_chat_msg_text_1">'+data.chat_data[i]["message"]+'</div></td>';
+					txt = txt + '<td style="width: 10%"><img src="'+base_url+'/oparator_icon.jpg" class="c_chat_icon_1"></td></tr><tr><td style="height: 17px"></td></tr></table></div></td></tr>';
+				}else{
+					txt = txt + '<tr><td><div class="c_chat_msg_row"><table style="width: 100%"><tr><td style="width: 10%"><img src="'+base_url+'/user_chat.png" class="c_chat_icon_2"></td>';
+					txt = txt + '<td style="width: 90%;"><div class="c_chat_msg_text_2">'+data.chat_data[i]["message"]+'</div></td></tr><tr><td style="height: 17px"></td></tr></table></div></td></tr>';
+				}
+			}
+
+			$(".c_chat_box").html(txt);
+		}
+	});
+};
+
+
+// set interval
+var tid='';// holds timer id
+function abortTimer() { // to be called when you want to stop the timer
+	clearInterval(tid);
+}
+/////////////////////////////////////////////////
+
+
+/***********************************************/
+/*****************  Captcha   ******************/
+
+/* ****** Initialize Captcha Image Thems  ***** */
+var captcha_themes = [];
+captcha_themes.push(['dog','leaf']);
+captcha_themes.push(['parrot','bus']);
+captcha_themes.push(['ball','bicycle']);
+captcha_themes.push(['car','fish']);
+captcha_themes.push(['frog','spider']);
+captcha_themes.push(['lotus','book']);
+captcha_themes.push(['pen','ring']);
+var second_cap_op = '';
+/* ****** Initialize Captcha Image Thems  ***** */
+
+$(document).ready(function(){
+	if($("#register_page").val() == "YES") {
+		add_captcha_thumbs();
+	}
+});
+
+var captcha_images = [];// used to store captcha images
+var captcha_type = [];// used to store images types
+var count=0;//count index no for captcha
+var call_count=0;
+function get_api_images(para_1){
+	var apiKey = 'zcpen8bk54rtz7tw6kzbmhxq'; // my getty Api Key
+	$.ajax({
+			type:'GET',
+			url:"https://api.gettyimages.com/v3/search/images/creative?phrase="+para_1,
+			beforeSend: function (request)
+			{
+				request.setRequestHeader("Api-Key", apiKey);
+			}
+		}).done(function(data){
+			/*console.log(data);*/
+			for(var i = 0;i<3;i++)
+		 	{
+			 	var index = Math.floor(Math.random() * ( 1 + 29 - 0 ) ) + 0;// get random index
+			 	captcha_images[count] = data.images[index].display_sizes[0].uri;
+
+				if(call_count == 0){
+					captcha_type[count] = 'DOG';
+				}else{
+					captcha_type[count] = 'LEAF';
+				}
+
+				count++;
+		 	}
+			call_count++;
+
+			// Asynchronously Call Second API Call
+			if(call_count == 1){
+				get_api_images(second_cap_op);
+			}
+
+			// if second ajax call finish only
+			if(call_count == 2){
+				//console.log(captcha_type);
+				shuffle(captcha_images,captcha_type);
+				//console.log(captcha_type);
+				for(var i=0;i<6;i++){
+					$("#cap_img_"+(i+1)).attr('src',captcha_images[i]); // add images
+				}
+				$(".captcha_loading").fadeOut();// remove captcha loading
+			}
+		}).fail(function(data){
+				console.log(JSON.stringify(data,2));
+			}
+		);
+};
+
+function add_captcha_thumbs(){
+	$(".captcha_loading").fadeIn(); // add captcha loading
+
+	var index = Math.floor(Math.random() * ( 1 + (captcha_themes.length-1) - 0 ) ) + 0;// get random index
+	$("#c_select_name").html(captcha_themes[index][0]);// Set Selecting Theme
+	second_cap_op = captcha_themes[index][1];// set second loop theme value
+	get_api_images(captcha_themes[index][0]);// Selecting Theme
+
+}
+
+function refresh_captcha(){
+	// *** Reset to Default *********
+	captcha_images = [];// used to store captcha images
+	captcha_type = [];// used to store images types
+	count=0;//count index no for captcha
+	call_count=0;
+	$(".captcha_img_select").fadeOut();
+	$(".img_h").val(0);
+	CAPTCHA_VERIFY = false;
+	$(".c_captcha_box").css('background','rgba(255, 201, 66, 0.44)');
+	$(".cap_v_2").hide(1);
+	$(".cap_v_1").show(1);
+	// *** Reset to Default *********
+
+	add_captcha_thumbs();
+}
+
+function shuffle(array_1,array_2) {
+	var currentIndex = array_1.length, temporaryValue, randomIndex;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = array_1[currentIndex];
+		array_1[currentIndex] = array_1[randomIndex];
+		array_1[randomIndex] = temporaryValue;
+
+		// this switches the images types
+		temporaryValue = array_2[currentIndex];
+		array_2[currentIndex] = array_2[randomIndex];
+		array_2[randomIndex] = temporaryValue;
+	}
+
+	//return array;
+}
+
+$(".c_captcha_box").click(function(){
+	$(".c_captcha_pop_up").fadeToggle();
+});
+
+// This function handles captcha image click
+function click_captcha(para_1){
+	$("#cap_over_"+para_1).fadeIn();
+	$("#img_"+para_1).val('1');
+};
+
+// This function removes cpatcha overflow
+function remove_captcha(para_1){
+	$("#cap_over_"+para_1).fadeOut();
+	$("#img_"+para_1).val('0');
+}
+
+// Do Captcha Verification
+$("#cpa_verify_btn").click(function(){
+	CAPTCHA_VERIFY = false;
+	var status=true;
+	var count=1;
+	for(var i=0;i<6;i++){
+		//console.log(captcha_type[i]);
+		var clicked_val = $("#img_"+count).val();
+		if(captcha_type[i] == "DOG") {
+			if (clicked_val == 0) {
+				status = false;
+			}
+		}else if(captcha_type[i] == "LEAF") {
+			if (clicked_val == 1) {
+				status = false;
+			}
+		}
+
+		count++;
+	}
+
+	if(status){
+		CAPTCHA_VERIFY = true;
+		$(".c_captcha_pop_up").fadeToggle();
+		$(".c_captcha_box").css('background','rgba(61, 180, 61, 0.51)');
+		$(".cap_v_1").hide(1);
+		$(".cap_v_2").fadeIn();
+	}else{
+		CAPTCHA_VERIFY = false;
+		$(".c_captcha_box").css('background','rgba(255, 201, 66, 0.44)');
+		$(".cap_v_2").hide(1);
+		$(".cap_v_1").show(1);
+	}
+});
+
+/*****************  Captcha   ******************/
+/***********************************************/
