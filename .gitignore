@@ -6,3 +6,5 @@ Homestead.json
 .idea/copyright/profiles_settings.xml
 .idea/workspace.xml
 .env.example
+/.idea
+.idea/blade.xml
