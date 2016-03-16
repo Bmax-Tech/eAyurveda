@@ -7,25 +7,25 @@
     <div class="col-lg-12 c_no_padding" id="c_home_banner">
         <div class="row owl-carousel owl-theme" id="home_slider" style="margin-left: 0px;margin-right: 0px">
             <?php
-            for($i=1;$i<=5;$i++){
+            foreach($health_tips as $tip){
             ?>
             <div class="item">
                 <div class="col-lg-6" style="padding-top:30px;padding-left: 0px;padding-right: 0px">
                     <div class="wow slideInUp">
                         <p style="background:rgba(85,85,85,0.87);font-size:30px;color:rgba(255,255,255,1.00);display:inline-block;padding:12px 20px;padding-left:60px">
-                            We Take Care of Your Health
+                            <?php echo $tip['tip']; ?>
                         </p>
                     </div>
                     <div class="wow slideInUp">
                         <p style="background:rgba(0,0,0,0.87);font-size:30px;color:rgba(255,255,255,1.00);display:inline-block;padding:12px 20px;padding-left:60px">
-                            Consultation 24/7
+                            <?php echo $tip['discription_1']; ?>
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-6" style="padding-right: 0px">
                     <div class="c_sub_banner wow zoomIn">
                         <span class="c_health_tip">Health Tip !</span>
-                        <p>"Ayurveda, an ancient system of illness prevention and treatment, centres on maintaining mind and body balance through healthy lifestyle practices that combine traditional and complementary medicine."</p>
+                        <p>"<?php echo $tip['discription_2']; ?>"</p>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
     </div>
 
     <!-- Featured Physician -->
-    <div class="col-lg-12 c_no_padding" id="c_home_doc_tabs">
+    <div id="featured" class="col-lg-12 c_no_padding c_home_doc_tabs">
         <ul class="c_top_ul">
             <li>
                 <img src="assets/img/doctor.png" style="width:80px">
@@ -46,19 +46,24 @@
         <div class="col-lg-12 c_no_padding" style="margin-top:-20px">
             <ul class="c_top_ul" id="featured_doc_slider">
                 <?php
-                for($i=1;$i<7;$i++){
+                    //echo '<pre>'.var_dump($featured_docs).'</pre>';
+                $i=1;
+                foreach($featured_docs as $f_cod){
                 ?>
                 <li>
                     <div class="c_doc_box item" <?php if($i!=4){ ?>style="margin-right:10px"<?php } ?>>
+                        <a href="{{ URL::asset('/profile/Dr.'.$f_cod['doc_first_name'].$f_cod['doc_last_name'].'/'.$f_cod['doc_id']) }}">
                         <ul class="c_ul_1" style="width:252px">
-                            <li style="width:100%"><div align="center"><img src="assets/img/doc_user.png" width="70px"></div></li>
-                            <li style="width:100%;margin-top:20px"><div class="c_font_5" style="text-align:center">Dr. Ananada Godagama</div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center">Specialized in neurology</div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px">Katugasthota, Kandy</div></li>
+                            <li style="width:100%"><div align="center"><img src="{{ URL::asset($f_cod['image_path']) }}" width="100px" height="94px"></div></li>
+                            <li style="width:100%;margin-top:20px"><div class="c_font_5" style="text-align:center">Dr. <?php echo $f_cod['doc_first_name']." ".$f_cod['doc_last_name'];  ?></div></li>
+                            <li style="width:100%;margin-top:7px"><div class="c_font_5" style="text-align:center">Specialized in neurology</div></li>
+                            <li style="width:100%;margin-top:7px"><div class="c_font_5" style="text-align:center;font-size:13px"><?php echo $f_cod['doc_address_2'].",&nbsp;".$f_cod['doc_city'];  ?></div></li>
                         </ul>
+                        </a>
                     </div>
                 </li>
                 <?php
+                    $i++;
                 }
                 ?>
             </ul>
@@ -72,7 +77,7 @@
     </div>
     <!-- Featured Physician -->
     <!-- Top Rated Physician -->
-    <div class="col-lg-12 c_no_padding" id="c_home_doc_tabs">
+    <div id="topRated" class="col-lg-12 c_no_padding c_home_doc_tabs">
         <ul class="c_top_ul">
             <li>
                 <img src="assets/img/doctor.png" style="width:80px">
@@ -107,7 +112,7 @@
                                     }
                                     ?>
                                 </div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px"><?php echo $doc['doc_address_2'].",".$doc['doc_city']; ?></div></li>
+                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px"><?php echo $doc['doc_address_2'].",&nbsp;".$doc['doc_city']; ?></div></li>
                         </ul>
                     </div>
                     </a>
@@ -127,7 +132,7 @@
     </div>
     <!-- Top Rated Physician -->
     <!-- Community Suggestions -->
-    <div class="col-lg-12 c_no_padding" id="c_home_com_sug">
+    <div id="community" class="col-lg-12 c_no_padding c_home_com_sug">
         <ul class="c_top_ul">
             <li>
                 <img src="assets/img/community.png" style="width:80px">
@@ -137,18 +142,22 @@
         <div class="col-lg-12 c_no_padding" >
             <ul class="c_top_ul">
                 <?php
-                for($i=1;$i<=5;$i++){
+                $i=1;
+                foreach($community_sug as $com){
                 ?>
                 <li>
+                    <a href="{{ URL::asset('/profile/Dr.'.$com['doc_first_name'].$com['doc_last_name'].'/'.$com['doc_id']) }}">
                     <div class="c_com_sug_doc" <?php if($i!=5){ ?>style="margin-right:10px"<?php } ?>>
                         <ul class="c_ul_1" style="width:198px">
-                            <li style="width:100%"><div class="c_font_5" style="text-align:center">Dr. Ananada Godagama</div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center">Specialized in neurology</div></li>
-                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px">Katugasthota, Kandy</div></li>
+                            <li style="width:100%"><div class="c_font_5" style="text-align:center">Dr. <?php echo $com['doc_first_name']." ".$com['doc_last_name'];  ?></div></li>
+                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size: 12px;max-width: 198px"><?php echo $com['doc_address_2'].", ".$com['doc_city'];  ?></div></li>
+                            <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px"><img src="{{ URL::asset($com['image_path']) }}" style="width:30px;height: 30px;border-radius: 20px;border: 1px solid #fff;">&nbsp;&nbsp;<span style="font-style: italic"><?php echo $com['sug_user_name']; ?></span></div></li>
                         </ul>
                     </div>
+                    </a>
                 </li>
                 <?php
+                    $i++;
                 }
                 ?>
             </ul>
@@ -162,7 +171,7 @@
     </div>
     <!-- Community Suggestions -->
     <!-- Find by Area -->
-    <div class="col-lg-6 c_no_padding" style="margin-left:60px">
+    <div id="map" class="col-lg-6 c_no_padding" style="margin-left:60px">
         <ul class="c_top_ul">
             <li>
                 <img src="assets/img/map.png" style="width:223px;height:316px;margin-top:-110px" class="wow zoomIn" usemap="#Map">

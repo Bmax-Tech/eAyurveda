@@ -24,6 +24,7 @@ class CreateDoctorsTableByBuwaneka extends Migration
             $table->string('address_1');
             $table->string('address_2');
             $table->string('city');
+            $table->string('district');
             $table->string('contact_number');
             $table->string('email');
             $table->text('description');
