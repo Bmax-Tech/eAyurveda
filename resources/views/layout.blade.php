@@ -108,7 +108,23 @@
         <div id="navbarCollapse" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Home</a></li>
-                <li><a href="#">Services</a></li>
+                <li id="nav_service">
+                    <a href="#">Services</a>
+                    <div id="in_ps_div_nav"></div>
+                    <div class="c_sub_nav_div">
+                        <div class="col-lg-12 c_no_padding c_nav_sub">
+                            <div class="col-lg-5 c_no_padding" style="padding: 3px 0px">
+                                <ul>
+                                    <li class="nav_list_sub highlight_sub sub_1" onmouseover="sub_nav_pick('1')"><a href="/spa">Ayurvedic Therapies</a></li>
+                                    <li class="nav_list_sub sub_2" onmouseover="sub_nav_pick('2')"><a href="/consultdoctor">Doctor Consultation</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-7 c_no_padding" style="padding:3px 3px 3px 0px">
+                                <div class="c_sub_nav_icon"></div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
                 <li><a href="#">Physicians</a></li>
                 <li><a href="#">Contact</a></li>
                 <li><a href="#">About</a></li>

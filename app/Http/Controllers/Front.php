@@ -240,6 +240,7 @@ class Front extends ExceptionController
      * This function updates user profile details
      */
     public function update_account(Request $request){
+        //dd($request);
         if(isset($_COOKIE['user'])){
             $user = json_decode($_COOKIE['user'], true);
 
@@ -249,8 +250,8 @@ class Front extends ExceptionController
                 $user_ob->save();
 
                 $patient_ob = Patients::whereUser_id($user[0]['id'])->first();
-                $patient_ob->first_name = Input::get('first_name');
-                $patient_ob->last_name = Input::get('last_name');
+                //$patient_ob->first_name = Input::get('first_name');
+                //$patient_ob->last_name = Input::get('last_name');
                 $patient_ob->contact_number = Input::get('contact_no');
                 $patient_ob->email = Input::get('email');
                 $patient_ob->save();
@@ -267,13 +268,13 @@ class Front extends ExceptionController
                 }
 
                 /* Updates Cookie Details */
-                $user_cookie = array(['id' => $user[0]['id'], 'first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name')]);
-                setcookie('user', json_encode($user_cookie), time() + 3600); // Cookie is set for 1 hour
+                //$user_cookie = array(['id' => $user[0]['id'], 'first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name')]);
+                //setcookie('user', json_encode($user_cookie), time() + 3600); // Cookie is set for 1 hour
             }catch (Exception $e){
                 $this->LogError('Update User Account',$e);
             }
 
-            return Redirect::to('/myaccount/'.Input::get('first_name'));
+            return Redirect::to('/myaccount/'.$user[0]['first_name']);
         }else{
             return Redirect::to('/');
         }
@@ -368,6 +369,13 @@ class Front extends ExceptionController
         }
 
         return Redirect::to('/adddoctor');
+    }
+
+    /*
+     * Ayurvedic Therapies
+     */
+    public function spa(Request $request){
+        return view('ayurvedic_therapies');
     }
 
 

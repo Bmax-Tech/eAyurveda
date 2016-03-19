@@ -31,6 +31,7 @@ Route::resource('/register/save','Front@register_patient');
 Route::resource('/login','Front@login');
 Route::resource('/logout','Front@logout');
 Route::resource('/update_user_profile','Front@update_account');
+Route::get('/spa','Front@spa');
 
 /*
  * Admin Side Routing

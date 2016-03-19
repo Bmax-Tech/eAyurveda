@@ -1845,3 +1845,14 @@ $("#cpa_verify_btn").click(function(){
  * Captcha
  * ~~~~~~~
  */
+
+
+/*
+ * Navigation Bar Hover Change
+ */
+function sub_nav_pick(para_1){
+	var url_path = $("#home_base_url").val();
+	$(".nav_list_sub").removeClass('highlight_sub');
+	$(".sub_"+para_1).addClass('highlight_sub');
+	$(".c_sub_nav_icon").css('background-image','url('+url_path+'/service_icon_'+para_1+'.jpg)');
+};
