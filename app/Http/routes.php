@@ -31,7 +31,7 @@ Route::resource('/register/save','Front@register_patient');
 Route::resource('/login','Front@login');
 Route::resource('/logout','Front@logout');
 Route::resource('/update_user_profile','Front@update_account');
-Route::get('/spa','Front@spa');
+Route::get('/AyurvedicTherapies','Front@spa');
 
 /*
  * Admin Side Routing
@@ -78,6 +78,8 @@ Route::post('/post_comment','AjaxControll@add_comments');
 Route::post('/get_comments_by_user','AjaxControll@get_comments_by_user');
 Route::post('/send_chat_message','AjaxControll@send_chat_message_by_user');
 Route::post('/get_chat_message','AjaxControll@get_chat_message_by_user');
+Route::post('/get_user_appointment_fill','AjaxControll@get_user_appointment_fill');
+Route::post('/make_appointment','AjaxControll@make_appointment');
 
 /*
  * ---------------------  Ajax Routes End  ----------------------

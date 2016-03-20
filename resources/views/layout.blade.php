@@ -115,7 +115,7 @@
                         <div class="col-lg-12 c_no_padding c_nav_sub">
                             <div class="col-lg-5 c_no_padding" style="padding: 3px 0px">
                                 <ul>
-                                    <li class="nav_list_sub highlight_sub sub_1" onmouseover="sub_nav_pick('1')"><a href="/spa">Ayurvedic Therapies</a></li>
+                                    <li class="nav_list_sub highlight_sub sub_1" onmouseover="sub_nav_pick('1')"><a href="/AyurvedicTherapies">Ayurvedic Therapies</a></li>
                                     <li class="nav_list_sub sub_2" onmouseover="sub_nav_pick('2')"><a href="/consultdoctor">Doctor Consultation</a></li>
                                 </ul>
                             </div>

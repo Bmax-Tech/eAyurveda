@@ -348,4 +348,76 @@ class AjaxControll extends ExceptionController
 
 		return response()->json($data);
 	}
+
+	/*
+	 *  This function will return logged users details to appointment form
+	 */
+	public function get_user_appointment_fill(Request $request){
+		try{
+			$user = json_decode($_COOKIE['user'], true);
+			$user_id = $user[0]['id'];
+			$user_data = Patients::whereUser_id($user_id)->first();
+			$res['first_name'] = $user_data->first_name;
+			$res['last_name'] = $user_data->last_name;
+			$res['contact_number'] = $user_data->contact_number;
+
+			echo json_encode($res);
+		}catch (Exception $e){
+			$this->LogError('AjaxController Make Reservation Function',$e);
+		}
+	}
+
+	/*
+	 *  This function will manage Make Appointment on user request
+	 *  by sending Email to registered doctors about patients details
+	 */
+	public function make_appointment(Request $request){
+		try{
+
+			$user = json_decode($_COOKIE['user'], true);
+			$user_id = $user[0]['id'];
+			$user_data = Patients::whereUser_id($user_id)->first();
+
+			$p_district = Input::get('res_district');
+			$time_slot = Input::get('res_time_slot');
+			$doc_first_name = Input::get('doc_first_name');
+			$doc_last_name = Input::get('doc_last_name');
+			$doc_email = Input::get('doc_email');
+
+			/* Send an Email */
+			self::send_appointment_email(
+					$user_data->first_name,
+					$user_data->last_name,
+					$user_data->contact_number,
+					$user_data->email,
+					$p_district,
+					$time_slot,
+					$doc_first_name,
+					$doc_last_name,
+					$doc_email
+			);
+
+			$res['CHECK'] = "SUCCESS";
+			echo json_encode($res);
+		}catch (Exception $e){
+			$this->LogError('AjaxController Make Reservation Function',$e);
+		}
+	}
+
+	/*
+     * This function send email to doctors about appointments
+     */
+	public function send_appointment_email($p_first_name,$p_last_name,$p_contact_no,$p_email,$p_district,$time_slot,$d_first_name,$d_last_name,$d_email){
+		try {
+			$subject['sub'] = "Appointment Notice from eAyurveda.lk";
+			$subject['email'] = $d_email;
+			$subject['name'] = "Dr.".$d_first_name . " " . $d_last_name;
+
+			Mail::send('emails.appointment_mail', ['patient_first_name' => $p_first_name, 'patient_last_name' => $p_last_name, 'patient_contact_number' => $p_contact_no, 'patient_email' => $p_email, 'patient_district' => $p_district, 'time_slot' => $time_slot] , function ($message) use ($subject) {
+				$message->to($subject['email'], $subject['name'])->subject($subject['sub']);
+			});
+		}catch (Exception $e){
+			$this->LogError('Confirmation Email Send Function',$e);
+		}
+	}
 }

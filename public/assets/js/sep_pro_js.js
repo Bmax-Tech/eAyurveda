@@ -1856,3 +1856,80 @@ function sub_nav_pick(para_1){
 	$(".sub_"+para_1).addClass('highlight_sub');
 	$(".c_sub_nav_icon").css('background-image','url('+url_path+'/service_icon_'+para_1+'.jpg)');
 };
+
+
+/*
+ * Ayurvedic Therapies
+ */
+$("#background_video").on('ended',function(){
+	this.load();
+	this.play();
+});
+
+
+/*
+ * Make Reservation on Doctor Profile Page
+ */
+$(".res_btn_close").click(function(){
+	$(".c_pop_up_box_reservation").fadeOut(100);
+});
+
+$("#c_booking_btn").click(function(){
+	var user_id = $('#hidden_user_id').val();
+	if(user_id == 0) {
+		$("#c_warning_msg").fadeIn(100);
+		$("#c_warning_msg").delay(800).fadeOut();
+	}else{
+		$.ajax({
+			type: 'POST',
+			url: '/get_user_appointment_fill',
+			dataType: 'json',
+			cache: false,
+			success: function(data){
+				//console.log(data);
+				$("#res_name").val(data.first_name+" "+data.last_name);
+				$("#res_contact").val(data.contact_number);
+				$(".c_pop_up_box_reservation").fadeIn(100);
+			}
+		});
+	}
+});
+
+$(".c_button_res_1").click(function(){
+	if($("#res_name").val() == "" || $("#res_contact").val() == "" || !valid_phone_no('res_contact') || $("#res_district").val() == "select" || $("#res_time_slot").val() == "select"){
+		if($("#res_name").val() == ""){
+			$('#res_name').addClass('c_error_input_field_highlight');
+		}
+		if($("#res_contact").val() == "" || !valid_phone_no('res_contact')){
+			$('#res_contact').addClass('c_error_input_field_highlight');
+		}
+		if($("#res_district").val() == "select"){
+			$('#res_district').addClass('c_error_input_field_highlight');
+		}
+		if($("#res_time_slot").val() == "select"){
+			$('#res_time_slot').addClass('c_error_input_field_highlight');
+		}
+
+	}else{
+		$("#res_box_1").fadeOut(100,function(){
+			$("#res_box_2").fadeIn(100);
+		});
+		var dataString = $("#c_reservation_form").serialize();
+		$.ajax({
+			type: 'POST',
+			url: '/make_appointment',
+			data: dataString,
+			dataType: 'json',
+			cache: false,
+			success: function(data){
+				console.log(data);
+				$("#c_res_pending").fadeOut(100);
+				$("#c_res_suc_box").fadeIn(100);
+				$(".c_pop_up_box_reservation").delay(1200).fadeOut(100,function(){
+					$("#res_box_1").show();
+					$("#res_box_2").hide();
+				});
+			}
+		});
+	}
+});
