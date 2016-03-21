@@ -72,15 +72,19 @@
             </ul>
         </div>
         <div class="col-lg-4 c_no_padding">
-            <ul class="c_ul_1">
+            <ul class="c_ul_1" style="margin-bottom: 0px">
                 <li><span style="font-size: 25px;color:#085426;">Consultation Times</span></li>
                 <li style="padding-top: 20px">
                     <div class="col-lg-12 c_no_padding">
                         <ul class="c_clock_list">
-                            <li>10:00 AM to 1:00 PM</li>
-                            <li>5:00 PM to 8:00 PM</li>
+                            <li>10:00 AM to 01:00 PM</li>
+                            <li>02:00 PM to 04:00 PM</li>
+                            <li>05:00 PM to 08:00 PM</li>
                         </ul>
                     </div>
+                </li>
+                <li style="padding-top: 112px">
+                    <button id="c_booking_btn"><img src="{{ URL::asset('assets/img/click.png') }}">&nbsp;&nbsp;Make Appointment</button>
                 </li>
             </ul>
         </div>
@@ -201,6 +205,106 @@
     </div>
     <span id="hidden_star_url" style="display: none">{{ URL::asset('assets/img/star.png') }}</span>
     <span id="hidden_green_star_url" style="display: none">{{ URL::asset('assets/img/star_2.png') }}</span>
+
+    <!-- Appointment Form Pop Up -->
+
+    <div class="container c_pop_up_box_reservation">
+        <div class="center-block c_pop_box_1_wrapper" style="width: 456px;margin-top: 5%">
+            <button class="c_close_btn res_btn_close" style="margin-left: 427px"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+            <div class="c_reservation_box" id="res_box_1">
+                <form id="c_reservation_form" method="post">
+                    <input type="hidden" name="doc_email" value="{{ $doctor['doctor_data']->email }}">
+                    <input type="hidden" name="doc_first_name" value="{{ $doctor['doctor_data']->first_name }}">
+                    <input type="hidden" name="doc_last_name" value="{{ $doctor['doctor_data']->last_name }}">
+                    <ul class="c_ul_1">
+                        <li class="c_add_margin_20">
+                            <span class="c_font_2">Appointment Form</span>
+                        </li>
+                        <li style="margin-bottom: 5px">
+                            <span style="color: #FFF;">Name</span>
+                        </li>
+                        <li  class="c_add_margin_20">
+                            <input disabled type="text" class="c_text_box_1" value="" id="res_name" onkeypress="remove_highlight('res_name','c_error_input_field_highlight')" name="res_name" autocomplete="off" spellcheck="false"/>
+                        </li>
+                        <li style="margin-bottom: 5px">
+                            <span style="color: #FFF;">Contact Number</span>
+                        </li>
+                        <li  class="c_add_margin_20">
+                            <input disabled type="text" class="c_text_box_1" value="" id="res_contact" onkeypress="remove_highlight('res_contact','c_error_input_field_highlight')" name="res_contact" autocomplete="off" spellcheck="false" placeholder="Eg:- 07X XXX XXXX"/>
+                        </li>
+                        <li style="margin-bottom: 5px">
+                            <span style="color: #FFF;">Area *</span>
+                        </li>
+                        <li class="c_add_margin_20">
+                            <select class="c_select_box_1" name="res_district" data-id="6" id="res_district" onchange="remove_highlight('res_district','c_error_input_field_highlight')">
+                                <option value="select">Select</option>
+                                <option value="Ampara">Ampara</option>
+                                <option value="Anuradhapura">Anuradhapura</option>
+                                <option value="Badulla">Badulla</option>
+                                <option value="Batticaloa">Batticaloa</option>
+                                <option value="Colombo">Colombo</option>
+                                <option value="Galle">Galle</option>
+                                <option value="Gampaha">Gampaha</option>
+                                <option value="Hambantota">Hambantota</option>
+                                <option value="Jaffna">Jaffna</option>
+                                <option value="Kalutara">Kalutara</option>
+                                <option value="Kandy">Kandy</option>
+                                <option value="Kegalle">Kegalle</option>
+                                <option value="Kilinochchi">Kilinochchi</option>
+                                <option value="Kurunegala">Kurunegala</option>
+                                <option value="Mannar">Mannar</option>
+                                <option value="Matale">Matale</option>
+                                <option value="Matara">Matara</option>
+                                <option value="Monaragala">Monaragala</option>
+                                <option value="Mullaitivu">Mullaitivu</option>
+                                <option value="Nuwara Eliya">Nuwara Eliya</option>
+                                <option value="Polonnaruwa">Polonnaruwa</option>
+                                <option value="Puttalam">Puttalam</option>
+                                <option value="Ratnapura">Ratnapura</option>
+                                <option value="Trincomalee">Trincomalee</option>
+                                <option value="Vavuniya">Vavuniya</option>
+                            </select>
+                        </li>
+                        <li style="margin-bottom: 5px">
+                            <span style="color: #FFF;">Time Slot *</span>
+                        </li>
+                        <li class="c_add_margin_20">
+                            <select class="c_select_box_1" name="res_time_slot" data-id="6" id="res_time_slot" onchange="remove_highlight('res_time_slot','c_error_input_field_highlight')">
+                                <option value="select">Select</option>
+                                <option value="10:00 AM to 01:00 PM">10:00 AM to 01:00 PM</option>
+                                <option value="02:00 PM to 04:00 PM">02:00 PM to 04:00 PM</option>
+                                <option value="05:00 PM to 08:00 PM">05:00 PM to 08:00 PM</option>
+                            </select>
+                        </li>
+                        <li style="padding:0px 3px;margin-top:35px">
+                            <button type="button" class="c_button_res_1">Submit</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <div class="c_reservation_box" id="res_box_2" style="display: none;height: 504px">
+                <div id="c_res_pending" style="padding: 40px;background: #FFF;border-radius: 10px;margin:auto;margin-top: 145px">
+                    <div style="font-size: 24px;text-align: center;">Sending Appointment Details</div>
+                    <img src="{{ URL::asset('assets/img/loading_3.gif') }}" id="c_fog_reset_img" style="margin: 30px 90px 20px 85px;">
+                </div>
+                <div id="c_res_suc_box" style="display: none;padding: 155px 120px">
+                    <ul class="c_ul_1">
+                        <li>
+                            <img src="{{ URL::asset('assets/img/ok.png') }}" style="width: 60px;margin-left: 45px;">
+                        </li>
+                        <li style="margin-top: 40px">
+                            <div style="color: #FFF;font-size: 14px">Appointment Make</div>
+                        </li>
+                        <li>
+                            <span class="c_font_2">Successful</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Form Pop Up -->
 
     <!-- Google Maps Scripts -->
 

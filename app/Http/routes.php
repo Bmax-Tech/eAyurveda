@@ -12,10 +12,18 @@
 |
 */
 
+<<<<<<< HEAD
 ////////////////////////////////////////////////////////////////////////
 // ---------------------  Main Page Routes Start  ----------------------
+=======
+/*
+ * ---------------------  Main Page Routes Start  ----------------------
+ */
+>>>>>>> remotes/origin/master
 
-//////////  Patient Side Routing /////////
+/*
+ * Patient Side Routing
+ */
 Route::get('/','Front@index');
 Route::get('/search','Front@search');
 Route::get('/search','Front@search_query');
@@ -29,8 +37,11 @@ Route::resource('/register/save','Front@register_patient');
 Route::resource('/login','Front@login');
 Route::resource('/logout','Front@logout');
 Route::resource('/update_user_profile','Front@update_account');
+Route::get('/AyurvedicTherapies','Front@spa');
 
-//////////  Admin Side Routing //////////
+/*
+ * Admin Side Routing
+ */
 Route::get('/admin_panel_login','Admin_Front@admin_login');
 Route::get('/admin_panel_home','Admin_Front@admin_home');
 Route::resource('/admin_login_auth','Admin_Front@admin_login_auth');
@@ -48,7 +59,6 @@ Route::get('/admin_panel/rem_com/{user_id}','Admin_Front@rem_com');
 Route::get('/admin_panel/users','Admin_Front@view_users');
 Route::get('/admin_panel/inapusers','Admin_Front@view_inapusers');
 Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@user_remove');
-//Route::get('/admin_panel/getdid/{user_id}','Admin_Front@getdid');
 Route::get('/admin_panel/filterdoc/{user_id}/{user_id1}/{user_id2}','Admin_Front@filterdoc');
 Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@updatefet');
 Route::get('/admin_panel/test','Admin_Front@test');
@@ -56,13 +66,13 @@ Route::get('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
 Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipA');
 Route::get('/admin/tipdel/{id}','Admin_Front@tipdel');
 
+/*
+ * ---------------------  Main Page Routes End  ----------------------
+ */
 
-
-// -----------------------  Main Page Routes End  -------------------------
-///////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////
-// ------------------------  Ajax Routes Start  ---------------------------
+/*
+ * ---------------------  Ajax Routes Start  ----------------------
+ */
 
 Route::post('/forgotten_password_check','AjaxControll@forgotten_password_check');
 Route::post('/forgotten_password_email','AjaxControll@forgotten_password_email');
@@ -74,9 +84,12 @@ Route::post('/post_comment','AjaxControll@add_comments');
 Route::post('/get_comments_by_user','AjaxControll@get_comments_by_user');
 Route::post('/send_chat_message','AjaxControll@send_chat_message_by_user');
 Route::post('/get_chat_message','AjaxControll@get_chat_message_by_user');
+Route::post('/get_user_appointment_fill','AjaxControll@get_user_appointment_fill');
+Route::post('/make_appointment','AjaxControll@make_appointment');
 
-// -------------------------  Ajax Routes End  ----------------------------
-///////////////////////////////////////////////////////////////////////////
+/*
+ * ---------------------  Ajax Routes End  ----------------------
+ */
 
 /*
 |--------------------------------------------------------------------------
@@ -93,8 +106,10 @@ Route::group(['middleware' => ['web']], function () {
     //
 });
 
-////////////////////////////////////////////////////////////////////////////
-// ------------------------  Forum Routes Start  ---------------------------
+
+/*
+ * ---------------------  Forum Routes Start  ----------------------
+ */
 
 /* Load the Forum Homepage */
 Route::get('/forum','ForumController@returnHome');
@@ -154,5 +169,6 @@ Route::get('/messages/sent/', function () {
         ->with('head', $head);
 });
 
-// -------------------------  Forum Routes End  ----------------------------
-///////////////////////////////////////////////////////////////////////////
+/*
+ * ---------------------  Forum Routes End  ----------------------
+ */
