@@ -1763,12 +1763,6 @@ function abortTimer() { // to be called when you want to stop the timer
 	clearInterval(tid);
 }
 
-<<<<<<< HEAD
-
-
-
-/////////////////////////////////////////////////
-=======
 /*
  * Side Helper
  * ~~~~~~~~~~~
@@ -2044,4 +2038,3 @@ $(".c_button_res_1").click(function(){
 		});
 	}
 });
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc

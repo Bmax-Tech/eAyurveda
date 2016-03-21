@@ -250,10 +250,6 @@ function load_for_page(para_1){
 			$("#admin_home_div").html(data);
 		}
 	});
-<<<<<<< HEAD
-
-=======
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
 };
 
 

@@ -51,16 +51,8 @@ class Front extends ExceptionController
      *  This function loads results for advanced search options
      */
     public function advanced_search(Request $request){
-<<<<<<< HEAD
-        /*$advanced_search['doc_name'] = $request->doc_name;
-        $advanced_search['doc_speciality'] = $request->doc_speciality;
-        $advanced_search['doc_treatment'] = $request->doc_treatment;
-        $advanced_search['doc_location'] = $request->doc_location;*/
 
         return view('advanced_search',array('advanced' => "YES",
-=======
-        return view('search',array('advanced' => "YES",
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
             'doc_name' => $request->doc_name,
             'doc_speciality' => $request->doc_speciality,
             'doc_treatment' => $request->doc_treatment,
@@ -176,17 +168,12 @@ class Front extends ExceptionController
     }
 
     public function login(Request $request){
-<<<<<<< HEAD
-        $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(1)->first();
-        // Check whether username and password are matching
-=======
         try {
-            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->first();
+            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(1)->first();
         }catch (Exception $e){
             $this->LogError('Login function in User Search',$e);
         }
         /* Check whether username and password are matching */
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
         if(isset($user)) {
             /* Create Cookie session to store logged user details */
             try {
@@ -426,14 +413,6 @@ class Front extends ExceptionController
         return $rating_main;
     }
 
-<<<<<<< HEAD
-
-
-
-
-    // **********  Custom Functions **********************************
-    // ***************************************************************
-=======
     /*
      * This function returns the all featured doctors
      */
@@ -544,7 +523,6 @@ class Front extends ExceptionController
 
         return $spec;
     }
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
 
     /* ~~~~~~~~~~~~~~~~
      * Custom Functions

@@ -34,14 +34,10 @@ Route::resource('/logout','Front@logout');
 Route::resource('/update_user_profile','Front@update_account');
 Route::get('/AyurvedicTherapies','Front@spa');
 
-<<<<<<< HEAD
-
-//////////  Admin Side Routing //////////
-=======
 /*
  * Admin Side Routing
  */
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
+
 Route::get('/admin_panel_login','Admin_Front@admin_login');
 Route::get('/admin_panel_home','Admin_Front@admin_home');
 Route::resource('/admin_login_auth','Admin_Front@admin_login_auth');
@@ -53,7 +49,6 @@ Route::get('/admin_panel/user_comments','Admin_Front@userCommentsLoad');
 Route::get('/admin_panel/customize/featured','Admin_Front@featuredDocLoad');
 Route::get('/admin_panel/customize/adminload','Admin_Front@adminLoad');
 Route::get('/admin_panel/customize','Admin_Front@customize');
-<<<<<<< HEAD
 Route::get('/admin_panel/user_view/{user_id}','Admin_Front@viewUsers');
 Route::get('/admin_panel/inapuser_view/{user_id}','Admin_Front@inapUserDetails');
 //Route::get('/admin_panel/user_view1','Admin_Front@add_comment');
@@ -64,18 +59,7 @@ Route::get('/admin_panel/inapusers/test/{skip}/{end}','Admin_Front@inapUsersView
 Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@blockUser');
 Route::get('/admin_panel/filterdoc/{rate}/{spec}/{treat}','Admin_Front@filterDoctors');
 Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@featuredDoctorUpdate');
-=======
-Route::get('/admin_panel/user_view/{user_id}','Admin_Front@user_view');
-Route::get('/admin_panel/inapuser_view/{user_id}','Admin_Front@inapuser_view');
-Route::get('/admin_panel/user_view1','Admin_Front@add_comment');
-Route::get('/admin_panel/rem_com/{user_id}','Admin_Front@rem_com');
-Route::get('/admin_panel/users','Admin_Front@view_users');
-Route::get('/admin_panel/inapusers','Admin_Front@view_inapusers');
-Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@user_remove');
-Route::get('/admin_panel/filterdoc/{user_id}/{user_id1}/{user_id2}','Admin_Front@filterdoc');
-Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@updatefet');
-Route::get('/admin_panel/test','Admin_Front@test');
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
+
 Route::get('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
 Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipUpdate');
 Route::get('/admin/update/{id}/{username}/{email}/{password}','Admin_Front@adminUpdate');

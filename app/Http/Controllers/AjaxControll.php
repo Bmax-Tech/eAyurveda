@@ -15,10 +15,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-<<<<<<< HEAD
-=======
+
 use Illuminate\Support\Facades\Mail;
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
 use Illuminate\Support\Facades\Input;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
@@ -55,34 +53,18 @@ class AjaxControll extends ExceptionController
         return response()->json($res);
     }
 
-<<<<<<< HEAD
-
-
-// This function is used for render and return doctor_results page to Ajax
-=======
     /*
      * This function is used for render and return doctor_results page to Ajax
      * Returns Json Object With ->
      * 		Paginated details
      * 		View results from Blade (String)
      */
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
     public function doc_search_page(Request $request){
 		/*
 		 * Normal Search DataBase Queries are Here
 		 */
         if(Input::get('advanced_search') == 'NO') {
-<<<<<<< HEAD
-            // This executes when Normal search is used
-            if (Input::get('filter_star_rating') == 0) {
-                $doctors = \DB::table('doctors')->where('first_name', 'like', '%' . Input::get('search_text_hidden') . '%')->orwhere('last_name', 'like', '%' . Input::get('search_text_hidden') . '%')->paginate($this->RESULTS_PER_PAGE);
-            } else {
-                $doctors = \DB::table('doctors')->where('rating', '=', Input::get('filter_star_rating'))->paginate($this->RESULTS_PER_PAGE);
-            }
-        }
 
-        // This will convert view into String, Which can parse through json object
-=======
 			/* This executes when Normal search is used */
             if (Input::get('filter_star_rating') == 0 && Input::get('filter_loc') == '-' && Input::get('filter_spec') == '-') {
 
@@ -132,7 +114,6 @@ class AjaxControll extends ExceptionController
 		 */
 
         /* This will convert view into String, Which can parse through json object */
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
         $HtmlView = (String) view('doctor_result')->with(['doctors'=>$doctors]);
         $res['pagination'] = $paginate_data;
         $res['page'] = $HtmlView;
@@ -140,8 +121,6 @@ class AjaxControll extends ExceptionController
         /* Return Json Type Object */
         return response()->json($res);
     }
-
-<<<<<<< HEAD
 
 
 
@@ -509,7 +488,7 @@ class AjaxControll extends ExceptionController
 				//get the count of all matching result
 				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors');
 
-}
+			}
 		// This will convert view into String, Which can parse through json object
 		$HtmlView = (String) view('doctor_result')->with(['doctors'=>$doctors]);
 		$res['count'] = $count;
@@ -523,38 +502,6 @@ class AjaxControll extends ExceptionController
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public function get_doctor_comments(Request $request,$doc_id){
-        $comments = Comments::where('doctor_id',$doc_id)->orderBy('id','DESC')->get();
-        $count=1;
-
-        foreach ($comments as $com) {
-            $user = Patients::where('user_id', $com->user_id)->first();
-            $img = Images::where('user_id', $com->user_id)->first();
-            $temp['comment'] = $com;
-            $temp['user'] = $user;
-            $temp['user_img'] = $img;
-            $comment_ob['comment_' . $count] = $temp;
-            $count++;
-        }
-=======
 	/*
 	 * This function will get doctor comments by users
 	 * Inputs Doctor`s ID
@@ -578,7 +525,6 @@ class AjaxControll extends ExceptionController
 		}catch (Exception $e){
 			$this->LogError('AjaxController Get_Doctor_Comments Function',$e);
 		}
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
 
         if($count > 1) {
             $res['COMMENT'] = "YES";

@@ -52,19 +52,13 @@
         </div>
         <div style="margin-top: 10px">
             <ul style="color: #000;padding-left: 18px;font-size: 12px;list-style: disc">
-<<<<<<< HEAD
-                <li>{{$doc->spec_1}}</li>
-                <li>{{$doc->spec_2}}</li>
-                <li>{{$doc->spec_3}}</li>
-                <li>{{$doc->spec_4}}</li>
-                <li>{{$doc->spec_5}}</li>
-=======
+
                 <?php if(($doc->spec_1) != ""){ ?><li>{{ $doc->spec_1 }}</li><?php } ?>
                 <?php if(($doc->spec_2) != ""){ ?><li>{{ $doc->spec_2 }}</li><?php } ?>
                 <?php if(($doc->spec_3) != ""){ ?><li>{{ $doc->spec_3 }}</li><?php } ?>
                 <?php if(($doc->spec_4) != ""){ ?><li>{{ $doc->spec_4 }}</li><?php } ?>
                 <?php if(($doc->spec_5) != ""){ ?><li>{{ $doc->spec_5 }}</li><?php } ?>
->>>>>>> 1ade9f343aca248572840779dd66f0be6cae54cc
+
             </ul>
         </div>
         <div>
