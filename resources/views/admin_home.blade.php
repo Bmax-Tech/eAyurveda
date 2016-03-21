@@ -8,6 +8,7 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/animate.css" rel="stylesheet">
     <link href="assets_admin/css/spe_pro_admin_css.css" rel="stylesheet">
+
     <!-- Style Sheets End -->
 </head>
 
@@ -46,33 +47,48 @@
 <div class="container c_container c_no_padding">
     <div class="col-lg-3 c_no_padding c_admin_left_nav">
         <ul class="c_ul_1 c_admin_ul">
-            <li ><ul class="c_top_ul"><li><img src="assets_admin/img/dashboard.png" style="width:20px"></li><li style="margin-left:10px">
+            <li id="admin_left_nav_dash_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/dashboard.png" style="width:20px"></li><li style="margin-left:10px">
+                        <span class="glyphicon glyphicon-menu-down c_right_gly" id="c_admin_span_0" aria-hidden="true" style="margin-right:-111px"></span>
                         Dashboard
-                    </li></ul>
+                  </li></ul>
+            </li>
+
+            <li id="admin_left_nav_dash" style="padding:0px">
+                <ul class="c_admin_ul_in">
+                    <li class="c_admin_ul_li c_admin_li_sel" onClick="load_dash_board()" style="padding-top: 20px"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Add Physician</li>
+                    <li class="c_admin_ul_li" onClick="load_doc_page('2')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Update Physician</li>
+                    <li class="c_admin_ul_li" onClick="load_doc_page('3')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Remove Physician</li>
+                    <li class="c_admin_ul_li" onClick="load_doc_page('4')" style="padding-bottom: 20px"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Confirm Physician</li>
+                </ul>
+            </li>
             </li>
             <li id="admin_left_nav_doc_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/doc_user.png" style="width:20px"></li><li style="margin-left:10px">
-                        <span class="glyphicon glyphicon-menu-down c_right_gly" id="c_admin_span_1" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-menu-right c_right_gly" id="c_admin_span_1" aria-hidden="true"></span>
                         Doctor
                     </li></ul></li>
             <li id="admin_left_nav_doc" style="padding:0px">
                 <ul class="c_admin_ul_in">
-                    <li class="c_admin_ul_li c_admin_li_sel" onClick="load_doc_page('1')" style="padding-top: 20px"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Add Physician</li>
+                    <li class="c_admin_ul_li " onClick="load_doc_page('1')" style="padding-top: 20px"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Add Physician</li>
                     <li class="c_admin_ul_li" onClick="load_doc_page('2')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Update Physician</li>
                     <li class="c_admin_ul_li" onClick="load_doc_page('3')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Remove Physician</li>
                     <li class="c_admin_ul_li" onClick="load_doc_page('4')" style="padding-bottom: 20px"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Confirm Physician</li>
                 </ul>
             </li>
             <li id="admin_left_nav_pat_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/community_sm.png" style="width:20px"></li><li style="margin-left:10px">
-                        <span class="glyphicon glyphicon-menu-right c_right_gly" id="c_admin_span_2" aria-hidden="true"></span>
-                        Patient
+                        <span class="glyphicon glyphicon-menu-right c_right_gly" id="c_admin_span_2" aria-hidden="true" style="margin-left:140px"></span>
+                        User
                     </li></ul>
 			</li>
             <li id="admin_left_nav_pat" style="display:none;padding:0px">
                 <ul class="c_admin_ul_in">
                     <li class="c_admin_ul_li" onClick="load_users_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>View Users</li>
-                    <li class="c_admin_ul_li" onClick="load_comments_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>User Comments</li>
-                    <li class="c_admin_ul_li" onClick="load_inapuser_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Inapropriate Users</li>
-                    <li class="c_admin_ul_li" onClick="load_test_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Report</li>
+                    <li class="c_admin_ul_li" onClick="user_load_ajaxcom()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>User Comments</li>
+                    <li class="c_admin_ul_li" onClick="blockedUsers()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Inapropriate Users</li>
+
+                    <?php if(  $admin_user[0]['mode'] == 2) {?>
+                    <li class="c_admin_ul_li" onClick="admin_reg_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Admin Registration</li>
+                    <li class="c_admin_ul_li" onClick="admin_load_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Admin Account settings</li>
+                   <?php } ?>
                 </ul>
             </li>
             <li id="admin_left_nav_for_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/forum_admin_icon.png" style="width:20px"></li><li style="margin-left:10px">
@@ -96,8 +112,7 @@
                 <ul class="c_admin_ul_in">
                     <li class="c_admin_ul_li" onClick="load_cos_page1_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Manage Featured Doctors</li>
                     <li class="c_admin_ul_li" onClick="tip_update_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Manage Health tips</li>
-                    <li class="c_admin_ul_li" onClick="admin_reg_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>custom_1</li>
-                    <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>custom_2</li>
+
                 </ul>
             
       
@@ -129,6 +144,8 @@
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/wow.min.js"></script>
 <script src="assets_admin/js/sep_pro_admin.js"></script>
+<script type="text/javascript" src="assets_admin/js/loader.js"></script>
+
 <script>
     new WOW().init();
 </script>

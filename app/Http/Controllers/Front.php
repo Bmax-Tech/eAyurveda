@@ -51,7 +51,8 @@ class Front extends ExceptionController
      *  This function loads results for advanced search options
      */
     public function advanced_search(Request $request){
-        return view('search',array('advanced' => "YES",
+
+        return view('advanced_search',array('advanced' => "YES",
             'doc_name' => $request->doc_name,
             'doc_speciality' => $request->doc_speciality,
             'doc_treatment' => $request->doc_treatment,
@@ -168,7 +169,7 @@ class Front extends ExceptionController
 
     public function login(Request $request){
         try {
-            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->first();
+            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(1)->first();
         }catch (Exception $e){
             $this->LogError('Login function in User Search',$e);
         }
@@ -181,7 +182,7 @@ class Front extends ExceptionController
                 $this->LogError('Login function in Patient Search',$e);
             }
             $user_ob = array(['id' => $user->id,'first_name' => $patient->first_name,'last_name' => $patient->last_name]);
-            setcookie('user',json_encode($user_ob),time()+3600); // Cookie is set for 1 hour
+            setcookie('user',json_encode($user_ob),time()+36000); // Cookie is set for 10 hour
 
             return Redirect::to('/');
         }else {
