@@ -18,7 +18,9 @@ $("#admin_left_nav_doc_btn").click(function(){
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
-		doc_s=true; pat_s=false; cus_s=false;
+		$("#c_admin_span_4").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_4").addClass("glyphicon-menu-right");
+		doc_s=true;for_s=false; pat_s=false; cus_s=false;
 
 	}
 	else{
@@ -29,7 +31,9 @@ $("#admin_left_nav_doc_btn").click(function(){
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
-		doc_s=false;  pat_s=false; cus_s=false;
+		$("#c_admin_span_4").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_4").addClass("glyphicon-menu-right");
+		doc_s=false; for_s=false; pat_s=false; cus_s=false;
 
 	}
 });
@@ -44,7 +48,9 @@ $("#admin_left_nav_pat_btn").click(function(){
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
-		pat_s=true; doc_s=false; cus_s=false;
+		$("#c_admin_span_4").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_4").addClass("glyphicon-menu-right");
+		pat_s=true; for_s=false;doc_s=false; cus_s=false;
 	}
 	else{
 		$("#admin_left_nav_pat").slideUp(100);
@@ -54,8 +60,10 @@ $("#admin_left_nav_pat_btn").click(function(){
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
 		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_3").addClass("glyphicon-menu-right");
+		$("#c_admin_span_4").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_4").addClass("glyphicon-menu-right");
 
-		pat_s=false; doc_s=false; cus_s=false;
+		for_s=false;pat_s=false; doc_s=false; cus_s=false;
 	}
 });
 
@@ -63,23 +71,28 @@ $("#admin_left_nav_cus_btn").click(function(){
 	if(cus_s==false){
 		$("#admin_left_nav_doc").slideUp(100);
 		$("#admin_left_nav_pat").slideUp(100);
+		$("#admin_left_nav_for").slideUp(100);
 		$("#admin_left_nav_cus").slideDown(100);
-		$("#c_admin_span_3").addClass("glyphicon-menu-down");
+		$("#c_admin_span_4").addClass("glyphicon-menu-down");
 		$("#c_admin_span_1").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
 		$("#c_admin_span_2").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
-		cus_s=true; pat_s=false; doc_s=false;
+		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_3").addClass("glyphicon-menu-right");
+		cus_s=true;for_s=false; pat_s=false; doc_s=false;
 	}
 	else{
 		$("#admin_left_nav_cus").slideUp(100);
-		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
-		$("#c_admin_span_3").addClass("glyphicon-menu-right");
+		$("#c_admin_span_4").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_4").addClass("glyphicon-menu-right");
 		$("#c_admin_span_1").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
 		$("#c_admin_span_2").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
-		cus_s=false; pat_s=false; doc_s=false;
+		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_3").addClass("glyphicon-menu-right");
+		for_s=false;cus_s=false; pat_s=false; doc_s=false;
 
 	}
 });
@@ -88,13 +101,16 @@ $("#admin_left_nav_for_btn").click(function(){
 	if(for_s==false){
 		$("#admin_left_nav_doc").slideUp(100);
 		$("#admin_left_nav_pat").slideUp(100);
+		$("#admin_left_nav_cus").slideUp(100);
 		$("#admin_left_nav_for").slideDown(100);
 		$("#c_admin_span_3").addClass("glyphicon-menu-down");
 		$("#c_admin_span_1").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
 		$("#c_admin_span_2").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
-		for_s=true;
+		$("#c_admin_span_4").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_4").addClass("glyphicon-menu-right");
+		for_s=true;cus_s=false; pat_s=false; doc_s=false;
 	}
 	else{
 		$("#admin_left_nav_for").slideUp(100);
@@ -102,9 +118,9 @@ $("#admin_left_nav_for_btn").click(function(){
 		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		$("#c_admin_span_1").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_1").addClass("glyphicon-menu-right");
-		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
-		$("#c_admin_span_3").addClass("glyphicon-menu-right");
-		for_s=false;
+		$("#c_admin_span_4").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_4").addClass("glyphicon-menu-right");
+		for_s=false;cus_s=false; pat_s=false; doc_s=false;
 	}
 });
 
@@ -467,6 +483,10 @@ function load_inapuser_via_ajax(){
 };
 
 
+
+
+
+
 function load_test_via_ajax(){
 
 	$.ajax({
@@ -511,13 +531,13 @@ function getrate(){
 		cache: false,
 		success: function(data){
 
-		var txt = '<table id="kawa" class="col-lg-12" style="border:2px solid rgb( 0, 0, 0 )">';
+		var txt = '<table id="kawa" class="col-lg-12 tabledesign1"  >';
 			for(var i=0;i<Object(data.salika).length;i++) {
 
-				txt = txt+'<tr class="trid_'+data["salika"][i]["id"]+' common"	style = "border:2px solid rgb( 0, 0, 0 )"	onclick = "getdocid('+data["salika"][i]["id"]+')" >';
+				txt = txt+'<tr class="trid_'+data["salika"][i]["id"]+' common"	style = "background-color:#fff;height:35px;border:1px solid #ddd;"	onclick = "getdocid('+data["salika"][i]["id"]+')" >';
 				txt = txt+'<td class = "col-lg-4" >'+data["salika"][i]["first_name"]+'</td >';
-				txt = txt+'<td class	= "col-lg-4" >'+data["salika"][i]["last_name"]+'</td >';
-				txt = txt+'<td	class = "col-lg-4" > '+data["salika"][i]["contact_number"]+'</td ></tr>';
+				txt = txt+'<td class	= "col-lg-4"  style="border-left: 1px solid #ddd;">'+data["salika"][i]["last_name"]+'</td >';
+				txt = txt+'<td	class = "col-lg-4"  style="border-left: 1px solid #ddd;">'+data["salika"][i]["contact_number"]+'</td ></tr>';
 			}
 
 			txt=txt+'</table>';
@@ -754,8 +774,92 @@ function confirm_addtip(){
 
 
 function display_priv(){
+
 	$("#tabdiv").slideUp();
-	$("#privbut").slideUp();
 	$("#preview").slideDown();
 
+
+
 }
+
+
+
+function display_all_tip(){
+	$("#tabdiv").slideDown();
+	$("#preview").slideUp();
+}
+
+
+
+function load_test_via_ajax(){
+
+
+	var URL='/home_remcom.blade.php';
+
+	$.ajax({
+
+		dataType: "json",
+		url:URL,
+
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			$("#fff").html(data.page);
+
+			/////////////////////////////////////////////////
+			// Pagination ///////////////////////////////////
+
+			var txt='';
+			if(data.pagination.total > data.pagination.per_page)
+			{
+				var pre_page_no=1;
+				var next_page_no=1;
+				if(data.pagination.current_page>1){
+					pre_page_no = data.pagination.current_page-1;
+				}
+				if(data.pagination.current_page<data.pagination.last_page){
+					next_page_no = data.pagination.current_page + 1;
+				}else{
+					next_page_no = data.pagination.current_page;
+				}
+
+				txt=txt+'<ul class="pagination"><li><a href="#page_pre='+pre_page_no+'" onclick="pagination('+pre_page_no+')" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+				for(var i=1;i<=data.pagination.last_page;i++)
+				{
+					txt=txt+'<li ';
+					if(data.pagination.current_page==i)
+					{
+						txt=txt+'class="active"';
+					}
+					txt=txt+'><a href="#page='+i+'" onclick="pagination('+i+')">'+i+' <span class="sr-only">(current)</span></a></li>';
+				}
+				txt=txt+'<li><a href="#page_next='+next_page_no+'" onclick="pagination('+next_page_no+')" aria-label="Next"><span aria-hidden="true">»</span></a></li></ul>';
+			}
+
+
+			$("#result").html(txt);
+			txt = data.pagination.from+' - '+data.pagination.to+' of '+data.pagination.total;
+			$("#c_page11").html(txt);
+
+
+			// Pagination ///////////////////////////////////
+			/////////////////////////////////////////////////
+
+
+		},
+		error: function (data) {
+			console.log('Error:', data);
+		}
+	});
+};
+
+
+function admin_reg_via_ajax(){
+	$.ajax({
+		url:'reg_admin.php',
+		cache: false,
+		success: function(data){
+			$("#admin_home_div").html(data);
+		}
+	});
+};

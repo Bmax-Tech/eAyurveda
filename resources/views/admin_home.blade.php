@@ -72,7 +72,7 @@
                     <li class="c_admin_ul_li" onClick="load_users_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>View Users</li>
                     <li class="c_admin_ul_li" onClick="load_comments_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>User Comments</li>
                     <li class="c_admin_ul_li" onClick="load_inapuser_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Inapropriate Users</li>
-                    <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Report</li>
+                    <li class="c_admin_ul_li" onClick="load_test_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Report</li>
                 </ul>
             </li>
             <li id="admin_left_nav_for_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/forum_admin_icon.png" style="width:20px"></li><li style="margin-left:10px">
@@ -89,14 +89,14 @@
                 </ul>
             </li>
 			<li id="admin_left_nav_cus_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/customize.png" style="width:20px"></li><li style="margin-left:10px">
-                        <span class="glyphicon glyphicon-menu-right c_right_gly1" id="c_admin_span_3" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-menu-right c_right_gly1" id="c_admin_span_4" aria-hidden="true"></span>
                        Customize Home
                     </li></ul></li>
             <li id="admin_left_nav_cus" style="display:none;padding:0px">
                 <ul class="c_admin_ul_in">
                     <li class="c_admin_ul_li" onClick="load_cos_page1_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Manage Featured Doctors</li>
                     <li class="c_admin_ul_li" onClick="tip_update_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Manage Health tips</li>
-                    <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>custom_1</li>
+                    <li class="c_admin_ul_li" onClick="admin_reg_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>custom_1</li>
                     <li class="c_admin_ul_li" onClick=""><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>custom_2</li>
                 </ul>
             
