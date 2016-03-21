@@ -15,7 +15,7 @@ class CreateSpecializationTableByBuwaneka extends Migration
         Schema::create('specialization',function (Blueprint $table){
             $table->increments('id');
             $table->integer('doc_id');
-            for($i=1;$i<=10;$i++) {
+            for($i=1;$i<=5;$i++) {
                 $table->string('spec_'.$i);
             }
             $table->timestamps();

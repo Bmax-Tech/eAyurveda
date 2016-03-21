@@ -79,13 +79,13 @@
                         <span>First Name</span><span class="c_warning_tips_reg" id="wrn_first_name"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid first name</span>
                     </li>
                     <li class="c_add_margin_20 c_form_margin_10">
-                        <input value="{{ $user_data['first_name'] }}" type="text" class="c_text_box_1" spellcheck="false" name="first_name" onkeydown='only_alph(event)' onkeypress="remove_wrn('first_name')" onchange="remove_wrn('first_name')" autocomplete="off"/>
+                        <input disabled value="{{ $user_data['first_name'] }}" type="text" class="c_text_box_1" spellcheck="false" name="first_name" onkeydown='only_alph(event)' onkeypress="remove_wrn('first_name')" onchange="remove_wrn('first_name')" autocomplete="off"/>
                     </li>
                     <li>
                         <span>Last Name</span><span class="c_warning_tips_reg" id="wrn_last_name"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid last name</span>
                     </li>
                     <li class="c_add_margin_20 c_form_margin_10">
-                        <input value="{{ $user_data['last_name'] }}" type="text" class="c_text_box_1" spellcheck="false" name="last_name" onkeydown='only_alph(event)' onkeypress="remove_wrn('last_name')" onchange="remove_wrn('last_name')" autocomplete="off"/>
+                        <input disabled value="{{ $user_data['last_name'] }}" type="text" class="c_text_box_1" spellcheck="false" name="last_name" onkeydown='only_alph(event)' onkeypress="remove_wrn('last_name')" onchange="remove_wrn('last_name')" autocomplete="off"/>
                     </li>
                     <li>
                         <span>Email Address</span><span class="c_warning_tips_reg" id="wrn_email"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid email address</span>
