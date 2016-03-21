@@ -169,6 +169,7 @@
                     <li>Access to Community Forum</li>
                     <li>Health Tip Alerts</li>
                     <li>Live Chat</li>
+                    <li>Appointment Making</li>
                 </ul>
             </li>
         </ul>
