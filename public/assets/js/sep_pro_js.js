@@ -416,6 +416,111 @@ function pagination(para_1){
 	doc_load_ajax();
 };
 
+
+
+// This function use to load doctors in advanced search result page via Ajax
+function user_load_ajax1(){
+
+	$("#c_loading_msg1").fadeIn();
+	var dataString = $("#filter_selections").serialize();// this serialize pagee the form in search results
+	var method_type='GET';
+	var skip= $("#start1").val();//get starting result number
+	var end= $("#end1").val();//get the last result number
+	var curr=$("#page_number_hidden1").val();//get the current page number
+	var res_starts=parseInt($("#start1").val())+parseInt(1)
+	$.ajax({
+
+
+		type: method_type,
+		dataType: "json",
+		url:'/ajax/aa/'+skip+'/'+end,
+		cache: false,
+		data: dataString,
+		success: function (data) {
+
+			$("#c_doctor_result_ajax_box1").html(data.page);
+
+			/////////////////////////////////////////////////
+			// Pagination ///////////////////////////////////
+
+
+
+			var txt = '';
+			if (data["count"][0]["count"] > end) {
+
+				var last = Math.ceil(data["count"][0]["count"] / end);
+				var pre_page_no = 1;
+				var next_page_no = 1;
+				if (curr > 1) {
+					pre_page_no = curr - 1;
+				}
+				if (curr < last) {
+					next_page_no = parseInt(curr) + parseInt(1);
+				} else {
+					next_page_no = curr;
+				}
+
+				txt = txt + '<ul class="pagination" style="margin-top: 30px"><li><a href="#page_pre=' + pre_page_no + '" onclick="pagination1(' + pre_page_no + ')" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+				for (var i = 1; i <= last; i++) {
+					txt = txt + '<li ';
+					if (curr == i) {
+						txt = txt + 'class="active"';
+					}
+					txt = txt + '><a href="#page=' + i + '" onclick="pagination1(' + i + ')">' + i + ' <span class="sr-only">(current)</span></a></li>';
+				}
+				txt = txt + '<li><a href="#page_next=' + next_page_no + '" onclick="pagination1(' + next_page_no + ')" aria-label="Next"><span aria-hidden="true">»</span></a></li></ul>';
+
+
+			}
+
+			if (data["count"][0]["count"] > end) {
+			    var tot = parseInt(skip) + parseInt(data["count1"]);
+				$("#search_doc_pagination_panel1").html(txt);
+				txt = res_starts + ' - ' + tot + ' of ' + data["count"][0]["count"];
+				$("#c_page_no1").html(txt);
+		    }
+			else if(data["count"][0]["count"] <= end && data["count"][0]["count"] > 0){
+				var tot = parseInt(skip) + parseInt(data["count1"]);
+				$("#search_doc_pagination_panel1").html(txt);
+				txt = res_starts + ' - ' + tot + ' of ' + data["count"][0]["count"];
+				$("#c_page_no1").html(txt);
+			}
+			else{
+				$("#search_doc_pagination_panel1").html(txt);
+				txt = '0';
+				$("#c_page_no1").html(txt);
+			}
+
+
+
+			// Pagination ///////////////////////////////////
+			/////////////////////////////////////////////////
+
+			$("#c_loading_msg1").fadeOut();
+		},
+		error: function (data) {
+			console.log('Error:', data);
+		}
+	});
+};
+
+
+
+function pagination1(para_1){
+
+	$("#start1").val(parseInt(para_1)*parseInt($("#end1").val())- parseInt($("#end1").val()));
+	$("#page_number_hidden1").val(para_1);
+	user_load_ajax1();
+};
+
+$(document).ready(function(e){
+	// Check whether current page is Search results page or not
+	if($("#doc_search_page1").val()=='YES') {
+		user_load_ajax1();
+	}
+});
+
+
 function filter_by_star_rating(para_1){
 	$("#page_number_hidden").val(1);// Reset Page number into 1
 	$(".c_filter_star").removeClass("c_filter_star_active");
@@ -1105,4 +1210,8 @@ var tid='';// holds timer id
 function abortTimer() { // to be called when you want to stop the timer
 	clearInterval(tid);
 }
+
+
+
+
 /////////////////////////////////////////////////

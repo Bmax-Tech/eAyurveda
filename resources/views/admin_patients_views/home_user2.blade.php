@@ -99,9 +99,7 @@
                 <div style="clear:both">
                 </div>
                 <div class="col-lg-offset-8"style="clear:both;margin-top: 10px">
-                    <div class="col-lg-4">
-                        <button class="c_pat_view_btn" onclick="user_rem( <?php echo $patient->id;?>)">Remove User</button>
-                    </div>
+
 
                 </div>
             </div> </li>

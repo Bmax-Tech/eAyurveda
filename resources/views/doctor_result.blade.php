@@ -43,8 +43,11 @@
         </div>
         <div style="margin-top: 10px">
             <ul style="color: #000;padding-left: 18px;font-size: 12px;list-style: disc">
-                <li>DFDFDF</li>
-                <li>DFDFDF</li>
+                <li>{{$doc->spec_1}}</li>
+                <li>{{$doc->spec_2}}</li>
+                <li>{{$doc->spec_3}}</li>
+                <li>{{$doc->spec_4}}</li>
+                <li>{{$doc->spec_5}}</li>
             </ul>
         </div>
         <div>

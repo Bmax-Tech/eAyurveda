@@ -12,7 +12,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Input;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 class AjaxControll extends Controller
 {
@@ -32,6 +35,8 @@ class AjaxControll extends Controller
         return response()->json($res);
     }
 
+
+
 // This function is used for render and return doctor_results page to Ajax
     public function doc_search_page(Request $request){
 
@@ -42,161 +47,8 @@ class AjaxControll extends Controller
             } else {
                 $doctors = \DB::table('doctors')->where('rating', '=', Input::get('filter_star_rating'))->paginate($this->RESULTS_PER_PAGE);
             }
-        }else{
-            // This executes when Advanced Search is used By ^^^ Salika ^^^
-
-            //**********************************************************************
-            //************ Type All Advanced Search Related Stuff Here *************
-            //**********************************************************************
-
-             $doc_name = Input::get('advanced_doc_name');
-             $spec = Input::get('advanced_doc_speciality');
-             $treat = Input::get('advanced_doc_treatment');
-			 $location=Input::get('advanced_doc_location');
-
-            if($doc_name != '' && $location !='' &&  $spec != '' && $treat != '') {
-		 $doctors =  \DB::table('doctors')
-                   ->where(function ($q) use ($doc_name,$location,$spec,$treat) {
-					           $q->where('address_1', 'like', '%' . $location . '%')
-							                ->where(function ($q1) use ($doc_name,$spec,$treat) {
-												$q1->where('specialization','like','%'.$spec.'%')
-												            ->where(function ($q2) use ($doc_name,$treat) {
- 																 $q2->where('treatment','like','%'.$treat.'%')
-																             ->where(function ($q4) use ($doc_name) {
- 																				          $q4->where('first_name', 'like', '%' . $doc_name . '%')
-																						  ->orWhere('last_name', 'like', '%' . $doc_name . '%');
-																			})->paginate($this->RESULTS_PER_PAGE);
-															})->paginate($this->RESULTS_PER_PAGE);
-											})->paginate($this->RESULTS_PER_PAGE);
-					})->paginate($this->RESULTS_PER_PAGE);
-
-       }
-      else if ($doc_name == '' && $location != ''  &&  $spec != '' && $treat != '' ) {
-           $doctors =  \DB::table('doctors')
-               ->where(function ($q) use ($location,$spec,$treat) { 
-			                $q->where('address_1', 'like', '%' . $location . '%')
-							             ->where(function ($q1) use ($spec,$treat) { 
-										                $q1->where('specialization','like','%'.$spec.'%')
-														               ->where(function ($q2) use ($treat) { 
-																	                 $q2->where('treatment','like','%'.$treat.'%') ;
-																		})->paginate($this->RESULTS_PER_PAGE); 
-										})->paginate($this->RESULTS_PER_PAGE); 
-				})->paginate($this->RESULTS_PER_PAGE);
         }
-		else if($doc_name != '' && $location =='' &&  $spec != '' && $treat != ''){
-			 $doctors =  \DB::table('doctors')
-                  ->where(function ($q1) use ($doc_name,$spec,$treat) {
-									$q1->where('specialization','like','%'.$spec.'%') 
-												  ->where(function ($q2) use ($doc_name,$treat) {
- 															$q2->where('treatment','like','%'.$treat.'%') 
-																     ->where(function ($q4) use ($doc_name) {
- 																	       $q4->where('first_name', 'like', '%' . $doc_name . '%')
-															               ->orWhere('last_name', 'like', '%' . $doc_name . '%');
-												                     })->paginate($this->RESULTS_PER_PAGE); 
-								                  })->paginate($this->RESULTS_PER_PAGE); 
-					})->paginate($this->RESULTS_PER_PAGE); 
-			
-			}
-			else if($doc_name == '' && $location =='' &&  $spec != '' && $treat != ''){
-				 $doctors =  \DB::table('doctors')
-                  ->where(function ($q1) use ($spec,$treat) {
-									$q1->where('specialization','like','%'.$spec.'%') 
-												  ->where(function ($q2) use ($treat) {
- 															$q2->where('treatment','like','%'.$treat.'%'); 
-													 })->paginate($this->RESULTS_PER_PAGE); 
-					})->paginate($this->RESULTS_PER_PAGE); 
-				
-				}
-				else if($doc_name != '' && $location !='' &&  $spec == '' && $treat != ''){
-					  $doctors =  \DB::table('doctors')
-                   ->where(function ($q) use ($doc_name,$location,$treat) {
-					           $q->where('address_1', 'like', '%' . $location . '%')
-							               ->where(function ($q2) use ($doc_name,$treat) {
- 													 $q2->where('treatment','like','%'.$treat.'%') 
-															->where(function ($q4) use ($doc_name) {
- 																	$q4->where('first_name', 'like', '%' . $doc_name . '%')
-																	->orWhere('last_name', 'like', '%' . $doc_name . '%');
-															})->paginate($this->RESULTS_PER_PAGE); 
-											})->paginate($this->RESULTS_PER_PAGE); 
-					})->paginate($this->RESULTS_PER_PAGE);
-					}
-				else if($doc_name != '' && $location == ''  &&  $spec == '' && $treat != '' ){
-						$doctors =  \DB::table('doctors')
-                   ->where(function ($q2) use ($doc_name,$treat) {
- 								$q2->where('treatment','like','%'.$treat.'%') 
-										->where(function ($q4) use ($doc_name) {
- 												$q4->where('first_name', 'like', '%' . $doc_name . '%')
-												->orWhere('last_name', 'like', '%' . $doc_name . '%');
-										})->paginate($this->RESULTS_PER_PAGE); 
-					})->paginate($this->RESULTS_PER_PAGE); 
-						
-					}
-				else if($doc_name == '' && $location =='' &&  $spec == '' && $treat != ''){
-					 $doctors = \DB::table('doctors')->where('treatment', 'like', '%' . $treat . '%')->paginate($this->RESULTS_PER_PAGE);
-					
-					}
-				else if($doc_name != '' && $location !='' &&  $spec != '' && $treat == ''){
-					 $doctors =  \DB::table('doctors')
-                   ->where(function ($q) use ($doc_name,$location,$spec) {
-					           $q->where('address_1', 'like', '%' . $location . '%')
-							                ->where(function ($q1) use ($doc_name,$spec) {
-												$q1->where('specialization','like','%'.$spec.'%') 
-												            ->where(function ($q4) use ($doc_name) {
- 																			$q4->where('first_name', 'like', '%' . $doc_name . '%')
-																			->orWhere('last_name', 'like', '%' . $doc_name . '%');
-															})->paginate($this->RESULTS_PER_PAGE); 
-											})->paginate($this->RESULTS_PER_PAGE); 
-					})->paginate($this->RESULTS_PER_PAGE); 
-					}
-				else if($doc_name == '' && $location !='' &&  $spec != '' && $treat == ''){
-					 $doctors =  \DB::table('doctors')
-                   ->where(function ($q) use ($doc_name,$location,$spec) {
-					           $q->where('address_1', 'like', '%' . $location . '%')
-							                ->where(function ($q1) use ($doc_name,$spec) {
-												$q1->where('specialization','like','%'.$spec.'%');
-											})->paginate($this->RESULTS_PER_PAGE); 
-					})->paginate($this->RESULTS_PER_PAGE); 
-					}
-				else if($doc_name != '' && $location =='' &&  $spec != '' && $treat == ''){
-					 $doctors =  \DB::table('doctors')
-                    ->where(function ($q1) use ($doc_name,$spec) {
-								$q1->where('specialization','like','%'.$spec.'%') 
-										->where(function ($q4) use ($doc_name) {
- 													$q4->where('first_name', 'like', '%' . $doc_name . '%')
-													->orWhere('last_name', 'like', '%' . $doc_name . '%');
-										})->paginate($this->RESULTS_PER_PAGE); 
-					})->paginate($this->RESULTS_PER_PAGE); 
-					}
-				else if($doc_name == '' && $location =='' &&  $spec != '' && $treat == ''){
-					  $doctors = \DB::table('doctors')->join('specialization', 'doctors.id', '=', 'specialization.doc_id')->where('spec_1', 'like', '%' . $spec . '%')->paginate($this->RESULTS_PER_PAGE);
-					}
-				else if($doc_name != '' && $location !='' &&  $spec == '' && $treat == ''){
-					  $doctors =  \DB::table('doctors')
-                   ->where(function ($q) use ($doc_name,$location) {
-					           $q->where('address_1', 'like', '%' . $location . '%')
-							               ->where(function ($q4) use ($doc_name) {
- 															 $q4->where('first_name', 'like', '%' . $doc_name . '%')
-															->orWhere('last_name', 'like', '%' . $doc_name . '%');
-											})->paginate($this->RESULTS_PER_PAGE); 
-					})->paginate($this->RESULTS_PER_PAGE);
-					}
-				else if($doc_name == '' && $location !='' &&  $spec == '' && $treat == ''){
-					  $doctors = \DB::table('doctors')->where('address_1', 'like', '%' . $location . '%')->paginate($this->RESULTS_PER_PAGE);
-					}
-				else if($doc_name != '' && $location =='' &&  $spec == '' && $treat == ''){
-					  $doctors = \DB::table('doctors')->where(function ($q4) use ($doc_name) {
- 													        $q4->where('first_name', 'like', '%' . $doc_name . '%')
-													       ->orWhere('last_name', 'like', '%' . $doc_name . '%');
-										})->paginate($this->RESULTS_PER_PAGE); 
-					}
-				else {
-					$doctors = \DB::table('doctors')->paginate($this->RESULTS_PER_PAGE); 
-					
-					}
 
-            //**********************************************************************
-            //**********************************************************************
-        }
         // This will convert view into String, Which can parse through json object
         $HtmlView = (String) view('doctor_result')->with(['doctors'=>$doctors]);
         $res['pagination'] = $doctors;
@@ -206,7 +58,406 @@ class AjaxControll extends Controller
         return response()->json($res);
     }
 
-    public function get_doctor_comments(Request $request,$doc_id){
+
+
+
+	// This function is used for render and return doctor_results page to Ajax
+	public function doc_search_page1(Request $request,$skip,$end){
+
+
+            $count=0;
+		    $count1=0;
+
+			$doc_name = Input::get('advanced_doc_name');
+			$spec = Input::get('advanced_doc_speciality');
+			$treat = Input::get('advanced_doc_treatment');
+			$location=Input::get('advanced_doc_location');
+
+           //if  all the features are not null this part get executed
+			if($doc_name != '' && $location !='' &&  $spec != '' && $treat != '') {
+				$doctors =  \DB::table('doctors')->join('treatments', 'doctors.user_id', '=', 'treatments.doc_id')
+						->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q3) use ($treat) {
+							$q3->where('treat_1', 'like', '%' . $treat . '%')
+									->orWhere('treat_2', 'like', '%' . $treat . '%')
+									->orWhere('treat_3', 'like', '%' . $treat . '%')
+									->orWhere('treat_4', 'like', '%' . $treat . '%')
+									->orWhere('treat_5', 'like', '%' . $treat . '%');
+						})
+						->where(function ($q2) use ($spec) {
+							$q2->where('spec_1', 'like', '%' . $spec . '%')
+									->orWhere('spec_2', 'like', '%' . $spec . '%')
+									->orWhere('spec_3', 'like', '%' . $spec . '%')
+									->orWhere('spec_4', 'like', '%' . $spec . '%')
+									->orWhere('spec_5', 'like', '%' . $spec . '%');
+						})
+						->where(function ($q) use ($location) {
+							$q->where('address_1', 'like', '%' . $location . '%')
+									->orWhere('address_2', 'like', '%' . $location . '%')
+									->orWhere('city', 'like', '%' . $location . '%');
+						})
+						->where(function ($q4) use ($doc_name) {
+							$q4->where('first_name', 'like', '%' . $doc_name . '%')
+									->orWhere('last_name', 'like', '%' . $doc_name . '%');
+						})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+                $count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN specialization ON doctors.user_id = specialization.doc_id INNER JOIN treatments ON doctors.user_id = treatments.doc_id  WHERE (treat_1 LIKE "%'.$treat.'%") AND (spec_1 LIKE "%'.$spec.'%")  AND (address_1 LIKE "%'.$location.'%")  AND (first_name LIKE "%'.$doc_name.'%" OR last_name LIKE "%'.$doc_name.'%")  ');
+
+			}
+			//if doctor name is null and others are not null go to this part
+			else if ($doc_name == '' && $location != ''  &&  $spec != '' && $treat != '' ) {
+				$doctors =  \DB::table('doctors')->join('treatments', 'doctors.user_id', '=', 'treatments.doc_id')
+						->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q3) use ($treat) {
+							$q3->where('treat_1', 'like', '%' . $treat . '%')
+									->orWhere('treat_2', 'like', '%' . $treat . '%')
+									->orWhere('treat_3', 'like', '%' . $treat . '%')
+									->orWhere('treat_4', 'like', '%' . $treat . '%')
+									->orWhere('treat_5', 'like', '%' . $treat . '%');
+						})
+						->where(function ($q2) use ($spec) {
+							$q2->where('spec_1', 'like', '%' . $spec . '%')
+									->orWhere('spec_2', 'like', '%' . $spec . '%')
+									->orWhere('spec_3', 'like', '%' . $spec . '%')
+									->orWhere('spec_4', 'like', '%' . $spec . '%')
+									->orWhere('spec_5', 'like', '%' . $spec . '%');
+						})
+						->where(function ($q) use ($location) {
+							$q->where('address_1', 'like', '%' . $location . '%')
+									->orWhere('address_2', 'like', '%' . $location . '%')
+									->orWhere('city', 'like', '%' . $location . '%');
+						})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN specialization ON doctors.user_id = specialization.doc_id INNER JOIN treatments ON doctors.user_id = treatments.doc_id  WHERE (treat_1 LIKE "%'.$treat.'%") AND (spec_1 LIKE "%'.$spec.'%")  AND (address_1 LIKE "%'.$location.'%")  ');
+
+
+			}
+			//if doctor name and specialization are null will call this part
+			else if($doc_name != '' && $location =='' &&  $spec != '' && $treat != ''){
+				$doctors =  \DB::table('doctors')->join('treatments', 'doctors.user_id', '=', 'treatments.doc_id')
+						->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q3) use ($treat) {
+							$q3->where('treat_1', 'like', '%' . $treat . '%')
+									->orWhere('treat_2', 'like', '%' . $treat . '%')
+									->orWhere('treat_3', 'like', '%' . $treat . '%')
+									->orWhere('treat_4', 'like', '%' . $treat . '%')
+									->orWhere('treat_5', 'like', '%' . $treat . '%');
+						})
+						->where(function ($q2) use ($spec) {
+							$q2->where('spec_1', 'like', '%' . $spec . '%')
+									->orWhere('spec_2', 'like', '%' . $spec . '%')
+									->orWhere('spec_3', 'like', '%' . $spec . '%')
+									->orWhere('spec_4', 'like', '%' . $spec . '%')
+									->orWhere('spec_5', 'like', '%' . $spec . '%');
+						})
+						->where(function ($q4) use ($doc_name) {
+							$q4->where('first_name', 'like', '%' . $doc_name . '%')
+									->orWhere('last_name', 'like', '%' . $doc_name . '%');
+						})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN specialization ON doctors.user_id = specialization.doc_id INNER JOIN treatments ON doctors.user_id = treatments.doc_id  WHERE (treat_1 LIKE "%'.$treat.'%") AND (spec_1 LIKE "%'.$spec.'%") AND (first_name LIKE "%'.$doc_name.'%" OR last_name LIKE "%'.$doc_name.'%")  ');
+
+
+			}
+			//if doctorname and specialization are not null this part will execute
+			else if($doc_name == '' && $location =='' &&  $spec != '' && $treat != ''){
+				$doctors =  \DB::table('doctors')->join('treatments', 'doctors.user_id', '=', 'treatments.doc_id')
+						->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q3) use ($treat) {
+							$q3->where('treat_1', 'like', '%' . $treat . '%')
+									->orWhere('treat_2', 'like', '%' . $treat . '%')
+									->orWhere('treat_3', 'like', '%' . $treat . '%')
+									->orWhere('treat_4', 'like', '%' . $treat . '%')
+									->orWhere('treat_5', 'like', '%' . $treat . '%');
+						})
+						->where(function ($q2) use ($spec) {
+							$q2->where('spec_1', 'like', '%' . $spec . '%')
+									->orWhere('spec_2', 'like', '%' . $spec . '%')
+									->orWhere('spec_3', 'like', '%' . $spec . '%')
+									->orWhere('spec_4', 'like', '%' . $spec . '%')
+									->orWhere('spec_5', 'like', '%' . $spec . '%');
+						})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN specialization ON doctors.user_id = specialization.doc_id INNER JOIN treatments ON doctors.user_id = treatments.doc_id  WHERE (treat_1 LIKE "%'.$treat.'%") AND (spec_1 LIKE "%'.$spec.'%")  ');
+
+			}
+			//if secialization is null this part will execute
+			else if($doc_name != '' && $location !='' &&  $spec == '' && $treat != ''){
+				$doctors =  \DB::table('doctors')->join('treatments', 'doctors.user_id', '=', 'treatments.doc_id')
+						->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q3) use ($treat) {
+							$q3->where('treat_1', 'like', '%' . $treat . '%')
+									->orWhere('treat_2', 'like', '%' . $treat . '%')
+									->orWhere('treat_3', 'like', '%' . $treat . '%')
+									->orWhere('treat_4', 'like', '%' . $treat . '%')
+									->orWhere('treat_5', 'like', '%' . $treat . '%');
+						})
+						->where(function ($q) use ($location) {
+							$q->where('address_1', 'like', '%' . $location . '%')
+									->orWhere('address_2', 'like', '%' . $location . '%')
+									->orWhere('city', 'like', '%' . $location . '%');
+						})
+						->where(function ($q4) use ($doc_name) {
+							$q4->where('first_name', 'like', '%' . $doc_name . '%')
+								->orWhere('last_name', 'like', '%' . $doc_name . '%');
+						})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN treatments ON doctors.user_id = treatments.doc_id  WHERE (treat_1 LIKE "%'.$treat.'%") AND (address_1 LIKE "%'.$location.'%") AND (first_name LIKE "%'.$doc_name.'%" OR last_name LIKE "%'.$doc_name.'%")  ');
+
+
+			}
+			else if($doc_name == '' && $location !='' &&  $spec == '' && $treat != ''){
+				$doctors =  \DB::table('doctors')->join('treatments', 'doctors.user_id', '=', 'treatments.doc_id')
+						->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q3) use ($treat) {
+							$q3->where('treat_1', 'like', '%' . $treat . '%')
+									->orWhere('treat_2', 'like', '%' . $treat . '%')
+									->orWhere('treat_3', 'like', '%' . $treat . '%')
+									->orWhere('treat_4', 'like', '%' . $treat . '%')
+									->orWhere('treat_5', 'like', '%' . $treat . '%');
+						})
+						->where(function ($q) use ($location) {
+							$q->where('address_1', 'like', '%' . $location . '%')
+									->orWhere('address_2', 'like', '%' . $location . '%')
+									->orWhere('city', 'like', '%' . $location . '%');
+						})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN treatments ON doctors.user_id = treatments.doc_id  WHERE (treat_1 LIKE "%'.$treat.'%") AND (address_1 LIKE "%'.$location.'%")  ');
+
+
+			}
+			else if($doc_name != '' && $location == ''  &&  $spec == '' && $treat != '' ){
+				$doctors =  \DB::table('doctors')->join('treatments', 'doctors.user_id', '=', 'treatments.doc_id')
+						->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q3) use ($treat) {
+							$q3->where('treat_1', 'like', '%' . $treat . '%')
+							->orWhere('treat_2', 'like', '%' . $treat . '%')
+							->orWhere('treat_3', 'like', '%' . $treat . '%')
+							->orWhere('treat_4', 'like', '%' . $treat . '%')
+							->orWhere('treat_5', 'like', '%' . $treat . '%');
+						})
+						->where(function ($q4) use ($doc_name) {
+							$q4->where('first_name', 'like', '%' . $doc_name . '%')
+										->orWhere('last_name', 'like', '%' . $doc_name . '%');
+			            })->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN treatments ON doctors.user_id = treatments.doc_id  WHERE (treat_1 LIKE "%'.$treat.'%") AND (first_name LIKE "%'.$doc_name.'%" OR last_name LIKE "%'.$doc_name.'%")  ');
+
+
+
+			}
+			else if($doc_name == '' && $location =='' &&  $spec == '' && $treat != ''){
+				$doctors = \DB::table('doctors')->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')->join('treatments', 'doctors.user_id', '=', 'treatments.doc_id')->where('treat_1', 'like', '%' . $treat . '%')
+						->orWhere('treat_2', 'like', '%' . $treat . '%')
+						->orWhere('treat_3', 'like', '%' . $treat . '%')
+						->orWhere('treat_4', 'like', '%' . $treat . '%')
+						->orWhere('treat_5', 'like', '%' . $treat . '%')
+						->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN treatments ON doctors.user_id = treatments.doc_id  WHERE (treat_1 LIKE "%'.$treat.'%")   ');
+
+
+			}
+			else if($doc_name != '' && $location !='' &&  $spec != '' && $treat == ''){
+				$doctors =  \DB::table('doctors')->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q2) use ($spec) {
+							$q2->where('spec_1', 'like', '%' . $spec . '%')
+									->orWhere('spec_2', 'like', '%' . $spec . '%')
+									->orWhere('spec_3', 'like', '%' . $spec . '%')
+									->orWhere('spec_4', 'like', '%' . $spec . '%')
+									->orWhere('spec_5', 'like', '%' . $spec . '%');
+						})
+						->where(function ($q) use ($location) {
+							$q->where('address_1', 'like', '%' . $location . '%')
+									->orWhere('address_2', 'like', '%' . $location . '%')
+									->orWhere('city', 'like', '%' . $location . '%');
+						})
+						->where(function ($q4) use ($doc_name) {
+								$q4->where('first_name', 'like', '%' . $doc_name . '%')
+									->orWhere('last_name', 'like', '%' . $doc_name . '%');
+						})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN specialization ON doctors.user_id = specialization.doc_id  WHERE (spec_1 LIKE "%'.$spec.'%") AND (address_1 LIKE "%'.$location.'%") AND (first_name LIKE "%'.$doc_name.'%" OR last_name LIKE "%'.$doc_name.'%")  ');
+
+
+			}
+			else if($doc_name == '' && $location !='' &&  $spec != '' && $treat == ''){
+				$doctors =  \DB::table('doctors')->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q2) use ($spec) {
+							$q2->where('spec_1', 'like', '%' . $spec . '%')
+									->orWhere('spec_2', 'like', '%' . $spec . '%')
+									->orWhere('spec_3', 'like', '%' . $spec . '%')
+									->orWhere('spec_4', 'like', '%' . $spec . '%')
+									->orWhere('spec_5', 'like', '%' . $spec . '%');
+						})
+						->where(function ($q) use ($location) {
+							$q->where('address_1', 'like', '%' . $location . '%')
+									->orWhere('address_2', 'like', '%' . $location . '%')
+									->orWhere('city', 'like', '%' . $location . '%');
+						})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN specialization ON doctors.user_id = specialization.doc_id  WHERE (spec_1 LIKE "%'.$spec.'%") AND (address_1 LIKE "%'.$location.'%")  ');
+
+
+
+			}
+			else if($doc_name != '' && $location =='' &&  $spec != '' && $treat == ''){
+				$doctors =  \DB::table('doctors')->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q2) use ($spec) {
+							$q2->where('spec_1', 'like', '%' . $spec . '%')
+									->orWhere('spec_2', 'like', '%' . $spec . '%')
+									->orWhere('spec_3', 'like', '%' . $spec . '%')
+									->orWhere('spec_4', 'like', '%' . $spec . '%')
+									->orWhere('spec_5', 'like', '%' . $spec . '%');
+						})
+							->where(function ($q4) use ($doc_name) {
+									$q4->where('first_name', 'like', '%' . $doc_name . '%')
+										->orWhere('last_name', 'like', '%' . $doc_name . '%');
+							})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN specialization ON doctors.user_id = specialization.doc_id  WHERE (spec_1 LIKE "%'.$spec.'%") AND (first_name LIKE "%'.$doc_name.'%" OR last_name LIKE "%'.$doc_name.'%")  ');
+
+
+
+			}
+			else if($doc_name == '' && $location =='' &&  $spec != '' && $treat == ''){
+				$doctors = \DB::table('doctors')->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where('spec_1', 'like', '%' . $spec . '%')
+						->orWhere('spec_2', 'like', '%' . $spec . '%')
+						->orWhere('spec_3', 'like', '%' . $spec . '%')
+						->orWhere('spec_4', 'like', '%' . $spec . '%')
+						->orWhere('spec_5', 'like', '%' . $spec . '%')
+						->skip($skip)->take($end)->get();
+
+
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors INNER JOIN specialization ON doctors.user_id = specialization.doc_id  WHERE spec_1 LIKE "%'.$spec.'%" ');
+
+
+			}
+			else if($doc_name != '' && $location !='' &&  $spec == '' && $treat == ''){
+				$doctors =  \DB::table('doctors')->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q) use ($location) {
+							$q->where('address_1', 'like', '%' . $location . '%')
+							->orWhere('address_2', 'like', '%' . $location . '%')
+							->orWhere('city', 'like', '%' . $location . '%');
+						})
+						->where(function ($q4) use ($doc_name) {
+								$q4->where('first_name', 'like', '%' . $doc_name . '%')
+									->orWhere('last_name', 'like', '%' . $doc_name . '%');
+						})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors WHERE (first_name LIKE "%'.$doc_name.'%" OR  last_name LIKE "%'.$doc_name.'%")  AND  (address_1 LIKE "%'.$location.'%"  OR  address_2 LIKE "%'.$location.'%" )');
+
+			}
+			else if($doc_name == '' && $location !='' &&  $spec == '' && $treat == ''){
+				$doctors = \DB::table('doctors')->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where('address_1', 'like', '%' . $location . '%')
+						->orWhere('address_2', 'like', '%' . $location . '%')
+						->orWhere('city', 'like', '%' . $location . '%')
+						->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors WHERE address_1 LIKE "%'.$location.'%" OR  address_2 LIKE "%'.$location.'%" ');
+
+
+			}
+			else if($doc_name != '' && $location =='' &&  $spec == '' && $treat == ''){
+				$doctors = \DB::table('doctors')->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')
+						->where(function ($q4) use ($doc_name) {
+					$q4->where('first_name', 'like', '%' . $doc_name . '%')
+							->orWhere('last_name', 'like', '%' . $doc_name . '%');
+				})->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors WHERE first_name LIKE "%'.$doc_name.'%" OR  last_name LIKE "%'.$doc_name.'%" ');
+
+			}
+			else {
+
+				$doctors = \DB::table('doctors')->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id')->skip($skip)->take($end)->get();
+
+				//get the count of retrieving results
+				$count1=sizeof($doctors);
+				//get the count of all matching result
+				$count = \DB::select('SELECT COUNT(*) AS count FROM doctors');
+
+}
+		// This will convert view into String, Which can parse through json object
+		$HtmlView = (String) view('doctor_result')->with(['doctors'=>$doctors]);
+		$res['count'] = $count;
+		$res['count1'] = $count1;
+		$res['page'] = $HtmlView;
+		// Return Json Type Object
+		return response()->json($res);
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public function get_doctor_comments(Request $request,$doc_id){
         $comments = Comments::where('doctor_id',$doc_id)->orderBy('id','DESC')->get();
         $count=1;
 

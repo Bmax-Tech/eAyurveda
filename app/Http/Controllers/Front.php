@@ -41,7 +41,7 @@ class Front extends Controller
         $advanced_search['doc_treatment'] = $request->doc_treatment;
         $advanced_search['doc_location'] = $request->doc_location;*/
 
-        return view('search',array('advanced' => "YES",
+        return view('advanced_search',array('advanced' => "YES",
             'doc_name' => $request->doc_name,
             'doc_speciality' => $request->doc_speciality,
             'doc_treatment' => $request->doc_treatment,
@@ -119,13 +119,13 @@ class Front extends Controller
     }
 
     public function login(Request $request){
-        $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->first();
+        $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(1)->first();
         // Check whether username and password are matching
         if(isset($user)) {
             // Create Cookie session to store logged user details
             $patient = Patients::whereUser_id($user->id)->first();
             $user_ob = array(['id' => $user->id,'first_name' => $patient->first_name,'last_name' => $patient->last_name]);
-            setcookie('user',json_encode($user_ob),time()+3600); // Cookie is set for 1 hour
+            setcookie('user',json_encode($user_ob),time()+36000); // Cookie is set for 10 hour
 
             return Redirect::to('/');
         }else {
@@ -355,6 +355,10 @@ class Front extends Controller
         }
         return $rating_main;
     }
+
+
+
+
 
     // **********  Custom Functions **********************************
     // ***************************************************************
