@@ -34,12 +34,14 @@
                 ?>
                     <input type="hidden" name="advanced_search" value="NO">
                     <input type="hidden" name="search_text_hidden" id="search_text_hidden" value="{{ $search_text }}">
+                    <input type="hidden" name="filter_loc" id="filter_loc_hidden" value="-">
+                    <input type="hidden" name="filter_spec" id="filter_spec_hidden" value="-">
                 <?php
                 }
                 ?>
                 <input type="hidden" name="page" id="page_number_hidden" value="1">
-                <ul class="c_ul_1" style="margin-bottom: 0px">
-                    <li><div class="c_search_filter_f">Total Doctors<span style="float: right" id="c_tot_doc_filter">0</span></div></li>
+                <ul class="c_ul_1" style="background:#39B54A;margin-bottom: 0px">
+                    <li><div class="c_search_filter_f">Total Doctors<span style="float: right;background: rgba(255, 255, 255, 0.52);padding: 2px 12px;border-radius: 10px;color: #1A942A;margin-top: -2px;" id="c_tot_doc_filter">0</span></div></li>
                     <li><hr class="c_hr_1"/></li>
                     <li><div class="c_search_filter_f" style="background: #288E36">Rating</div></li>
                     <li>
@@ -54,32 +56,65 @@
                     </li>
                     <li><hr class="c_hr_1"/></li>
                     <li><div class="c_search_filter_f" style="background: #288E36">Specialization</div></li>
-                    <li>
-                        <div style="background:#39B54A;padding: 17px 13px;">
+                    <li style="background:#39B54A;">
+                        <div id="c_filter_spec_div" style="background:#39B54A;padding: 10px 13px;">
                             <ul class="c_ul_1" style="color: #FFF;padding-left: 5px;font-size: 13px;">
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
+                                <?php
+                                    foreach($spec as $item)
+                                    {
+                                        if($item->spec_list != ""){
+                                ?>
+                                <li><input type="radio" name="specialization" class="c_check_box" value="{{ $item->spec_list }}">{{ $item->spec_list }}</li>
+                                <?php
+                                        }
+                                    }
+                                ?>
                             </ul>
                         </div>
                     </li>
                     <li><hr class="c_hr_1"/></li>
-                    <li><div class="c_search_filter_f" style="background: #288E36">Location</div></li>
-                    <li>
-                        <div style="background:#39B54A;padding: 17px 13px;">
+                    <li><div class="c_search_filter_f" style="background: #288E36">District</div></li>
+                    <li style="background:#39B54A;">
+                        <div id="c_filter_loc_div" style="background:#39B54A;padding: 10px 13px;">
                             <ul class="c_ul_1" style="color: #FFF;padding-left: 5px;font-size: 13px;">
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
-                                <li><input type="checkbox" class="c_check_box">DFDFDF</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Ampara">Ampara</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Anuradhapura">Anuradhapura</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Badulla">Badulla</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Batticaloa">Batticaloa</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Colombo">Colombo</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Galle">Galle</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Gampaha">Gampaha</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Hambantota">Hambantota</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Jaffna">Jaffna</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kalutara">Kalutara</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kandy">Kandy</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kegalle">Kegalle</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kilinochchi">Kilinochchi</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Kurunegala">Kurunegala</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Mannar">Mannar</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Matale">Matale</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Matara">Matara</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Monaragala">Monaragala</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Mullaitivu">Mullaitivu</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Nuwara Eliya">Nuwara Eliya</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Polonnaruwa">Polonnaruwa</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Puttalam">Puttalam</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Ratnapura">Ratnapura</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Trincomalee">Trincomalee</li>
+                                <li><input type="radio" name="district" class="c_check_box" value="Vavuniya">Vavuniya</li>
                             </ul>
                         </div>
                     </li>
-                    <li style="padding: 5px;background:#39B54A">
-                        <button type="button" class="c_button_3"><img src="assets/img/filter.png" style="width:20px">&nbsp;&nbsp;&nbsp;Filter</button>
+                    <li style="padding: 5px;background:#39B54A;height: 54px">
+                        <button type="button" onclick="filter_result_btn()" class="c_button_3"><img src="assets/img/filter.png" style="width:20px">&nbsp;&nbsp;&nbsp;Filter</button>
+                        <div id="c_filter_no_select_wrn" style="display: none;position: relative; margin-top: -168px;">
+                            <div style="border-radius: 5px;padding: 4px;width: 240px; height: 100px; background: #CE2316; margin-left: 10px;">
+                                <div style="border-radius: 5px;background: #fff;width: 100%;height: 100%;text-align: center;padding-top: 30px">
+                                    <span style="font-size: 20px;">Please Select any Field</span>
+                                </div>
+                            </div>
+                            <div id="arrow_down" style="border-top:20px solid #CE2316"></div>
+                        </div>
                     </li>
                     <li style="padding: 5px;background:#39B54A;text-align: center;color: #FFF">
                         <span style="cursor: pointer" onclick="filter_reset()">Reset</span>
@@ -110,7 +145,7 @@
                 }
                 ?>
             </li>
-            <li id="c_doctor_result_ajax_box">
+            <li id="c_doctor_result_ajax_box" style="height: 340px;min-height: 340px;">
                 <!--  Ajax Results Load Here -->
             </li>
             <li>
@@ -121,7 +156,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div style="float: right;padding: 20px 0px">
-                        <span>Showing <span id="c_page_no"></span> results</span>
+                        <span id="c_show_page_no">Showing <span id="c_page_no"></span> results</span>
                     </div>
                 </div>
             </li>

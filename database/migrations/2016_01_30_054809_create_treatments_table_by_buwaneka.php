@@ -15,7 +15,7 @@ class CreateTreatmentsTableByBuwaneka extends Migration
         Schema::create('treatments',function (Blueprint $table){
             $table->increments('id');
             $table->integer('doc_id');
-            for($i=1;$i<=10;$i++) {
+            for($i=1;$i<=5;$i++) {
                 $table->string('treat_'.$i);
             }
             $table->timestamps();

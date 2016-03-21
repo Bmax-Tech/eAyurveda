@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -11,12 +12,13 @@
 |
 */
 
-// second comment
+/*
+ * ---------------------  Main Page Routes Start  ----------------------
+ */
 
-////////////////////////////////////////////////////////////////////////
-// ---------------------  Main Page Routes Start  ----------------------
-
-//////////  Patient Side Routing /////////
+/*
+ * Patient Side Routing
+ */
 Route::get('/','Front@index');
 Route::get('/search','Front@search');
 Route::get('/search','Front@search_query');
@@ -29,10 +31,12 @@ Route::get('/myaccount/{name}','Front@my_account');
 Route::resource('/register/save','Front@register_patient');
 Route::resource('/login','Front@login');
 Route::resource('/logout','Front@logout');
-Route::resource('/forgotten_password','Front@forgotten_password');
 Route::resource('/update_user_profile','Front@update_account');
+Route::get('/AyurvedicTherapies','Front@spa');
 
-//////////  Admin Side Routing //////////
+/*
+ * Admin Side Routing
+ */
 Route::get('/admin_panel_login','Admin_Front@admin_login');
 Route::get('/admin_panel_home','Admin_Front@admin_home');
 Route::resource('/admin_login_auth','Admin_Front@admin_login_auth');
@@ -50,7 +54,6 @@ Route::get('/admin_panel/rem_com/{user_id}','Admin_Front@rem_com');
 Route::get('/admin_panel/users','Admin_Front@view_users');
 Route::get('/admin_panel/inapusers','Admin_Front@view_inapusers');
 Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@user_remove');
-//Route::get('/admin_panel/getdid/{user_id}','Admin_Front@getdid');
 Route::get('/admin_panel/filterdoc/{user_id}/{user_id1}/{user_id2}','Admin_Front@filterdoc');
 Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@updatefet');
 Route::get('/admin_panel/test','Admin_Front@test');
@@ -60,14 +63,17 @@ Route::get('/admin/tipdel/{id}','Admin_Front@tipdel');
 Route::get('/reg_admin.php','Admin_Front@reg_admin');
 
 
+/*
+ * ---------------------  Main Page Routes End  ----------------------
+ */
 
+/*
+ * ---------------------  Ajax Routes Start  ----------------------
+ */
 
-// -----------------------  Main Page Routes End  -------------------------
-///////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////
-// ------------------------  Ajax Routes Start  ---------------------------
-
+Route::post('/forgotten_password_check','AjaxControll@forgotten_password_check');
+Route::post('/forgotten_password_email','AjaxControll@forgotten_password_email');
+Route::post('/save_change_password','AjaxControll@change_forgotten_password');
 Route::post('/ajax/{type}/{data}','AjaxControll@register_page');
 Route::post('/ajax','AjaxControll@doc_search_page');
 Route::post('/ajax/{doc_id}','AjaxControll@get_doctor_comments');
@@ -75,9 +81,12 @@ Route::post('/post_comment','AjaxControll@add_comments');
 Route::post('/get_comments_by_user','AjaxControll@get_comments_by_user');
 Route::post('/send_chat_message','AjaxControll@send_chat_message_by_user');
 Route::post('/get_chat_message','AjaxControll@get_chat_message_by_user');
+Route::post('/get_user_appointment_fill','AjaxControll@get_user_appointment_fill');
+Route::post('/make_appointment','AjaxControll@make_appointment');
 
-// -------------------------  Ajax Routes End  ----------------------------
-///////////////////////////////////////////////////////////////////////////
+/*
+ * ---------------------  Ajax Routes End  ----------------------
+ */
 
 /*
 |--------------------------------------------------------------------------
@@ -94,12 +103,69 @@ Route::group(['middleware' => ['web']], function () {
     //
 });
 
-////////////////////////////////////////////////////////////////////////////
-// ------------------------  Forum Routes Start  ---------------------------
 
+/*
+ * ---------------------  Forum Routes Start  ----------------------
+ */
 
+/* Load the Forum Homepage */
 Route::get('/forum','ForumController@returnHome');
-Route::get('/for_admin/{page_name}','ForumController@returnView');
+Route::get('/forum/profile','ForumController@returnProfile');
 
-// -------------------------  Forum Routes End  ----------------------------
-///////////////////////////////////////////////////////////////////////////
+/* Load the Admin Panels of Forum */
+Route::get('/for_admin/{page_name}','ForumController@returnView');
+Route::get('/forum/profilepage/{page_name}','ForumController@returnProfileView');
+
+
+Route::get('/forum/search/{query}','ForumController@searchForum');
+Route::get('forum/getcategories/','ForumController@getCategories');
+Route::get('forum/questions/getrecent/','ForumController@getRecentQuestions');
+Route::get('forum/questions/getflagged/','ForumController@getFlaggedQuestions');
+Route::get('forum/answers/getflagged/','ForumController@getFlaggedAnswers');
+Route::get('forum/answers/getrecent/','ForumController@getRecentAnswers');
+Route::get('forum/questions/browserecent/','ForumController@browseRecent');
+Route::get('forum/answer/upvote/{answerid}/{userid}','ForumController@upVoteAnswer');
+Route::get('forum/answer/downvote/{answerid}/{userid}','ForumController@downVoteAnswer');
+Route::get('forum/answer/flaganswer/{answerid}/{userid}','ForumController@flagAnswer');
+Route::get('forum/answer/flagquestion/{questionid}/{userid}','ForumController@flagQuestion');
+Route::get('/forum/browse/{category}','ForumController@getBrowseCategory');
+Route::get('/forum/question/delete/{qid}','ForumController@deleteQuestion');
+Route::get('/forum/question/approve/{qid}','ForumController@approveQuestion');
+Route::get('/forum/answer/delete/{aid}','ForumController@deleteAnswer');
+Route::get('/forum/answer/approve/{aid}','ForumController@approveAnswer');
+Route::get('/forum/category/delete/{catname}','ForumController@deleteCategory');
+
+
+Route::get('/forum/view', 'ForumController@displayQuestion');
+
+Route::get('/forum/submitanswer/{questionid}/{userid}/{subject}/{body}', 'ForumController@submitAnswer');
+
+Route::post('/forum/sendnewsletter', 'ForumController@sendNewsletter');
+Route::resource('/forum/addcategory', 'ForumController@addcategory');
+Route::resource('/forum/postquestion', 'ForumController@postquestion');
+
+
+//Route::resource('/forum/addcategory','ForumController@addCategory()');
+
+
+Route::get('/messages/inbox/', function () {
+    $head = "received";
+    $current_user = "muabdulla@gmail.com";
+    $messages = DB::table('messages')->where('mTo', '=' , $current_user)->get();
+    return View::make('messages')
+        ->with('messages', $messages)
+        ->with('head', $head);
+});
+
+Route::get('/messages/sent/', function () {
+    $head = "sent";
+    $current_user = "muabdulla@gmail.com";
+    $messages = DB::table('messages')->where('mFrom', '=' , $current_user)->get();
+    return View::make('messages')
+        ->with('messages', $messages)
+        ->with('head', $head);
+});
+
+/*
+ * ---------------------  Forum Routes End  ----------------------
+ */

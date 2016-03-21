@@ -18,6 +18,7 @@ class Doctors extends Model
         'address_1',
         'address_2',
         'city',
+        'district',
         'contact_number',
         'email',
         'description',
