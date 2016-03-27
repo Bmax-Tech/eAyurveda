@@ -166,13 +166,17 @@ class ForumController extends Controller
             $destinationPath = base_path() . '\public\assets_social\img\forum_categories';
             Input::file('catImage')->move($destinationPath, $imageName);
 
+            /*Enter the filname.extentsion to Database */
             \DB::table('forumCategory')->insert(
                 array('catName' => $catName,
                     'catDescription' => $catDescription,
                     'imageURL' => $catName.".".$extension)
             );
         } else {
-            /* Submitted without uploading an image */
+            /*
+            Submitted without uploading an image
+            The default.jpg will be the image entered
+             */
             \DB::table('forumCategory')->insert(
                 array('catName' => $catName,
                     'catDescription' => $catDescription,
@@ -191,6 +195,7 @@ class ForumController extends Controller
         $result = \DB::table('users')->select('email')->where('id', $userid)->first();
         $email = $result->email;
 
+        /* DB insertion of the Answer */
         \DB::table('forumanswer')->insert(
             array('qID' => $questionid,
                 'aFrom' => $email,
@@ -207,6 +212,7 @@ class ForumController extends Controller
         $category = Input::get('category');
         $currentUser = "muabdulla@gmail.com";
 
+        /* DB insertion of the Question */
         \DB::table('forumQuestion')->insert(
             array('qFrom' => $currentUser,
                 'qSubject' => $title,
@@ -226,6 +232,7 @@ class ForumController extends Controller
 
         \DB::table('forumQuestion')->where('qID', '=', $first)->delete();
 
+        /* Resend the updated data after deletion */
         $questions = \DB::table('forumQuestion')
             ->join('forumquestionflags', 'forumQuestion.qID', '=', 'forumquestionflags.qID')
             ->join('users', 'forumQuestion.qfrom', '=', 'users.email')
