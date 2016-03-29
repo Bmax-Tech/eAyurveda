@@ -132,27 +132,24 @@ Route::post('/forum/sendnewsletter', 'ForumController@sendNewsletter');
 Route::resource('/forum/addcategory', 'ForumController@addcategory');
 Route::resource('/forum/postquestion', 'ForumController@postquestion');
 
+//
+//Route::get('/messages/inbox/', function () {
+//    $head = "received";
+//    $current_user = "muabdulla@gmail.com";
+//    $messages = DB::table('messages')->where('mTo', '=' , $current_user)->get();
+//    return View::make('messages')
+//        ->with('messages', $messages)
+//        ->with('head', $head);
+//});
 
-//Route::resource('/forum/addcategory','ForumController@addCategory()');
-
-
-Route::get('/messages/inbox/', function () {
-    $head = "received";
-    $current_user = "muabdulla@gmail.com";
-    $messages = DB::table('messages')->where('mTo', '=' , $current_user)->get();
-    return View::make('messages')
-        ->with('messages', $messages)
-        ->with('head', $head);
-});
-
-Route::get('/messages/sent/', function () {
-    $head = "sent";
-    $current_user = "muabdulla@gmail.com";
-    $messages = DB::table('messages')->where('mFrom', '=' , $current_user)->get();
-    return View::make('messages')
-        ->with('messages', $messages)
-        ->with('head', $head);
-});
+//Route::get('/messages/sent/', function () {
+//    $head = "sent";
+//    $current_user = "muabdulla@gmail.com";
+//    $messages = DB::table('messages')->where('mFrom', '=' , $current_user)->get();
+//    return View::make('messages')
+//        ->with('messages', $messages)
+//        ->with('head', $head);
+//});
 
 // -------------------------  Forum Routes End  ----------------------------
 ///////////////////////////////////////////////////////////////////////////
