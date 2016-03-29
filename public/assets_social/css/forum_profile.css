@@ -123,6 +123,18 @@
     background-image: url('../img/view_awesome_w.png');
     border-color: #34a334 #30a430 #228722 #2fa52f !important;
 }
+.profileHead{
+    color: #999;
+    font-size: 18px;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue';
+}
+.profileHeadSeperator {
+    height: 1px;
+    width:100%;
+    background-color: #ddd;
+}
+
+
 
 
 @media screen and (max-width: 960px){
