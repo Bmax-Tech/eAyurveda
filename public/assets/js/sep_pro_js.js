@@ -1933,3 +1933,81 @@ $(".c_button_res_1").click(function(){
 		});
 	}
 });
+
+/*
+ * Physicians Page
+ */
+function LoadPhysicians(){
+	$("#c_loading_msg").fadeIn();
+	var newUrl = "/get_physicians";
+	var dataString = $("#physicians_paginate_data").serialize();
+	$.ajax({
+		type: 'POST',
+		url: newUrl,
+		data: dataString,
+		dataType: 'json',
+		cache: false,
+		success:function(data){
+			//console.log(data);
+			$(".c_phy_ajax_load").html(data.page);
+			$("#c_loading_msg").fadeOut();
+
+			if(data.pagination.total != 0) {
+				$("#c_phy_paginate_box").show();
+				// Initialize
+				if (data.pagination.prev_page_url != null) {
+					var pre_page = data.pagination.prev_page_url.split("=");
+					pre_page = pre_page[1];
+				} else {
+					var pre_page = 1;
+				}
+				if (data.pagination.next_page_url != null) {
+					var next_page = data.pagination.next_page_url.split("=");
+					next_page = next_page[1];
+				} else {
+					var next_page = data.pagination.last_page;
+				}
+
+				$("#pre_page_no").val(pre_page);
+				$("#next_page_no").val(next_page);
+
+				var from = data.pagination.from;
+				var total = data.pagination.total;
+				var per_page = data.pagination.per_page;
+				if (total - from > per_page) {
+					var to = from + per_page - 1;
+				} else {
+					var to = total;
+				}
+				$("#c_phy_paginate_txt").html(from + " to " + to);
+				// Initialize
+			}else{
+				$("#c_phy_paginate_box").hide();
+			}
+		}
+	});
+};
+
+$(document).ready(function(){
+	if($("#phy_page_no").val() == "1"){
+		LoadPhysicians();
+	}
+});
+
+function phy_type_click(para_1,para_2){
+	$(".c_phy_link").removeClass('c_link_active');
+	$("#phy_link_"+para_2).addClass('c_link_active');
+	$("#phy_page_type").val(para_1);
+	$("#phy_page_no").val(1); // Reset Page Number
+	LoadPhysicians();
+};
+
+$("#c_phy_paginate_left").click(function(){
+	$("#phy_page_no").val($("#pre_page_no").val());
+	LoadPhysicians();
+});
+
+$("#c_phy_paginate_right").click(function(){
+	$("#phy_page_no").val($("#next_page_no").val());
+	LoadPhysicians();
+});

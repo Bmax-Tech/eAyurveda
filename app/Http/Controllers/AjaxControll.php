@@ -420,4 +420,46 @@ class AjaxControll extends ExceptionController
 			$this->LogError('Confirmation Email Send Function',$e);
 		}
 	}
+
+	/*
+	 * This function will be used by Physicians Page to load Doctors Profiles
+	 * First result will be pass into physicians_result.blade and render
+	 * return will be rendered result in String format
+	 */
+	public function GetPhysiciansPaginated(Request $request){
+		$results_per_page = 9;
+		/*
+		 * Build Up Query Depending on users selections
+		 */
+		if(Input::get('type') == "ALL"){
+			$query = "SELECT * FROM doctors ORDER BY id";
+		}else{
+			$query = "SELECT * FROM doctors WHERE last_name LIKE '".Input::get('type')."%' ORDER BY id";
+		}
+
+		/*
+		 * DataBase Array Slicing and Pagination >>>
+		 */
+		try {
+			$all_doctors = DB::select(DB::raw($query));
+
+			$doctors = array_slice($all_doctors, $results_per_page * (Input::get('page', 1) - 1), $results_per_page);
+
+			$paginate_data = new LengthAwarePaginator($all_doctors, count($all_doctors), $results_per_page,
+					Paginator::resolveCurrentPage(), ['path' => Paginator::resolveCurrentPath()]);
+		}catch (Exception $e){
+			$this->LogError('AjaxController GetPhysiciansPaginated Function',$e);
+		}
+		/*
+		 * DataBase Array Slicing and Pagination <<<
+		 */
+
+		/* This will convert view into String, Which can parse through json object */
+		$HtmlView = (String) view('physicians_result')->with(['doctors'=>$doctors]);
+		$res['pagination'] = $paginate_data;
+		$res['page'] = $HtmlView;
+
+		/* Return Json Type Object */
+		return response()->json($res);
+	}
 }

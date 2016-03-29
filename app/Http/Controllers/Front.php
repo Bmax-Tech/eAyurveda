@@ -378,6 +378,13 @@ class Front extends ExceptionController
         return view('ayurvedic_therapies');
     }
 
+    /*
+     * Physicians Page
+     */
+    public function physicians(Request $request){
+        return view('physicians');
+    }
+
 
 
     /* ~~~~~~~~~~~~~~~~
