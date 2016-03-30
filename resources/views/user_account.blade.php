@@ -49,16 +49,24 @@
                 <li style="margin-top: 15px;padding-left: 55px;padding-top: 10px">
                     <div>
                         <ul class="c_top_ul">
-                        <?php for($i=0;$i<5;$i++){ ?>
+                        <?php
+                            $i=1;
+                            foreach($recently_viewed_docs as $doc){
+                        ?>
                             <li>
+                            <a href="/profile/Dr.{{$doc['doc_first_name']}}{{$doc['doc_last_name']}}/{{$doc['doc_id']}}">
                             <div class="c_doc_box" <?php if($i!=5){ ?>style="margin-right:10px"<?php } ?>>
                                 <ul class="c_ul_1" style="width:140px;font-size: 12px !important;">
-                                    <li style="width:100%"><div align="center"><img src="{{ URL::asset('assets/img/doc_user.png') }}" width="30px"></div></li>
-                                    <li style="width:100%;margin-top:20px"><div class="c_font_5" style="text-align:center">Dr. Ananada Godagama</div></li>
+                                    <li style="width:100%"><div align="center" class="c_profile_rec_icon" style="background-image: url('{{ URL::asset($doc['image']) }}')"></div></li>
+                                    <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center">Dr. <?php echo $doc['doc_last_name']; ?></div></li>
                                 </ul>
                             </div>
+                            </a>
                             </li>
-                        <?php } ?>
+                        <?php
+                                $i++;
+                            }
+                        ?>
                         </ul>
                     </div>
                 </li>

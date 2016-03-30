@@ -465,6 +465,9 @@ $(function () {
 })
 
 </script>
+
+<!-- ChartJS 1.0.1 -->
+<script src="{{ URL::asset('assets/plugins/chartjs/Chart.min.js') }}"></script>
 <!-- JavaScripts End -->
 
 </body>

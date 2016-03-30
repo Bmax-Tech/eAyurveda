@@ -34,6 +34,7 @@ Route::resource('/logout','Front@logout');
 Route::resource('/update_user_profile','Front@update_account');
 Route::get('/AyurvedicTherapies','Front@spa');
 Route::get('/Physicians','Front@physicians');
+Route::get('/DoctorAccount','Front@DoctorAccount');
 
 /*
  * Admin Side Routing
