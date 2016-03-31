@@ -77,7 +77,7 @@
             </ul>
         </div>
         <div id="c_user_ac_update" style="margin-top: 70px;display: none">
-           <form action="{{ URL::asset('update_doctor_account') }}" onsubmit="return check_update_account()" enctype="multipart/form-data" method="post">
+           <form action="{{ URL::asset('update_doctor_account') }}" onsubmit="return check_doctor_account_update()" enctype="multipart/form-data" method="post">
            <div class="col-lg-7 c_no_padding">
                 <ul class="c_ul_1">
                     <li style="padding-bottom: 10px;font-size: 17px;font-weight: 500;">
@@ -119,7 +119,7 @@
                         <div class="col-lg-6 c_no_padding">
                             <ul class="c_ul_1">
                                 <li>
-                                    <span>NIC</span><span class="c_warning_tips_reg" id="wrn_nic"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter NIC (National Identity Card) number</span>
+                                    <span>NIC</span><span class="c_warning_tips_reg" id="wrn_nic"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter NIC number</span>
                                 </li>
                                 <li class="c_add_margin_20 c_form_margin_10">
                                     <input type="text" value="{{ $doctor['nic'] }}" class="c_text_box_1" spellcheck="false" name="nic" onkeypress="remove_wrn('nic')" onchange="remove_wrn('nic')" placeholder="Eg:- XXXXXXXXXV"/>
@@ -128,25 +128,25 @@
                         </div>
                     </li>
                     <li>
-                        <span>Address 1</span><span class="c_warning_tips_reg" id="wrn_nic"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter NIC (National Identity Card) number</span>
+                        <span>Address 1</span><span class="c_warning_tips_reg" id="wrn_address_1"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter address 1</span>
                     </li>
                     <li class="c_add_margin_20 c_form_margin_10">
-                        <input type="text" value="{{ $doctor['address_1'] }}" class="c_text_box_1" spellcheck="false" name="address_1" onkeypress="remove_wrn('nic')" onchange="remove_wrn('nic')"/>
+                        <input type="text" value="{{ $doctor['address_1'] }}" class="c_text_box_1" spellcheck="false" name="address_1" onkeypress="remove_wrn('address_1')" onchange="remove_wrn('address_1')"/>
                     </li>
                     <li>
-                        <span>Address 2</span><span class="c_warning_tips_reg" id="wrn_nic"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter NIC (National Identity Card) number</span>
+                        <span>Address 2</span><span class="c_warning_tips_reg" id="wrn_address_2"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter address 2</span>
                     </li>
                     <li class="c_add_margin_20 c_form_margin_10">
-                        <input type="text" value="{{ $doctor['address_2'] }}" class="c_text_box_1" spellcheck="false" name="address_2" onkeypress="remove_wrn('nic')" onchange="remove_wrn('nic')"/>
+                        <input type="text" value="{{ $doctor['address_2'] }}" class="c_text_box_1" spellcheck="false" name="address_2" onkeypress="remove_wrn('address_2')" onchange="remove_wrn('address_2')"/>
                     </li>
                     <li>
                         <div class="col-lg-6 c_no_padding" style="padding-right: 10px">
                             <ul class="c_ul_1">
                                 <li>
-                                    <span>City</span><span class="c_warning_tips_reg" id="wrn_nic"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter NIC (National Identity Card) number</span>
+                                    <span>City</span><span class="c_warning_tips_reg" id="wrn_city"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter city</span>
                                 </li>
                                 <li class="c_add_margin_20 c_form_margin_10">
-                                    <input type="text" value="{{ $doctor['city'] }}" class="c_text_box_1" spellcheck="false" name="city" onkeypress="remove_wrn('nic')" onchange="remove_wrn('nic')"/>
+                                    <input type="text" value="{{ $doctor['city'] }}" class="c_text_box_1" spellcheck="false" name="city" onkeypress="remove_wrn('city')" onchange="remove_wrn('city')"/>
                                 </li>
                             </ul>
                         </div>
@@ -199,20 +199,20 @@
                         <div class="col-lg-6 c_no_padding" style="padding-right: 10px">
                             <ul class="c_ul_1">
                                 <li>
-                                    <span>Longitude</span><span class="c_warning_tips_reg" id="wrn_dob">select date of birth</span>
+                                    <span>Longitude</span><span class="c_warning_tips_reg" id="wrn_longitude"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter longitude</span>
                                 </li>
                                 <li class="c_add_margin_20 c_form_margin_10">
-                                    <input type="text" value="{{ $doctor['longitude'] }}" class="c_text_box_1" spellcheck="false" name="nic" onkeypress="remove_wrn('nic')" onchange="remove_wrn('nic')" />
+                                    <input type="text" value="{{ $doctor['longitude'] }}" class="c_text_box_1" spellcheck="false" name="longitude" onkeypress="remove_wrn('longitude')" onchange="remove_wrn('longitude')" />
                                 </li>
                             </ul>
                         </div>
                         <div class="col-lg-6 c_no_padding">
                             <ul class="c_ul_1">
                                 <li>
-                                    <span>Latitude</span><span class="c_warning_tips_reg" id="wrn_nic"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter NIC (National Identity Card) number</span>
+                                    <span>Latitude</span><span class="c_warning_tips_reg" id="wrn_latitude"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter latitude</span>
                                 </li>
                                 <li class="c_add_margin_20 c_form_margin_10">
-                                    <input type="text" value="{{ $doctor['latitude'] }}" class="c_text_box_1" spellcheck="false" name="nic" onkeypress="remove_wrn('nic')" onchange="remove_wrn('nic')" />
+                                    <input type="text" value="{{ $doctor['latitude'] }}" class="c_text_box_1" spellcheck="false" name="latitude" onkeypress="remove_wrn('latitude')" onchange="remove_wrn('latitude')" />
                                 </li>
                             </ul>
                         </div>
@@ -234,15 +234,15 @@
                         <span>Email Address</span><span class="c_warning_tips_reg" id="wrn_email"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid email address</span>
                     </li>
                     <li class="c_add_margin_20 c_form_margin_10">
-                        <input type="hidden" id="hidden_email" value="">
-                        <input value="{{ $doctor['email'] }}" type="text" class="c_text_box_1" onkeyup="check_update_existing('email',this.value)" spellcheck="false" name="email" onkeypress="remove_wrn('email')" onchange="remove_wrn('email')" autocomplete="off"/>
+                        <input type="hidden" id="hidden_email" value="{{ $doctor['email'] }}">
+                        <input value="{{ $doctor['email'] }}" type="text" class="c_text_box_1" onkeyup="check_update_doc_acount_existing('email',this.value)" spellcheck="false" name="email" onkeypress="remove_wrn('email')" onchange="remove_wrn('email')" autocomplete="off"/>
                     </li>
 
                     <li>
                         <div class="col-lg-12" style="margin-bottom: 25px;border-top: 2px solid #228500;margin-top: 10px;"></div>
                     </li>
                     <li>
-                        <span style="font-weight: 500;font-size: 17px">About Profile</span><span class="c_warning_tips_reg" id="wrn_doc_description"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter about doctor</span>
+                        <span style="font-weight: 500;font-size: 17px">About Profile</span><span class="c_warning_tips_reg" id="wrn_doc_description"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter about profile</span>
                     </li>
                     <li class="c_add_margin_20 c_form_margin_10">
                         <textarea class="c_comment_textarea add_doc" data-id="9" id="doc_description" name="doc_description" onkeypress="remove_wrn('doc_description')" onchange="remove_wrn('doc_description')">{{ $doctor['description'] }}</textarea>
@@ -258,7 +258,7 @@
                         <div style="padding: 10px;padding-left: 20px">
                             <div id="profile_thumb" style="background-image: url({{ URL::asset($image['image_path']) }});height: 180px;width: 100%;background-size: 100%;background-position: center;background-repeat: no-repeat;background-color: rgba(42, 167, 0, 0.36)">
                             </div>
-                            <input class="file_input" type="file" data-id="profile_thumb" data-icon="{{ URL::asset('') }}" id="h_profile_thumb" name="profile_img[]" style="display:none"/>
+                            <input class="file_input" type="file" data-id="profile_thumb" data-icon="{{ URL::asset('') }}" id="h_profile_thumb" name="profile_img[]" style="display:none" accept="image/x-png, image/gif, image/jpeg"/>
                             <div><button class="c_img_upload_btn" onclick="get_image('profile_thumb','h_profile_thumb')" type="button">Change Image</button></div>
                         </div>
                     </li>
@@ -266,7 +266,7 @@
                         <div style="padding-left: 20px;padding-bottom: 100px">
                             <ul class="c_ul_1">
                                 <li style="margin-top: 20px">
-                                    <div class="col-lg-12 c_no_padding" style="margin: 0px 0px 10px 0px"><span style="font-weight: 500">Specialized on&nbsp;&nbsp;&nbsp;<span style="font-size: 11px">(Max:5)</span></span><span class="c_warning_tips_reg" id="wrn_spec"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid specialization(s)</span></div>
+                                    <div class="col-lg-12 c_no_padding" style="margin: 0px 0px 10px 0px"><span style="font-weight: 500">Specialized on&nbsp;&nbsp;&nbsp;<span style="font-size: 11px">(Max:5)</span></span><span class="c_warning_tips_reg" id="wrn_spec"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span></span></div>
                                 </li>
                                 <li class="c_add_margin_20 c_form_margin_10">
                                     <div class="col-lg-12 c_no_padding">
@@ -278,7 +278,7 @@
                                             <input type="text" class="c_text_box_1 c_spec_txt add_doc" value="{{ $spec['spec_'.$i] }}" data-id="10" id="spec_doc_<?php echo $i; ?>" <?php if($spec['spec_'.$i] == ""){ echo 'style="display:none"'; }else{ $spec_c++; } ?> onkeypress="remove_wrn('spec')" onchange="remove_wrn('spec')" spellcheck="false" name="specialized[]" autocomplete="off" placeholder="Specialization <?php echo $i; ?>"/>
                                             <?php } ?>
                                         </div>
-                                        <div class="col-lg-2 c_no_padding" style="padding-left: 12px"><button type="button" onclick="add_more_op()" class="add_op_btn" style="padding: 1px">+</button><input type="text" value="<?php if($spec_c > 0){ echo $spec_c; }else{ echo "1"; } ?>" name="spec_count" id="spec_count" style="width: 30px" disabled class="op_count_txt"/><button type="button" onclick="rem_more_op()" class="rem_op_btn" style="padding: 1px">-</button></div>
+                                        <div class="col-lg-2 c_no_padding" style="padding-left: 12px"><button type="button" onclick="add_more_op_doc()" class="add_op_btn" style="padding: 1px">+</button><input type="text" value="<?php if($spec_c > 0){ echo $spec_c; }else{ echo "1"; } ?>" name="spec_count" id="spec_count" style="width: 30px" disabled class="op_count_txt"/><button type="button" onclick="rem_more_op_doc()" class="rem_op_btn" style="padding: 1px">-</button></div>
                                     </div>
                                 </li>
                             </ul>
@@ -288,7 +288,7 @@
                         <div style="padding-left: 20px">
                             <ul class="c_ul_1">
                                 <li style="margin-top: 20px">
-                                    <div class="col-lg-12 c_no_padding" style="margin: 10px 0px 10px 0px"><span style="font-weight: 500">Treatment types on&nbsp;&nbsp;&nbsp;<span style="font-size: 11px">(Max:5)</span></span><span class="c_warning_tips_reg" id="wrn_treat"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid treatment(s)</span></div>
+                                    <div class="col-lg-12 c_no_padding" style="margin: 10px 0px 10px 0px"><span style="font-weight: 500">Treatment types on&nbsp;&nbsp;&nbsp;<span style="font-size: 11px">(Max:5)</span></span><span class="c_warning_tips_reg" id="wrn_treat"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span></span></div>
                                 </li>
                                 <li class="c_add_margin_20 c_form_margin_10">
                                     <div class="col-lg-12 c_no_padding">
@@ -300,7 +300,7 @@
                                             <input type="text" class="c_text_box_1 c_spec_txt add_doc" value="{{ $treat['treat_'.$i] }}" data-id="11" id="treat_doc_<?php echo $i; ?>" <?php if($treat['treat_'.$i] == ""){ echo 'style="display:none"'; }else{ $treat_c++; } ?> onkeypress="remove_wrn('treat')" onchange="remove_wrn('treat')" spellcheck="false" name="treatments[]" autocomplete="off" placeholder="Treatment <?php echo $i; ?>"/>
                                             <?php } ?>
                                         </div>
-                                        <div class="col-lg-2 c_no_padding" style="padding-left: 12px"><button type="button" onclick="add_more_t_op()" class="add_op_btn" style="padding: 1px">+</button><input type="text" value="<?php if($treat_c > 0){ echo $treat_c; }else{ echo "1"; } ?>" name="treat_count" id="treat_count" style="width: 30px" disabled class="op_count_txt"/><button type="button" onclick="rem_more_t_op()" class="rem_op_btn" style="padding: 1px">-</button></div>
+                                        <div class="col-lg-2 c_no_padding" style="padding-left: 12px"><button type="button" onclick="add_more_t_op_doc()" class="add_op_btn" style="padding: 1px">+</button><input type="text" value="<?php if($treat_c > 0){ echo $treat_c; }else{ echo "1"; } ?>" name="treat_count" id="treat_count" style="width: 30px" disabled class="op_count_txt"/><button type="button" onclick="rem_more_t_op_doc()" class="rem_op_btn" style="padding: 1px">-</button></div>
                                     </div>
                                 </li>
                             </ul>
@@ -310,7 +310,7 @@
                         <div style="padding-left: 20px">
                             <ul class="c_ul_1">
                                 <li style="margin-top: 20px">
-                                    <div class="col-lg-12 c_no_padding" style="margin: 10px 0px 10px 0px"><span style="font-weight: 500">Consultation Times&nbsp;&nbsp;&nbsp;<span style="font-size: 11px">(Max:3)</span></span><span class="c_warning_tips_reg" id="wrn_treat"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span></span></div>
+                                    <div class="col-lg-12 c_no_padding" style="margin: 10px 0px 10px 0px"><span style="font-weight: 500">Consultation Times&nbsp;&nbsp;&nbsp;<span style="font-size: 11px">(Max:3)</span></span><span class="c_warning_tips_reg" id="wrn_consult"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span></span></div>
                                 </li>
                                 <li class="c_add_margin_20 c_form_margin_10">
                                     <div class="col-lg-12 c_no_padding">
@@ -319,7 +319,7 @@
                                                 $cons_c=0;
                                                 for($i=1;$i<=3;$i++){
                                             ?>
-                                            <input type="text" class="c_text_box_1 c_spec_txt add_doc" value="{{ $consult['time_'.$i] }}" data-id="11" id="consult_time_doc_<?php echo $i; ?>" <?php if($consult['time_'.$i] == "-" && $i>1){ echo 'style="display:none"'; }else{ $cons_c++; } ?> onkeypress="remove_wrn('treat')" onchange="remove_wrn('treat')" spellcheck="false" name="treatments[]" autocomplete="off" placeholder="01:30 PM to 03:30 PM"/>
+                                            <input type="text" class="c_text_box_1 c_spec_txt add_doc" value="<?php if($consult['time_'.$i] != "-" || $consult['time_'.$i] != ""){ echo $consult['time_'.$i]; } ?>" data-id="11" id="consult_time_doc_<?php echo $i; ?>" <?php if(($consult['time_'.$i] == "-" || $consult['time_'.$i] == "") && $i>1){ echo 'style="display:none"'; }else{ $cons_c++; } ?> onkeypress="remove_wrn('consult')" onchange="remove_wrn('consult')" spellcheck="false" name="consult_times[]" autocomplete="off" placeholder="01:30 PM to 03:30 PM"/>
                                             <?php } ?>
                                         </div>
                                         <div class="col-lg-2 c_no_padding" style="padding-left: 12px"><button type="button" onclick="add_more_cons_op()" class="add_op_btn" style="padding: 1px">+</button><input type="text" value="<?php if($cons_c > 0){ echo $cons_c; }else{ echo "1"; } ?>" name="cons_time_count" id="cons_time_count" style="width: 30px" disabled class="op_count_txt"/><button type="button" onclick="rem_more_cons_op()" class="rem_op_btn" style="padding: 1px">-</button></div>

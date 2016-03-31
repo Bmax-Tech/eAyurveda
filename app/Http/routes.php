@@ -35,6 +35,7 @@ Route::resource('/update_user_profile','Front@update_account');
 Route::get('/AyurvedicTherapies','Front@spa');
 Route::get('/Physicians','Front@physicians');
 Route::get('/DoctorAccount','Front@DoctorAccount');
+Route::resource('/update_doctor_account','Front@UpdateDoctorAccount');
 
 /*
  * Admin Side Routing
@@ -84,6 +85,7 @@ Route::post('/get_chat_message','AjaxControll@get_chat_message_by_user');
 Route::post('/get_user_appointment_fill','AjaxControll@get_user_appointment_fill');
 Route::post('/make_appointment','AjaxControll@make_appointment');
 Route::post('/get_physicians','AjaxControll@GetPhysiciansPaginated');
+Route::post('/CheckDoctorEmailUserName','AjaxControll@UpdateDoctorCheck');
 
 /*
  * ---------------------  Ajax Routes End  ----------------------

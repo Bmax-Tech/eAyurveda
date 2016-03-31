@@ -1141,6 +1141,21 @@ function check_spec_and_treat(para_1){
 		}else{
 			return true;
 		}
+	}else if(para_1 == "consult"){
+		var skip=false;
+		var cons_time_count = $("#cons_time_count").val();
+		for(var i=1;i<=cons_time_count;i++){
+			if($("#consult_time_doc_"+i).val() == ""){
+				skip=true;
+			}
+		}
+
+		if(skip){
+			show_warning('consult');
+			return false;
+		}else{
+			return true;
+		}
 	}
 }
 
@@ -2179,8 +2194,74 @@ if($("#doctor_account_page").val()=="YES") {
 }
 
 
-var cons_time_op=1;
+//*********
+
+function add_more_op_doc(){
+	var spec_count = $("#spec_count").val();
+	if(spec_count < 5) {
+		spec_count++;
+		$("#spec_count").val(spec_count);
+		for (var i = 1; i <= 5; i++) {
+			if (i <= spec_count) {
+				$("#spec_doc_" + i).fadeIn(300);
+			} else {
+				$("#spec_doc_" + i).fadeOut(1);
+				$("#spec_doc_" + i).val("");
+			}
+		}
+	}
+}
+
+function rem_more_op_doc(){
+	var spec_count = $("#spec_count").val();
+	if(spec_count > 1) {
+		spec_count--;
+		$("#spec_count").val(spec_count);
+		for (var i = 1; i <= 5; i++) {
+			if (i <= spec_count) {
+				$("#spec_doc_" + i).fadeIn(300);
+			} else {
+				$("#spec_doc_" + i).fadeOut(1);
+				$("#spec_doc_" + i).val("");
+			}
+		}
+	}
+}
+
+function add_more_t_op_doc(){
+	var treat_count = $("#treat_count").val();
+	if(treat_count < 5) {
+		treat_count++;
+		$("#treat_count").val(treat_count);
+		for (var i = 1; i <= 5; i++) {
+			if (i <= treat_count) {
+				$("#treat_doc_" + i).fadeIn(300);
+			} else {
+				$("#treat_doc_" + i).fadeOut(1);
+				$("#treat_doc_" + i).val("");
+			}
+		}
+	}
+}
+
+function rem_more_t_op_doc(){
+	var treat_count = $("#treat_count").val();
+	if(treat_count > 1) {
+		treat_count--;
+		$("#treat_count").val(treat_count);
+		for (var i = 1; i <= 5; i++) {
+			if (i <= treat_count) {
+				$("#treat_doc_" + i).fadeIn(300);
+			} else {
+				$("#treat_doc_" + i).fadeOut(1);
+				$("#treat_doc_" + i).val("");
+			}
+		}
+	}
+}
+
 function add_more_cons_op(){
+	var cons_time_op = $("#cons_time_count").val();
 	if(cons_time_op < 3) {
 		cons_time_op++;
 		$("#cons_time_count").val(cons_time_op);
@@ -2196,6 +2277,7 @@ function add_more_cons_op(){
 }
 
 function rem_more_cons_op(){
+	var cons_time_op = $("#cons_time_count").val();
 	if(cons_time_op > 1) {
 		cons_time_op--;
 		$("#cons_time_count").val(cons_time_op);
@@ -2209,6 +2291,193 @@ function rem_more_cons_op(){
 		}
 	}
 }
+
+
+var doc_up_AJAX_USERNAME=true;
+var doc_up_AJAX_EMAIL=true;
+function check_update_doc_acount_existing(para_1,para_2){
+	if(para_1 == "email" && !valid_email('email')){
+		$('#wrn_' + para_1).html('enter ' + para_1);
+		$('#wrn_' + para_1).hide();
+		$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-remove" aria-hidden="true"  style="color:red"></span>');
+		show_warning(para_1);
+	}
+	else if(para_2.length>0) {
+		var dataString = 'type='+para_1+'&data='+para_2;
+		var newURL = "/CheckDoctorEmailUserName";
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			url: newURL,
+			data: dataString,
+			cache: false,
+			success: function (data) {
+				//console.log(data);
+				var cr_email = $("#hidden_email").val();
+
+				if($("input[name=email]").val() != cr_email) {
+					if (data.msg == 'USING') {
+						if (para_1 == 'username') {
+							doc_up_AJAX_USERNAME = false;
+						} else {
+							doc_up_AJAX_EMAIL = false;
+						}
+
+						$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+						show_warning(para_1);
+					} else {
+
+						if (para_1 == 'username') {
+							doc_up_AJAX_USERNAME = true;
+						} else {
+							doc_up_AJAX_EMAIL = true;
+						}
+
+						if (para_2 == '') {
+							// This hides the warning
+							$('#wrn_' + para_1).html('enter ' + para_1);
+							$('#wrn_' + para_1).hide();
+						} else {
+							// This display right mark when the field is not duplicated
+							$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:green"></span>');
+							show_warning(para_1);
+						}
+					}
+				}else{
+					$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:green"></span>');
+					show_warning(para_1);
+				}
+			},
+			error: function (data) {
+				console.log('Error:', data);
+			}
+		});
+	}
+};
+
+//*********
+
+function check_doctor_account_update(){
+	var text_fields_status = true;
+	var email_check_status = true;
+	if(valid_length_input('first_name')
+			|| check_input_no_num('first_name')
+			|| valid_length_input('last_name')
+			|| check_input_no_num('last_name')
+			|| valid_length_input('dob')
+			|| $("input[name=dob]").val().length != 10
+			|| valid_length_input('nic')
+			|| !valid_nic_no('nic')
+			|| valid_length_input('address_1')
+			|| valid_length_input('address_2')
+			|| valid_length_input('city')
+			|| $("#district").val() == "select"
+			|| valid_length_input('longitude')
+			|| valid_length_input('latitude')
+			|| valid_length_input('contact_no')
+			|| !valid_phone_no('contact_no')
+			|| valid_length_input('email')
+			|| !valid_email('email')
+			|| $('#doc_description').val() == '') {
+
+		if (valid_length_input('first_name') || check_input_no_num('first_name')) {
+			show_warning('first_name');
+		}
+		if (valid_length_input('last_name') || check_input_no_num('last_name')) {
+			show_warning('last_name');
+		}
+		if (valid_length_input('dob') || $("input[name=dob]").val().length != 10)
+		{
+			show_warning('dob');
+		}
+		if (valid_length_input('nic') || !valid_nic_no('nic'))
+		{
+			show_warning('nic');
+		}
+		if (valid_length_input('address_1'))
+		{
+			show_warning('address_1');
+		}
+		if (valid_length_input('address_2'))
+		{
+			show_warning('address_2');
+		}
+		if (valid_length_input('city'))
+		{
+			show_warning('city');
+		}
+		if ($("#district").val() == "select")
+		{
+			show_warning('district');
+		}
+		if (valid_length_input('longitude'))
+		{
+			show_warning('longitude');
+		}
+		if (valid_length_input('latitude'))
+		{
+			show_warning('latitude');
+		}
+		if (valid_length_input('contact_no') || !valid_phone_no('contact_no'))
+		{
+			show_warning('contact_no');
+		}
+		if (valid_length_input('contact_no') || !valid_phone_no('contact_no'))
+		{
+			show_warning('contact_no');
+		}
+		if (valid_length_input('email') || !valid_email('email')) {
+			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid email');
+			show_warning('email');
+		}
+		if ($("#doc_description").val() == '')
+		{
+			show_warning('doc_description');
+		}
+
+		text_fields_status=false;
+	} else if(!doc_up_AJAX_EMAIL || !doc_up_AJAX_USERNAME) {
+		if (!doc_up_AJAX_EMAIL) {
+			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+			show_warning('email');
+		}
+
+		email_check_status = false;
+	}
+
+	// Check Specialization || Treatments || Consultation Times
+	var status_spec=true; // status of specializations
+	var status_treat=true; // status of treatments
+	var status_consult=true; // status of consultation times
+
+	if(check_spec_and_treat('spec')){
+		status_spec=true;
+	}else{
+		status_spec=false;
+	}
+	if(check_spec_and_treat('treat')){
+		status_treat=true;
+	}else{
+		status_treat=false;
+	}
+	if(check_spec_and_treat('consult')){
+		status_consult=true;
+	}else{
+		status_consult=false;
+	}
+
+	/*
+	 * Final Check
+	 */
+
+	if(text_fields_status && email_check_status && status_spec && status_treat && status_consult){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+
 /*
  * Doctor Account Manage Page End
  */

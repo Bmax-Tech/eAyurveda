@@ -431,6 +431,88 @@ class Front extends ExceptionController
         }
     }
 
+    /*
+     * This function will Update Doctor Profile Details
+     * Which are updated by Doctor
+     */
+    public function UpdateDoctorAccount(Request $request){
+        //dd($request);
+        $doctor_id = 1;// Holds Doctor ID
+        $user_id = 1;// Holds User ID
+        try {
+
+            /* Update Doctor details */
+            $doctor_ob = Doctors::find($doctor_id);
+            //$doctor_ob->first_name = Input::get('first_name');
+            //$doctor_ob->last_name = Input::get('last_name');
+            $doctor_ob->dob = Input::get('dob');
+            $doctor_ob->nic = Input::get('nic');
+            $doctor_ob->address_1 = Input::get('address_1');
+            $doctor_ob->address_2 = Input::get('address_2');
+            $doctor_ob->city = Input::get('city');
+            $doctor_ob->district = Input::get('district');
+            $doctor_ob->contact_number = Input::get('contact_no');
+            $doctor_ob->email = Input::get('email');
+            $doctor_ob->description = Input::get('doc_description');
+            $doctor_ob->longitude = Input::get('longitude');
+            $doctor_ob->latitude = Input::get('latitude');
+            $doctor_ob->save();
+
+            /* Update Specialization Details */
+            $specialized_ob = Specialization::whereDoc_id($doctor_id)->first();
+            $specialized_ob->spec_1 = Input::get('specialized')[0];
+            $specialized_ob->spec_2 = Input::get('specialized')[1];
+            $specialized_ob->spec_3 = Input::get('specialized')[2];
+            $specialized_ob->spec_4 = Input::get('specialized')[3];
+            $specialized_ob->spec_5 = Input::get('specialized')[4];
+            $specialized_ob->save();
+
+            /* Update Treatment Details */
+            $treatment_ob = Treatments::whereDoc_id($doctor_id)->first();
+            $treatment_ob->treat_1 = Input::get('treatments')[0];
+            $treatment_ob->treat_2 = Input::get('treatments')[1];
+            $treatment_ob->treat_3 = Input::get('treatments')[2];
+            $treatment_ob->treat_4 = Input::get('treatments')[3];
+            $treatment_ob->treat_5 = Input::get('treatments')[4];
+            $treatment_ob->save();
+
+            /* Update Consultation Times Details */
+            $consult_ob = ConsultationTimes::whereDoc_id($doctor_id)->first();
+            $consult_ob->time_1 = Input::get('consult_times')[0];
+            $consult_ob->time_2 = Input::get('consult_times')[1];
+            $consult_ob->time_3 = Input::get('consult_times')[2];
+            $consult_ob->save();
+
+
+            /* Check Whether New Image Upload is Available or not */
+            if (isset(Input::file('profile_img')[0])) {
+                /* This function will upload image */
+                self::upload_doctor_image($request, $user_id);
+
+                /* Updates Database Images table Image_path with new path */
+                $img_ob = Images::whereUser_id($user_id)->first();
+                $img_ob->image_path = "profile_images/doctor_images/doc_profile_img_" . $user_id . ".png";
+                $img_ob->save();
+            }
+
+            return Redirect::to('/DoctorAccount');
+        }catch (Exception $e) {
+            $this->LogError('Update Doctor Account Function', $e);
+        }
+    }
+    /*
+     * This function Uploads Doctor Profile images to Server '/public/profile_images/doctor_images/' Folder
+     */
+    public function upload_doctor_image(Request $request,$user_id){
+        try {
+            $imageName = "doc_profile_img_" . $user_id . ".png";
+            $destinationPath = base_path() . '/public/profile_images/doctor_images/';
+            Input::file('profile_img')[0]->move($destinationPath, $imageName);
+        }catch (Exception $e){
+            $this->LogError('Upload Doctor Image',$e);
+        }
+    }
+
 
 
     /* ~~~~~~~~~~~~~~~~

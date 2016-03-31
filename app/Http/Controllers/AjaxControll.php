@@ -462,4 +462,33 @@ class AjaxControll extends ExceptionController
 		/* Return Json Type Object */
 		return response()->json($res);
 	}
+
+	/*
+	 * This function check whether email and username is existing or not from Doctors Table
+	 * Return Json Object with 'USING' / 'NOTHING' Keywords
+	 */
+	public function UpdateDoctorCheck(Request $request){
+		$type = Input::get('type');
+		$data = Input::get('data');
+		try {
+			if ($type == 'username') {
+				/* Check for username is taken or not */
+				$patients = User::whereEmail($data)->first();
+			} else if ($type == 'email') {
+				/* Check for email is taken or not */
+				$patients = Doctors::whereEmail($data)->first();
+			}
+		}catch (Exception $e){
+			$this->LogError('AjaxController UpdateDoctorCheck Function',$e);
+		}
+
+		if(isset($patients)){
+			$res['msg'] = "USING";
+		}else{
+			$res['msg'] = "NOTHING";
+		}
+
+		return response()->json($res);
+	}
+
 }
