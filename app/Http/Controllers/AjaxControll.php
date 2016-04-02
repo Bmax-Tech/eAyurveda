@@ -491,4 +491,79 @@ class AjaxControll extends ExceptionController
 		return response()->json($res);
 	}
 
+	/*
+	 * This function returns users comments on doctor
+	 * which used in Doctor Account page
+	 */
+	public function GetCommentsOnDoctor(){
+		$doc_id = 1; // this should be replaced by $COOKIE reference
+
+		try {
+			$comments = Comments::whereDoctor_id($doc_id)->orderBy('id', 'DESC')->limit(20)->get();
+
+			foreach ($comments as $com) {
+				$pat = Patients::whereUser_id($com->user_id)->first();
+				$img = Images::whereUser_id($pat->user_id)->first();
+				$main_ob['com_data'] = $com;
+				$main_ob['pat_first_name'] = $pat->first_name;
+				$main_ob['pat_last_name'] = $pat->last_name;
+				$main_ob['pat_img'] = $img->image_path;
+
+				$res[] = $main_ob;
+			}
+		}catch (Exception $e){
+			$this->LogError('AjaxController Get Comments On Doctor Function',$e);
+		}
+
+		return response()->json($res);
+	}
+
+	/*
+	 * This function returns the View Area chart Data
+	 * to the Doctor Account Page
+	 */
+	public function GetAreaChartOnDoc(){
+		$doc_id = 1; // this should be replaced by $COOKIE reference
+
+		try {
+			$query = "SELECT DATE(created_at) AS d,COUNT(*) AS c FROM profile_view_hits WHERE doctor_id = ".$doc_id." GROUP BY DATE(created_at) ORDER BY DATE(created_at) LIMIT 5";
+			$area_data = DB::select(DB::raw($query));
+
+			foreach ($area_data as $data) {
+				$main_ob['date'] = $data->d;
+				$main_ob['count'] = $data->c;
+
+				$res[] = $main_ob;
+			}
+		}catch (Exception $e){
+			$this->LogError('AjaxController Get Area Chart On Doc Function',$e);
+		}
+
+		return response()->json($res);
+	}
+
+	/*
+         * This function returns the View Pie chart Data
+         * to the Doctor Account Page
+         */
+	public function GetPieChartOnDoc(){
+		$doc_id = 1; // this should be replaced by $COOKIE reference
+
+		try {
+			$query = "SELECT  rating,COUNT(*) AS c FROM comments WHERE doctor_id = ".$doc_id." GROUP BY rating";
+			$pie_data = DB::select(DB::raw($query));
+
+			foreach ($pie_data as $data) {
+				$main_ob['rating'] = $data->rating;
+				$main_ob['count'] = $data->c;
+
+				$res[] = $main_ob;
+			}
+		}catch (Exception $e){
+			$this->LogError('AjaxController Get Pie Chart On Doc Function',$e);
+		}
+
+		return response()->json($res);
+	}
+
 }

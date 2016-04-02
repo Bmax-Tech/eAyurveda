@@ -59,6 +59,26 @@
                                     <canvas id="pieChart" style="height:250px"></canvas>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
+                            <div class="col-lg-12 c_no_padding" style="padding-top: 23px">
+                                <table style="font-size: 12px;margin: 0 auto">
+                                    <tr>
+                                        <td style="background: #3c8dbc">&nbsp;&nbsp;&nbsp;</td>
+                                        <td style="padding-left: 5px">1 Star</td>
+                                        <td width="10px"></td>
+                                        <td style="background: #00c0ef">&nbsp;&nbsp;&nbsp;</td>
+                                        <td style="padding-left: 5px">2 Star</td>
+                                        <td width="10px"></td>
+                                        <td style="background: #f39c12">&nbsp;&nbsp;&nbsp;</td>
+                                        <td style="padding-left: 5px">3 Star</td>
+                                        <td width="10px"></td>
+                                        <td style="background: #00a65a">&nbsp;&nbsp;&nbsp;</td>
+                                        <td style="padding-left: 5px">4 Star</td>
+                                        <td width="10px"></td>
+                                        <td style="background: #f56954">&nbsp;&nbsp;&nbsp;</td>
+                                        <td style="padding-left: 5px">5 Star</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -67,11 +87,9 @@
                         <span style="font-size: 16px">Commented Posts on You</span>
                     </div>
                 </li>
-                <li style="margin-top: 15px;padding-left: 55px;padding-top: 10px">
-                    <div>
-                        <ul class="c_top_ul">
-
-                        </ul>
+                <li style="margin-top: 15px;padding: 10px 20px">
+                    <div class="c_my_ac_com_view" id="c_doctor_comments_load">
+                        <!-- Load User Recent Posted Comments -->
                     </div>
                 </li>
             </ul>

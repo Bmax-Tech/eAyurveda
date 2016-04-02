@@ -86,6 +86,9 @@ Route::post('/get_user_appointment_fill','AjaxControll@get_user_appointment_fill
 Route::post('/make_appointment','AjaxControll@make_appointment');
 Route::post('/get_physicians','AjaxControll@GetPhysiciansPaginated');
 Route::post('/CheckDoctorEmailUserName','AjaxControll@UpdateDoctorCheck');
+Route::post('/get_comments_on_doctor','AjaxControll@GetCommentsOnDoctor');
+Route::post('/GetDoctorPageAreaChart','AjaxControll@GetAreaChartOnDoc');
+Route::post('/GetDoctorPagePieChart','AjaxControll@GetPieChartOnDoc');
 
 /*
  * ---------------------  Ajax Routes End  ----------------------

@@ -2033,7 +2033,7 @@ $("#c_phy_paginate_right").click(function(){
  * Doctor Account Manage Page
  */
 
-if($("#doctor_account_page").val()=="YES") {
+function load_area_chart() {
 
 	$(function () {
 		/* ChartJS
@@ -2051,27 +2051,17 @@ if($("#doctor_account_page").val()=="YES") {
 		var areaChart = new Chart(areaChartCanvas);
 
 		var areaChartData = {
-			labels: ["January", "February", "March", "April", "May", "June", "July"],
+			labels: AREA_CHART_ARRAY[0],
 			datasets: [
 				{
-					label: "Electronics",
-					fillColor: "rgba(210, 214, 222, 1)",
-					strokeColor: "rgba(210, 214, 222, 1)",
-					pointColor: "rgba(210, 214, 222, 1)",
-					pointStrokeColor: "#c1c7d1",
-					pointHighlightFill: "#fff",
-					pointHighlightStroke: "rgba(220,220,220,1)",
-					data: [65, 59, 80, 81, 56, 55, 40]
-				},
-				{
-					label: "Digital Goods",
+					label: "Doctor",
 					fillColor: "rgba(60,141,188,0.9)",
 					strokeColor: "rgba(60,141,188,0.8)",
 					pointColor: "#3b8bba",
 					pointStrokeColor: "rgba(60,141,188,1)",
 					pointHighlightFill: "#fff",
 					pointHighlightStroke: "rgba(60,141,188,1)",
-					data: [28, 48, 40, 19, 86, 27, 90]
+					data: AREA_CHART_ARRAY[1]
 				}
 			]
 		};
@@ -2117,7 +2107,12 @@ if($("#doctor_account_page").val()=="YES") {
 
 		//Create the line chart
 		areaChart.Line(areaChartData, areaChartOptions);
+	});
 
+};
+function load_pie_chart(){
+
+		$(function () {
 		//-------------
 		//- PIE CHART -
 		//-------------
@@ -2126,40 +2121,34 @@ if($("#doctor_account_page").val()=="YES") {
 		var pieChart = new Chart(pieChartCanvas);
 		var PieData = [
 			{
-				value: 700,
+				value: PIE_CHART_ARRAY[1][4],
 				color: "#f56954",
-				highlight: "#f56954",
-				label: "Chrome"
+				highlight: "#ef2b0e",
+				label: "5 Star"
 			},
 			{
-				value: 500,
+				value: PIE_CHART_ARRAY[1][3],
 				color: "#00a65a",
-				highlight: "#00a65a",
-				label: "IE"
+				highlight: "#005a31",
+				label: "4 Star"
 			},
 			{
-				value: 400,
+				value: PIE_CHART_ARRAY[1][2],
 				color: "#f39c12",
-				highlight: "#f39c12",
-				label: "FireFox"
+				highlight: "#b06f09",
+				label: "3 Star"
 			},
 			{
-				value: 600,
+				value: PIE_CHART_ARRAY[1][1],
 				color: "#00c0ef",
-				highlight: "#00c0ef",
-				label: "Safari"
+				highlight: "#0097bc",
+				label: "2 Star"
 			},
 			{
-				value: 300,
+				value: PIE_CHART_ARRAY[1][0],
 				color: "#3c8dbc",
-				highlight: "#3c8dbc",
-				label: "Opera"
-			},
-			{
-				value: 100,
-				color: "#d2d6de",
-				highlight: "#d2d6de",
-				label: "Navigator"
+				highlight: "#296282",
+				label: "1 Star"
 			}
 		];
 		var pieOptions = {
@@ -2170,7 +2159,7 @@ if($("#doctor_account_page").val()=="YES") {
 			//Number - The width of each segment stroke
 			segmentStrokeWidth: 2,
 			//Number - The percentage of the chart that we cut out of the middle
-			percentageInnerCutout: 50, // This is 0 for Pie charts
+			percentageInnerCutout: 0, // This is 0 for Pie charts
 			//Number - Amount of animation steps
 			animationSteps: 100,
 			//String - Animation easing effect
@@ -2191,7 +2180,7 @@ if($("#doctor_account_page").val()=="YES") {
 		pieChart.Doughnut(PieData, pieOptions);
 	});
 
-}
+};
 
 
 //*********
@@ -2477,6 +2466,108 @@ function check_doctor_account_update(){
 	}
 };
 
+
+function get_user_comments_doctor_account(){
+	var base_url = $("#base_url").val();
+	var star = $("#hidden_star_url").html();
+	var green_star = $("#hidden_green_star_url").html();
+
+	var new_url = '/get_comments_on_doctor';
+	//var dataString = $("#doctor_comment").serialize();
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url:new_url,
+		//data:dataString,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			var txt='';
+			for(var i=0;i<Object(data).length;i++){
+				txt=txt+'<div class="col-lg-12 c_no_padding" style="padding: 20px"><div class="c_comment_body" style="padding: 5px">';
+				txt=txt+'<div class="c_my_ac_doc_img" style="background-image:url('+base_url+data[i]["pat_img"]+')"></div>';
+				txt=txt+'<ul class="c_ul_1" style="margin-bottom: 0px;margin-left: 50px"><li style="height: 25px"><div class="col-lg-4 c_no_padding">';
+				for (var s = 1; s <= 5; s++) {
+					if (s <= data[i]['com_data']['rating']) {
+						txt = txt + '<img src="' + green_star + '" class="c_sm_star">';
+					} else {
+						txt = txt + '<img src="' + star + '" class="c_sm_star">';
+					}
+				}
+				txt=txt+'</div></li>';
+				txt=txt+'<li style="padding-top: 5px">'+data[i]["com_data"]["description"]+'</li><li style="padding-top: 10px;font-size: 13px;color: rgb(0, 109, 22)"><ul class="c_top_ul">';
+				txt=txt+'<li>Doctor : '+data[i]["pat_first_name"]+'&nbsp;'+data[i]["pat_last_name"]+'</li><li style="margin-left: 40px">Posted Date - '+data[i]["com_data"]["posted_date_time"]+'</li></ul></li></ul></div></div>';
+			}
+			$("#c_doctor_comments_load").html(txt);
+		}
+	});
+}
+
+/*
+ * Load Doctor Page Statistics and Users comments
+ * when page loads
+ */
+$(document).ready(function(){
+	if($("#doctor_account_page").val()=="YES"){
+		get_user_comments_doctor_account();
+		GetDoctorPageAreaChart(); // Load Area Chart
+		GetDoctorPagePieChart(); // Load Pie Chart
+	}
+});
+
+/*
+ * This function will oad Area Chart Details
+ */
+var AREA_CHART_ARRAY = [];
+function GetDoctorPageAreaChart(){
+	var new_url = '/GetDoctorPageAreaChart';
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url:new_url,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			var date = [];
+			var count = [];
+			for(var i=0;i<Object(data).length;i++){
+				date.push(data[i]['date']);
+				count.push(data[i]['count']);
+			}
+			AREA_CHART_ARRAY[0] = date;
+			AREA_CHART_ARRAY[1] = count;
+
+			load_area_chart();
+		}
+	});
+};
+
+/*
+ * This function will oad PIE chart details
+ */
+var PIE_CHART_ARRAY = [];
+function GetDoctorPagePieChart(){
+	var new_url = '/GetDoctorPagePieChart';
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url:new_url,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			var rating = [];
+			var count = [];
+			for(var i=0;i<Object(data).length;i++){
+				rating.push(data[i]['rating']);
+				count.push(data[i]['count']);
+			}
+			PIE_CHART_ARRAY[0] = rating;
+			PIE_CHART_ARRAY[1] = count;
+
+			load_pie_chart();
+		}
+	});
+};
 
 /*
  * Doctor Account Manage Page End
