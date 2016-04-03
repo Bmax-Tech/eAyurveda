@@ -212,6 +212,8 @@
                     </li>
                     <li style="padding-bottom: 10px;font-size: 17px;font-weight: 500;">
                         <span>Geo Location Coordinates</span>
+                        <span><img src="{{ URL::asset('assets/img/map_icon.png') }}" id="c_map_pick_icon"></span>
+                        <span style="font-size: 11px;font-weight: 400">(click here to pick longitude & latitude)</span>
                     </li>
                     <li>
                         <div class="col-lg-6 c_no_padding" style="padding-right: 10px">
@@ -220,7 +222,7 @@
                                     <span>Longitude</span><span class="c_warning_tips_reg" id="wrn_longitude"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter longitude</span>
                                 </li>
                                 <li class="c_add_margin_20 c_form_margin_10">
-                                    <input type="text" value="{{ $doctor['longitude'] }}" class="c_text_box_1" spellcheck="false" name="longitude" onkeypress="remove_wrn('longitude')" onchange="remove_wrn('longitude')" />
+                                    <input readonly type="text" value="{{ $doctor['longitude'] }}" class="c_text_box_1" spellcheck="false" name="longitude" onkeypress="remove_wrn('longitude')" onchange="remove_wrn('longitude')" />
                                 </li>
                             </ul>
                         </div>
@@ -230,7 +232,7 @@
                                     <span>Latitude</span><span class="c_warning_tips_reg" id="wrn_latitude"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter latitude</span>
                                 </li>
                                 <li class="c_add_margin_20 c_form_margin_10">
-                                    <input type="text" value="{{ $doctor['latitude'] }}" class="c_text_box_1" spellcheck="false" name="latitude" onkeypress="remove_wrn('latitude')" onchange="remove_wrn('latitude')" />
+                                    <input readonly type="text" value="{{ $doctor['latitude'] }}" class="c_text_box_1" spellcheck="false" name="latitude" onkeypress="remove_wrn('latitude')" onchange="remove_wrn('latitude')" />
                                 </li>
                             </ul>
                         </div>
@@ -352,5 +354,34 @@
         </div>
     </div>
 </div>
+
+
+<!-- Google Map Longitude & Latitude Picker Pop Up -->
+
+<div class="container c_pop_up_box_map_picker" style="background: rgba(105, 105, 105, 0.419608)">
+    <div class="center-block c_pop_box_1_wrapper" style="width: 550px;margin-top: 4.1%">
+        <button class="c_close_btn map_picker_btn_close" style="margin-left: 520px;z-index: 1"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+        <div class="c_map_picker_box" style="width: 100%;height: 538px;padding:2px">
+            <ul class="c_ul_1">
+                <li style="margin-bottom: 8px;padding-left: 10px">
+                    <span class="c_font_2"><img  src="{{ URL::asset('assets/img/map_icon_2.png') }}" style="width: 40px;margin-right: 20px">Location Picker</span>
+                </li>
+                <li style="margin-bottom: 8px;padding-left: 5px">
+                    <span style="color: #FFF;font-size: 12px;font-weight: 300;">drag and drop map pin which you want to set as your location</span>
+                </li>
+                <li>
+                <div class="col-lg-12 c_no_padding"  id="doc-acc-map-canvas" style="border-radius: 0px">
+                    <!-- Load Google Map -->
+                </div>
+                </li>
+                <li>
+                <div><button id="pick" class="c_confirm_loc_btn"><img src="{{ URL::asset('assets/img/confirm_icon.png') }}" style="width: 20px;margin-right: 15px">Confirm Location</button></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Google Map Longitude & Latitude Picker Pop Up -->
 
 @stop

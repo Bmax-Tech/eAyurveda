@@ -2512,6 +2512,7 @@ $(document).ready(function(){
 		get_user_comments_doctor_account();
 		GetDoctorPageAreaChart(); // Load Area Chart
 		GetDoctorPagePieChart(); // Load Pie Chart
+
 	}
 });
 
@@ -2568,6 +2569,75 @@ function GetDoctorPagePieChart(){
 		}
 	});
 };
+
+/*
+ * Map Picker Open
+ */
+var map_use=0;
+$("#c_map_pick_icon").click(function(){
+	$(".c_pop_up_box_map_picker").fadeIn(100,function(){
+		if(map_use == 0) {
+			loadGoogleMap();
+			map_use=1;
+		}
+	});
+});
+
+/*
+ * Map picker pop up box close
+ */
+$(".map_picker_btn_close").click(function(){
+	$(".c_pop_up_box_map_picker").fadeOut();
+});
+
+/*
+ * Google Maps
+ */
+function loadGoogleMap(){
+	var fileref=document.createElement('script')
+	fileref.setAttribute("type","text/javascript")
+	fileref.setAttribute("src", 'https://maps.googleapis.com/maps/api/js')
+	fileref.setAttribute('onload','startup()');
+	document.getElementsByTagName("head")[0].appendChild(fileref)
+};
+
+var gmap, mapCanvas, mapOptions = { zoomControl: true, streetViewControl: false, noClear: true };
+var marker;
+function mapInitialize( mapCenter, mapZoom ) {
+	var base_url = $("#base_url").val();
+	var image_1 = base_url+'assets/img/gps_pin.png';
+
+	mapOptions.center = mapCenter;
+	mapOptions.zoom = mapZoom;
+	mapCanvas.setAttribute( "style", "height:" + window.innerHeight + "px;" );
+	setTimeout( function() {
+		gmap = new google.maps.Map( mapCanvas, mapOptions );
+		marker = new google.maps.Marker({position: mapCenter,map: gmap,icon: image_1});
+		marker.setDraggable(true);
+	}, 20 );
+}
+window.onorientationchange = function() {
+	mapInitialize( gmap.getCenter(), gmap.getZoom() );
+}
+
+function startup() {
+	setTimeout( function() {
+		mapCanvas = document.getElementById("doc-acc-map-canvas");
+		mapInitialize( new google.maps.LatLng(7.0917, 80.0000), 15 );
+	}, 125 );
+}
+/*
+ * Google Maps
+ */
+
+$("#pick").click(function(){
+	var lat = marker.getPosition().lat();
+	var lng = marker.getPosition().lng();
+	//alert(lat+" "+lng);
+	$('input[name=longitude]').val(lng);
+	$('input[name=latitude]').val(lat);
+	$(".c_pop_up_box_map_picker").fadeOut();
+});
 
 /*
  * Doctor Account Manage Page End
