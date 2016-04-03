@@ -501,4 +501,20 @@ class ForumController extends Controller
         });
     }
 
+    function loadInbox() {
+        $head = "received";
+        $current_user = "muabdulla@gmail.com";
+        $messages = \DB::table('messages')->where('mTo', '=', $current_user)->get();
+
+        $HtmlView = (String) view('forum_profile_views/profile_messages_inbox')->with([
+            'messages'=>$messages,
+            'head' => $head
+        ]);
+        $res['pagination'] = $messages;
+        $res['page'] = $HtmlView;
+
+
+        return response()->json($res);
+    }
+
 }
