@@ -47,12 +47,8 @@
 <div class="container c_container c_no_padding">
     <div class="col-lg-3 c_no_padding c_admin_left_nav">
         <ul class="c_ul_1 c_admin_ul">
-<<<<<<< HEAD
-            <li ><ul class="c_top_ul" ><li><img src="assets_admin/img/dashboard.png" style="width:20px"></li><li style="margin-left:10px">
-=======
             <li id="admin_left_nav_dash_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/dashboard.png" style="width:20px"></li><li style="margin-left:10px">
                         <span class="glyphicon glyphicon-menu-down c_right_gly" id="c_admin_span_0" aria-hidden="true" style="margin-right:-111px"></span>
->>>>>>> 288b9e2e7e35a9783f41afbc7ebfbf7119554fc3
                         Dashboard
                   </li></ul>
             </li>
