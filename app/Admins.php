@@ -4,26 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Patients extends Model
+class Admins extends Model
 {
     protected $primaryKey = 'id';
-    protected $table = 'patients';
+    protected $table = 'admins';
     public $timestamps = true;
 
     protected $fillable = [
+
         'user_id',
         'first_name',
         'last_name',
-        'gender',
-        'dob',
-        'nic',
-        'contact_number',
+        'type',
         'email',
-        'spam_count',
         'reg_date',
-        'created_at',
+        'create_at',
         'updated_at'
     ];
-
-
 }

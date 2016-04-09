@@ -125,10 +125,12 @@
 	padding:0px;
 	list-style:none;
 	margin-bottom:0px;
+
 }
 .c_top_ul li{
 	display:inline-block;
 }
+
 .c_user_top_logo{
 	width:35px;
 	margin-right:10px;
@@ -376,6 +378,15 @@
 	border-radius: 3px;
 	color: #FFF;
 }
+.c_pat_view_btn3{
+	width: 100px;
+
+	padding: 7px;
+	background: #006d16;
+	border:1px solid #006d16;
+	border-radius: 3px;
+	color: #FFF;
+}
 .c_ul_1{
 	list-style:none;
 	padding:0px;
@@ -384,8 +395,6 @@
 
 
 .pat_doc_box{
-
-	
 	background: rgba(0, 76, 17, 0.14);
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.58);
 }
@@ -452,6 +461,7 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	margin-left: 287px;
 	width: auto;
 
+
 }
 .pat_sub_banner>p{
 	display:inline-block;
@@ -459,7 +469,7 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	font-size:8px;
 }
 .colortable{
-	background-color: #00890E;
+	background-color: #00890E !important;
 	color: white;
 }
 
@@ -551,9 +561,98 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 
 .customizeTableHead {
 	height: 30px;
-	background-color: #fff;
+	background-color: #777;
+	box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+    text-align:center;
+	color: white;
+	border-top:1px solid #ddd;
+	border-right: 1px solid #ddd
+
 }
 
+.tabledesign1{
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	border:1px solid #ddd;box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+}
+
+.customizeTableHead1{
+
+	height: 30px;
+	background-color: #777;
+	box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+	text-align:center;
+	color: white;
+	border-top:1px solid #ddd;
+	border-right: 1px solid #ddd
+}
+
+
+.tabledesign2{
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	border:1px solid #ddd;box-shadow:  0 2px 0 rgba(0, 0, 0, .1), 0 2px 3px rgba(0, 0, 0, .25);
+}
+
+
+.c_warning_tips_reg{
+	display: none;
+	margin-left: 30px;
+	color: red;
+	font-size: 13px;
+}
+
+.c_form_margin_10{
+	margin-top:10px;
+}
+
+.c_warning_admin_reg{
+	display: none;
+	margin-left: 30px;
+	color: red;
+	font-size: 13px;
+}
+
+.c_top_ul1{
+	padding:0px;
+	list-style:none;
+	margin-bottom:0px;
+	display:inline-block;
+
+}
+.c_top_ul1 li{
+
+}
+
+
+
+
+.pagination>li>a{
+	padding: 10px 17px;
+	color: #035600;
+	background-color: #F8FFF7;
+}
+.pagination>.active>a{
+	background-color: #39B54A;
+	border-color: #035600;
+}
+.pagination>.active>a:focus,
+.pagination>.active>a:hover{
+	background-color: #41df53;
+	border-color: #035600;
+}
+
+.c_button_1{
+	width:100%;
+	background:#2CA02C;
+	border:1px solid #228500;
+	padding:10px 20px;
+	color:#FFFFFF;
+	font-size:25px;
+}
+.c_button_1:hover{
+	background:#00890E;
+}
 /*--------------------------End patient admin CSS  --------------------------------------*/
 
 

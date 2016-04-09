@@ -22,7 +22,9 @@ class CreatePatientsTable extends Migration
             $table->string('nic');
             $table->string('contact_number');
             $table->string('email');
+            $table->integer('spam_count');
             $table->dateTime('reg_date');
+
             $table->timestamps();
         });
     }

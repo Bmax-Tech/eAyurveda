@@ -40,29 +40,41 @@ Route::resource('/update_doctor_account','Front@UpdateDoctorAccount');
 /*
  * Admin Side Routing
  */
+
 Route::get('/admin_panel_login','Admin_Front@admin_login');
 Route::get('/admin_panel_home','Admin_Front@admin_home');
 Route::resource('/admin_login_auth','Admin_Front@admin_login_auth');
 Route::resource('/admin_logout','Admin_Front@logout');
 
 
-Route::get('/pat_admin/{page_name}','Admin_Front@pat_admin_page_view');
-Route::get('/admin_panel/user_comments','Admin_Front@view_user_comments');
-Route::get('/admin_panel/customize/featured','Admin_Front@featured_doc');
+Route::get('/pat_admin/{page_name}','Admin_Front@patientAdminPageLoad');
+Route::get('/admin_panel/user_comments','Admin_Front@userCommentsLoad');
+Route::get('/admin_panel/customize/featured','Admin_Front@featuredDocLoad');
+Route::get('/admin_panel/customize/adminload','Admin_Front@adminLoad');
 Route::get('/admin_panel/customize','Admin_Front@customize');
-Route::get('/admin_panel/user_view/{user_id}','Admin_Front@user_view');
-Route::get('/admin_panel/inapuser_view/{user_id}','Admin_Front@inapuser_view');
-Route::get('/admin_panel/user_view1','Admin_Front@add_comment');
-Route::get('/admin_panel/rem_com/{user_id}','Admin_Front@rem_com');
-Route::get('/admin_panel/users','Admin_Front@view_users');
-Route::get('/admin_panel/inapusers','Admin_Front@view_inapusers');
-Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@user_remove');
-Route::get('/admin_panel/filterdoc/{user_id}/{user_id1}/{user_id2}','Admin_Front@filterdoc');
-Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@updatefet');
-Route::get('/admin_panel/test','Admin_Front@test');
+Route::get('/admin_panel/user_view/{user_id}','Admin_Front@viewUsers');
+Route::get('/admin_panel/inapuser_view/{user_id}','Admin_Front@inapUserDetails');
+//Route::get('/admin_panel/user_view1','Admin_Front@add_comment');
+Route::get('/admin_panel/rem_com/{user_id}','Admin_Front@removeComment');
+Route::get('/admin_panel/users/{skip}/{end}','Admin_Front@viewAllUsers');
+Route::get('/admin_panel/users2/{skip}/{end}','Admin_Front@viewNewUsers');
+Route::get('/admin_panel/inapusers/test/{skip}/{end}','Admin_Front@inapUsersView');
+Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@blockUser');
+Route::get('/admin_panel/filterdoc/{rate}/{spec}/{treat}','Admin_Front@filterDoctors');
+Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@featuredDoctorUpdate');
+
 Route::get('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
-Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipA');
-Route::get('/admin/tipdel/{id}','Admin_Front@tipdel');
+Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipUpdate');
+Route::get('/admin/update/{id}/{username}/{email}/{password}','Admin_Front@adminUpdate');
+Route::get('/admin/tipdel/{id}','Admin_Front@tipDelete');
+Route::get('/admin/admindel/{id}','Admin_Front@adminDelete');
+Route::get('/reg_admin.php','Admin_Front@registerAdmin');
+Route::get('/inap_users','Admin_Front@blockedUsers');
+
+Route::get('/user_view','Admin_Front@usersViewDirect');
+Route::get('/dash_board_view','Admin_Front@dashBoardViewDirect');
+Route::get('/admin_panel_home/{fname}/{lname}/{uname}/{email}/{pwrd}','Admin_Front@addAdmin');
+Route::post('/ajax/admin/{type}/{data}','Admin_Front@registerAdminPageValidate');
 
 /*
  * ---------------------  Main Page Routes End  ----------------------
@@ -77,6 +89,7 @@ Route::post('/forgotten_password_email','AjaxControll@forgotten_password_email')
 Route::post('/save_change_password','AjaxControll@change_forgotten_password');
 Route::post('/ajax/{type}/{data}','AjaxControll@register_page');
 Route::post('/ajax','AjaxControll@doc_search_page');
+Route::get('/ajax/aa/{skip}/{end}','AjaxControll@doc_search_page1');
 Route::post('/ajax/{doc_id}','AjaxControll@get_doctor_comments');
 Route::post('/post_comment','AjaxControll@add_comments');
 Route::post('/get_comments_by_user','AjaxControll@get_comments_by_user');

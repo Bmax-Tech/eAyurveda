@@ -18,6 +18,7 @@ class CreateAdminsTableByBuwaneka extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('type');
+            $table->string('email');
             $table->dateTime('reg_date');
             $table->timestamps();
         });
