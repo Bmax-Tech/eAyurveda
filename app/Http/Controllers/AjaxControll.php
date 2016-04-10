@@ -913,9 +913,9 @@ class AjaxControll extends ExceptionController
 		$doc_id = 1; // this should be replaced by $COOKIE reference
 
 		try {
-			$query = "SELECT DATE(created_at) AS d,COUNT(*) AS c FROM profile_view_hits WHERE doctor_id = ".$doc_id." GROUP BY DATE(created_at) ORDER BY DATE(created_at) LIMIT 5";
+			$query = "SELECT DATE(created_at) AS d,COUNT(*) AS c FROM profile_view_hits WHERE doctor_id = ".$doc_id." GROUP BY DATE(created_at) ORDER BY DATE(created_at) DESC LIMIT 5";
 			$area_data = DB::select(DB::raw($query));
-
+			$area_data = array_reverse($area_data);
 			foreach ($area_data as $data) {
 				$main_ob['date'] = $data->d;
 				$main_ob['count'] = $data->c;

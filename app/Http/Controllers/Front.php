@@ -172,7 +172,7 @@ class Front extends ExceptionController
 
     public function login(Request $request){
         try {
-            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(1)->first();
+            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(2)->first();
         }catch (Exception $e){
             $this->LogError('Login function in User Search',$e);
         }
