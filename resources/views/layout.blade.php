@@ -116,7 +116,7 @@
                             <div class="col-lg-5 c_no_padding" style="padding: 3px 0px">
                                 <ul>
                                     <li class="nav_list_sub highlight_sub sub_1" onmouseover="sub_nav_pick('1')"><a href="/AyurvedicTherapies">Ayurvedic Therapies</a></li>
-                                    <li class="nav_list_sub sub_2" onmouseover="sub_nav_pick('2')"><a href="/consultdoctor">Doctor Consultation</a></li>
+                                    {{--<li class="nav_list_sub sub_2" onmouseover="sub_nav_pick('2')"><a href="/consultdoctor">Doctor Consultation</a></li>--}}
                                 </ul>
                             </div>
                             <div class="col-lg-7 c_no_padding" style="padding:3px 3px 3px 0px">
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                 </li>
-                <li><a href="#">Physicians</a></li>
+                <li><a href="/Physicians">Physicians</a></li>
                 <li><a href="#">Contact</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="/forum">Forum</a></li>
@@ -465,6 +465,9 @@ $(function () {
 })
 
 </script>
+
+<!-- ChartJS 1.0.1 -->
+<script src="{{ URL::asset('assets/plugins/chartjs/Chart.min.js') }}"></script>
 <!-- JavaScripts End -->
 
 </body>
