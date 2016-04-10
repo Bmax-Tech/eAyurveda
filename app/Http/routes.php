@@ -45,8 +45,10 @@ Route::resource('/admin_logout','Admin_Front@logout');
 
 
 Route::get('/pat_admin/{page_name}','Admin_Front@patientAdminPageLoad');
-Route::get('/admin_panel/user_comments','Admin_Front@userCommentsLoad');
+Route::get('/admin_panel/user_comments/{skip}/{end}','Admin_Front@userCommentsLoad');
 Route::get('/admin_panel/customize/featured','Admin_Front@featuredDocLoad');
+Route::get('/admin_panel/customize/therapyLoad','Admin_Front@therapyLoad');
+Route::get('/admin_panel_home/addtherapy/{name}/{des}/{file}','Admin_Front@therapyAdd');
 Route::get('/admin_panel/customize/adminload','Admin_Front@adminLoad');
 Route::get('/admin_panel/customize','Admin_Front@customize');
 Route::get('/admin_panel/user_view/{user_id}','Admin_Front@viewUsers');
@@ -60,18 +62,22 @@ Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@blockUser');
 Route::get('/admin_panel/filterdoc/{rate}/{spec}/{treat}','Admin_Front@filterDoctors');
 Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@featuredDoctorUpdate');
 
-Route::get('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
+Route::post('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
 Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipUpdate');
 Route::get('/admin/update/{id}/{username}/{email}/{password}','Admin_Front@adminUpdate');
 Route::get('/admin/tipdel/{id}','Admin_Front@tipDelete');
 Route::get('/admin/admindel/{id}','Admin_Front@adminDelete');
+Route::get('/admin/adminAccess/{id}','Admin_Front@adminAccess');
 Route::get('/reg_admin.php','Admin_Front@registerAdmin');
 Route::get('/inap_users','Admin_Front@blockedUsers');
 
 Route::get('/user_view','Admin_Front@usersViewDirect');
+Route::get('/comments_view','Admin_Front@commentsViewDirect');
 Route::get('/dash_board_view','Admin_Front@dashBoardViewDirect');
 Route::get('/admin_panel_home/{fname}/{lname}/{uname}/{email}/{pwrd}','Admin_Front@addAdmin');
 Route::post('/ajax/admin/{type}/{data}','Admin_Front@registerAdminPageValidate');
+Route::get('/admin_panel/dashboard','Admin_Front@loadDashboard');
+Route::get('/Charts','Admin_Front@graph1Count');
 
 /*
  * ---------------------  Main Page Routes End  ----------------------
@@ -86,7 +92,7 @@ Route::post('/forgotten_password_email','AjaxControll@forgotten_password_email')
 Route::post('/save_change_password','AjaxControll@change_forgotten_password');
 Route::post('/ajax/{type}/{data}','AjaxControll@register_page');
 Route::post('/ajax','AjaxControll@doc_search_page');
-Route::get('/ajax/aa/{skip}/{end}','AjaxControll@doc_search_page1');
+Route::get('/ajax/advanced/{skip}/{end}','AjaxControll@docAdvancedSearchPage');
 Route::post('/ajax/{doc_id}','AjaxControll@get_doctor_comments');
 Route::post('/post_comment','AjaxControll@add_comments');
 Route::post('/get_comments_by_user','AjaxControll@get_comments_by_user');

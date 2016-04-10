@@ -106,13 +106,13 @@
                 </ul>
             </div>
             <div class="col-lg-5">
-                <div style="padding: 10px;padding-left: 20px">
-                    <div id="profile_thumb" style="background-image: url({{ URL::asset('profile_images/user_images/user_profile_img_'.$user_data['id'].'.png') }});height: 180px;width: 100%;background-size: 100%;background-position: center;background-repeat: no-repeat;background-color: rgba(42, 167, 0, 0.36)">
-                    </div>
-                    <input class="file_input" type="file" data-id="profile_thumb" data-icon="{{ URL::asset('') }}" id="h_profile_thumb" name="profile_img[]" style="display:none"/>
-                    <div><button class="c_img_upload_btn" onclick="get_image('profile_thumb','h_profile_thumb')" type="button">Change Image</button></div>
-                </div>
-            </div>
+                   <div style="padding: 10px;padding-left: 20px">
+                       <div id="profile_thumb" style="background-image: url({{ URL::asset('profile_images/user_images/user_profile_img_'.$user_data['id'].'.png') }});height: 180px;width: 100%;background-size: 100%;background-position: center;background-repeat: no-repeat;background-color: rgba(42, 167, 0, 0.36)">
+                       </div>
+                       <input class="file_input" type="file" data-id="profile_thumb" data-icon="{{ URL::asset('') }}" id="h_profile_thumb" name="profile_img[]" style="display:none"/>
+                       <div><button class="c_img_upload_btn" onclick="get_image('profile_thumb','h_profile_thumb')" type="button">Change Image</button></div>
+                   </div>
+               </div>
             </form>
         </div>
     </div>

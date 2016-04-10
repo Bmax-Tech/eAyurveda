@@ -348,7 +348,7 @@
 
 .c_pat_result_div{
 	background: rgba(0, 76, 17, 0.14);
-	padding: 20px 10px;
+	padding: 15px 7px;
 	margin-bottom: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.58);
 }
@@ -652,6 +652,41 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 }
 .c_button_1:hover{
 	background:#00890E;
+}
+
+.c_pat_view_btn_com{
+	width: 100px;
+    padding: 0px;
+	background: #006d16;
+	border:1px solid #006d16;
+	border-radius: 3px;
+	color: #FFF;
+}
+
+.c_user_view_box{
+
+	margin-left:10px;
+	width:280px;
+	background-color: #349641;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.58);
+	border-radius:13px;
+	margin-top:10px
+}
+.c_user_view_box:hover{
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.88);
+	border-radius: 5px;
+}
+
+.c_img_upload_btn_admin{
+	background: #228500;
+	border: 1px solid #228500;
+	color: #FFF;
+	padding: 4px 8px;
+	width: 100%;
+	margin-top: 3px;
+}
+.c_img_upload_btn_admin:hover{
+	background:#2AA700;
 }
 /*--------------------------End patient admin CSS  --------------------------------------*/
 

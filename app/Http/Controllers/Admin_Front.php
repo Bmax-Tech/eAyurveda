@@ -14,47 +14,58 @@ use App\Http\Requests;
 use App\User;
 use App\Health_tips;
 use App\Admins;
-
+use App\Formal_doctors;
+use App\Non_Formal_doctors;
+use App\Therapies;
 
 
 
 class Admin_Front extends Controller
 {
-    //direct to admin login
+    /*
+ *    Check whether their is coockie set in the browser
+ *    and if there is coockie return to the admin home
+ *    page. If there is no coockie set in return to the
+ *    admin login page.
+ *
+*/
+
     public function admin_login(){
         if(isset($_COOKIE['admin_user'])) {
             return view('admin_home');
         }else {
             return view('admin_login');
         }
-
     }
+
 
 
     //direct to admin home
     public function admin_home(){
         if(isset($_COOKIE['admin_user'])) {
-            return view('admin_home');
+            return view('admin_home' );
         }else{
             return redirect('/admin_panel_login');
         }
     }
 
 
-//adding a new admin
+    /*
+     * Add a new admin to the db table.
+     * First insert data in to the users table,
+     * then take the id and add to the admin table
+    */
     public function addAdmin(Request $request,$fname,$lname,$uname,$email,$pwrd){
 
-
+        //create a new user
         User::create([
             'name' =>$fname,
             'email' =>$uname,
             'password' =>md5($pwrd),
-
-
-
-        ]);
+         ]);
         $user = User::whereEmail($uname)->wherePassword(md5($pwrd))->first();
 
+        //create a new admin
         Admins::create([
             'user_id'=> $user->id,
             'first_name' =>$fname,
@@ -64,20 +75,29 @@ class Admin_Front extends Controller
             'reg_date' => gmdate("Y-m-d h:m:s" , time())
        ]);
 
+
         $HTMLView = (String) view('costomize_home_views.adminregister');
         $res['page'] = $HTMLView;
         return response()->json($res);
 
     }
 
-    //check login details
+
+    /*
+     * Check the username,password and the user mode whether
+     * profile is a active profile and whether the profile
+     * is the master admin profile if the provided details
+     * are correct then create a session and direct to the
+     * admin panel home url.
+    */
     public function admin_login_auth(Request $request){
-        $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(1)->orWhere('mode','=',2)->first();
+        $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->where(function ($q4)
+        { $q4->whereMode(1)->orWhere('mode','=',2);})->first();
         // Check whether username and password are matching
         if(isset($user)) {
             // Create session to store logged user details
             $user_ob = array(['id' => $user->id,'first_name' => $user->name,'mode' => $user->mode]);
-            setcookie('admin_user',json_encode($user_ob),time()+7200); // Cookie is set for 2 hour
+            setcookie('admin_user',json_encode($user_ob),time()+3600); // Cookie is set for 2 hour
             return redirect('/admin_panel_home');
         }else {
             if(User::whereEmail($request->username)->first()) {
@@ -98,8 +118,12 @@ class Admin_Front extends Controller
     }
 
 
-//validate to register a new admin
-    public function registerAdminPageValidate(Request $request,$type,$data){
+
+/*
+ * Check whether provided username and email are already used by a another user
+ * and return the status
+ */
+public function registerAdminPageValidate(Request $request,$type,$data){
         if($type == 'username')
             $patients = User::whereEmail($data)->first();// Check for username is taken or not
         else if($type == 'email')
@@ -112,24 +136,44 @@ class Admin_Front extends Controller
         }
         return response()->json($res);
     }
-	
-	
-	   //display user comments
-	public function userCommentsLoad(Request $request){
-        $comments = DB::select('SELECT images.image_path AS image_path1, comments.id AS cid,patients.user_id AS puser_id, patients.first_name AS pfirst_name , patients.last_name AS plast_name , doctors.first_name AS dfirst_name,doctors.last_name AS dlast_name, comments.description AS comment FROM comments INNER JOIN patients ON comments.user_id = patients.user_id INNER JOIN doctors  ON comments.doctor_id = doctors.user_id INNER JOIN images  ON comments.user_id = images.user_id');
 
-        $HTMLView = (String) view('admin_patients_views.home_2')->with(['comment'=>$comments]);
 
-		$res['page'] = $HTMLView;
-		return response()->json($res);
+   /*
+    * get the comments details from comments table and commented
+    * user details from patients table and doctor details from
+    * doctors table and send through Json object to the comments
+    * page via ajax
+    */
+	public function userCommentsLoad(Request $request,$skip,$end){
+        //get the comments for a 1 page. $skip for to skip previous pages comments and $end for to get current page comments
+        $comments=DB::table('comments')->join('patients', 'comments.user_id', '=', 'patients.user_id')->join('doctors', 'comments.doctor_id', '=', 'doctors.user_id')->join('images', 'comments.user_id', '=', 'images.user_id')->select('images.image_path AS image_path1', 'comments.id AS cid','patients.user_id AS puser_id','patients.first_name AS pfirst_name' , 'patients.last_name AS plast_name' ,'doctors.first_name AS dfirst_name','doctors.last_name AS dlast_name','comments.description AS comment')->orderBy('posted_date_time','asc')->skip($skip)->take($end)->get();
+
+        $count1=sizeof($comments); //get the comment count for that page
+
+        //get the all the comments
+        $comments2= DB::table('comments')->join('patients', 'comments.user_id', '=', 'patients.user_id')->join('doctors', 'comments.doctor_id', '=', 'doctors.user_id')->join('images', 'comments.user_id', '=', 'images.user_id')->select('images.image_path AS image_path1', 'comments.id AS cid','patients.user_id AS puser_id','patients.first_name AS pfirst_name' , 'patients.last_name AS plast_name' ,'doctors.first_name AS dfirst_name','doctors.last_name AS dlast_name','comments.description AS comment')->orderBy('posted_date_time','asc')->get();
+
+        $count=sizeof($comments2);//get the count of all the comments in the db table
+        $HTMLView = (String) view('admin_patients_views.comments')->with(['comment'=>$comments]);
+        $res['count'] = $count;
+        $res['count1'] = $count1;
+        $res['page'] = $HTMLView;
+        return response()->json($res);
 	}
 
-    //display users
+   /*
+    * Get all the users in the patients table and send to the
+    * user_view table via ajax.
+    */
     public function viewAllUsers(Request $request,$skip,$end){
-
+        //get the users for a 1 page. $skip for to skip previous pages users and $end for to get current page users
         $patients = DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->skip($skip)->take($end)->get();
+
+        $count1=sizeof($patients);  //get the count of users in the current page
+
+        // Get the count of all the users in db table
         $count = DB::select('SELECT COUNT(*) AS count FROM patients  INNER JOIN images ON patients.user_id = images.user_id ');
-        $count1=sizeof($patients);
+
         $HTMLView = (String) view('admin_patients_views.user_view')->with(['patients'=>$patients]);
         $res['count'] = $count;
         $res['count1'] = $count1;
@@ -137,15 +181,22 @@ class Admin_Front extends Controller
         return response()->json($res);
     }
 
-    //load new users
+    /*
+    * Get  the users registered withi 7 days in the patients
+     *table and send to the user_view1 table via ajax.
+    */
     public function viewNewUsers(Request $request,$skip,$end){
 
+        //get the users registered within 7 days for a 1 page. $skip for to skip previous pages users and $end for to get current page users
         $patients1 =  DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->orderBy('reg_date','desc')->where('reg_date','>=',gmdate('Y-m-d 00:00:00 ', strtotime('-7 days')))->skip($skip)->take($end)->get();
-        $count2 = DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->orderBy('reg_date','desc')->where('reg_date','>=',gmdate('Y-m-d 00:00:00 ', strtotime('-7 days')))->get();
-        $count = sizeof($count2);
-        //DB::select('SELECT COUNT(*) AS count FROM patients  INNER JOIN images ON patients.user_id = images.user_id  WHERE patients.reg_date >= "gmdate(Y-m-d 00:00:00 , strtotime(-7 days))"');///error
 
-        $count1=sizeof($patients1);
+        $count1=sizeof($patients1); //count of the users registered within 7 days in current page
+
+        //get all users registered within 7 days in db table $skip for to skip previous pages users and $end for to get current page users
+        $count2 =  DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->orderBy('reg_date','desc')->where('reg_date','>=',gmdate('Y-m-d 00:00:00 ', strtotime('-7 days')))->get();
+
+        $count = sizeof($count2);  //count of all the users registered within 7 days
+
         $HTMLView = (String) view('admin_patients_views.user_view1')->with(['patients1'=>$patients1]);
         $res['count'] = $count;
         $res['count1'] = $count1;
@@ -155,6 +206,8 @@ class Admin_Front extends Controller
 
 
 
+//
+//
 
     //display inapropriate users and newly registered users
     public function inapUsersView(Request $request,$skip,$end){
@@ -175,14 +228,43 @@ class Admin_Front extends Controller
 
 
 
-	//display edit featured doctor page
+/*
+ * Get the featured doctors , specializations,
+ * and doctors table dat and sen to the home12 page
+ */
+
  public function featuredDocLoad(Request $request){
 
-
+     //Get the featured doctor data and relavent doctor details fro doctors table order by featured docotor id in ascending order
      $featured_doc= DB::table('featured_doc')->join('doctors', 'featured_doc.did', '=', 'doctors.user_id')->orderBy('fid','asc')->get();
-     $filter_spec= DB::table('specialization')->select('spec_1')->groupBy('spec_1')->get();
-     $filter_treat= DB::table('treatments')->select('treat_1')->groupBy('treat_1')->get();
-     // $featured_doc = Featured_doc::all();
+
+     //Get all the specialization types in the specializations 5 columns
+     $filter_spec= DB::select('SELECT spec_1 FROM
+        (
+            SELECT spec_1 AS spec_1 FROM specialization where spec_1 != ""
+            UNION
+            SELECT spec_2 AS spec_1 FROM specialization where spec_2 != ""
+            UNION
+            SELECT spec_3 AS spec_1 FROM specialization where spec_3 != ""
+            UNION
+            SELECT spec_4 AS spec_1 FROM specialization where spec_4 != ""
+            UNION
+            SELECT spec_5 AS spec_1 FROM specialization where spec_5 != ""
+        ) tt WHERE spec_1 IS NOT NULL');
+
+    $filter_treat= DB::table('treatments')->select('treat_1')->groupBy('treat_1')->get();
+   /*  $filter_treat= DB::select('SELECT treat_1 FROM
+        (
+            SELECT treat_1 AS treat_1 FROM specialization where treat_1 != ""
+            UNION
+            SELECT treat_2 AS treat_1 FROM specialization where treat_2 != ""
+            UNION
+            SELECT treat_3 AS treat_1 FROM specialization where treat_3 != ""
+            UNION
+            SELECT treat_4 AS treat_1 FROM specialization where treat_4 != ""
+            UNION
+            SELECT treat_5 AS treat_1 FROM specialization where treat_5 != ""
+        ) tt WHERE treat_1 IS NOT NULL')*/;
        $reg_doc = Doctors::all();
 
      $HTMLView = (String) view('costomize_home_views.home12')->with(['featured_doc1'=>$featured_doc,'reg_doctor'=>$reg_doc,'filter_spec'=>$filter_spec,'filter_treat'=>$filter_treat]);
@@ -206,6 +288,45 @@ class Admin_Front extends Controller
         $res['page'] = $HTMLView;
         return response()->json($res);
        // return view('costomize_home_views.home1');
+    }
+
+    public function therapyLoad(){
+
+
+        $HTMLView = (String) view('costomize_home_views.Therapies');
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+        // return view('costomize_home_views.home1');
+    }
+
+    public function therapyAdd(Request $request,$name,$des,$file ){
+
+       /* $imageName = "user_profile_img_12.png";
+        $destinationPath = base_path() . '/public/therapy_images/';
+        $file->move($destinationPath, $imageName);*/
+        Therapies::create([
+            'name' =>$name,
+            'description' =>$des,
+
+
+        ]);
+
+
+        $HTMLView = (String) view('costomize_home_views.Therapies');
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+        // return view('costomize_home_views.home1');
+    }
+
+
+    /*
+     * This function loads Admin panel Dashboard
+     */
+    public function loadDashboard(){
+        $HTMLView = (String) view('dashBoard.dashBoard')->with(['top_count' => self::get_count(),'new_count' => self::getNewCount(),'formal_doctor_count' => self::getFormalNewCount(),'nonformal_doctor_count' => self::getNonFormalNewCount()]);
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+        //return view('admin_home', array('top_count' => self::get_count(),'new_count' => self::getNewCount(),'formal_doctor_count' => self::getFormalNewCount(),'nonformal_doctor_count' => self::getNonFormalNewCount()));
     }
 
     //change admin patients
@@ -278,11 +399,9 @@ class Admin_Front extends Controller
 
         }
 
-        $comments = DB::select('SELECT images.image_path AS image_path1,comments.id AS cid,patients.user_id AS puser_id, patients.first_name AS pfirst_name , patients.last_name AS plast_name , doctors.first_name AS dfirst_name,doctors.last_name AS dlast_name, comments.description AS comment FROM comments INNER JOIN patients ON comments.user_id = patients.user_id INNER JOIN doctors  ON comments.doctor_id = doctors.user_id INNER JOIN images  ON comments.user_id = images.user_id');
 
 
-
-        $HTMLView = (String) view('admin_patients_views.home_2')->with(['comment'=>$comments]);
+        $HTMLView = (String) view('admin_patients_views.home_2');
         $res['page'] = $HTMLView;
         return response()->json($res);
     }
@@ -304,7 +423,20 @@ class Admin_Front extends Controller
     public function adminDelete(Request $request,$id){
         User::where('id', $id)->update(['mode' => 0]);
 
-        $user = DB::table('admins')->join('users', 'admins.user_id', '=', 'users.id')->select('users.*','admins.email AS aemail')->get();
+        $user = DB::table('admins')->join('users', 'admins.user_id', '=', 'users.id')->select('users.*','admins.email AS aemail')->where('mode','!=',2)->get();
+
+
+        $HTMLView = (String) view('admin_patients_views.admin_details')->with(['user'=>$user]);
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+    }
+
+
+    //Accessadmin
+    public function adminAccess(Request $request,$id){
+        User::where('id', $id)->update(['mode' => 1]);
+
+        $user = DB::table('admins')->join('users', 'admins.user_id', '=', 'users.id')->select('users.*','admins.email AS aemail')->where('mode','!=',2)->get();
 
 
         $HTMLView = (String) view('admin_patients_views.admin_details')->with(['user'=>$user]);
@@ -348,14 +480,11 @@ class Admin_Front extends Controller
 
 
     public function tip(Request $request,$des1,$des2,$tip){
-       /* Input::get('header1');
-        Input::get('header12');
-        Input::get('tip');*/
 
        Health_tips::create([
-            'tip' =>$des1,
-            'discription_1' =>$des2,
-            'discription_2' =>$tip
+            'tip' =>$tip,
+            'discription_1' =>$des1,
+            'discription_2' =>$des2
         ]);
 
         $tips =Health_tips::all();
@@ -401,6 +530,9 @@ class Admin_Front extends Controller
         return view('admin_patients_views.home_1');
     }
 
+    public function commentsViewDirect(){
+        return view('admin_patients_views.home_2');
+    }
 
     public function dashBoardViewDirect(){
         return view('dashBoard.dashBoard');
@@ -433,13 +565,52 @@ class Admin_Front extends Controller
         $user1->save();                                //update database  table
 
         //load admins
-        $userA = DB::table('admins')->join('users', 'admins.user_id', '=', 'users.id')->select('users.*','admins.email AS aemail')->get();
+        $userA  = DB::table('admins')->join('users', 'admins.user_id', '=', 'users.id')->select('users.*','admins.email AS aemail')->where('mode','!=',2)->get();
 
         $HTMLView = (String) view('admin_patients_views.admin_details')->with(['user'=>$userA]);
         $res['page'] = $HTMLView;
         return response()->json($res);
     }
 
+    public function get_count(){
+        $pCount = Patients::all();
+        $count = sizeof($pCount);
+
+        return $count;
+    }
+
+    public function getNewCount(){
+
+        $count2 = DB::table('patients')->where('reg_date','>=',gmdate('Y-m-d 00:00:00 ', strtotime('-30 days')))->get();
+        $count1 = sizeof($count2);
+
+        return $count1;
+    }
+    public function getFormalNewCount(){
+        $dCount = Formal_doctors::all();
+        $count = sizeof($dCount);
+
+        return $count;
+    }
+
+    public function getNonFormalNewCount(){
+        $dCount = Non_Formal_doctors::all();
+        $count = sizeof($dCount);
+
+        return $count;
+    }
+
+   public function graph1Count(){
+       $graph1  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM patients GROUP BY DATE(reg_date)'));
+       $graph2  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM doctors GROUP BY DATE(reg_date)'));
+       $graph3  = DB::select(DB::raw('SELECT DATE(reg_date) AS y ,SUM(CASE WHEN doc_type = "FORMAL" THEN 1 ELSE 0 END) AS item1, SUM(CASE WHEN doc_type = "NON_FORMAL" THEN 1 ELSE 0 END) AS item2    FROM doctors  GROUP BY DATE(reg_date)'));
+
+       $res['graph_1'] = $graph1;
+       $res['graph_2'] = $graph2;
+       $res['graph_3'] = $graph3;
+      return response()->json($res);
+
+  }
 
 
 }

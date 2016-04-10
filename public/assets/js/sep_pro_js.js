@@ -701,18 +701,19 @@ function pagination(para_1){
 function user_load_ajax1(){
 
 	$("#c_loading_msg1").fadeIn();
-	var dataString = $("#filter_selections").serialize();// this serialize pagee the form in search results
+	var dataString = $("#filter_selections").serialize();// this serialize page the form in search results
 	var method_type='GET';
 	var skip= $("#start1").val();//get starting result number
 	var end= $("#end1").val();//get the last result number
 	var curr=$("#page_number_hidden1").val();//get the current page number
 	var res_starts=parseInt($("#start1").val())+parseInt(1)
+
 	$.ajax({
 
 
 		type: method_type,
 		dataType: "json",
-		url:'/ajax/aa/'+skip+'/'+end,
+		url:'/ajax/advanced/'+skip+'/'+end,
 		cache: false,
 		data: dataString,
 		success: function (data) {
@@ -755,10 +756,11 @@ function user_load_ajax1(){
 			if (data["count"][0]["count"] > end) {
 			    var tot = parseInt(skip) + parseInt(data["count1"]);
 				$("#search_doc_pagination_panel1").html(txt);
-				txt = res_starts + ' - ' + tot + ' of ' + data["count"][0]["count"];
+				txt = +res_starts + ' - ' + tot + ' of ' + data["count"][0]["count"];
 				$("#c_page_no1").html(txt);
 		    }
 			else if(data["count"][0]["count"] <= end && data["count"][0]["count"] > 0){
+
 				var tot = parseInt(skip) + parseInt(data["count1"]);
 				$("#search_doc_pagination_panel1").html(txt);
 				txt = res_starts + ' - ' + tot + ' of ' + data["count"][0]["count"];
@@ -789,6 +791,7 @@ function pagination1(para_1){
 
 	$("#start1").val(parseInt(para_1)*parseInt($("#end1").val())- parseInt($("#end1").val()));
 	$("#page_number_hidden1").val(para_1);
+
 	user_load_ajax1();
 };
 

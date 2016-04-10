@@ -2,11 +2,11 @@
 <div width="100%" style="padding: 5px" >
     <input type="hidden" name="page" id="page_number_hidden1" value="1">
     <input type="hidden" name="page" id="start1" value="0">
-    <input type="hidden" name="page" id="end1" value="2">
+    <input type="hidden" name="page" id="end1" value="18">
 
     <input type="hidden" name="page" id="page_number_hidden2" value="1">
     <input type="hidden" name="page" id="start2" value="0">
-    <input type="hidden" name="page" id="end2" value="2">
+    <input type="hidden" name="page" id="end2" value="18">
 
            <div class="col-lg-6 pat_admin_tab_1 pat_admin_tab_active" id="pat_type_btn_1" onclick="change_pat_type(1)">
              <p>All Users</p>

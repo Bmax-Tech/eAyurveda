@@ -1,65 +1,30 @@
 <div id="coments12" class="container" style="background-color:#CCC;width:920px">
+    <input type="hidden" name="page" id="page_number_hidden_com" value="1">
+    <input type="hidden" name="page" id="start_com" value="0">
+    <input type="hidden" name="page" id="end_com" value="4">
     <ul class="c_ul_1">
-
-        <li>
+         <li>
             <div style="background: rgb(113, 125, 97);color: #FFF;font-size: 15px;padding: 7px 10px;border-bottom: 3px solid #035600;margin-bottom: 10px">
-
-                User Comments
+                  User Comments
             </div>
+         </li>
 
+        <li id="c_comment_result_ajax_box" style="height:420px;width:920px;margin-left:10px">
+            <!--  Ajax Results Load Here -->
         </li>
-        <li >
-<?php
+        <li>
+            <div class="col-lg-6 c_no_padding">
 
-                foreach($comment as $com) {
-                
-              ?> <div class="col-lg-12 c_pat_result_div">
-              <div class="col-lg-10 c_no_padding"  style="padding-left: 10px">
-                        <div style="color: #0F7400;font-size: 18px;padding:5px 0px;font-weight: 500">
-                           <?php echo $com->pfirst_name." ".$com->plast_name; ?>
-                        </div>
-                        <div style="padding: 5px 0px;font-size: 13px;color: #3c3c3c">
-                            Commented Profile :&nbsp;&nbsp;&nbsp; <?php echo $com->dfirst_name." ".$com->dlast_name; ?>
-                        </div>
-                        <div style="padding: 10px 0px">
-                            <hr class="c_hr_1"/>
-                        </div>
-                        <div style="color: #075325;font-size: 13px">
-                            <?php echo $com->comment; ?>
-                        </div>
-                    </div>
-                    <div class="col-lg-2" style="padding-left: 25px">
-                        
-                        <div style="padding-top: 2px">
-                            
-                        </div>
-                        <div  class="col-lg-6">
-                            <div  style="float:left;height:81px;width:81px;border-radius: 40px;background-color: white;margin-left:-7px;margin-top:-6px">
-                                <img style="height:75px;width:75px;border-radius: 40px;margin-left:3px;margin-top:3px" src="{{ URL::asset($com->image_path1) }}" >
-                            </div>
-
-                        </div>
-                        
-                        
-                    </div>
-                    <div style="clear:both">
-                    </div>
-                    <div class="col-lg-offset-2"style="clear:both;margin-top: 10px">
-                         <div class="col-lg-4 col-lg-offset-4">
-                           <button class="c_pat_view_btn" onclick="user_view('<?php echo $com->puser_id; ?>')">View Profile</button>
-                        </div>
-                        <div class="col-lg-4">
-                            <button class="c_pat_view_btn" onclick="comment_pass_remove('<?php echo $com->cid; ?>')">Remove Comment</button>
-                        </div>
-
-
-                   </div>
-                </div><?php
-                
-            
-                }?>
+                <nav id="search_comment_pagination_panel">
+                    <!-- Pagination Load Here -->
+                </nav>
+            </div>
+            <div class="col-lg-6">
+                <div style="float: right;padding: 20px 0px">
+                    <span>Showing <span id="com_page_no"></span> results</span>
+                </div>
+            </div>
         </li>
-
     </ul>
 
 

@@ -41,7 +41,7 @@
                                        </ul>
                                    </div>
                                    <div class="col-lg-8 col-lg-offset-1" >
-                                       <select class="c_select_box_1" id="spec1">
+                                       <select class="c_select_box_1" id="spec1" >
                                            <option value="all">Select</option>
                                            <?php
                                            foreach($filter_spec as $spec){?>
@@ -129,8 +129,9 @@
                                 $count=1;
                                 foreach($featured_doc1 as $f_ob)
                                 {
+                                $check = $count%2;
                             ?>
-                              <li class="col-lg-3"  onmouseover="load_cos_page12('change_<?php echo $count; ?>')" onmouseout="load_cos_page123('change_<?php echo $count; ?>')">
+                              <li class="col-lg-3" style="margin-top:10px " onmouseover="load_cos_page12('change_<?php echo $count; ?>')" onmouseout="load_cos_page123('change_<?php echo $count; ?>')">
 							   <div class="pat_doc_box col-lg-12 " onclick="feat_addno('<?php echo $count;?>')"  >
 								   <ul class="c_ul_1 " style="width:180px" >
 								   <li style="width:100%"><div align="center"><img src="assets/img/community.png" width="70px"></div></li>
@@ -146,6 +147,14 @@
                                     $count++;
                                 }
                             ?>
+                          {{--      <li class="col-lg-3" style="margin-top:10px  ">
+                                    <div class="pat_doc_box col-lg-12 "   >
+                                        <ul class="c_ul_1 " style="width:180px;height:100px" >
+
+                                        </ul>
+
+                                    </div>
+                                </li>--}}
 
                        </ul>
                       </div>
