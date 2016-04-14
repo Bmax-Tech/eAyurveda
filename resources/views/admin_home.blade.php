@@ -32,9 +32,9 @@
         <div class="col-lg-3 c_no_padding">
             <div class="c_admin_top_user">
                 <ul class="c_top_ul">
-                    <li style="margin-right:25px">
-                        <a class="c_href" href="#">
-                            <img class="c_user_top_logo" src="assets_admin/img/user_logo.png">
+                    <li style="margin-right:25px" >
+                        <a class="c_href" onclick="showpop()">
+                            <img class="c_user_top_logo" src="assets_admin/img/user_logo.png" >
                             <span><?php echo $admin_user[0]['first_name']; ?></span>
                         </a>
                     </li>
@@ -116,6 +116,8 @@
     </div>
     <div class="col-lg-9 c_no_padding" id="admin_home_div">
         <!-- Ajax Home Load Here -->
+
+        </div>
     </div>
 </div>
 
@@ -130,10 +132,182 @@
         <div class="col-lg-8" style="color:#FFFFFF;font-size:12px;margin-top:9px;"><span style="margin-left:280px">&copy;&nbsp;Copyright 2016 eAyurveda.lk</span></div>
     </div>
 </div>
+
+<div id="projectqq" class="container pat_confirm1_box1" >
+    <div class="center-block pat_success1_box_wrapper1" style="margin-right: 30%;margin-top: 2%;width: 600px">
+        <button  class="pat_close_btn1" onclick="projectqqclose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+        <div style="background: #ECF0F5;height: 575px;padding-top: 22px">
+
+            <div class="container c_no_padding col-lg-12">
+                <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
+                    <ul class="c_ul_1">
+                        <li><span style="font-size: 20px;font-weight: 400;margin-left: 30px;color: #000000">Admin Profile </span> </li>
+                        <?php
+                        if(isset($admin_ob)){
+                            foreach($admin_ob as $qq){
+                             ?>
+
+                        <li> <div id="op1" style="padding-top: 40px">
+                                <div class="col-lg-12 ">
+                                    <div class="col-lg-12 ">
+                                    First Name
+                                    </div>
+                                    <div class="col-lg-12 " style="margin-top: 5px">
+                                        <input style="height: 30px"  value=<?php  echo $qq->first_name;?> id="fname1" class="c_text_box_1 " name="fname1" type="text" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 " style="margin-top: 20px">
+                                    <div class="col-lg-12 ">
+                                        Last Name
+                                    </div>
+                                    <div class="col-lg-12 " style="margin-top: 5px">
+                                        <input style="height: 30px"  value=<?php  echo $qq->last_name;?> id="lname1" class="c_text_box_1" name="lname1" type="text" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 " style="margin-top: 20px">
+                                    <div class="col-lg-12 ">
+                                        Email
+                                    </div>
+                                    <div class="col-lg-12 " style="margin-top: 5px">
+                                        <input style="height: 30px"  value=<?php  echo $qq->email;?> id="email1" class="c_text_box_1" name="email1" type="text"  disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 " style="margin-top: 20px">
+                                    <div class="col-lg-12 ">
+                                        Username
+                                    </div>
+                                    <div class="col-lg-12 " style="margin-top: 5px">
+                                        <input style="height: 30px"  value=<?php  echo $qq->username;?>  class="c_text_box_1" name="uname1" type="text" disabled>
+                                    </div>
+                                </div>
+                                <div id="editbtn"class="col-lg-12 "  style="margin-top: 50px;margin-left: 25px">
+                                    <button class="pat_view_btn_2" onclick="enableEdit()" >Edit</button>
+                                </div>
+
+                            </div>
+
+
+
+                            <div id="op2" style="padding-top: 20px;display: none">
+                                <form action="{{ URL::asset('/admin_panel_home/updateAdminProfile') }}"  method="post" id="adminfrom">
+
+
+                                <div class="col-lg-12 ">
+                                    <div class="col-lg-12 ">
+                                      <span>First Name</span><span style="margin-left:225px" class="c_warning_tips_reg" id="wrn_fname"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Invalid first name</span>
+                                    </div>
+                                    <div class="col-lg-12 " style="margin-top: 5px">
+                                        <input style="height: 30px" onkeypress="remove_wrn('fname')" onchange="remove_wrn('fname')" value=<?php  echo $qq->first_name;?> id="fname" class="c_text_box_1 " name="fname" type="text" maxlength="100"autocomplete="off" spellcheck="false" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 " style="margin-top: 20px">
+                                    <div class="col-lg-12 ">
+                                        <span>Last Name</span><span style="margin-left:225px" class="c_warning_tips_reg" id="wrn_lname"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Invalid last name</span>
+                                    </div>
+                                    <div class="col-lg-12 " style="margin-top: 5px">
+                                        <input style="height: 30px" onkeypress="remove_wrn('lname')" onchange="remove_wrn('lname')" value=<?php  echo $qq->last_name;?> id="lname" class="c_text_box_1" name="lname" type="text" maxlength="100"autocomplete="off" spellcheck="false" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 " style="margin-top: 20px">
+                                    <div class="col-lg-12 ">
+                                        <span>Email</span><span style="margin-left:255px" class="c_warning_tips_reg" id="wrn_email"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Invalid email</span>
+                                    </div>
+                                    <div class="col-lg-12 " style="margin-top: 5px">
+                                        <input style="height: 30px" onkeypress="remove_wrn('email')" onchange="remove_wrn('email')" value=<?php  echo $qq->email;?> id="email" class="c_text_box_1" name="email" type="text" maxlength="100"autocomplete="off" spellcheck="false" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 " style="margin-top: 20px">
+                                    <div class="col-lg-12 ">
+                                        <span>Username</span><span style="margin-left:225px " class="c_warning_tips_reg" id="wrn_uname"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Invalid Username</span>
+                                    </div>
+                                    <div class="col-lg-12 " style="margin-top: 5px">
+                                        <input style="height: 30px" onkeypress="remove_wrn('uname')" onchange="remove_wrn('uname')" value=<?php  echo $qq->username;?> id="uname" class="c_text_box_1" name="uname" type="text" maxlength="100"autocomplete="off" spellcheck="false" >
+                                    </div>
+                                </div>
+                                <div id="passwordset" style="display: none">
+                                    <div class="col-lg-12 "style="margin-top: 20px">
+                                        <div class="col-lg-12 ">
+                                            <span>Password</span><span style="margin-left:230px " class="c_warning_tips_reg" id="wrn_pwrd"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Invalid Password</span>
+                                        </div>
+                                        <div class="col-lg-12 " style="margin-top: 5px">
+                                            <input style="height: 30px" onkeypress="remove_wrn('pwrd'),remove_wrn('acpwrd')" onchange="remove_wrn('pwrd'),remove_wrn('acpwrd')" onkeyup="passwordValidateAdmin()" id="pwrd" class="c_text_box_1 password_regx" name="pwrd" type="password" maxlength="100"autocomplete="off" spellcheck="false">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12"style="margin-top: 20px">
+                                        <div class="col-lg-12 ">
+                                            <span>Confirm Password</span><span style="margin-left:180px " class="c_warning_tips_reg" id="wrn_acpwrd"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Invalid Password</span>
+                                        </div>
+                                        <div class="col-lg-12 " style="margin-top: 5px">
+                                            <input style="height: 30px" onkeypress="remove_wrn('acpwrd'),remove_wrn('pwrd')" onchange="remove_wrn('acpwrd'),remove_wrn('pwrd')" id="acpwrd" class="c_text_box_1" name="acpwrd" type="password" maxlength="100"autocomplete="off" spellcheck="false">
+                                        </div>
+                                    </div>
+                                    <div class="a_password_inputs1">
+                                        <div id="a_in_ps_div_1"></div>
+                                        <div id="a_in_ps_div_2">
+                                            <ul class="c_ul_1">
+                                                <li id="in_ps_ch_1"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.</li>
+                                                <li id="in_ps_ch_2"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.</li>
+                                                <li id="in_ps_ch_3"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.</li>
+                                                <li id="in_ps_ch_4"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php    }
+                                }?>
+                                <div id="pwrdbtn" class="col-lg-9" style="margin-top: 20px">
+                                    <input type="button" class="pat_view_btn_1" onclick="viewpassword()" value="Change password">
+                                </div>
+                                <div class="col-lg-12" style="margin-top: 10px">
+                                    <div id="backbtn"class="col-lg-6"  style="margin-top: 20px;margin-left: 190px">
+                                        <input type="button" class="pat_view_btn_1 " onclick="goBack()" value="Back">
+                                    </div>
+                                    <div id="savebtn"class="col-lg-3"  style="margin-top: 20px;margin-left: -100px">
+                                        <button id="adminSubmit" type="submit" class="pat_view_btn_1">Save</button>
+
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="adminSavePopup" class="container pat_confirm1_box" >
+        <div class="center-block pat_success1_box_wrapper" style="margin-right: 40%;margin-top: 15%;width: 375px">
+            <button  class="pat_close_btn" onclick="adminSaveClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+            <div style="background: #4CBC5B;height: 145px;padding-top: 32px">
+
+                <div class="container c_no_padding col-lg-12">
+                    <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
+                        <ul class="c_ul_1">
+                            <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Save </span></li>
+
+                            <li> <div style="padding-top: 30px">
+                                    <div class="col-lg-3 ">
+                                        <button class="pat_view_btn_1" onclick="confirm_addAdmin()" >Confirm</button>
+                                    </div>
+                                    <div class="col-lg-3" style="margin-left: 100px">
+                                        <button class="pat_view_btn_1" onclick="adminSaveClose()" >Cancel</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 <!-- Admin Footer -->
 
 
 <!-- JavaScripts -->
+
 <script src="assets/js/jquery-1.12.0.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/wow.min.js"></script>

@@ -32,7 +32,7 @@
                    </li></ul>   
                          </div>
                          <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                             <?php echo $patient->first_name;?>
+                             <?php echo $patient->username;?>
                          </div>
                           <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
                              <ul><li>
@@ -73,7 +73,7 @@
                              </li></ul> 
                          </div>
                          <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                             <?php echo $patient->reg_date;?>
+                             <?php echo date('Y:m:d', strtotime($patient->reg_date));?>
                          </div>
                         </div>
                     </div>
@@ -82,9 +82,20 @@
                         <div style="padding-top: 2px">
                             
                         </div>
-                        <div  class="col-lg-6" >
-                             <img src="assets/img/doc_user.png" width="60px " >
-                        </div>
+                        <div  style="float:left;height:81px;width:81px;border-radius: 60px;background-color: white;margin-left:-14px;margin-top:2px">
+                              <?php
+
+                            if($patient->image_path == ""){
+                                 $img = "profile_images/default_user_icon.png";
+                             }else{
+                                 $img = $patient->image_path;
+                             }
+                             ?>
+                                  <div >
+                                      <img style="height:75px;width:75px;border-radius: 60px;margin-left:3px;margin-top:2px" src="{{ URL::asset($img) }}"  >
+                                  </div>
+                            </div>
+
                         
                         
                     </div>
