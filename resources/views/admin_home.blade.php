@@ -49,17 +49,40 @@
 
 </div>
 <div class="container c_container c_no_padding">
+    <input type="hidden" id="base_url_admin" value="{{ URL::asset('') }}"/>
     <div class="col-lg-3 c_no_padding c_admin_left_nav">
         <ul class="c_ul_1 c_admin_ul">
-            <li id="admin_left_nav_dashboard_btn" onclick="load_dashboard()"><ul class="c_top_ul"><li><img src="assets_admin/img/dashboard.png" style="width:20px"></li><li style="margin-left:10px">
+            <li id="admin_left_nav_dashboard_btn" onclick="load_dashboard()">
+                <ul class="c_top_ul">
+                    <li>
+                        <img src="assets_admin/img/dashboard.png" style="width:20px">
+                    </li>
+                    <li style="margin-left:10px">
                         Dashboard
-                    </li></ul>
+                    </li>
+                </ul>
             </li>
+            <li id="admin_left_nav_chat_btn" onclick="load_chat()">
+                <ul class="c_top_ul">
+                    <li>
+                        <img src="assets_admin/img/chat.png" style="width:20px">
+                    </li>
+                    <li style="margin-left:10px">
+                        Chat
+                    </li>
+                </ul>
             </li>
-            <li id="admin_left_nav_doc_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/doc_user.png" style="width:20px"></li><li style="margin-left:10px">
-                        <span class="glyphicon glyphicon-menu-right c_right_gly" id="c_admin_span_1" aria-hidden="true"></span>
+            <li id="admin_left_nav_doc_btn">
+                <ul class="c_top_ul">
+                    <li>
+                        <img src="assets_admin/img/doc_user.png" style="width:20px">
+                    </li>
+                    <li style="margin-left:10px">
+                        <span class="glyphicon glyphicon-menu-right c_right_gly" id="c_admin_span_1" style="margin-right: -135px" aria-hidden="true"></span>
                         Doctor
-                    </li></ul></li>
+                    </li>
+                </ul>
+            </li>
             <li id="admin_left_nav_doc" style="display:none;padding:0px">
                 <ul class="c_admin_ul_in">
                     <li class="c_admin_ul_li " onClick="load_doc_page('1')" style="padding-top: 20px"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Add Physician</li>
@@ -86,7 +109,7 @@
                 </ul>
             </li>
             <li id="admin_left_nav_for_btn"><ul class="c_top_ul"><li><img src="assets_admin/img/forum_admin_icon.png" style="width:20px"></li><li style="margin-left:10px">
-                        <span class="glyphicon glyphicon-menu-right c_right_gly" id="c_admin_span_3" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-menu-right c_right_gly" id="c_admin_span_3" style="margin-right: -142px" aria-hidden="true"></span>
                         Forum
                     </li></ul></li>
             <li id="admin_left_nav_for" style="display:none;padding:0px">

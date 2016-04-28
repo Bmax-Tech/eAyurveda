@@ -84,7 +84,7 @@
                 </li>
                 <li style="padding-top: 20px">
                     <div style="background: #39B54A;padding: 10px 40px;color: #FFF;border-bottom: 3px solid #035600;border-bottom-left-radius: 50px">
-                        <span style="font-size: 16px">Commented Posts on You</span>
+                        <span style="font-size: 16px">Posted Comments on You</span>
                     </div>
                 </li>
                 <li style="margin-top: 15px;padding: 10px 20px">

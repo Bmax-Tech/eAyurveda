@@ -495,15 +495,15 @@ class AjaxControll extends ExceptionController
 
 
 	}
- public function getDocName($doc_name,$skip,$end){
+	public function getDocName($doc_name,$skip,$end){
 
-	 $doctor = \DB::table('doctors')->join('specialization', 'doctors.id', '=', 'specialization.doc_id')
-			 ->where(function ($q4) use ($doc_name) {
-				 $q4->where('first_name', 'like', '%' . $doc_name . '%')
-						 ->orWhere('last_name', 'like', '%' . $doc_name . '%');
-			 })->skip($skip)->take($end)->get();
- return $doctor;
- }
+		 $doctor = \DB::table('doctors')->join('specialization', 'doctors.id', '=', 'specialization.doc_id')
+				 ->where(function ($q4) use ($doc_name) {
+					 $q4->where('first_name', 'like', '%' . $doc_name . '%')
+							 ->orWhere('last_name', 'like', '%' . $doc_name . '%');
+				 })->skip($skip)->take($end)->get();
+	 	return $doctor;
+	}
 
 
 	/*

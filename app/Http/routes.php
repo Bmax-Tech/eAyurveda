@@ -81,6 +81,10 @@ Route::get('/admin_panel_home/{fname}/{lname}/{uname}/{email}/{pwrd}','Admin_Fro
 Route::post('/ajax/admin/{type}/{data}','Admin_Front@registerAdminPageValidate');
 Route::get('/admin_panel/dashboard','Admin_Front@loadDashboard');
 Route::get('/Charts','Admin_Front@graph1Count');
+Route::get('/admin_panel/chat','Admin_Front@LoadChatView');
+Route::post('/Admin_get_chat_users','Admin_Front@GetAvailableChatUsers');
+Route::post('/Admin_get_chat_message','Admin_Front@GetAdminChat');
+Route::post('/Admin_send_chat_message','Admin_Front@SendAdminChat');
 
 /*
  * ---------------------  Main Page Routes End  ----------------------
