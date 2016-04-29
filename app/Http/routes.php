@@ -33,6 +33,9 @@ Route::resource('/login','Front@login');
 Route::resource('/logout','Front@logout');
 Route::resource('/update_user_profile','Front@update_account');
 Route::get('/AyurvedicTherapies','Front@spa');
+Route::get('/Physicians','Front@physicians');
+Route::get('/DoctorAccount','Front@DoctorAccount');
+Route::resource('/update_doctor_account','Front@UpdateDoctorAccount');
 
 /*
  * Admin Side Routing
@@ -82,6 +85,10 @@ Route::get('/admin_panel_home/{fname}/{lname}/{uname}/{email}/{pwrd}','Admin_Fro
 Route::post('/ajax/admin/{type}/{data}','Admin_Front@registerAdminPageValidate');
 Route::get('/admin_panel/dashboard','Admin_Front@loadDashboard');
 Route::get('/Charts','Admin_Front@graph1Count');
+Route::get('/admin_panel/chat','Admin_Front@LoadChatView');
+Route::post('/Admin_get_chat_users','Admin_Front@GetAvailableChatUsers');
+Route::post('/Admin_get_chat_message','Admin_Front@GetAdminChat');
+Route::post('/Admin_send_chat_message','Admin_Front@SendAdminChat');
 
 /*
  * ---------------------  Main Page Routes End  ----------------------
@@ -104,6 +111,11 @@ Route::post('/send_chat_message','AjaxControll@send_chat_message_by_user');
 Route::post('/get_chat_message','AjaxControll@get_chat_message_by_user');
 Route::post('/get_user_appointment_fill','AjaxControll@get_user_appointment_fill');
 Route::post('/make_appointment','AjaxControll@make_appointment');
+Route::post('/get_physicians','AjaxControll@GetPhysiciansPaginated');
+Route::post('/CheckDoctorEmailUserName','AjaxControll@UpdateDoctorCheck');
+Route::post('/get_comments_on_doctor','AjaxControll@GetCommentsOnDoctor');
+Route::post('/GetDoctorPageAreaChart','AjaxControll@GetAreaChartOnDoc');
+Route::post('/GetDoctorPagePieChart','AjaxControll@GetPieChartOnDoc');
 
 /*
  * ---------------------  Ajax Routes End  ----------------------

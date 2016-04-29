@@ -26,6 +26,8 @@ class Doctors extends Model
         'tot_stars',
         'rated_tot_users',
         'reg_date',
+        'longitude',
+        'latitude',
         'created_at',
         'updated_at'
     ];

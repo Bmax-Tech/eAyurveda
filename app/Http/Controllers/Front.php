@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\ConsultationTimes;
 use App\Featured_doc;
 use App\Formal_doctors;
-use App\HealthTip;
+
+use App\Health_tips;
 use App\Non_Formal_doctors;
 use App\Patients;
+use App\ProfileViews;
+use App\RecentlyViewed;
 use App\Specialization;
 use App\Treatments;
 use App\User;
@@ -99,7 +103,7 @@ class Front extends ExceptionController
             $sending_ob['email'] = $patients_ob->email;
             $sending_ob['contact_no'] = $patients_ob->contact_number;
 
-            return View::make('user_account', array('user_data' => $sending_ob));
+            return View::make('user_account', array('user_data' => $sending_ob,'recently_viewed_docs' => self::GetRecentlyViewedProfiles($user[0]['id'])));
         }else{
             return Redirect::to('/');
         }
@@ -170,7 +174,7 @@ class Front extends ExceptionController
 
     public function login(Request $request){
         try {
-            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(1)->first();
+            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(2)->first();
         }catch (Exception $e){
             $this->LogError('Login function in User Search',$e);
         }
@@ -233,6 +237,12 @@ class Front extends ExceptionController
         }catch (Exception $e){
             $this->LogError('View Doctor Profile',$e);
         }
+
+        /* Run Recently Viewed Profiles */
+        self::RecentlyViewedProfiles($doc_id);
+
+        /* Add new hit to Profile View hit counter */
+        self::ProfileViewHitCounter($doc_id);
 
         return View::make('profile',array('doctor' => $main_doc_ob));
     }
@@ -335,7 +345,9 @@ class Front extends ExceptionController
                 'rating' => 0,
                 'tot_stars' => 0,
                 'rated_tot_users' => 0,
-                'reg_date' => new \DateTime()
+                'reg_date' => new \DateTime(),
+                'longitude' => '0',
+                'latitude' => '0'
             ]);
 
             $doc_ob = Doctors::whereUser_id($user->id)->first();
@@ -366,6 +378,15 @@ class Front extends ExceptionController
                 'treat_4' => Input::get('treatments')[3],
                 'treat_5' => Input::get('treatments')[4]
             ]);
+
+            /* Seventh -> Create Consultation Times */
+            ConsultationTimes::create([
+                'doc_id' => $doc_ob->id,
+                'time_1' => '-',
+                'time_2' => '-',
+                'time_3' => '-'
+            ]);
+
         }catch (Exception $e){
             $this->LogError('Non Formal Doctor Create Function',$e);
         }
@@ -380,12 +401,229 @@ class Front extends ExceptionController
         return view('ayurvedic_therapies');
     }
 
+    /*
+     * Physicians Page
+     */
+    public function physicians(Request $request){
+        return view('physicians');
+    }
+
+    /*
+     * Doctor Account Page
+     */
+    public function DoctorAccount(Request $request){
+        try {
+            $doctor_id = 1;
+
+            $doctor_data = Doctors::whereId($doctor_id)->first();
+            $spec_data = Specialization::whereDoc_id($doctor_id)->first();
+            $treat_data = Treatments::whereDoc_id($doctor_id)->first();
+            $cons_data = ConsultationTimes::whereDoc_id($doctor_id)->first();
+
+            $image_data = Images::whereUser_id($doctor_data->user_id)->first();
+
+            return view('doctor_account', array(
+                'doctor' => $doctor_data,
+                'spec' => $spec_data,
+                'treat' => $treat_data,
+                'consult' => $cons_data,
+                'image' => $image_data
+            ));
+        }catch (Exception $e) {
+            $this->LogError('Doctor Account View Function', $e);
+        }
+    }
+
+    /*
+     * This function will Update Doctor Profile Details
+     * Which are updated by Doctor
+     */
+    public function UpdateDoctorAccount(Request $request){
+        //dd($request);
+        $doctor_id = 1;// Holds Doctor ID
+        $user_id = 1;// Holds User ID
+        try {
+
+            /* Update Doctor details */
+            $doctor_ob = Doctors::find($doctor_id);
+            //$doctor_ob->first_name = Input::get('first_name');
+            //$doctor_ob->last_name = Input::get('last_name');
+            $doctor_ob->dob = Input::get('dob');
+            $doctor_ob->nic = Input::get('nic');
+            $doctor_ob->address_1 = Input::get('address_1');
+            $doctor_ob->address_2 = Input::get('address_2');
+            $doctor_ob->city = Input::get('city');
+            $doctor_ob->district = Input::get('district');
+            $doctor_ob->contact_number = Input::get('contact_no');
+            $doctor_ob->email = Input::get('email');
+            $doctor_ob->description = Input::get('doc_description');
+            $doctor_ob->longitude = Input::get('longitude');
+            $doctor_ob->latitude = Input::get('latitude');
+            $doctor_ob->save();
+
+            /* Update Specialization Details */
+            $specialized_ob = Specialization::whereDoc_id($doctor_id)->first();
+            $specialized_ob->spec_1 = Input::get('specialized')[0];
+            $specialized_ob->spec_2 = Input::get('specialized')[1];
+            $specialized_ob->spec_3 = Input::get('specialized')[2];
+            $specialized_ob->spec_4 = Input::get('specialized')[3];
+            $specialized_ob->spec_5 = Input::get('specialized')[4];
+            $specialized_ob->save();
+
+            /* Update Treatment Details */
+            $treatment_ob = Treatments::whereDoc_id($doctor_id)->first();
+            $treatment_ob->treat_1 = Input::get('treatments')[0];
+            $treatment_ob->treat_2 = Input::get('treatments')[1];
+            $treatment_ob->treat_3 = Input::get('treatments')[2];
+            $treatment_ob->treat_4 = Input::get('treatments')[3];
+            $treatment_ob->treat_5 = Input::get('treatments')[4];
+            $treatment_ob->save();
+
+            /* Update Consultation Times Details */
+            $consult_ob = ConsultationTimes::whereDoc_id($doctor_id)->first();
+            $consult_ob->time_1 = Input::get('consult_times')[0];
+            $consult_ob->time_2 = Input::get('consult_times')[1];
+            $consult_ob->time_3 = Input::get('consult_times')[2];
+            $consult_ob->save();
+
+
+            /* Check Whether New Image Upload is Available or not */
+            if (isset(Input::file('profile_img')[0])) {
+                /* This function will upload image */
+                self::upload_doctor_image($request, $user_id);
+
+                /* Updates Database Images table Image_path with new path */
+                $img_ob = Images::whereUser_id($user_id)->first();
+                $img_ob->image_path = "profile_images/doctor_images/doc_profile_img_" . $user_id . ".png";
+                $img_ob->save();
+            }
+
+            return Redirect::to('/DoctorAccount');
+        }catch (Exception $e) {
+            $this->LogError('Update Doctor Account Function', $e);
+        }
+    }
+    /*
+     * This function Uploads Doctor Profile images to Server '/public/profile_images/doctor_images/' Folder
+     */
+    public function upload_doctor_image(Request $request,$user_id){
+        try {
+            $imageName = "doc_profile_img_" . $user_id . ".png";
+            $destinationPath = base_path() . '/public/profile_images/doctor_images/';
+            Input::file('profile_img')[0]->move($destinationPath, $imageName);
+        }catch (Exception $e){
+            $this->LogError('Upload Doctor Image',$e);
+        }
+    }
+
 
 
     /* ~~~~~~~~~~~~~~~~
      * Custom Functions
      * ~~~~~~~~~~~~~~~~
      */
+
+    /*
+     * This function is to Check whether user has already viewed this doctor or not
+     * If not, add new doctors id into recently_viewed table under User`s record
+     */
+    public function RecentlyViewedProfiles($doctor_id){
+        /*
+         * First Check whether user is logged or not
+         * If yes, Then function will check for RecentlyViewed Records
+         */
+        if(isset($_COOKIE['user'])) {
+            $user = json_decode($_COOKIE['user'], true);
+            $user_id = $user[0]['id'];
+            try {
+                $record = RecentlyViewed::where('user_id', '=', $user_id)->first();
+                if ($record == null) {
+                    /* No Record found on RecentlyViewed Table */
+                    $views = $doctor_id;
+                    RecentlyViewed::create([
+                        'user_id' => $user_id,
+                        'views' => $views
+                    ]);
+                } else {
+                    /* Record Exist on Recently Viewed Table */
+                    $views = explode(',', $record->views);
+                    //dd($views);
+                    if (in_array($doctor_id, $views)) {
+                        /*
+                         *  If doctor has been viewed previously
+                         *  Do nothing
+                         */
+                    } else {
+                        /*
+                         * If doctor`s id not available in previous views
+                         * Add new entry into views string
+                         */
+                        $new_views = $record->views . "," . $doctor_id;
+                        $up_record = RecentlyViewed::find($record->id);
+                        $up_record->views = $new_views;
+                        $up_record->save();
+                    }
+                }
+            } catch (Exception $e) {
+                $this->LogError('Recently Viewed Profiles Function', $e);
+            }
+        }
+    }
+
+    /*
+     * This function gets recently viewed doctors
+     * Return => array of recently viewed doctors
+     */
+    public function GetRecentlyViewedProfiles($user_id){
+        try {
+            $resArray = array();
+
+            $records = RecentlyViewed::whereUser_id($user_id)->first();
+            if($records != null){
+                $views = explode(',',$records->views);
+                $views = array_reverse($views); // To get recently viewed doctor ids
+                $count=0;
+                foreach($views as $doc_id){
+                    $doctor = Doctors::whereId($doc_id)->first();
+                    if($doctor->doc_type == "FORMAL"){
+                        $img = "profile_images/doctor_images/doc_profile_img_".$doctor->user_id.".png";
+                    }else{
+                        $img = "profile_images/default_user_icon.png";
+                    }
+                    $temp_arr['doc_id'] = $doc_id;
+                    $temp_arr['image'] = $img;
+                    $temp_arr['doc_first_name'] = $doctor->first_name;
+                    $temp_arr['doc_last_name'] = $doctor->last_name;
+
+                    $resArray[] = $temp_arr;
+
+                    $count++;
+                    if($count == 5){
+                        break;
+                    }
+                }
+                return $resArray;
+            }else{
+                return $resArray;
+            }
+
+        } catch (Exception $e) {
+            $this->LogError('Get Recently Viewed Profiles Function', $e);
+        }
+    }
+
+    /*
+     * This function will add profile view hits record
+     */
+    public function ProfileViewHitCounter($doctor_id){
+        try {
+            ProfileViews::create([
+                'doctor_id' => $doctor_id
+            ]);
+        } catch (Exception $e) {
+            $this->LogError('Profile View Hit Counter Function', $e);
+        }
+    }
 
     /*
      * This function returns the top rated doctors
@@ -477,7 +715,7 @@ class Front extends ExceptionController
      */
     public function get_health_tips(){
         try {
-            $health_tip_main = HealthTip::orderBy('hid', 'DESC')->get();
+            $health_tip_main = Health_tips::orderBy('hid', 'DESC')->get();
         }catch (Exception $e){
             $this->LogError('Get Health Tips Function',$e);
         }

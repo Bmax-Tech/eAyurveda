@@ -32,6 +32,8 @@ class CreateDoctorsTableByBuwaneka extends Migration
             $table->integer('tot_stars');
             $table->integer('rated_tot_users');
             $table->dateTime('reg_date');
+            $table->string('longitude');
+            $table->string('latitude');
             $table->timestamps();
         });
     }
