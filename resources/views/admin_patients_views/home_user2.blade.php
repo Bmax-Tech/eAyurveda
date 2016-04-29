@@ -17,10 +17,27 @@
                 <div class="col-lg-10 c_no_padding" style="padding-left: 10px">
 
                     <div style="padding:5px 0px">
-                        <ul class="c_ul_1">
-                            <li style="color: #0F7400;font-weight: 500;font-size: 30px;"><?php echo $patient->first_name." ".$patient->last_name;?></li>
-                            <li>Email &nbsp:&nbsp  <?php echo $patient->email;?></li>
-                        </ul>
+                        <div style="margin-left: 10px">
+                            <div  style="float:left;height:71px;width:71px;border-radius: 50px;background-color: white;margin-left:-14px;margin-top:2px">
+                                <?php
+
+                                if($patient->image_path == ""){
+                                    $img = "profile_images/default_user_icon.png";
+                                }else{
+                                    $img = $patient->image_path;
+                                }
+                                ?>
+                                <div >
+                                    <img style="height:65px;width:65px;border-radius: 50px;margin-left:3px;margin-top:3px" src="{{ URL::asset($img) }}"  >
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-left: 100px">
+                            <ul class="c_ul_1">
+                                <li style="color: #0F7400;font-weight: 500;font-size: 30px;"><?php echo $patient->first_name." ".$patient->last_name;?></li>
+                                <li>Email &nbsp:&nbsp  <?php echo $patient->email;?></li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div style="padding: 10px 0px">
@@ -85,31 +102,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2" style="padding-left: 25px">
 
-                    <div style="padding-top: 2px">
-
-                    </div>
-                    <div  style="float:left;height:81px;width:81px;border-radius: 60px;background-color: white;margin-left:-14px;margin-top:2px">
-                        <?php
-
-                        if($patient->image_path == ""){
-                            $img = "profile_images/default_user_icon.png";
-                        }else{
-                            $img = $patient->image_path;
-                        }
-                        ?>
-                        <div >
-                            <img style="height:75px;width:75px;border-radius: 60px;margin-left:3px;margin-top:2px" src="{{ URL::asset($img) }}"  >
-                        </div>
-                    </div>
-
-
-
-                </div>
-
-
-                </div>
                 <div style="clear:both">
                 </div>
                 <div class="col-lg-offset-8"style="clear:both;margin-top: 10px">

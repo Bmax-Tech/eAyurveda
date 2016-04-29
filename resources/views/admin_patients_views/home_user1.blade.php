@@ -17,10 +17,27 @@
                     <div class="col-lg-10 c_no_padding" style="padding-left: 10px">
                         
                         <div style="padding:5px 0px">
-                          <ul class="c_ul_1">
+                          <div style="margin-left: 10px">
+                              <div  style="float:left;height:71px;width:71px;border-radius: 50px;background-color: white;margin-left:-14px;margin-top:2px">
+                                  <?php
+
+                                  if($patient->image_path == ""){
+                                      $img = "profile_images/default_user_icon.png";
+                                  }else{
+                                      $img = $patient->image_path;
+                                  }
+                                  ?>
+                                  <div >
+                                      <img style="height:65px;width:65px;border-radius: 50px;margin-left:3px;margin-top:3px" src="{{ URL::asset($img) }}"  >
+                                  </div>
+                              </div>
+                          </div>
+                           <div style="margin-left: 100px">
+                            <ul class="c_ul_1">
                             <li style="color: #0F7400;font-weight: 500;font-size: 30px;"><?php echo $patient->first_name." ".$patient->last_name;?></li>
                               <li>Email &nbsp:&nbsp  <?php echo $patient->email;?></li>
                            </ul>
+                          </div>
                         </div>
                         
                          <div style="padding: 10px 0px">
@@ -82,19 +99,7 @@
                         <div style="padding-top: 2px">
                             
                         </div>
-                        <div  style="float:left;height:81px;width:81px;border-radius: 60px;background-color: white;margin-left:-14px;margin-top:2px">
-                              <?php
 
-                            if($patient->image_path == ""){
-                                 $img = "profile_images/default_user_icon.png";
-                             }else{
-                                 $img = $patient->image_path;
-                             }
-                             ?>
-                                  <div >
-                                      <img style="height:75px;width:75px;border-radius: 60px;margin-left:3px;margin-top:2px" src="{{ URL::asset($img) }}"  >
-                                  </div>
-                            </div>
 
                         
                         
@@ -103,18 +108,48 @@
                     </div>
                     <div class="col-lg-offset-8"style="clear:both;margin-top: 10px">
                          <div class="col-lg-4">
-                           <button class="c_pat_view_btn" onclick="user_rem( <?php echo $patient->user_id;?>)">Block User</button>
+                             <input style="background-color: #B0BAB2;vertical-align:bottom;overflow:visible; font-size:2em; display:inline;  margin:0; padding:0; border:0; border-bottom:1px solid blue; color:blue; cursor:pointer;" name="Block User" type="button" value="Block User">
+                           <button class="c_pat_view_btn" onclick="blockConfirmPopupshow()">Block iUser</button>
                         </div>
                         
                    </div>
                 </div> </li>
             
         </ul>
-        
-        
+
+
+
         
  
     </div>
+ {{--confirm pop up massage--}}
+ <div id="blockConfirmPopup" class="container pat_success1_box" >
+
+     <div class="center-block pat_success1_box_wrapper" style="margin-right: 55%;margin-top: 15%;width: 375px">
+         <button  class="pat_close_btn" onclick="blockConfirmPopupClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+         <div style="background: #4CBC5B;height: 145px;padding-top: 32px">
+
+             <div class="container c_no_padding col-lg-12">
+                 <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
+                     <ul class="c_ul_1">
+                         <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Delete </span></li>
+
+                         <li> <div style="padding-top: 30px">
+                                 <div class="col-lg-3 ">
+                                     <button class="pat_view_btn_1" onclick=" user_rem( <?php echo $patient->user_id;?>)" >Confirm</button>
+                                 </div>
+                                 <div class="col-lg-3" style="margin-left: 100px">
+                                     <button class="pat_view_btn_1" onclick="blockConfirmPopupClose()" >Cancel</button>
+                                 </div>
+                             </div>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
+
+         </div>
+     </div>
+ </div>
 
 
 

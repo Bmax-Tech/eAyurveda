@@ -41,8 +41,9 @@
                                     $count++;
                                 }
                             ?>
-                                <li class="col-lg-3" style="margin-top:10px " onmouseover="load_cos_page12('change_add')" onmouseout="load_cos_page123('change_add')">
-                                    <div class="a_doc_box col-lg-12 " onclick="feat_addno('<?php echo $count;?>')"  >
+                               <?php if($count < 11){?>
+                                <li  class="col-lg-3" style="margin-top:10px " onmouseover="load_cos_page12('change_add')" onmouseout="load_cos_page123('change_add')">
+                                    <div class="a_doc_box col-lg-12 " onclick="featuredAddNew()"  >
                                         <ul class="c_ul_1 " style="width:180px" >
                                             <li style="width:100%"><div align="center"style="margin-top:56px;margin-bottom:33px"><img src="assets_admin\img\addDoctor2.png" style="width:90px"></div></li>
                                         </ul>
@@ -50,6 +51,7 @@
 
                                     </div>
                                 </li>
+                               <?php }?>
                        </ul>
                       </div>
 
@@ -58,20 +60,22 @@
 
 
                            <div id="docChoosePopup" class="container pat_confirm1_box" >
-                               <div class="center-block pat_success1_box_wrapper" style="margin-right: 65%;margin-top: 10%;width: 975px">
-                                   <button  class="pat_close_btn" onclick="docChooseClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+                               <div class="center-block pat_success1_box_wrapper" style="margin-right: 100%;margin-top: 10%;width: 870px">
+                                   <button  class="fet_doc_close_btn" onclick="docChooseClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
                                    <div style="background: #4CBC5B;height: 445px;padding-top: 32px">
 
                                        <div class="container c_no_padding col-lg-12">
-                                           <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
+                                           <div class="col-lg-11 c_no_padding" style="margin-left: 10px">
                                                <ul class="c_ul_1">
-                                                   <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Select a Doctor </span></li>
+                                                   <li><span style="font-size: 28px;font-weight: 300;margin-left: 20px;color: #FFF">Select a Doctor </span>
+                                                       <button class="pat_view_btn_1" onclick="docChooseClose()" ><img src="assets_admin\img\Delete-52.png" height="15px">&nbspCancel</button>
+                                                   </li>
 
-                                                   <li> <div style="padding-top: 30px">
+                                                   <li> <div style="padding-top: 10px">
 
 
 
-                                                           <div class="col-lg-9" id="tabdiv" Style="height:250px;margin-top:20px">
+                                                           <div class="col-lg-9" id="tabdiv" Style="height:250px;margin-top:10px">
                                                                <div class="col-lg-12"  style="padding:20px 32px 0px 15px;">
                                                                    <div class="col-lg-5 customizeTableHead"  style=" border-top-left-radius:13px;border-left: 1px solid #ddd">
                                                                        <b>Doctor Name</b>
@@ -83,7 +87,7 @@
                                                                        <b> City</b>
                                                                    </div>
                                                                </div>
-                                                               <div id="maybe" class="col-lg-12" Style="height:200px;overflow-y: scroll">
+                                                               <div id="featuredDocTable" class="col-lg-12" Style="height:200px;overflow-y: scroll">
                                                                    <table id="kawa" class="col-lg-12  tabledesign1">
 
 
@@ -98,11 +102,24 @@
                                                                        <?php } ?>
                                                                    </table>
                                                                 </div>
+                                                               <div style="clear:both;padding-top: 40px;margin-left: 320px">
+                                                                   <div class=" ">
+                                                                       <button class="pat_view_btn_1" onclick="feturedDoctorUpdatePopUp()" ><img src="assets_admin\img\confirm_img.png" height="15px">&nbsp Confirm</button>
+
+                                                                       <button class="pat_view_btn_1" onclick="docChooseClose()" ><img src="assets_admin\img\Delete-52.png" height="15px">&nbspCancel</button>
+                                                                   </div>
+
+                                                               </div>
                                                            </div>
-                                                           <div class="col-lg-3" id="filviv"  >
-                                                               <ul class="c_top_ul">
-                                                                       <li style="width:300px" class="col-lg-12">
-                                                                           <div class="col-lg-12" style="width:250px" >
+                                                           <div class="col-lg-3 " id="filviv" style="background-color: #257B77;padding:8px;margin-top:-20px ;border-radius:10px;" >
+                                                               <ul class="c_top_ulp">
+                                                                    <li style="width:300px;margin-left: -20px" class="col-lg-12">
+                                                                       <div class="col-lg-12" style="width:250px" >
+                                                                           <span style="font-size: 18px;font-weight: 100;color: #FFF">Filter Doctors </span>
+                                                                       </div>
+                                                                     </li>
+                                                                       <li style="width:300px;margin-left: -50px" class="col-lg-12">
+                                                                           <div class="col-lg-12" style="width:250px;margin-top: 20px;" >
                                                                                <div  >
                                                                                    <ul>
                                                                                        <li>
@@ -122,7 +139,7 @@
                                                                                </div>
                                                                            </div>
                                                                        </li>
-                                                                       <li style="width:300px;margin-top: 20px" class="col-lg-12">
+                                                                       <li style="width:300px;margin-top: 20px;margin-left: -37px" class="col-lg-12">
                                                                            <div  style="width:250px">
                                                                                <div  style="">
                                                                                    <ul>
@@ -144,12 +161,12 @@
                                                                                </div>
                                                                            </div>
                                                                        </li>
-                                                                       <li style="width:300px;margin-top: 20px"class="col-lg-12">
+                                                                       <li style="width:300px;margin-top: 20px;margin-left: -50px"class="col-lg-12">
                                                                            <div class="col-lg-12" style="width:250px">
-                                                                               <div  style="margin-left:10px">
+                                                                               <div  style="">
                                                                                    <ul>
                                                                                        <li>
-                                                                                           treatments
+                                                                                           Treatments
                                                                                        </li>
                                                                                    </ul>
                                                                                </div>
@@ -168,21 +185,16 @@
 
                                                                        </li>
                                                                        <li class="col-lg-2">
-                                                                           <div class="" style="margin-top:28px">
+                                                                           <div class="" style="margin-top:28px;">
 
                                                                                <div class="col-lg-1 col-lg-offset-1">
-                                                                                   <button class="c_pat_view_btn3"  onclick="getrate()">Filter</button>
+                                                                                   <button class="c_pat_view_btn3" onclick="getrate()"><img src="assets_admin\img\filter_img.png" height="15px">&nbspFilter</button>
                                                                                </div>
                                                                            </div>
                                                                    </li>
                                                                </ul>
                                                            </div>
-                                                           <div class="col-lg-3 ">
-                                                               <button class="pat_view_btn_1" onclick="confirm_addTherapy()" >Confirm</button>
-                                                           </div>
-                                                           <div class="col-lg-3" style="margin-left: 100px">
-                                                               <button class="pat_view_btn_1" onclick="docChooseClose()" >Cancel</button>
-                                                           </div>
+
                                                        </div>
                                                    </li>
                                                </ul>
@@ -194,10 +206,10 @@
                            </div>
 
 
-                           <div id="featuredpoup" class="container pat_confirm1_box" >
+                           <div id="featureddocpoup" class="container pat_confirm1_box" >
 
                               <div class="center-block pat_confirm1_box_wrapper" style="margin-right: 55%;margin-top: 15%;width: 375px">
-                                  <button  class="pat_close_btn" onclick="feature_pop_close()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+                                  <button  class="pat_close_btn" onclick="feturedDoctorUpdatePopUpClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
                                   <div style="background: #4CBC5B;height: 145px;padding-top: 32px">
                                       <div class="container c_no_padding col-lg-12">
                                           <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
@@ -206,10 +218,10 @@
 
                                                   <li> <div style="padding-top: 30px">
                                                           <div class="col-lg-3 ">
-                                                               <button class="pat_view_btn_1" onclick="updatefet()" >Confirm</button>
+                                                               <button class="pat_view_btn_1" onclick="updatefet()" ><img src="assets_admin\img\confirm_img.png" height="15px">&nbsp Confirm</button>
                                                           </div>
                                                           <div class="col-lg-3" style="margin-left: 100px">
-                                                               <button class="pat_view_btn_1" onclick="feature_pop_close()" >Cancel</button>
+                                                               <button class="pat_view_btn_1" onclick="feturedDoctorUpdatePopUpClose()" ><img src="assets_admin\img\Delete-52.png" height="15px">&nbsp Cancel</button>
                                                           </div>
                                                        </div>
                                                   </li>

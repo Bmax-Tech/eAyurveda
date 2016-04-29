@@ -63,7 +63,8 @@ Route::get('/admin_panel/users2/{skip}/{end}','Admin_Front@viewNewUsers');
 Route::get('/admin_panel/inapusers/test/{skip}/{end}','Admin_Front@inapUsersView');
 Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@blockUser');
 Route::get('/admin_panel/filterdoc/{rate}/{spec}/{treat}','Admin_Front@filterDoctors');
-Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@featuredDoctorUpdate');
+Route::post('/admin_panel/updatefet','Admin_Front@featuredDoctorUpdate');
+
 
 Route::post('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
 Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipUpdate');

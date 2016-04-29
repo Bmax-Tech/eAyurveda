@@ -374,6 +374,7 @@ function load_cos_page123(para_1){
 
 //remove user from database
 function user_rem(id){
+
 	var dataString="user_id="+id;
 	var new_url = '/admin_panel/removeusers/'+id;
 	$.ajax({
@@ -472,34 +473,58 @@ function del_tip(id){
 //get the selected featured box value and store in hidden variable
 function feat_addno(count){
 	$('#docChoosePopup').show();
-	/*$("#hidden_click_count").val(count);
-	$("#featuredpoup").show();*/
+	$("#hidden_click_count").val(count);
+	/*$("#featuredpoup").show();*/
 }
 
+//Add a new featured doctor
+function featuredAddNew(){
+	//show the doctor selection poup
+	$('#docChoosePopup').show();
+
+	$("#hidden_click_count").val("new");
+
+}
+
+
+function feturedDoctorUpdatePopUp(){
+
+	$('#featureddocpoup').show();
+}
+
+function feturedDoctorUpdatePopUpClose(){
+
+	$('#featureddocpoup').hide();
+	$("#hidden_click_count").val("");
+}
 //update the featured dotor table
 function updatefet(){
 	var id11 = $("#hidden_click_id").val();
 	var count1= $("#hidden_click_count").val();
 
+
+
 	if(id11==0){
 		alert("Please select a raw");
 		}
-	else{
+	else {
 
-	var dataString="count="+count1+"doc_id="+id11;
-	var new_url = '/admin_panel/updatefet/'+count1+'/'+id11;
-	$.ajax({
-		type:'GET',
-		url:new_url,
-		data: dataString,
-		cache: false,
-		success: function(data){
-			//console.log(data);
-			$("#admin_home_div").html(data.com_data);
 
-		}
-	});
-	}
+		var dataString = "count=" + count1 +"&doc_id="+id11;
+		var new_url = '/admin_panel/updatefet';
+		$.ajax({
+			type: 'POST',
+			url: new_url,
+			data: dataString,
+			cache: false,
+			success: function (data) {
+				//console.log(data);
+				$("#admin_home_div").html(data.com_data);
+
+			}
+		});
+	 }
+
 
 };
 
@@ -576,15 +601,15 @@ function getrate(){
 			for(var i=0;i<Object(data.page).length;i++) {
 
 				txt = txt+'<tr class="trid_'+data["page"][i]["id"]+' common"	style = "background-color:#fff;height:35px;border:1px solid #ddd;"	onclick = "getdocid('+data["page"][i]["id"]+')" >';
-				txt = txt+'<td class = "col-lg-4" >'+data["page"][i]["first_name"]+'&nbsp&nbsp'+data["page"][i]["last_name"]+'</td >';
-				txt = txt+'<td class	= "col-lg-4"  style="border-left: 1px solid #ddd;">'+data["page"][i]["rating"]+'</td >';
-				txt = txt+'<td	class = "col-lg-4"  style="border-left: 1px solid #ddd;">'+data["page"][i]["city"]+'</td ></tr>';
+				txt = txt+'<td class = "col-lg-5" >'+data["page"][i]["first_name"]+'&nbsp&nbsp'+data["page"][i]["last_name"]+'</td >';
+				txt = txt+'<td class	= "col-lg-2"  style="border-left: 1px solid #ddd;">'+data["page"][i]["rating"]+'</td >';
+				txt = txt+'<td	class = "col-lg-5"  style="border-left: 1px solid #ddd;">'+data["page"][i]["city"]+'</td ></tr>';
 			}
 
 			txt=txt+'</table>';
 
 			//console.log(txt);
-			$("#maybe").html(txt);
+			$("#featuredDocTable").html(txt);
 
 
 		}
@@ -876,6 +901,8 @@ function therapySaveClose(){
 
 function docChooseClose(){
 	$("#docChoosePopup").hide();
+	$(".common").removeClass('colortable');
+	$("#hidden_click_id").val(0);
 
 }
 
@@ -2230,4 +2257,18 @@ $(".password_regx").on('focusout',function() {
 
 
 });
+
+
+//make visible user block confirm popup
+function blockConfirmPopupshow(){
+
+	$('#blockConfirmPopup').show();
+}
+
+//Hide user block confirm popup
+function blockConfirmPopupClose(){
+
+	$('#blockConfirmPopup').hide();
+
+}
 
