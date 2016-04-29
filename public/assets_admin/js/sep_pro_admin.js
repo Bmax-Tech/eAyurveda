@@ -7,6 +7,7 @@ var PHONE_PATTERN = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[ ]?([0-9]{4})$/;//Use to 
 var NIC_PATTERN = /^\(?([0-9]{9})\)?[Vv]$/;//Use to check phone number pattern
 var AJAX_CHECK_EMAIL = true; // Status after checking email
 var AJAX_CHECK_USERNAME = true; // Status after checking username
+var PASSWORD_PATTERN = false;// Status of password pattern
 
 // JavaScript Document
 $(document).ready(function(e) {
@@ -234,12 +235,14 @@ $(".c_admin_ul_li").click(function(){
 
 $(document).ready(function(e) {
 	load_admin_dashboard_via_ajax();
+
 });
 
 // Admin DashBoard page
 function load_admin_dashboard_via_ajax(){
 	//location.reload();
 	load_dashboard();
+
 };
 
 //Doctor Home pages
@@ -290,6 +293,10 @@ function load_for_page(para_1){
 	});
 };
 
+function remove_highlight(id,cls){
+	$("#"+id).removeClass(cls)
+
+}
 
 function change_tab(para_1){
 	$(".c_admin_tabs").removeClass("active");
@@ -387,6 +394,7 @@ function load_cos_page123(para_1){
 
 //remove user from database
 function user_rem(id){
+
 	var dataString="user_id="+id;
 	var new_url = '/admin_panel/removeusers/'+id;
 	$.ajax({
@@ -484,34 +492,59 @@ function del_tip(id){
 
 //get the selected featured box value and store in hidden variable
 function feat_addno(count){
+	$('#docChoosePopup').show();
 	$("#hidden_click_count").val(count);
-	$("#featuredpoup").show();
+	/*$("#featuredpoup").show();*/
 }
 
+//Add a new featured doctor
+function featuredAddNew(){
+	//show the doctor selection poup
+	$('#docChoosePopup').show();
+
+	$("#hidden_click_count").val("new");
+
+}
+
+
+function feturedDoctorUpdatePopUp(){
+
+	$('#featureddocpoup').show();
+}
+
+function feturedDoctorUpdatePopUpClose(){
+
+	$('#featureddocpoup').hide();
+	$("#hidden_click_count").val("");
+}
 //update the featured dotor table
 function updatefet(){
 	var id11 = $("#hidden_click_id").val();
 	var count1= $("#hidden_click_count").val();
 
+
+
 	if(id11==0){
 		alert("Please select a raw");
 		}
-	else{
+	else {
 
-	var dataString="count="+count1+"doc_id="+id11;
-	var new_url = '/admin_panel/updatefet/'+count1+'/'+id11;
-	$.ajax({
-		type:'GET',
-		url:new_url,
-		data: dataString,
-		cache: false,
-		success: function(data){
-			//console.log(data);
-			$("#admin_home_div").html(data.com_data);
 
-		}
-	});
-	}
+		var dataString = "count=" + count1 +"&doc_id="+id11;
+		var new_url = '/admin_panel/updatefet';
+		$.ajax({
+			type: 'POST',
+			url: new_url,
+			data: dataString,
+			cache: false,
+			success: function (data) {
+				//console.log(data);
+				$("#admin_home_div").html(data.com_data);
+
+			}
+		});
+	 }
+
 
 };
 
@@ -525,7 +558,7 @@ function load_cos_page1_via_ajax(){
 		url: '/admin_panel/customize/featured',
 		cache:false,
 		success: function(data){
-			console.log(data);
+
 			$("#admin_home_div").html(data.com_data);
 		}
 	});
@@ -603,15 +636,15 @@ function getrate(){
 			for(var i=0;i<Object(data.page).length;i++) {
 
 				txt = txt+'<tr class="trid_'+data["page"][i]["id"]+' common"	style = "background-color:#fff;height:35px;border:1px solid #ddd;"	onclick = "getdocid('+data["page"][i]["id"]+')" >';
-				txt = txt+'<td class = "col-lg-4" >'+data["page"][i]["first_name"]+'</td >';
-				txt = txt+'<td class	= "col-lg-4"  style="border-left: 1px solid #ddd;">'+data["page"][i]["last_name"]+'</td >';
-				txt = txt+'<td	class = "col-lg-4"  style="border-left: 1px solid #ddd;">'+data["page"][i]["contact_number"]+'</td ></tr>';
+				txt = txt+'<td class = "col-lg-5" >'+data["page"][i]["first_name"]+'&nbsp&nbsp'+data["page"][i]["last_name"]+'</td >';
+				txt = txt+'<td class	= "col-lg-2"  style="border-left: 1px solid #ddd;">'+data["page"][i]["rating"]+'</td >';
+				txt = txt+'<td	class = "col-lg-5"  style="border-left: 1px solid #ddd;">'+data["page"][i]["city"]+'</td ></tr>';
 			}
 
 			txt=txt+'</table>';
 
 			//console.log(txt);
-			$("#maybe").html(txt);
+			$("#featuredDocTable").html(txt);
 
 
 		}
@@ -875,47 +908,226 @@ function display_all_tip(){
 	$("#tipbut").hide();
 }
 
-
-function confirm_addTherapy() {
-
-
-	if (valid_length_input('tname1') ||  ($("#tdes1").val().length==0)) {
+function addTherapy(){
+	//$(".pat_close_btn").show();
+	if (valid_length_input('tname1') ||  ($("#tdes1").val().length==0 || $('#profile_thumb').attr('src')=="")) {
 
 		if (valid_length_input('tname1')) {
 			show_warning('tname1');
 		}
 		if (($("#tdes1").val().length==0)) {
 			show_warning('tdes1');
+
 		}
-    }
-	else {
+		if ($('#profile_thumb').attr('src')=="") {
 
-		var name=$("#tname1").val();
-		var des =$("#tdes1").val();
-      var file=$("#h_profile_thumb").val();
+			show_warning('profile_thumb');
+		}
 
-		var dataString="name="+name+"&des="+des+"&file"+file;
-		var new_url = '/admin_panel_home/addtherapy/'+name+"/"+des+"/"+file;
-		$.ajax({
-			type:'GET',
-			url:new_url,
-			data: dataString,
-			cache: false,
-			success: function(data){
-
-				$("#admin_home_div").html(data.page);
-				therapyLoad();
-			}
-		});
+	}else {
+		$("#therapySavePopup").show();
 	}
+}
+
+function therapySaveClose(){
+	$("#therapySavePopup").hide();
+
+}
+
+function docChooseClose(){
+	$("#docChoosePopup").hide();
+	$(".common").removeClass('colortable');
+	$("#hidden_click_id").val(0);
+
+}
+
+function adminSaveClose(){
+	$("#adminSavePopup").hide();
+
+}
+
+
+
+
+function confirm_addTherapy() {
+
+
+
+
+
+       if($('#hidden_click_therapy_up_status').val()=="true"){
+		   var updateId=$('#hidden_click_therapy_id').val();
+		   var formData = new FormData($('#therapies_form')[0]);
+		   var new_url = '/admin_panel_home/updatetherapy/'+updateId;
+		   $.ajax({
+			   method: 'POST',
+			   url: new_url,
+			   data: formData,
+			   // THIS MUST BE DONE FOR FILE UPLOADING
+			   contentType: false,
+			   processData: false,
+			   success: function (data) {
+
+
+				   therapyLoad();
+			   }
+			   // ... Other options like success and etc
+		   })
+	   }
+       else
+		{
+
+			var formData = new FormData($('#therapies_form')[0]);
+			var new_url = '/admin_panel_home/addtherapy';
+			$.ajax({
+				method: 'POST',
+				url: new_url,
+				data: formData,
+				// THIS MUST BE DONE FOR FILE UPLOADING
+				contentType: false,
+				processData: false,
+				success: function (data) {
+
+
+					therapyLoad();
+				}
+				// ... Other options like success and etc
+			})
+		}
+
 
 };
+
+function updateTherapy(id,name,description,image_path){
+	$(".commonT").removeClass('colortable'); //remove highlight from all the rows
+	$(".therapyid_"+id).addClass('colortable'); //highlight the given row
+
+	$('#tname1').val(name);            //set the value of the topic text box
+	$('#tdes1').val(description);      //set the value of the Description text field
+	$("#profile_thumb").attr("src", image_path);  //set the image path
+	$('#hidden_click_therapy_id').val(id);        //set the hidden text which holds therapy id
+	$('#hidden_click_therapy_up_status').val("true");  //set the hidden text  which holds therapy update status
+
+
+}
+
+
+
+function delTherapy(id){
+   $('#hidden_click_therapy_del_id').val(id);
+	$(".commonT").removeClass('colortable'); //remove highlight from all the rows
+	$(".therapyid_"+id).addClass('colortable'); //highlight the given row
+	$("#therapyDeletePopup").show();
+
+
+}
+
+function therapyDeleteClose(){
+	$("#therapyDeletePopup").hide();
+
+}
+
+function projectqqclose(){
+	$("#projectqq").hide();
+
+}
+function showpop(){
+
+	$("#projectqq").show();
+}
+
+
+function viewpassword(){
+
+	$("#passwordset").show();
+	$("#pwrdbtn").hide();
+
+}
+
+function enableEdit(){
+
+	/*$('input[type="text"]').prop("disabled", false);
+	$("#pwrdbtn").show();
+	$("#savebtn").show();
+	$("#backbtn").show();*/
+	$("#editbtn").hide();
+	$("#op2").show();
+	$("#op1").hide();
+}
+
+function goBack(){
+
+	$("#editbtn").show();
+	$("#op2").hide();
+	$("#op1").show();
+	$("#pwrdbtn").show();
+	$("#passwordset").hide();
+	$("#pwrd").val("");
+	$("#acpwrd").val("");
+
+
+
+}
+function confirmDeleteTherapy() {
+	var del_id = $('#hidden_click_therapy_del_id').val();
+
+
+	var dataString = "tid=" + del_id;
+	var new_url = '/admin/therapyDelete';
+
+	$.ajax({
+		method: 'POST',
+		url: new_url,
+		data: dataString,
+		cache: false,
+		success: function (data) {
+
+			therapyLoad();
+		}
+	});
+}
+
+
+
 
 
 function get_image(para_1,para_2){
+	remove_wrn('profile_thumb')
 	$("#"+para_2).trigger('click');
+
+		changeImage();
 };
 
+function changeImage(){
+	$('.file_input').on('change', function(){ //on file input change
+		var div_id = $(this).attr("data-id");
+		var base_url = $(this).attr("data-icon");
+
+		if (window.File && window.FileReader && window.FileList && window.Blob) //check File API supported browser
+		{
+			//$('#thumb_output_'+id).html(''); //clear html of output element
+			var data = $(this)[0].files; //this file data
+			$.each(data, function(index, file){ //loop though each file
+				if(/(\.|\/)(gif|jpe?g|png)$/i.test(file.type)){ //check supported file type
+					var fRead = new FileReader(); //new filereader
+					fRead.onload = (function(file){ //trigger function on successful read
+						return function(e) {
+							//var img = $('<img/>').addClass('thumb').attr('src', e.target.result); //create image element
+							//$('#'+div_id).css("background-image",'url("'+e.target.result+'")'); //append image to output element
+							$("#profile_thumb").attr("src", e.target.result);
+						};
+					})(file);
+					fRead.readAsDataURL(file); //URL representing the file's data.
+				}
+			});
+
+		}else{
+			alert("Your browser doesn't support File API!"); //if File API is absent
+		}
+	});
+
+
+}
 function admin_reg_via_ajax(){
 	$.ajax({
 		url:'reg_admin.php',
@@ -1079,7 +1291,8 @@ function check_reg_existing(para_1,para_2){
 
 
 function valid_registration(){
-	if(valid_length_input('first_name') || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('email') || !valid_email('email') || valid_length_input('username') || valid_length_input('password') || valid_length_input('confirm_password') || !valid_confirm_password('password','confirm_password')){
+
+	if(valid_length_input('first_name') || check_input_no_num('first_name') || valid_length_input('last_name')  || check_input_no_num('last_name') || valid_length_input('email') || !valid_email('email') || valid_length_input('username') || valid_length_input('password') || valid_length_input('confirm_password') || !valid_confirm_password('password','confirm_password') || !PASSWORD_PATTERN){
 
 		if(valid_length_input('first_name') || check_input_no_num('first_name')){
 			show_warning('first_name');
@@ -1103,7 +1316,9 @@ function valid_registration(){
 		if(!valid_confirm_password('password','confirm_password')){
 			show_warning('confirm_password');
 		}
-
+		if(!PASSWORD_PATTERN){
+			$(".a_password_inputs").fadeIn();
+		}
 		return false;
 	}else if(!AJAX_CHECK_EMAIL || !AJAX_CHECK_USERNAME){
 		if(!AJAX_CHECK_EMAIL){
@@ -1676,6 +1891,57 @@ function pagination1(para_1){
 
 
 
+
+	$("#adminSubmit").click(function(e) {
+		if (($("#fname").val().length==0) || ($("#lname").val().length==0) || ($("#email").val().length==0) || ($("#uname").val().length==0) ||(($("#pwrd").val().length!=0)&&($("#acpwrd").val().length==0)) ||(($("#pwrd").val().length==0)&&($("#acpwrd").val().length!=0))||(($("#pwrd").val())!=($("#acpwrd").val())) || !PASSWORD_PATTERN) {
+			e.preventDefault();
+			if (($("#fname").val().length == 0)) {
+
+				show_warning('fname');
+			}
+			if(($("#lname").val().length == 0)) {
+
+				show_warning('lname');
+			}
+			if(($("#email").val().length == 0)) {
+
+				show_warning('email');
+
+			}
+			if(($("#uname").val().length == 0)) {
+
+				show_warning('uname');
+			}
+			if(($("#pwrd").val().length!=0)&&($("#acpwrd").val().length==0)){
+
+				show_warning('acpwrd');
+			}
+			if(($("#pwrd").val().length==0)&&($("#acpwrd").val().length!=0)){
+
+				show_warning('pwrd');
+				show_warning('acpwrd');
+			}
+			if((($("#pwrd").val())!=($("#acpwrd").val()))){
+				show_warning('pwrd');
+				show_warning('acpwrd');
+			}
+			if(!PASSWORD_PATTERN){
+				$(".a_password_inputs1").fadeIn();
+			}
+		}
+		else{
+			e.preventDefault();
+
+			$("#adminSavePopup").show();
+		}
+	});
+
+function confirm_addAdmin(){
+
+	$("#adminfrom").submit();
+
+}
+
 // This function use to load doctors in search result page via Ajax
 function user_load_ajax2(){
 
@@ -1807,6 +2073,9 @@ function loadCharts() {
 
 				Graph_array3.push(data.graph_3[y]);
 			}
+			Graph_array4[0]=data.graph_41;
+			Graph_array4[1]=data.graph_42;
+			Graph_array4[2]=data.graph_43;
 
 			Char_load();
 		}
@@ -1876,6 +2145,169 @@ function Char_load(){
 };
 
 /*
+ * function validate password field entered characters pattern
+ */
+function passwordValidate(){
+
+	if($(".password_regx").val().length  == 0){
+		$(".a_password_inputs").fadeOut();
+	}else{
+		$(".a_password_inputs").fadeIn();
+	}
+
+	/* ~~~~~~~~~~~~~~~~~~
+	 * All regex patterns
+	 */
+	var lower_case = /^(?=.*[a-z]).+$/;
+	var user_case = /^(?=.*[A-Z]).+$/;
+	var nums = /^(?=.*[0-9]).+$/;
+	var special_chars = /^(?=.*[^\w\s]).+$/;
+	/*
+	 * All regex patterns
+	 * ~~~~~~~~~~~~~~~~~~
+	 */
+
+	if($(".password_regx").val().length > 7){
+		$("#in_ps_ch_1").css('color','#FFF700');
+		$("#in_ps_ch_1").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.');
+	}else{
+		$("#in_ps_ch_1").css('color','#FFF');
+		$("#in_ps_ch_1").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.');
+	}
+
+	var value_ps = $(".password_regx").val();
+
+	if(lower_case.test(value_ps)){
+		$("#in_ps_ch_2").css('color','#FFF700');
+		$("#in_ps_ch_2").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.');
+	}else{
+		$("#in_ps_ch_2").css('color','#FFF');
+		$("#in_ps_ch_2").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.');
+	}
+	if(user_case.test(value_ps)){
+		$("#in_ps_ch_3").css('color','#FFF700');
+		$("#in_ps_ch_3").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.');
+	}else{
+		$("#in_ps_ch_3").css('color','#FFF');
+		$("#in_ps_ch_3").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.');
+	}
+	if(nums.test(value_ps) || special_chars.test(value_ps)){
+		$("#in_ps_ch_4").css('color','#FFF700');
+		$("#in_ps_ch_4").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.');
+	}else{
+		$("#in_ps_ch_4").css('color','#FFF');
+		$("#in_ps_ch_4").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.');
+	}
+
+	/*
+	 * this will check all patterns are matching with entered password
+	 */
+	if($(".password_regx").val().length > 7 && lower_case.test(value_ps) && user_case.test(value_ps) && (nums.test(value_ps) || special_chars.test(value_ps))){
+		PASSWORD_PATTERN = true;
+	}else{
+		PASSWORD_PATTERN = false;
+	}
+
+}
+
+/*
+ * Close Regx Warning Message
+ */
+function leaveValidate() {
+	$(".a_password_inputs").fadeOut();
+
+}
+
+/*
+ * function validate password field entered characters pattern
+ */
+function passwordValidateAdmin(){
+
+	if($(".password_regx").val().length  == 0){
+		$(".a_password_inputs1").fadeOut();
+	}else{
+		$(".a_password_inputs1").fadeIn();
+	}
+
+	/* ~~~~~~~~~~~~~~~~~~
+	 * All regex patterns
+	 */
+	var lower_case = /^(?=.*[a-z]).+$/;
+	var user_case = /^(?=.*[A-Z]).+$/;
+	var nums = /^(?=.*[0-9]).+$/;
+	var special_chars = /^(?=.*[^\w\s]).+$/;
+	/*
+	 * All regex patterns
+	 * ~~~~~~~~~~~~~~~~~~
+	 */
+
+	if($(".password_regx").val().length > 7){
+		$("#in_ps_ch_1").css('color','#FFF700');
+		$("#in_ps_ch_1").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.');
+	}else{
+		$("#in_ps_ch_1").css('color','#FFF');
+		$("#in_ps_ch_1").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.');
+	}
+
+	var value_ps = $(".password_regx").val();
+
+	if(lower_case.test(value_ps)){
+		$("#in_ps_ch_2").css('color','#FFF700');
+		$("#in_ps_ch_2").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.');
+	}else{
+		$("#in_ps_ch_2").css('color','#FFF');
+		$("#in_ps_ch_2").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.');
+	}
+	if(user_case.test(value_ps)){
+		$("#in_ps_ch_3").css('color','#FFF700');
+		$("#in_ps_ch_3").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.');
+	}else{
+		$("#in_ps_ch_3").css('color','#FFF');
+		$("#in_ps_ch_3").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.');
+	}
+	if(nums.test(value_ps) || special_chars.test(value_ps)){
+		$("#in_ps_ch_4").css('color','#FFF700');
+		$("#in_ps_ch_4").html('<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.');
+	}else{
+		$("#in_ps_ch_4").css('color','#FFF');
+		$("#in_ps_ch_4").html('<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.');
+	}
+
+	/*
+	 * this will check all patterns are matching with entered password
+	 */
+	if($(".password_regx").val().length > 7 && lower_case.test(value_ps) && user_case.test(value_ps) && (nums.test(value_ps) || special_chars.test(value_ps))){
+		PASSWORD_PATTERN = true;
+	}else{
+		PASSWORD_PATTERN = false;
+	}
+
+}
+
+/*
+ * Close Regx Warning Message
+ */
+$(".password_regx").on('focusout',function() {
+	$(".a_password_inputs1").fadeOut();
+
+
+});
+
+
+//make visible user block confirm popup
+function blockConfirmPopupshow(){
+
+	$('#blockConfirmPopup').show();
+}
+
+//Hide user block confirm popup
+function blockConfirmPopupClose(){
+
+	$('#blockConfirmPopup').hide();
+
+}
+
+ /*
  * Admin Side Chat View Page
  */
 

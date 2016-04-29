@@ -128,8 +128,7 @@ class AjaxControll extends ExceptionController
 	public function docAdvancedSearchPage(Request $request,$skip,$end){
 
 
-            $count=0;
-		    $count1=0;
+
 
 			$doc_name = Input::get('advanced_doc_name');       //  get the value of the doctor nsme
 			$spec = Input::get('advanced_doc_speciality');     // Get the value of the Speciality
@@ -137,33 +136,34 @@ class AjaxControll extends ExceptionController
 			$location=Input::get('advanced_doc_location');     // get the value of the location
 
            //if  all the features are not null this part get executed
+		try{
 			if($doc_name != '' && $location !='' &&  $spec != '' && $treat != '') {
 				$doctors =  \DB::table('doctors')->join('treatments', 'doctors.id', '=', 'treatments.doc_id')
 						->join('specialization', 'doctors.id', '=', 'specialization.doc_id')
-						->where(function ($q3) use ($treat) {                     //////////////////////////////////////
-							$q3->where('treat_1', 'like', '%' . $treat . '%')     //////////////////////////////////////
-								->orWhere('treat_2', 'like', '%' . $treat . '%')  // Matching the given treatment type//
-								->orWhere('treat_3', 'like', '%' . $treat . '%')  // with 5 treatment types given in  //
-								->orWhere('treat_4', 'like', '%' . $treat . '%')  // treatment DB table.              //
-								->orWhere('treat_5', 'like', '%' . $treat . '%'); //////////////////////////////////////
+						->where(function ($q3) use ($treat) {
+							$q3->where('treat_1', 'like', '%' . $treat . '%')
+								->orWhere('treat_2', 'like', '%' . $treat . '%')
+								->orWhere('treat_3', 'like', '%' . $treat . '%')
+								->orWhere('treat_4', 'like', '%' . $treat . '%')
+								->orWhere('treat_5', 'like', '%' . $treat . '%');
 						})
-						->where(function ($q2) use ($spec) {                      //////////////////////////////////////
-							$q2->where('spec_1', 'like', '%' . $spec . '%')       // Matching the given Specialization//
-								->orWhere('spec_2', 'like', '%' . $spec . '%')    // type with 5 Specialization types //
-								->orWhere('spec_3', 'like', '%' . $spec . '%')    // given in the specialization DB   //
-								->orWhere('spec_4', 'like', '%' . $spec . '%')    // table.                           //
-								->orWhere('spec_5', 'like', '%' . $spec . '%');   //////////////////////////////////////
+						->where(function ($q2) use ($spec) {
+							$q2->where('spec_1', 'like', '%' . $spec . '%')
+								->orWhere('spec_2', 'like', '%' . $spec . '%')
+								->orWhere('spec_3', 'like', '%' . $spec . '%')
+								->orWhere('spec_4', 'like', '%' . $spec . '%')
+								->orWhere('spec_5', 'like', '%' . $spec . '%');
 						})
-						->where(function ($q) use ($location) {                       //////////////////////////////////
-							$q->where('address_1', 'like', '%' . $location . '%')     // Matching the given address   //
-								->orWhere('address_2', 'like', '%' . $location . '%') // address with 2 addresses and //
-								->orWhere('city', 'like', '%' . $location . '%');     // the city given in the DB     //
-						})                                                            // doctors table                //
-						->where(function ($q4) use ($doc_name) {                      //////////////////////////////////
-							$q4->where('first_name', 'like', '%' . $doc_name . '%')   // Matching the given doctor name/
-							->orWhere('last_name', 'like', '%' . $doc_name . '%');    // with first and the last names /
-						})->skip($skip)->take($end)->get();                           //  given in the doctors DB table/
-                                                                                      //////////////////////////////////
+						->where(function ($q) use ($location) {
+							$q->where('address_1', 'like', '%' . $location . '%')
+								->orWhere('address_2', 'like', '%' . $location . '%')
+								->orWhere('city', 'like', '%' . $location . '%');
+						})
+						->where(function ($q4) use ($doc_name) {
+							$q4->where('first_name', 'like', '%' . $doc_name . '%')
+							->orWhere('last_name', 'like', '%' . $doc_name . '%');
+						})->skip($skip)->take($end)->get();
+
 				//get the count of retrieving results
                 $count1=sizeof($doctors);
 				//get the count of all matching result
@@ -484,6 +484,9 @@ class AjaxControll extends ExceptionController
 
 
 			}
+		}catch (Exception $e){
+			$this->LogError('AjaxController Register_Page Function',$e);
+		}
 		// This will convert view into String, Which can parse through json object
 		$HtmlView = (String) view('advanced_doctor_result')->with(['doctors'=>$doctors]);
 		$res['count'] = $count;

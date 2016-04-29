@@ -124,7 +124,8 @@ class Front extends ExceptionController
                 User::create([
                     'name' => $request->first_name,
                     'email' => $request->username,
-                    'password' => md5($request->password)
+                    'password' => md5($request->password),
+                    'mode'=>1
                 ]);
 
                 $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->first();

@@ -36,18 +36,29 @@
                     <span>Password</span><span class="c_warning_tips_reg" id="wrn_password">enter password</span>
                 </li>
                 <li class="c_add_margin_20 c_form_margin_10">
-                    <input type="password" class="c_text_box_1" spellcheck="false" name="password" id="password" onkeypress="remove_wrn('password')" onchange="remove_wrn('password')" autocomplete="off"/>
+                    <input type="password" class="c_text_box_1 password_regx" spellcheck="false" name="password" onfocusout="leaveValidate()" onkeyup="passwordValidate()" id="password" onkeypress="remove_wrn('password')" onchange="remove_wrn('password')" autocomplete="off"/>
                 </li>
                 <li>
                     <span>Confirm Password</span><span class="c_warning_tips_reg" id="wrn_confirm_password">enter valid confirm password</span>
                 </li>
                 <li class="c_add_margin_20 c_form_margin_10">
-                    <input type="password" class="c_text_box_1" spellcheck="false" name="confirm_password" id="confirm_password" onkeypress="remove_wrn('confirm_password')" onchange="remove_wrn('confirm_password')" autocomplete="off"/>
+                    <input type="password" class="c_text_box_1 " spellcheck="false" name="confirm_password" id="confirm_password" onkeypress="remove_wrn('confirm_password')" onchange="remove_wrn('confirm_password')" autocomplete="off"/>
                 </li>
                 <li style="padding:0px 8px;margin-top:55px">
                     <button type="submit" class="c_button_1" onClick="valid_registration()">Register</button>
                 </li>
             </ul>
+           <div class="a_password_inputs">
+               <div id="a_in_ps_div_1"></div>
+               <div id="a_in_ps_div_2">
+                   <ul class="c_ul_1">
+                       <li id="in_ps_ch_1"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must be at least 8 characters long.</li>
+                       <li id="in_ps_ch_2"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a lowercase letter.</li>
+                       <li id="in_ps_ch_3"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain an uppercase letter.</li>
+                       <li id="in_ps_ch_4"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Must contain a number or special character.</li>
+                   </ul>
+               </div>
+           </div>
         </div>
 
     </div>

@@ -17,11 +17,13 @@ use App\Admins;
 use App\Formal_doctors;
 use App\Non_Formal_doctors;
 use App\Therapies;
+use Exception;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use App\Chat_data;
 
 
-
-class Admin_Front extends Controller
+class Admin_Front extends ExceptionController
 {
     /*
  *    Check whether their is coockie set in the browser
@@ -32,8 +34,10 @@ class Admin_Front extends Controller
 */
 
     public function admin_login(){
+
         if(isset($_COOKIE['admin_user'])) {
-            return view('admin_home');
+            $admin_user = json_decode($_COOKIE['admin_user'],true);
+            return view('admin_home', array('admin_ob' => self::getadmin($admin_user[0]['id'])));
         }else {
             return view('admin_login');
         }
@@ -43,13 +47,19 @@ class Admin_Front extends Controller
 
     //direct to admin home
     public function admin_home(){
+
         if(isset($_COOKIE['admin_user'])) {
-            return view('admin_home' );
+            $admin_user = json_decode($_COOKIE['admin_user'],true);
+            return view('admin_home', array('admin_ob' => self::getadmin($admin_user[0]['id'])) );
         }else{
             return redirect('/admin_panel_login');
         }
     }
 
+     public function getadmin($id){
+         $user = DB::table('admins')->join('users', 'admins.user_id', '=', 'users.id')->select('users.email as username','users.password', 'admins.*')->where('users.id','=',$id)->get();
+        return $user;
+     }
 
     /*
      * Add a new admin to the db table.
@@ -58,15 +68,21 @@ class Admin_Front extends Controller
     */
     public function addAdmin(Request $request,$fname,$lname,$uname,$email,$pwrd){
 
-        //create a new user
+
+       try{ //create a new user
         User::create([
             'name' =>$fname,
             'email' =>$uname,
             'password' =>md5($pwrd),
+            'mode'=>1,
+
          ]);
         $user = User::whereEmail($uname)->wherePassword(md5($pwrd))->first();
-
+       }catch (Exception $e) {
+           $this->LogError('AdminController Register_Page Function',$e);
+       }
         //create a new admin
+        try{
         Admins::create([
             'user_id'=> $user->id,
             'first_name' =>$fname,
@@ -76,7 +92,9 @@ class Admin_Front extends Controller
             'reg_date' => gmdate("Y-m-d h:m:s" , time())
        ]);
 
-
+       }catch (Exception $e) {
+           $this->LogError('AdminController Register_Page Function',$e);
+       }
         $HTMLView = (String) view('costomize_home_views.adminregister');
         $res['page'] = $HTMLView;
         return response()->json($res);
@@ -91,9 +109,17 @@ class Admin_Front extends Controller
      * are correct then create a session and direct to the
      * admin panel home url.
     */
-    public function admin_login_auth(Request $request){
-        $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->where(function ($q4)
-        { $q4->whereMode(1)->orWhere('mode','=',2);})->first();
+    public function admin_login_auth(Request $request)
+    {
+        try {
+
+        $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->where(function ($q4) {
+            $q4->whereMode(1)->orWhere('mode', '=', 2);
+        })->first();
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
         // Check whether username and password are matching
         if(isset($user)) {
             // Create session to store logged user details
@@ -125,11 +151,14 @@ class Admin_Front extends Controller
  * and return the status
  */
 public function registerAdminPageValidate(Request $request,$type,$data){
-        if($type == 'username')
+       try{
+       if($type == 'username')
             $patients = User::whereEmail($data)->first();// Check for username is taken or not
         else if($type == 'email')
             $patients = Admins::whereEmail($data)->first();// Check for email is taken or not
-
+       }catch (Exception $e) {
+           $this->LogError('AdminController Register_Page Function',$e);
+       }
         if(isset($patients)){
             $res['msg'] = "USING";
         }else{
@@ -146,15 +175,27 @@ public function registerAdminPageValidate(Request $request,$type,$data){
     * page via ajax
     */
 	public function userCommentsLoad(Request $request,$skip,$end){
-        //get the comments for a 1 page. $skip for to skip previous pages comments and $end for to get current page comments
-        $comments=DB::table('comments')->join('patients', 'comments.user_id', '=', 'patients.user_id')->join('doctors', 'comments.doctor_id', '=', 'doctors.user_id')->join('images', 'comments.user_id', '=', 'images.user_id')->select('images.image_path AS image_path1', 'comments.id AS cid','patients.user_id AS puser_id','patients.first_name AS pfirst_name' , 'patients.last_name AS plast_name' ,'doctors.first_name AS dfirst_name','doctors.last_name AS dlast_name','comments.description AS comment')->orderBy('posted_date_time','asc')->skip($skip)->take($end)->get();
+        try{
+         //get the comments for a 1 page. $skip for to skip previous pages comments and $end for to get current page comments
+         $comments=DB::table('comments')->join('patients', 'comments.user_id', '=', 'patients.user_id')->join('doctors', 'comments.doctor_id', '=', 'doctors.id')->join('images', 'comments.user_id', '=', 'images.user_id')->select('images.image_path AS image_path1', 'comments.id AS cid','patients.user_id AS puser_id','patients.first_name AS pfirst_name' , 'patients.last_name AS plast_name' ,'doctors.first_name AS dfirst_name','doctors.last_name AS dlast_name','comments.description AS comment')->orderBy('posted_date_time','asc')->skip($skip)->take($end)->get();
 
-        $count1=sizeof($comments); //get the comment count for that page
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+        try{
+         $count1=sizeof($comments); //get the comment count for that page
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
 
         //get the all the comments
-        $comments2= DB::table('comments')->join('patients', 'comments.user_id', '=', 'patients.user_id')->join('doctors', 'comments.doctor_id', '=', 'doctors.user_id')->join('images', 'comments.user_id', '=', 'images.user_id')->select('images.image_path AS image_path1', 'comments.id AS cid','patients.user_id AS puser_id','patients.first_name AS pfirst_name' , 'patients.last_name AS plast_name' ,'doctors.first_name AS dfirst_name','doctors.last_name AS dlast_name','comments.description AS comment')->orderBy('posted_date_time','asc')->get();
+        try{
+           $comments2= DB::table('comments')->join('patients', 'comments.user_id', '=', 'patients.user_id')->join('doctors', 'comments.doctor_id', '=', 'doctors.id')->join('images', 'comments.user_id', '=', 'images.user_id')->select('images.image_path AS image_path1', 'comments.id AS cid','patients.user_id AS puser_id','patients.first_name AS pfirst_name' , 'patients.last_name AS plast_name' ,'doctors.first_name AS dfirst_name','doctors.last_name AS dlast_name','comments.description AS comment')->orderBy('posted_date_time','asc')->get();
+           $count=sizeof($comments2);//get the count of all the comments in the db table
+           }catch (Exception $e) {
+               $this->LogError('AdminController Register_Page Function',$e);
+           }
 
-        $count=sizeof($comments2);//get the count of all the comments in the db table
         $HTMLView = (String) view('admin_patients_views.comments')->with(['comment'=>$comments]);
         $res['count'] = $count;
         $res['count1'] = $count1;
@@ -168,12 +209,20 @@ public function registerAdminPageValidate(Request $request,$type,$data){
     */
     public function viewAllUsers(Request $request,$skip,$end){
         //get the users for a 1 page. $skip for to skip previous pages users and $end for to get current page users
+        try{
         $patients = DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->skip($skip)->take($end)->get();
 
         $count1=sizeof($patients);  //get the count of users in the current page
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
 
         // Get the count of all the users in db table
+        try{
         $count = DB::select('SELECT COUNT(*) AS count FROM patients  INNER JOIN images ON patients.user_id = images.user_id ');
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
 
         $HTMLView = (String) view('admin_patients_views.user_view')->with(['patients'=>$patients]);
         $res['count'] = $count;
@@ -189,15 +238,25 @@ public function registerAdminPageValidate(Request $request,$type,$data){
     public function viewNewUsers(Request $request,$skip,$end){
 
         //get the users registered within 7 days for a 1 page. $skip for to skip previous pages users and $end for to get current page users
-        $patients1 =  DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->orderBy('reg_date','desc')->where('reg_date','>=',gmdate('Y-m-d 00:00:00 ', strtotime('-7 days')))->skip($skip)->take($end)->get();
+        try{
+            $patients1 =  DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->orderBy('reg_date','desc')->where('reg_date','>=',gmdate('Y-m-d 00:00:00 ', strtotime('-7 days')))->skip($skip)->take($end)->get();
 
-        $count1=sizeof($patients1); //count of the users registered within 7 days in current page
+            $count1=sizeof($patients1); //count of the users registered within 7 days in current page
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
 
         //get all users registered within 7 days in db table $skip for to skip previous pages users and $end for to get current page users
-        $count2 =  DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->orderBy('reg_date','desc')->where('reg_date','>=',gmdate('Y-m-d 00:00:00 ', strtotime('-7 days')))->get();
+        try{
+            $count2 =  DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->orderBy('reg_date','desc')->where('reg_date','>=',gmdate('Y-m-d 00:00:00 ', strtotime('-7 days')))->get();
 
-        $count = sizeof($count2);  //count of all the users registered within 7 days
+            $count = sizeof($count2);  //count of all the users registered within 7 days
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
 
+
+        //send data as a json object
         $HTMLView = (String) view('admin_patients_views.user_view1')->with(['patients1'=>$patients1]);
         $res['count'] = $count;
         $res['count1'] = $count1;
@@ -210,11 +269,22 @@ public function registerAdminPageValidate(Request $request,$type,$data){
 //
 //
 
-    //display inapropriate users and newly registered users
+    //display inapropriate users
     public function inapUsersView(Request $request,$skip,$end){
-        $patients = DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')->join('users', 'patients.user_id', '=', 'users.id')->where("spam_count",">=",4)->skip($skip)->take($end)->get();
-        $count = DB::select('SELECT COUNT(*) AS count FROM patients INNER JOIN images  ON patients.user_id = images.user_id INNER JOIN users  ON patients.user_id = users.id Where spam_count >= 4');
+
+        try{
+        //Get user data from patients and users table where spam count greate than 4
+        $patients = DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')
+            ->join('users', 'patients.user_id', '=', 'users.id')
+            ->where("spam_count",">=",4)->skip($skip)->take($end)->get();
+         }catch (Exception $e) {
+             $this->LogError('AdminController Register_Page Function',$e);
+        }
+        //Get the result count of query assign to $patient variable
         $count1=sizeof($patients);
+
+        //Get count of all users having count greater than 4
+        $count = DB::select('SELECT COUNT(*) AS count FROM patients INNER JOIN images  ON patients.user_id = images.user_id INNER JOIN users  ON patients.user_id = users.id Where spam_count >= 4');
 
         /*     $patients1= Patients::orderBy('reg_date','desc');*/
         $HTMLView = (String) view('admin_patients_views.inap_user')->with(['comment'=>$patients]);
@@ -237,9 +307,10 @@ public function registerAdminPageValidate(Request $request,$type,$data){
  public function featuredDocLoad(Request $request){
 
      //Get the featured doctor data and relavent doctor details fro doctors table order by featured docotor id in ascending order
-     $featured_doc= DB::table('featured_doc')->join('doctors', 'featured_doc.did', '=', 'doctors.user_id')->orderBy('fid','asc')->get();
+     $featured_doc= DB::table('featured_doc')->join('doctors', 'featured_doc.did', '=', 'doctors.id')->orderBy('fid','asc')->get();
 
      //Get all the specialization types in the specializations 5 columns
+     try{
      $filter_spec= DB::select('SELECT spec_1 FROM
         (
             SELECT spec_1 AS spec_1 FROM specialization where spec_1 != ""
@@ -252,68 +323,141 @@ public function registerAdminPageValidate(Request $request,$type,$data){
             UNION
             SELECT spec_5 AS spec_1 FROM specialization where spec_5 != ""
         ) tt WHERE spec_1 IS NOT NULL');
+     }catch (Exception $e) {
+         $this->LogError('AdminController Register_Page Function',$e);
+     }
 
-    $filter_treat= DB::table('treatments')->select('treat_1')->groupBy('treat_1')->get();
-   /*  $filter_treat= DB::select('SELECT treat_1 FROM
+     try{
+
+     $filter_treat= DB::select('SELECT treat_1 FROM
         (
-            SELECT treat_1 AS treat_1 FROM specialization where treat_1 != ""
+            SELECT treat_1 AS treat_1 FROM treatments where treat_1 != ""
             UNION
-            SELECT treat_2 AS treat_1 FROM specialization where treat_2 != ""
+            SELECT treat_2 AS treat_1 FROM treatments where treat_2 != ""
             UNION
-            SELECT treat_3 AS treat_1 FROM specialization where treat_3 != ""
+            SELECT treat_3 AS treat_1 FROM treatments where treat_3 != ""
             UNION
-            SELECT treat_4 AS treat_1 FROM specialization where treat_4 != ""
+            SELECT treat_4 AS treat_1 FROM treatments where treat_4 != ""
             UNION
-            SELECT treat_5 AS treat_1 FROM specialization where treat_5 != ""
-        ) tt WHERE treat_1 IS NOT NULL')*/;
-       $reg_doc = Doctors::all();
+            SELECT treat_5 AS treat_1 FROM treatments where treat_5 != ""
+        ) tt WHERE treat_1 IS NOT NULL');
+     }catch (Exception $e) {
+        $this->LogError('AdminController Register_Page Function',$e);
+     }
+
+
+     try{
+        //Get details of all the doctors
+     $reg_doc  = DB::select(DB::raw('SELECT * FROM doctors WHERE id NOT IN (SELECT did FROM featured_doc)'));
+
+     }catch (Exception $e) {
+         $this->LogError('AdminController Register_Page Function',$e);
+     }
+
 
      $HTMLView = (String) view('costomize_home_views.home12')->with(['featured_doc1'=>$featured_doc,'reg_doctor'=>$reg_doc,'filter_spec'=>$filter_spec,'filter_treat'=>$filter_treat]);
      $res['com_data'] = $HTMLView;
      return response()->json($res);
 	 
-    //return view('costomize_home_views.home12');
+
     }
 
-
+   //ditect to the home12 page
     public function user_remove12(){
         return view('costomize_home_views.home12');
     }
 
 
-
+/*
+ * Load all the health tips and send to the home1 page
+ */
     public function customize(){
 
+        try{
+
+        //Get all the health tips
         $tips =Health_tips::all();
+
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
         $HTMLView = (String) view('costomize_home_views.home1')->with(['tipload'=>$tips]);
         $res['page'] = $HTMLView;
         return response()->json($res);
        // return view('costomize_home_views.home1');
     }
 
-    public function therapyLoad(){
+    /*
+     * Change the admin profile data
+     */
+    public function updateAdminProfile(Request $request)
+    {
+        if(isset($_COOKIE['admin_user'])) {
 
 
-        $HTMLView = (String) view('costomize_home_views.Therapies');
-        $res['page'] = $HTMLView;
-        return response()->json($res);
-        // return view('costomize_home_views.home1');
+
+        $fname = Input::get('fname'); //Get the first name
+        $lname = Input::get('lname'); //get the last name
+        $email = Input::get('email'); //get the email
+        $uname = Input::get('uname'); //get the username
+        $pwrd = Input::get('pwrd');   //get the password
+
+
+        $id=json_decode($_COOKIE['admin_user'],true);
+
+        try{
+
+        //Get a specific admin details according to the geven id
+        $admin = Admins::whereUser_id($id[0]['id'])->first();
+
+
+        $admin->first_name= $fname; //Change admin first name
+        $admin->last_name= $lname;  //Change admin last name
+        $admin->email= $email;      //Change admin email
+        $admin->save();             //save the updated admin details
+
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
+        try{
+
+        //Get admin login details for given id
+        $user =User::whereId($id[0]['id'])->first();
+        $user->name=$fname;       //Change first name
+        $user->email=$uname;      //Change email
+        if(isset($pwrd)){
+            $user->password=md5($pwrd);  //if password is not empty change the password
+        }
+        $user->save();
+
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
+        return Redirect::to('/admin_panel_home');
+
+        }else{
+
+            return redirect('/admin_panel_login');
+
+        }
+
     }
 
-    public function therapyAdd(Request $request,$name,$des,$file ){
-
-       /* $imageName = "user_profile_img_12.png";
-        $destinationPath = base_path() . '/public/therapy_images/';
-        $file->move($destinationPath, $imageName);*/
-        Therapies::create([
-            'name' =>$name,
-            'description' =>$des,
 
 
-        ]);
+    public function therapyLoad(){
+      //  clearstatcache();
+        try{
+        //Get all therapies
+        $therapy_ob = Therapies::get();
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
 
-
-        $HTMLView = (String) view('costomize_home_views.Therapies');
+        $HTMLView = (String) view('costomize_home_views.Therapies')->with(['therapy'=>$therapy_ob]);
         $res['page'] = $HTMLView;
         return response()->json($res);
         // return view('costomize_home_views.home1');
@@ -321,16 +465,155 @@ public function registerAdminPageValidate(Request $request,$type,$data){
 
 
     /*
-     * This function loads Admin panel Dashboard
+     * Add anew therapy to the ayurvedic terapies table
+     */
+    public function therapyAdd(Request $request)
+    {
+        $name = Input::get('tname1'); //Get therapy name
+        $des = Input::get('tdes1');   //Get therapy description
+
+
+       //insert new data
+        try{
+        Therapies::create([
+            'name' => $name,
+            'description' => $des,
+
+        ]);
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
+        //Get the terapy details of newly added therapy
+        try{
+        $therapy_ob = Therapies::whereName($name)->first();
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
+
+        if (isset(Input::file('profile_img')[0])) {
+            /* This function will upload image */
+            self::upload_image($request, $therapy_ob->id);
+
+            try{
+            /* Updates Database Images table Image_path with new path */
+            $ther_ob = Therapies::whereName($name)->first();
+            $ther_ob->image_path = "therapy_images/therapy_img_" . $therapy_ob->id . ".png";
+            $ther_ob->save();
+
+            }catch (Exception $e) {
+                $this->LogError('AdminController Register_Page Function',$e);
+            }
+
+        }
+
+
+
+        return response()->json($request);
+
+    }
+
+
+
+    /*
+     *Get ayurvedic therapy details for given id and upadate  the ayurvedic therapy details.
+     */
+    public function therapyUpdate(Request $request,$updateId)
+    {
+        $name = Input::get('tname1'); //Get the therapy name
+        $des = Input::get('tdes1');   //Get the description
+
+          //Get the therapy details ,change and save the details
+         try{
+            $therapy = Therapies::whereId($updateId)->first();
+
+            $therapy->name= $name;
+            $therapy->description= $des;
+            $therapy->save();
+
+         }catch (Exception $e) {
+             $this->LogError('AdminController Register_Page Function',$e);
+         }
+
+
+        if (isset(Input::file('profile_img')[0])) {
+            /* This function will upload image */
+            self::upload_image($request, $updateId);
+
+            try{
+
+            /* Updates Database Images table Image_path with new path */
+
+            $ther_ob = Therapies::whereId($updateId)->first();
+            $ther_ob->image_path = "therapy_images/therapy_img_" . $updateId . ".png";
+            $ther_ob->save();
+
+            }catch (Exception $e) {
+                $this->LogError('AdminController Register_Page Function',$e);
+            }
+
+            return response()->json($request);
+        }
+
+ }
+
+    /*
+     * This function Uploads images to Server '/public/profile_images/user_images/' Folder
+     */
+    public function upload_image(Request $request,$id){
+        try {
+            $imageName = "therapy_img_" . $id . ".png";
+            $destinationPath = base_path() . '/public/therapy_images/';
+            Input::file('profile_img')[0]->move($destinationPath, $imageName);
+        }catch (Exception $e){
+            $this->LogError('User Profile Image Upload',$e);
+        }
+    }
+
+    /*
+     * Delete Ayurvedic therapy from the therapis table
+     */
+    public function therapyDelete(Request $request){
+
+        $id = Input::get('tid');// get the therapy id
+
+        try{
+        DB::table('therapies')->where('id', $id)->delete();
+
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
+        try{
+        //Remove the image from the location
+        unlink("therapy_images/therapy_img_" . $id . ".png");
+
+         }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
+        return response()->json($request);
+    }
+
+
+    /*
+     * Load dashbord in the admin panel and pass following parameters to the dashboard
+     * top_count = Number of Registered users
+     * new_count = Number of new users c
+     * formal_doctor_count = Number of formal doctors
+     * nonformal_doctor_count = Number of nonformal doctors
      */
     public function loadDashboard(){
+
         $HTMLView = (String) view('dashBoard.dashBoard')->with(['top_count' => self::get_count(),'new_count' => self::getNewCount(),'formal_doctor_count' => self::getFormalNewCount(),'nonformal_doctor_count' => self::getNonFormalNewCount()]);
         $res['page'] = $HTMLView;
         return response()->json($res);
-        //return view('admin_home', array('top_count' => self::get_count(),'new_count' => self::getNewCount(),'formal_doctor_count' => self::getFormalNewCount(),'nonformal_doctor_count' => self::getNonFormalNewCount()));
     }
 
-    //change admin patients
+    /*
+     * Navigate through the pages
+     */
 	public function patientAdminPageLoad(Request $request,$page_name){
        $HTMLView = (String) view('admin_patients_views.'.$page_name);
 		$res['page'] = $HTMLView;
@@ -338,18 +621,40 @@ public function registerAdminPageValidate(Request $request,$type,$data){
     }
 
 
-    //load user to the home_user1 page and display
-	public function viewUsers(Request $request,$user_id){
-        $patient =Patients::whereUser_id($user_id)->first();
+    /*
+     * load  the user details to the home_user1 page and display
+	*/
+    public function viewUsers(Request $request,$user_id){
+       // get user details by combining patients,images and users tables.
+        try{
+        $patient=DB::table('patients')->join('users', 'patients.user_id', '=', 'users.id')
+            ->join('images','patients.user_id', '=', 'images.user_id')
+            ->select('users.email as username','images.image_path','patients.*')
+            ->where("patients.user_id","=",$user_id)->first();
+
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
 
         $HTMLView = (String) view('admin_patients_views.home_user1')->with(['patient'=>$patient]);
         $res['page'] = $HTMLView;
         return response()->json($res);
     }
 
-    //load inapropriate user to the home_user1 page and display
+   /*
+    *   load inapropriate user details to the home_user2 page and display
+    */
     public function inapUserDetails(Request $request,$user_id){
-        $patient =DB::table('patients')->where("user_id","=",$user_id)->first();
+        try{
+            // get user details by combining patients,images and users tables.
+            $patient=DB::table('patients')->join('users', 'patients.user_id', '=', 'users.id')
+            ->join('images','patients.user_id', '=', 'images.user_id')
+            ->select('users.email as username','images.image_path','patients.*')
+            ->where("patients.user_id","=",$user_id)->first();
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
 
         $HTMLView = (String) view('admin_patients_views.home_user2')->with(['patient'=>$patient]);
         $res['page'] = $HTMLView;
@@ -360,45 +665,119 @@ public function registerAdminPageValidate(Request $request,$type,$data){
 
 
 
-   //filter doctors
+   /*
+    * Filter the doctor according to the rating,spcialization and treatments
+    * and display
+    *
+    */
     public function filterDoctors(Request $request,$rate,$spec,$treat){
 
-        $result =DB::table('doctors')->join('treatments', 'doctors.user_id', '=', 'treatments.doc_id')
-            ->join('specialization', 'doctors.user_id', '=', 'specialization.doc_id');
+       try{
+           //Get all the featured doctors
+        $fdoc=Featured_doc::all();
+       }catch (Exception $e) {
+           $this->LogError('AdminController Register_Page Function',$e);
+       }
+
+        $count=0;
+        //put the previously got featured doctors to array
+        foreach($fdoc as $p){
+            $aa[$count]=$p->did;
+            $count++;
+        }
+
+        //get the doctors according to the specifications and doctors who are not in featured doctors table
+        try{
+        $result =DB::table('doctors')->join('treatments', 'doctors.id', '=', 'treatments.doc_id')
+            ->join('specialization', 'doctors.id', '=', 'specialization.doc_id')->whereNotIn('doctors.id', $aa);
         if($rate !="all"){
             $result->where('rating','=',$rate);
         }
         if($spec !="all"){
-            $result->where('spec_1','=',$spec);
+            $result->where('spec_1','=',$spec)->orWhere('spec_2','=',$spec)->orWhere('spec_3','=',$spec)->orWhere('spec_4','=',$spec)->orWhere('spec_5','=',$spec);
         }
         if($treat != "all"){
-            $result->where('treat_1','=',$treat);
+            $result->where('treat_1','=',$treat)->orWhere('treat_2','=',$treat)->orWhere('treat_3','=',$treat)->orWhere('treat_4','=',$treat)->orWhere('treat_5','=',$treat);
         }
 
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
         $reg_doc=$result->get();
         $res['page'] = $reg_doc;
         return response()->json($res);
     }
 
 
-    //use to view remove comment
+   /*
+    * Remove unwanted comments
+    */
     public function removeComment(Request $request,$user_id){
 
         //get the comment details for given od
-        $user =DB::table('comments')->where('id', $user_id)->first();
-        DB::table('comments')->where('id', $user_id)->delete();
 
-        $uid=$user->user_id;                                                  //get the user id
-        $user1= DB::table('patients')->where('user_id', $uid)->first();       //get user details for the given user id
-        $count=$user1->spam_count;                                            //get the spam massage count
-        $count=$count+1;                                                       //spam count column increase by 1
+        try{
+
+            $user =DB::table('comments')->where('id', $user_id)->first();
+            $doctor_id=$user->doctor_id;
+            $rating =$user->rating;
+
+            try{
+                //take the doctor id and reduce rating
+                 $doc =Doctors::whereId($doctor_id)->first();
+                 $rateCount=$doc->tot_stars;
+                 $rateCount=(int)$rateCount - (int)$rating;
+                 $rateUserCount=$doc->rated_tot_users;
+                 $rateUserCount=(int)$rateUserCount - 1;
 
 
-        DB::table('patients')->where('user_id', $uid)->update(['spam_count' => $count]);  //add new spam count to the user
-        if($count >= 5){                                                                  //check whether spam count is exeed the given limet
-            DB::table('users')->where('id', $uid)->update(['mode' => 0]);                 //block the user // 0=block  //1=unblock
+                 $doc->tot_stars=$rateCount;
+                 $doc->rated_tot_users=$rateUserCount;
+                 $doc->save();
 
+
+
+
+            }catch (Exception $e) {
+                $this->LogError('AdminController Register_Page Function',$e);
+
+            }
+            try{
+            $uid=$user->user_id;                                                  //get the user id
+            $user1= DB::table('patients')->where('user_id', $uid)->first();       //get user details for the given user id
+            $count=$user1->spam_count;                                            //get the spam massage count
+            $count=$count+1;                                                      //spam count column increase by 1
+
+                try{
+
+                    DB::table('patients')->where('user_id', $uid)->update(['spam_count' => $count]);  //add new spam count to the user
+                    if($count >= 5){                                                                  //check whether spam count is exeed the given limet
+                        DB::table('users')->where('id', $uid)->update(['mode' => 0]);                 //block the user // 0=block  //1=unblock
+
+                    }
+
+                }catch (Exception $e) {
+                    $this->LogError('AdminController Register_Page Function',$e);
+
+                }
+
+
+            }catch (Exception $e) {
+               $this->LogError('AdminController Register_Page Function',$e);
+           }
+
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
         }
+
+        //remove the comment
+        try{
+            DB::table('comments')->where('id', $user_id)->delete();
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
+        }
+
+
 
 
 
@@ -447,21 +826,52 @@ public function registerAdminPageValidate(Request $request,$type,$data){
 
 //update featured doctor
 
-    public function featuredDoctorUpdate(Request $request,$count,$doc_id){
+    public function featuredDoctorUpdate(Request $request)
+    {
+        $count = Input::get("count");
+        $doc_id = Input::get("doc_id");
 
+        if ($count == "new") {
+            Featured_doc::create([
+                'did' => $doc_id,
+            ]);
+        }
+        else{
         //upadate the featured doctor table reacord with a new doctor id
         DB::table('featured_doc')->where('fid', $count)->update(['did' => $doc_id]);
+       }
 
-        //get featured doctor details
-        $featured_doc= DB::table('featured_doc')->join('doctors', 'featured_doc.did', '=', 'doctors.user_id')->orderBy('fid','asc')->get();
 
-        //get the specializations
-        $filter_spec= DB::table('specialization')->select('spec_1')->groupBy('spec_1')->get();
-        //get the treatments
-        $filter_treat= DB::table('treatments')->select('treat_1')->groupBy('treat_1')->get();
-        //get all doctors
-        $reg_doc = Doctors::all();
+        $featured_doc= DB::table('featured_doc')->join('doctors', 'featured_doc.did', '=', 'doctors.id')->orderBy('fid','asc')->get();
 
+        //Get all the specialization types in the specializations 5 columns
+        $filter_spec= DB::select('SELECT spec_1 FROM
+        (
+            SELECT spec_1 AS spec_1 FROM specialization where spec_1 != ""
+            UNION
+            SELECT spec_2 AS spec_1 FROM specialization where spec_2 != ""
+            UNION
+            SELECT spec_3 AS spec_1 FROM specialization where spec_3 != ""
+            UNION
+            SELECT spec_4 AS spec_1 FROM specialization where spec_4 != ""
+            UNION
+            SELECT spec_5 AS spec_1 FROM specialization where spec_5 != ""
+        ) tt WHERE spec_1 IS NOT NULL');
+
+        //$filter_treat= DB::table('treatments')->select('treat_1')->groupBy('treat_1')->get();
+        $filter_treat= DB::select('SELECT treat_1 FROM
+        (
+            SELECT treat_1 AS treat_1 FROM treatments where treat_1 != ""
+            UNION
+            SELECT treat_2 AS treat_1 FROM treatments where treat_2 != ""
+            UNION
+            SELECT treat_3 AS treat_1 FROM treatments where treat_3 != ""
+            UNION
+            SELECT treat_4 AS treat_1 FROM treatments where treat_4 != ""
+            UNION
+            SELECT treat_5 AS treat_1 FROM treatments where treat_5 != ""
+        ) tt WHERE treat_1 IS NOT NULL');
+        $reg_doc  = DB::select(DB::raw('SELECT * FROM doctors WHERE id NOT IN (SELECT did FROM featured_doc)'));
         //pass db results to the home12 page
         $HTMLView = (String) view('costomize_home_views.home12')->with(['featured_doc1'=>$featured_doc,'reg_doctor'=>$reg_doc,'filter_spec'=>$filter_spec,'filter_treat'=>$filter_treat]);
         $res['com_data'] = $HTMLView;
@@ -612,7 +1022,26 @@ public function registerAdminPageValidate(Request $request,$type,$data){
         return $count;
     }
 
-    public function graph1Count(){
+   public function graph1Count(){
+       $graph1  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM patients GROUP BY DATE(reg_date)'));
+       $graph2  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM doctors GROUP BY DATE(reg_date)'));
+       $graph3  = DB::select(DB::raw('SELECT DATE(reg_date) AS y ,SUM(CASE WHEN doc_type = "FORMAL" THEN 1 ELSE 0 END) AS item1, SUM(CASE WHEN doc_type = "NON_FORMAL" THEN 1 ELSE 0 END) AS item2    FROM doctors  GROUP BY DATE(reg_date)'));
+       $Patients = Patients::all();
+       $Formal_doctors = Formal_doctors::all();
+       $Non_Formal_doctors = Non_Formal_doctors::all();
+       $graph41 = sizeof($Patients);
+       $graph42 = sizeof($Formal_doctors);
+       $graph43 = sizeof($Non_Formal_doctors);
+       $res['graph_1'] = $graph1;
+       $res['graph_2'] = $graph2;
+       $res['graph_3'] = $graph3;
+       $res['graph_41'] = $graph41;
+       $res['graph_42'] = $graph42;
+       $res['graph_43'] = $graph43;
+
+      return response()->json($res);
+
+    /*public function graph1Count(){
         $graph1  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM patients GROUP BY DATE(reg_date)'));
         $graph2  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM doctors GROUP BY DATE(reg_date)'));
         $graph3  = DB::select(DB::raw('SELECT DATE(reg_date) AS y ,SUM(CASE WHEN doc_type = "FORMAL" THEN 1 ELSE 0 END) AS item1, SUM(CASE WHEN doc_type = "NON_FORMAL" THEN 1 ELSE 0 END) AS item2    FROM doctors  GROUP BY DATE(reg_date)'));
@@ -622,7 +1051,7 @@ public function registerAdminPageValidate(Request $request,$type,$data){
         $res['graph_3'] = $graph3;
         return response()->json($res);
 
-    }
+    }*/
 
     /*
      * This Function Gets all available chat users

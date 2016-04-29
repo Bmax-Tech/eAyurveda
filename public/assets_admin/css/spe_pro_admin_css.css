@@ -637,14 +637,26 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	z-index:999990;
 }
 
+.pat_confirm1_box1{
+	display:none;
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0px;
+	z-index:777770;
+}
+
 .pat_confirm1_box_wrapper{
 	padding:8px;
-	background:#f8f8f8;
+	background: #f8f8f8;
 	width:338px;
 	margin-top:10%;
 
 	box-shadow:0px 0px 10px #000000;
 }
+
+
+
 
 .pat_close_btn{
 	float:right;
@@ -661,8 +673,33 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	width:25px;
 }
 
+.pat_close_btn1{
+	float:right;
+	position:fixed;
+	background:#FFFFFF;
+	border:0px;
+	padding:0px;
+	border-radius:20px;
+	margin-left:578px;
+	margin-top:-18px;
+	outline:none;
+}
+.pat_close_btn1>img{
+	width:25px;
+}
+
 .pat_view_btn_1{
 	width: 100px;
+	font-size:10px;
+	padding: 7px;
+	background: #006d16;
+	border:1px solid #006d16;
+	border-radius: 3px;
+	color: #FFF;
+}
+
+.pat_view_btn_2{
+	width: 400px;
 	font-size:10px;
 	padding: 7px;
 	background: #006d16;
@@ -681,7 +718,15 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 
 .pat_success1_box_wrapper{
 	padding:8px;
-	background:#f8f8f8;
+	background: #f5eef9;
+	width:338px;
+	margin-top:10%;
+
+	box-shadow:0px 0px 10px #000000;
+}
+.pat_success1_box_wrapper1{
+	padding:8px;
+	background:#4CBC5B;
 	width:338px;
 	margin-top:10%;
 
@@ -842,6 +887,97 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 }
 .c_img_upload_btn_admin:hover{
 	background:#2AA700;
+}
+.disable_btn{
+	disabled:"disabled";
+}
+
+.a_password_inputs{
+	display:none;
+	width: 250px;
+	height: 50px;
+	position: absolute;
+	bottom: 29%;
+	right: -240px;
+	z-index: 999;
+}
+.a_password_inputs1{
+    display:none;
+	width: 250px;
+	height: 50px;
+	position: absolute;
+	bottom: 23%;
+	right: -240px;
+	z-index: 999;
+}
+#a_in_ps_div_1{
+	width: 0px;
+	height: 40px;
+	border-top: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-right: 25px solid #3db43d;
+}
+#a_in_ps_div_2{
+	padding: 10px;
+	background: #3db43d;
+	width: 300px;
+	height: 185%;
+	/* float: right; */
+	margin-left: 25px;
+	margin-top: -66px;
+	/* margin-left: -1px; */
+	border-radius: 2px;
+	color: #fff;
+	font-size: 13px;
+	text-shadow: 0px 0px 5px #000;
+}
+
+.a_doc_box{
+	/* background: #39b54a; */
+	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(0.7, #0FAF25) );
+	background-image: -o-linear-gradient(bottom, #FFFFFF 0%, #0FAF25 70%);
+	background-image: -moz-linear-gradient(bottom, #FFFFFF 0%, #0FAF25 70%);
+	background-image: -webkit-linear-gradient(bottom, #FFFFFF 0%, #0FAF25 70%);
+	background-image: -ms-linear-gradient(bottom, #FFFFFF 0%, #0FAF25 70%);
+	background-image: linear-gradient(to bottom, #FFFFFF 0%, #0FAF25 70%);
+	padding: 15px 0px;
+	border-bottom: 5px solid #257931;
+}
+.a_doc_box:hover{
+	cursor:pointer;
+	/*background:#309A3F;*/
+	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(0.7, #257931) );
+	background-image: -o-linear-gradient(bottom, #FFFFFF 0%, #257931 70%);
+	background-image: -moz-linear-gradient(bottom, #FFFFFF 0%, #257931 70%);
+	background-image: -webkit-linear-gradient(bottom, #FFFFFF 0%, #257931 70%);
+	background-image: -ms-linear-gradient(bottom, #FFFFFF 0%, #257931 70%);
+	background-image: linear-gradient(to bottom, #FFFFFF 0%, #257931 70%);
+	border-bottom: 5px solid #ffd402;
+}
+
+.c_top_ulp{
+	padding:0px;
+	list-style:none;
+
+
+}
+.c_top_ulp li{
+	display:inline-block;
+}
+
+.fet_doc_close_btn{
+	float:right;
+	position:fixed;
+	background:#FFFFFF;
+	border:0px;
+	padding:0px;
+	border-radius:20px;
+	margin-left:848px;
+	margin-top:-19px;
+	outline:none;
+}
+.fet_doc_close_btn>img{
+	width:25px;
 }
 /*--------------------------End patient admin CSS  --------------------------------------*/
 

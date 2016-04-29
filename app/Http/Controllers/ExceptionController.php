@@ -26,4 +26,7 @@ class ExceptionController extends Controller
         /* Move User to Safe Page */
         abort(503);
     }
+
+
+
 }

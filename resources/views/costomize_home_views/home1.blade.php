@@ -108,7 +108,7 @@
 			 Health Tip
 		 </div><span class="c_warning_tips_reg" id="wrn_tip" style="margin-top: 12px"><span class="glyphicon glyphicon-asterisk" aria-hidden="true" ></span> Empty Tip</span>
 		 <div class="col-lg-12" style="margin-top: 5px">
-			 <textarea  onkeyup="onChangetip();" id="tiptip" class="pat_admin_text_area1" name="tip"  style="width:830px;" maxlength="280"  onkeypress="remove_wrn('tip')" onchange="remove_wrn('tip')"></textarea>
+			 <textarea  onkeyup="onChangetip();" id="tiptip" class="pat_admin_text_area1" name="tip"  style="width:830px;" maxlength="280"  onkeypress="remove_wrn('tip')" onchange="remove_wrn('tip')" spellcheck="false"></textarea>
 		 </div>
          <div class="col-lg-12" style="margin-top: 20px">
 			 <div  style="margin-left: 420px">

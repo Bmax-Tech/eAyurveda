@@ -54,7 +54,10 @@ Route::get('/pat_admin/{page_name}','Admin_Front@patientAdminPageLoad');
 Route::get('/admin_panel/user_comments/{skip}/{end}','Admin_Front@userCommentsLoad');
 Route::get('/admin_panel/customize/featured','Admin_Front@featuredDocLoad');
 Route::get('/admin_panel/customize/therapyLoad','Admin_Front@therapyLoad');
-Route::get('/admin_panel_home/addtherapy/{name}/{des}/{file}','Admin_Front@therapyAdd');
+Route::post('/admin_panel_home/addtherapy','Admin_Front@therapyAdd');
+Route::post('/admin_panel_home/updateAdminProfile','Admin_Front@updateAdminProfile');
+Route::post('/admin/therapyDelete','Admin_Front@therapyDelete');
+Route::post('/admin_panel_home/updatetherapy/{updateId}','Admin_Front@therapyUpdate');
 Route::get('/admin_panel/customize/adminload','Admin_Front@adminLoad');
 Route::get('/admin_panel/customize','Admin_Front@customize');
 Route::get('/admin_panel/user_view/{user_id}','Admin_Front@viewUsers');
@@ -66,7 +69,8 @@ Route::get('/admin_panel/users2/{skip}/{end}','Admin_Front@viewNewUsers');
 Route::get('/admin_panel/inapusers/test/{skip}/{end}','Admin_Front@inapUsersView');
 Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@blockUser');
 Route::get('/admin_panel/filterdoc/{rate}/{spec}/{treat}','Admin_Front@filterDoctors');
-Route::get('/admin_panel/updatefet/{count}/{doc_id}','Admin_Front@featuredDoctorUpdate');
+Route::post('/admin_panel/updatefet','Admin_Front@featuredDoctorUpdate');
+
 
 Route::post('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
 Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipUpdate');
