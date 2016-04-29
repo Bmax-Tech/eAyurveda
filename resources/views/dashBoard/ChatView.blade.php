@@ -35,7 +35,7 @@
                     <!-- Chat Details Load Here -->
                 </div>
                 <div style="height: 10%;width: 100%;border-top: 1px solid #F15822">
-                    <form id="chat_form" method="post" style="width: 100%;height: 100%">
+                    <form id="chat_form" method="post" onsubmit="return ChatSubmitCLick();" style="width: 100%;height: 100%">
                         <input name="message" id="chat_message_txt" type="text" placeholder="Type Message Here" spellcheck="false" autocomplete="off">
                         <div class="c_chat_send" id="chat_send" onclick="SendMessage()"><img src="{{ URL::asset('assets/img/sent.png') }}" style="width:60%;margin: 0px 0px 0px 12px;height: 100%;"></div>
                     </form>

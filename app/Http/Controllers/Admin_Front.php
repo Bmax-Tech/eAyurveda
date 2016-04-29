@@ -629,14 +629,20 @@ public function registerAdminPageValidate(Request $request,$type,$data){
      * through DataBase Chatdata table
      */
     public function GetAvailableChatUsers(Request $request){
-        $sql = "SELECT sender_id FROM chat_data GROUP BY sender_id ORDER BY DATE(posted_date_time) DESC";
+        $sql = "SELECT sender_id,user_type FROM chat_data GROUP BY sender_id ORDER BY DATE(posted_date_time)";
         $av_users = DB::select(DB::raw($sql));
         $all_users = array();
         foreach($av_users as $user_t){
             if($user_t->sender_id != "0"){
-                $sql_2 = "SELECT first_name,last_name,email FROM patients WHERE user_id = ".$user_t->sender_id;
-                $user_data = DB::select(DB::raw($sql_2));
                 $temp = array();
+                if($user_t->user_type == "DOCTOR"){
+                    $temp["user_type"] = "DOCTOR";
+                    $sql_2 = "SELECT first_name,last_name,email FROM doctors WHERE user_id = ".$user_t->sender_id;
+                }else{
+                    $temp["user_type"] = "NORMAL";
+                    $sql_2 = "SELECT first_name,last_name,email FROM patients WHERE user_id = ".$user_t->sender_id;
+                }
+                $user_data = DB::select(DB::raw($sql_2));
                 $temp["user_id"] = $user_t->sender_id;
                 $temp["user_data"] = $user_data;
                 $all_users[] = $temp;
@@ -687,6 +693,4 @@ public function registerAdminPageValidate(Request $request,$type,$data){
 
         return response()->json($res);
     }
-
-
 }

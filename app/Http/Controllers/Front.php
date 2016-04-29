@@ -406,29 +406,87 @@ class Front extends ExceptionController
         return view('physicians');
     }
 
+    /**
+     * Doctor Accounts Handlers
+     */
+    // Login Function
+    public function DoctorLogin(Request $request){
+        if(isset($_COOKIE['doctor_user'])) {
+            return redirect('/DoctorAccount');
+        }else {
+            return view('doctor_account_login');
+        }
+    }
+    /**
+     * Doctor Login Authentication
+     */
+    public function DoctorLoginAuth(Request $request){
+        $sql = "SELECT A.id AS doc_id,A.doc_type,A.user_id,A.first_name,A.last_name FROM doctors A,users B WHERE B.email = '".$request->username."' AND B.password = '".md5($request->password)."' AND B.id = A.user_id";
+        $user_ob = DB::select(DB::raw($sql));
+        // Check whether username and password are matching
+        //dd($user_ob[0]);
+        if(isset($user_ob[0])) {
+            if($user_ob[0]->doc_type == "FORMAL"){
+                // Create session to store logged user details
+                $user_cookie = array(['id' => $user_ob[0]->user_id,'doc_id' => $user_ob[0]->doc_id,'first_name' => $user_ob[0]->first_name,'last_name' => $user_ob[0]->last_name]);
+                setcookie('doctor_user',json_encode($user_cookie),time()+3600); // Cookie is set for 2 hour
+                return redirect('/DoctorAccount');
+            }else{
+                //return view('doctor_account_login', array('password_error' => 'YES','pre_username'=>'YES'));
+                return redirect('/DoctorAccountLogin');
+            }
+        }else {
+            $sql_2 = "SELECT A.id FROM doctors A,users B WHERE A.user_id = B.id AND B.email = '".$request->username."'";
+            if(DB::select(DB::raw($sql_2))) {
+                // Check whether password is incorrect
+                //return view('doctor_account_login', array('password_error' => 'YES','pre_username'=>$request->username));
+                return redirect('/DoctorAccountLogin');
+            }else{
+                // Check whether username is incorrect
+                //return view('doctor_account_login', array('username_error' => 'YES'));
+                return redirect('/DoctorAccountLogin');
+            }
+        }
+    }
+
+    /**
+     * Doctor Log out
+     */
+    public function DoctorLogout(Request $request){
+        unset($_COOKIE['doctor_user']);
+        setcookie("doctor_user", "", time() - 3600);// Destroy the Cookie Session
+
+        return Redirect::to('/DoctorAccountLogin');
+    }
+
     /*
      * Doctor Account Page
      */
     public function DoctorAccount(Request $request){
-        try {
-            $doctor_id = 1;
+        if(isset($_COOKIE['doctor_user'])) {
+            try {
+                $doc = json_decode($_COOKIE['doctor_user'], true);
+                $doctor_id = $doc[0]['doc_id'];
 
-            $doctor_data = Doctors::whereId($doctor_id)->first();
-            $spec_data = Specialization::whereDoc_id($doctor_id)->first();
-            $treat_data = Treatments::whereDoc_id($doctor_id)->first();
-            $cons_data = ConsultationTimes::whereDoc_id($doctor_id)->first();
+                $doctor_data = Doctors::whereId($doctor_id)->first();
+                $spec_data = Specialization::whereDoc_id($doctor_id)->first();
+                $treat_data = Treatments::whereDoc_id($doctor_id)->first();
+                $cons_data = ConsultationTimes::whereDoc_id($doctor_id)->first();
 
-            $image_data = Images::whereUser_id($doctor_data->user_id)->first();
+                $image_data = Images::whereUser_id($doctor_data->user_id)->first();
 
-            return view('doctor_account', array(
-                'doctor' => $doctor_data,
-                'spec' => $spec_data,
-                'treat' => $treat_data,
-                'consult' => $cons_data,
-                'image' => $image_data
-            ));
-        }catch (Exception $e) {
-            $this->LogError('Doctor Account View Function', $e);
+                return view('doctor_account', array(
+                    'doctor' => $doctor_data,
+                    'spec' => $spec_data,
+                    'treat' => $treat_data,
+                    'consult' => $cons_data,
+                    'image' => $image_data
+                ));
+            }catch (Exception $e) {
+                $this->LogError('Doctor Account View Function', $e);
+            }
+        }else {
+            return view('doctor_account_login');
         }
     }
 
@@ -438,8 +496,9 @@ class Front extends ExceptionController
      */
     public function UpdateDoctorAccount(Request $request){
         //dd($request);
-        $doctor_id = 1;// Holds Doctor ID
-        $user_id = 1;// Holds User ID
+        $doc = json_decode($_COOKIE['doctor_user'], true);
+        $doctor_id = $doc[0]['doc_id'];// Holds Doctor ID
+        $user_id = $doc[0]['id'];// Holds User ID
         try {
 
             /* Update Doctor details */
