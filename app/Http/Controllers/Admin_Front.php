@@ -1050,8 +1050,8 @@ public function registerAdminPageValidate(Request $request,$type,$data){
         $res['graph_2'] = $graph2;
         $res['graph_3'] = $graph3;
         return response()->json($res);
-
-    }*/
+        }*/
+    }
 
     /*
      * This Function Gets all available chat users

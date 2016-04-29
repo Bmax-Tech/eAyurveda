@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\ConsultationTimes;
 use App\Featured_doc;
 use App\Formal_doctors;
-use App\HealthTip;
+use App\Health_tips;
 use App\Non_Formal_doctors;
 use App\Patients;
 use App\ProfileViews;
@@ -773,7 +773,7 @@ class Front extends ExceptionController
      */
     public function get_health_tips(){
         try {
-            $health_tip_main = HealthTip::orderBy('hid', 'DESC')->get();
+            $health_tip_main = Health_tips::orderBy('hid', 'DESC')->get();
         }catch (Exception $e){
             $this->LogError('Get Health Tips Function',$e);
         }
