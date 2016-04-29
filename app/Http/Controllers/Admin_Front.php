@@ -20,6 +20,7 @@ use App\Therapies;
 use Exception;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use App\Chat_data;
 
 
 class Admin_Front extends ExceptionController
@@ -948,6 +949,17 @@ public function registerAdminPageValidate(Request $request,$type,$data){
         return view('dashBoard.dashBoard');
     }
 
+    /*
+     * Chat View will be loaded
+     * All previous chat data will displayed according to
+     * their users, will be loaded
+     */
+    public function LoadChatView(){
+        $HTMLView = (String) view('dashBoard.ChatView');
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+    }
+
     public function adminLoad(Request $request){
 
 
@@ -1029,7 +1041,85 @@ public function registerAdminPageValidate(Request $request,$type,$data){
 
       return response()->json($res);
 
-  }
+    /*public function graph1Count(){
+        $graph1  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM patients GROUP BY DATE(reg_date)'));
+        $graph2  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM doctors GROUP BY DATE(reg_date)'));
+        $graph3  = DB::select(DB::raw('SELECT DATE(reg_date) AS y ,SUM(CASE WHEN doc_type = "FORMAL" THEN 1 ELSE 0 END) AS item1, SUM(CASE WHEN doc_type = "NON_FORMAL" THEN 1 ELSE 0 END) AS item2    FROM doctors  GROUP BY DATE(reg_date)'));
 
+        $res['graph_1'] = $graph1;
+        $res['graph_2'] = $graph2;
+        $res['graph_3'] = $graph3;
+        return response()->json($res);
 
+    }*/
+
+    /*
+     * This Function Gets all available chat users
+     * through DataBase Chatdata table
+     */
+    public function GetAvailableChatUsers(Request $request){
+        $sql = "SELECT sender_id,user_type FROM chat_data GROUP BY sender_id ORDER BY DATE(posted_date_time)";
+        $av_users = DB::select(DB::raw($sql));
+        $all_users = array();
+        foreach($av_users as $user_t){
+            if($user_t->sender_id != "0"){
+                $temp = array();
+                if($user_t->user_type == "DOCTOR"){
+                    $temp["user_type"] = "DOCTOR";
+                    $sql_2 = "SELECT first_name,last_name,email FROM doctors WHERE user_id = ".$user_t->sender_id;
+                }else{
+                    $temp["user_type"] = "NORMAL";
+                    $sql_2 = "SELECT first_name,last_name,email FROM patients WHERE user_id = ".$user_t->sender_id;
+                }
+                $user_data = DB::select(DB::raw($sql_2));
+                $temp["user_id"] = $user_t->sender_id;
+                $temp["user_data"] = $user_data;
+                $all_users[] = $temp;
+            }
+        }
+
+		/* Return Json Type Object */
+		return response()->json($all_users);
+    }
+
+    /*
+	 * This function will get chat messages feature
+	 * Return All Chat Messages by user
+	 */
+    public function GetAdminChat(Request $request){
+        $userId = $request->user_id;
+        try {
+            $chat_data = Chat_data::where('sender_id', '=', $userId)->orwhere('receiver_id', '=', $userId)->get();
+
+            $res['chat_data'] = $chat_data;
+        }catch (Exception $e){
+            $this->LogError('AjaxController Get_Chat_Message_by_User Function',$e);
+        }
+
+        return response()->json($res);
+    }
+
+    /*
+     * Send Chat Admin
+     * @param => user_id
+     */
+    public function SendAdminChat(Request $request){
+        $user_id = $request->user_id;
+        $message = $request->message;
+        try {
+            /* Create Chat Message */
+            Chat_data::create([
+                'sender_id' => 0,
+                'receiver_id' => $user_id,
+                'message' => $message,
+                'posted_date_time' => new \DateTime()
+            ]);
+
+            $res['response'] = "SUCCESS";
+        }catch (Exception $e){
+            $this->LogError('AjaxController Send_Chat_Message Function',$e);
+        }
+
+        return response()->json($res);
+    }
 }

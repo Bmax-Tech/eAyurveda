@@ -4,19 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Chat_data extends Model
+class ConsultationTimes extends Model
 {
     protected $fillable = [
         'id',
-        'sender_id',
-        'receiver_id',
-        'message',
-        'user_type',
-        'posted_date_time',
+        'doc_id',
+        'time_1',
+        'time_2',
+        'time_3',
         'created_at',
         'updated_at'
     ];
 
     public $timestamps = false;
-    protected $table = 'chat_data';
+    protected $table = 'consultation_times';
 }

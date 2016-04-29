@@ -1249,6 +1249,21 @@ function check_spec_and_treat(para_1){
 		}else{
 			return true;
 		}
+	}else if(para_1 == "consult"){
+		var skip=false;
+		var cons_time_count = $("#cons_time_count").val();
+		for(var i=1;i<=cons_time_count;i++){
+			if($("#consult_time_doc_"+i).val() == ""){
+				skip=true;
+			}
+		}
+
+		if(skip){
+			show_warning('consult');
+			return false;
+		}else{
+			return true;
+		}
 	}
 }
 
@@ -2041,3 +2056,697 @@ $(".c_button_res_1").click(function(){
 		});
 	}
 });
+
+/*
+ * Physicians Page
+ */
+function LoadPhysicians(){
+	$("#c_loading_msg").fadeIn();
+	var newUrl = "/get_physicians";
+	var dataString = $("#physicians_paginate_data").serialize();
+	$.ajax({
+		type: 'POST',
+		url: newUrl,
+		data: dataString,
+		dataType: 'json',
+		cache: false,
+		success:function(data){
+			//console.log(data);
+			$(".c_phy_ajax_load").html(data.page);
+			$("#c_loading_msg").fadeOut();
+
+			if(data.pagination.total != 0) {
+				$("#c_phy_paginate_box").show();
+				// Initialize
+				if (data.pagination.prev_page_url != null) {
+					var pre_page = data.pagination.prev_page_url.split("=");
+					pre_page = pre_page[1];
+				} else {
+					var pre_page = 1;
+				}
+				if (data.pagination.next_page_url != null) {
+					var next_page = data.pagination.next_page_url.split("=");
+					next_page = next_page[1];
+				} else {
+					var next_page = data.pagination.last_page;
+				}
+
+				$("#pre_page_no").val(pre_page);
+				$("#next_page_no").val(next_page);
+
+				var from = data.pagination.from;
+				var total = data.pagination.total;
+				var per_page = data.pagination.per_page;
+				if (total - from > per_page) {
+					var to = from + per_page - 1;
+				} else {
+					var to = total;
+				}
+				$("#c_phy_paginate_txt").html(from + " to " + to);
+				// Initialize
+			}else{
+				$("#c_phy_paginate_box").hide();
+			}
+		}
+	});
+};
+
+$(document).ready(function(){
+	if($("#phy_page_no").val() == "1"){
+		LoadPhysicians();
+	}
+});
+
+function phy_type_click(para_1,para_2){
+	$(".c_phy_link").removeClass('c_link_active');
+	$("#phy_link_"+para_2).addClass('c_link_active');
+	$("#phy_page_type").val(para_1);
+	$("#phy_page_no").val(1); // Reset Page Number
+	LoadPhysicians();
+};
+
+$("#c_phy_paginate_left").click(function(){
+	$("#phy_page_no").val($("#pre_page_no").val());
+	LoadPhysicians();
+});
+
+$("#c_phy_paginate_right").click(function(){
+	$("#phy_page_no").val($("#next_page_no").val());
+	LoadPhysicians();
+});
+
+
+
+/*
+ * Doctor Account Manage Page
+ */
+
+function load_area_chart() {
+
+	$(function () {
+		/* ChartJS
+		 * -------
+		 * Here we will create a few charts using ChartJS
+		 */
+
+		//--------------
+		//- AREA CHART -
+		//--------------
+
+		// Get context with jQuery - using jQuery's .get() method.
+		var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+		// This will get the first returned node in the jQuery collection.
+		var areaChart = new Chart(areaChartCanvas);
+
+		var areaChartData = {
+			labels: AREA_CHART_ARRAY[0],
+			datasets: [
+				{
+					label: "Doctor",
+					fillColor: "rgba(60,141,188,0.9)",
+					strokeColor: "rgba(60,141,188,0.8)",
+					pointColor: "#3b8bba",
+					pointStrokeColor: "rgba(60,141,188,1)",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(60,141,188,1)",
+					data: AREA_CHART_ARRAY[1]
+				}
+			]
+		};
+
+		var areaChartOptions = {
+			//Boolean - If we should show the scale at all
+			showScale: true,
+			//Boolean - Whether grid lines are shown across the chart
+			scaleShowGridLines: false,
+			//String - Colour of the grid lines
+			scaleGridLineColor: "rgba(0,0,0,.05)",
+			//Number - Width of the grid lines
+			scaleGridLineWidth: 1,
+			//Boolean - Whether to show horizontal lines (except X axis)
+			scaleShowHorizontalLines: true,
+			//Boolean - Whether to show vertical lines (except Y axis)
+			scaleShowVerticalLines: true,
+			//Boolean - Whether the line is curved between points
+			bezierCurve: true,
+			//Number - Tension of the bezier curve between points
+			bezierCurveTension: 0.3,
+			//Boolean - Whether to show a dot for each point
+			pointDot: false,
+			//Number - Radius of each point dot in pixels
+			pointDotRadius: 4,
+			//Number - Pixel width of point dot stroke
+			pointDotStrokeWidth: 1,
+			//Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+			pointHitDetectionRadius: 20,
+			//Boolean - Whether to show a stroke for datasets
+			datasetStroke: true,
+			//Number - Pixel width of dataset stroke
+			datasetStrokeWidth: 2,
+			//Boolean - Whether to fill the dataset with a color
+			datasetFill: true,
+			//String - A legend template
+			legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+			//Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+			maintainAspectRatio: true,
+			//Boolean - whether to make the chart responsive to window resizing
+			responsive: true
+		};
+
+		//Create the line chart
+		areaChart.Line(areaChartData, areaChartOptions);
+	});
+
+};
+function load_pie_chart(){
+
+		$(function () {
+		//-------------
+		//- PIE CHART -
+		//-------------
+		// Get context with jQuery - using jQuery's .get() method.
+		var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+		var pieChart = new Chart(pieChartCanvas);
+		var PieData = [
+			{
+				value: PIE_CHART_ARRAY[1][4],
+				color: "#f56954",
+				highlight: "#ef2b0e",
+				label: "5 Star"
+			},
+			{
+				value: PIE_CHART_ARRAY[1][3],
+				color: "#00a65a",
+				highlight: "#005a31",
+				label: "4 Star"
+			},
+			{
+				value: PIE_CHART_ARRAY[1][2],
+				color: "#f39c12",
+				highlight: "#b06f09",
+				label: "3 Star"
+			},
+			{
+				value: PIE_CHART_ARRAY[1][1],
+				color: "#00c0ef",
+				highlight: "#0097bc",
+				label: "2 Star"
+			},
+			{
+				value: PIE_CHART_ARRAY[1][0],
+				color: "#3c8dbc",
+				highlight: "#296282",
+				label: "1 Star"
+			}
+		];
+		var pieOptions = {
+			//Boolean - Whether we should show a stroke on each segment
+			segmentShowStroke: true,
+			//String - The colour of each segment stroke
+			segmentStrokeColor: "#fff",
+			//Number - The width of each segment stroke
+			segmentStrokeWidth: 2,
+			//Number - The percentage of the chart that we cut out of the middle
+			percentageInnerCutout: 0, // This is 0 for Pie charts
+			//Number - Amount of animation steps
+			animationSteps: 100,
+			//String - Animation easing effect
+			animationEasing: "easeOutBounce",
+			//Boolean - Whether we animate the rotation of the Doughnut
+			animateRotate: true,
+			//Boolean - Whether we animate scaling the Doughnut from the centre
+			animateScale: false,
+			//Boolean - whether to make the chart responsive to window resizing
+			responsive: true,
+			// Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+			maintainAspectRatio: true,
+			//String - A legend template
+			legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+		};
+		//Create pie or douhnut chart
+		// You can switch between pie and douhnut using the method below.
+		pieChart.Doughnut(PieData, pieOptions);
+	});
+
+};
+
+
+//*********
+
+function add_more_op_doc(){
+	var spec_count = $("#spec_count").val();
+	if(spec_count < 5) {
+		spec_count++;
+		$("#spec_count").val(spec_count);
+		for (var i = 1; i <= 5; i++) {
+			if (i <= spec_count) {
+				$("#spec_doc_" + i).fadeIn(300);
+			} else {
+				$("#spec_doc_" + i).fadeOut(1);
+				$("#spec_doc_" + i).val("");
+			}
+		}
+	}
+}
+
+function rem_more_op_doc(){
+	var spec_count = $("#spec_count").val();
+	if(spec_count > 1) {
+		spec_count--;
+		$("#spec_count").val(spec_count);
+		for (var i = 1; i <= 5; i++) {
+			if (i <= spec_count) {
+				$("#spec_doc_" + i).fadeIn(300);
+			} else {
+				$("#spec_doc_" + i).fadeOut(1);
+				$("#spec_doc_" + i).val("");
+			}
+		}
+	}
+}
+
+function add_more_t_op_doc(){
+	var treat_count = $("#treat_count").val();
+	if(treat_count < 5) {
+		treat_count++;
+		$("#treat_count").val(treat_count);
+		for (var i = 1; i <= 5; i++) {
+			if (i <= treat_count) {
+				$("#treat_doc_" + i).fadeIn(300);
+			} else {
+				$("#treat_doc_" + i).fadeOut(1);
+				$("#treat_doc_" + i).val("");
+			}
+		}
+	}
+}
+
+function rem_more_t_op_doc(){
+	var treat_count = $("#treat_count").val();
+	if(treat_count > 1) {
+		treat_count--;
+		$("#treat_count").val(treat_count);
+		for (var i = 1; i <= 5; i++) {
+			if (i <= treat_count) {
+				$("#treat_doc_" + i).fadeIn(300);
+			} else {
+				$("#treat_doc_" + i).fadeOut(1);
+				$("#treat_doc_" + i).val("");
+			}
+		}
+	}
+}
+
+function add_more_cons_op(){
+	var cons_time_op = $("#cons_time_count").val();
+	if(cons_time_op < 3) {
+		cons_time_op++;
+		$("#cons_time_count").val(cons_time_op);
+		for (var i = 1; i <= 3; i++) {
+			if (i <= cons_time_op) {
+				$("#consult_time_doc_" + i).fadeIn(300);
+			} else {
+				$("#consult_time_doc_" + i).fadeOut(1);
+				$("#consult_time_doc_" + i).val("");
+			}
+		}
+	}
+}
+
+function rem_more_cons_op(){
+	var cons_time_op = $("#cons_time_count").val();
+	if(cons_time_op > 1) {
+		cons_time_op--;
+		$("#cons_time_count").val(cons_time_op);
+		for (var i = 1; i <= 3; i++) {
+			if (i <= cons_time_op) {
+				$("#consult_time_doc_" + i).fadeIn(300);
+			} else {
+				$("#consult_time_doc_" + i).fadeOut(1);
+				$("#consult_time_doc_" + i).val("");
+			}
+		}
+	}
+}
+
+
+var doc_up_AJAX_USERNAME=true;
+var doc_up_AJAX_EMAIL=true;
+function check_update_doc_acount_existing(para_1,para_2){
+	if(para_1 == "email" && !valid_email('email')){
+		$('#wrn_' + para_1).html('enter ' + para_1);
+		$('#wrn_' + para_1).hide();
+		$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-remove" aria-hidden="true"  style="color:red"></span>');
+		show_warning(para_1);
+	}
+	else if(para_2.length>0) {
+		var dataString = 'type='+para_1+'&data='+para_2;
+		var newURL = "/CheckDoctorEmailUserName";
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			url: newURL,
+			data: dataString,
+			cache: false,
+			success: function (data) {
+				//console.log(data);
+				var cr_email = $("#hidden_email").val();
+
+				if($("input[name=email]").val() != cr_email) {
+					if (data.msg == 'USING') {
+						if (para_1 == 'username') {
+							doc_up_AJAX_USERNAME = false;
+						} else {
+							doc_up_AJAX_EMAIL = false;
+						}
+
+						$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+						show_warning(para_1);
+					} else {
+
+						if (para_1 == 'username') {
+							doc_up_AJAX_USERNAME = true;
+						} else {
+							doc_up_AJAX_EMAIL = true;
+						}
+
+						if (para_2 == '') {
+							// This hides the warning
+							$('#wrn_' + para_1).html('enter ' + para_1);
+							$('#wrn_' + para_1).hide();
+						} else {
+							// This display right mark when the field is not duplicated
+							$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:green"></span>');
+							show_warning(para_1);
+						}
+					}
+				}else{
+					$('#wrn_' + para_1).html('<span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:green"></span>');
+					show_warning(para_1);
+				}
+			},
+			error: function (data) {
+				console.log('Error:', data);
+			}
+		});
+	}
+};
+
+//*********
+
+function check_doctor_account_update(){
+	var text_fields_status = true;
+	var email_check_status = true;
+	if(valid_length_input('first_name')
+			|| check_input_no_num('first_name')
+			|| valid_length_input('last_name')
+			|| check_input_no_num('last_name')
+			|| valid_length_input('dob')
+			|| $("input[name=dob]").val().length != 10
+			|| valid_length_input('nic')
+			|| !valid_nic_no('nic')
+			|| valid_length_input('address_1')
+			|| valid_length_input('address_2')
+			|| valid_length_input('city')
+			|| $("#district").val() == "select"
+			|| valid_length_input('longitude')
+			|| valid_length_input('latitude')
+			|| valid_length_input('contact_no')
+			|| !valid_phone_no('contact_no')
+			|| valid_length_input('email')
+			|| !valid_email('email')
+			|| $('#doc_description').val() == '') {
+
+		if (valid_length_input('first_name') || check_input_no_num('first_name')) {
+			show_warning('first_name');
+		}
+		if (valid_length_input('last_name') || check_input_no_num('last_name')) {
+			show_warning('last_name');
+		}
+		if (valid_length_input('dob') || $("input[name=dob]").val().length != 10)
+		{
+			show_warning('dob');
+		}
+		if (valid_length_input('nic') || !valid_nic_no('nic'))
+		{
+			show_warning('nic');
+		}
+		if (valid_length_input('address_1'))
+		{
+			show_warning('address_1');
+		}
+		if (valid_length_input('address_2'))
+		{
+			show_warning('address_2');
+		}
+		if (valid_length_input('city'))
+		{
+			show_warning('city');
+		}
+		if ($("#district").val() == "select")
+		{
+			show_warning('district');
+		}
+		if (valid_length_input('longitude'))
+		{
+			show_warning('longitude');
+		}
+		if (valid_length_input('latitude'))
+		{
+			show_warning('latitude');
+		}
+		if (valid_length_input('contact_no') || !valid_phone_no('contact_no'))
+		{
+			show_warning('contact_no');
+		}
+		if (valid_length_input('contact_no') || !valid_phone_no('contact_no'))
+		{
+			show_warning('contact_no');
+		}
+		if (valid_length_input('email') || !valid_email('email')) {
+			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter valid email');
+			show_warning('email');
+		}
+		if ($("#doc_description").val() == '')
+		{
+			show_warning('doc_description');
+		}
+
+		text_fields_status=false;
+	} else if(!doc_up_AJAX_EMAIL || !doc_up_AJAX_USERNAME) {
+		if (!doc_up_AJAX_EMAIL) {
+			$('#wrn_email').html('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already taken');
+			show_warning('email');
+		}
+
+		email_check_status = false;
+	}
+
+	// Check Specialization || Treatments || Consultation Times
+	var status_spec=true; // status of specializations
+	var status_treat=true; // status of treatments
+	var status_consult=true; // status of consultation times
+
+	if(check_spec_and_treat('spec')){
+		status_spec=true;
+	}else{
+		status_spec=false;
+	}
+	if(check_spec_and_treat('treat')){
+		status_treat=true;
+	}else{
+		status_treat=false;
+	}
+	if(check_spec_and_treat('consult')){
+		status_consult=true;
+	}else{
+		status_consult=false;
+	}
+
+	/*
+	 * Final Check
+	 */
+
+	if(text_fields_status && email_check_status && status_spec && status_treat && status_consult){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+
+function get_user_comments_doctor_account(){
+	var base_url = $("#base_url").val();
+	var star = $("#hidden_star_url").html();
+	var green_star = $("#hidden_green_star_url").html();
+
+	var new_url = '/get_comments_on_doctor';
+	//var dataString = $("#doctor_comment").serialize();
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url:new_url,
+		//data:dataString,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			var txt='';
+			for(var i=0;i<Object(data).length;i++){
+				txt=txt+'<div class="col-lg-12 c_no_padding" style="padding: 20px"><div class="c_comment_body" style="padding: 5px">';
+				txt=txt+'<div class="c_my_ac_doc_img" style="background-image:url('+base_url+data[i]["pat_img"]+')"></div>';
+				txt=txt+'<ul class="c_ul_1" style="margin-bottom: 0px;margin-left: 50px"><li style="height: 25px"><div class="col-lg-4 c_no_padding">';
+				for (var s = 1; s <= 5; s++) {
+					if (s <= data[i]['com_data']['rating']) {
+						txt = txt + '<img src="' + green_star + '" class="c_sm_star">';
+					} else {
+						txt = txt + '<img src="' + star + '" class="c_sm_star">';
+					}
+				}
+				txt=txt+'</div></li>';
+				txt=txt+'<li style="padding-top: 5px">'+data[i]["com_data"]["description"]+'</li><li style="padding-top: 10px;font-size: 13px;color: rgb(0, 109, 22)"><ul class="c_top_ul">';
+				txt=txt+'<li>Doctor : '+data[i]["pat_first_name"]+'&nbsp;'+data[i]["pat_last_name"]+'</li><li style="margin-left: 40px">Posted Date - '+data[i]["com_data"]["posted_date_time"]+'</li></ul></li></ul></div></div>';
+			}
+			$("#c_doctor_comments_load").html(txt);
+		}
+	});
+}
+
+/*
+ * Load Doctor Page Statistics and Users comments
+ * when page loads
+ */
+$(document).ready(function(){
+	if($("#doctor_account_page").val()=="YES"){
+		get_user_comments_doctor_account();
+		GetDoctorPageAreaChart(); // Load Area Chart
+		GetDoctorPagePieChart(); // Load Pie Chart
+
+	}
+});
+
+/*
+ * This function will oad Area Chart Details
+ */
+var AREA_CHART_ARRAY = [];
+function GetDoctorPageAreaChart(){
+	var new_url = '/GetDoctorPageAreaChart';
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url:new_url,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			var date = [];
+			var count = [];
+			for(var i=0;i<Object(data).length;i++){
+				date.push(data[i]['date']);
+				count.push(data[i]['count']);
+			}
+			AREA_CHART_ARRAY[0] = date;
+			AREA_CHART_ARRAY[1] = count;
+
+			load_area_chart();
+		}
+	});
+};
+
+/*
+ * This function will oad PIE chart details
+ */
+var PIE_CHART_ARRAY = [];
+function GetDoctorPagePieChart(){
+	var new_url = '/GetDoctorPagePieChart';
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url:new_url,
+		cache: false,
+		success: function (data) {
+			console.log(data);
+			var rating = [];
+			var count = [];
+			for(var i=0;i<Object(data).length;i++){
+				rating.push(data[i]['rating']);
+				count.push(data[i]['count']);
+			}
+			PIE_CHART_ARRAY[0] = rating;
+			PIE_CHART_ARRAY[1] = count;
+
+			load_pie_chart();
+		}
+	});
+};
+
+/*
+ * Map Picker Open
+ */
+var map_use=0;
+$("#c_map_pick_icon").click(function(){
+	$(".c_pop_up_box_map_picker").fadeIn(100,function(){
+		if(map_use == 0) {
+			loadGoogleMap();
+			map_use=1;
+		}
+	});
+});
+
+/*
+ * Map picker pop up box close
+ */
+$(".map_picker_btn_close").click(function(){
+	$(".c_pop_up_box_map_picker").fadeOut();
+});
+
+/*
+ * Google Maps
+ */
+function loadGoogleMap(){
+	var fileref=document.createElement('script')
+	fileref.setAttribute("type","text/javascript")
+	fileref.setAttribute("src", 'https://maps.googleapis.com/maps/api/js')
+	fileref.setAttribute('onload','startup()');
+	document.getElementsByTagName("head")[0].appendChild(fileref)
+};
+
+var gmap, mapCanvas, mapOptions = { zoomControl: true, streetViewControl: false, noClear: true };
+var marker;
+function mapInitialize( mapCenter, mapZoom ) {
+	var base_url = $("#base_url").val();
+	var image_1 = base_url+'assets/img/gps_pin.png';
+
+	mapOptions.center = mapCenter;
+	mapOptions.zoom = mapZoom;
+	mapCanvas.setAttribute( "style", "height:" + window.innerHeight + "px;" );
+	setTimeout( function() {
+		gmap = new google.maps.Map( mapCanvas, mapOptions );
+		marker = new google.maps.Marker({position: mapCenter,map: gmap,icon: image_1});
+		marker.setDraggable(true);
+	}, 20 );
+}
+window.onorientationchange = function() {
+	mapInitialize( gmap.getCenter(), gmap.getZoom() );
+}
+
+function startup() {
+	setTimeout( function() {
+		mapCanvas = document.getElementById("doc-acc-map-canvas");
+		mapInitialize( new google.maps.LatLng(7.0917, 80.0000), 15 );
+	}, 125 );
+}
+/*
+ * Google Maps
+ */
+
+$("#pick").click(function(){
+	var lat = marker.getPosition().lat();
+	var lng = marker.getPosition().lng();
+	//alert(lat+" "+lng);
+	$('input[name=longitude]').val(lng);
+	$('input[name=latitude]').val(lat);
+	$(".c_pop_up_box_map_picker").fadeOut();
+});
+
+/*
+ * Doctor Account Manage Page End
+ */

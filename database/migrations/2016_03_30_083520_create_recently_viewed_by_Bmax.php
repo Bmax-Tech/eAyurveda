@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChatDetailsTableByBuwaneka extends Migration
+class CreateRecentlyViewedByBmax extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,10 @@ class CreateChatDetailsTableByBuwaneka extends Migration
      */
     public function up()
     {
-        Schema::create('chat_data',function (Blueprint $table){
+        Schema::create('recently_viewed',function (Blueprint $table){
             $table->increments('id');
-            $table->integer('sender_id');
-            $table->integer('receiver_id');
-            $table->text('message');
-            $table->text('user_type');
-            $table->dateTime('posted_date_time');
+            $table->integer('user_id');
+            $table->text('views');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateChatDetailsTableByBuwaneka extends Migration
      */
     public function down()
     {
-        Schema::drop('chat_data');
+        Schema::drop('recently_viewed');
     }
 }

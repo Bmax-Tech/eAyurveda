@@ -29,7 +29,25 @@ $("#admin_left_nav_dashboard_btn").click(function(){
 	$("#c_admin_span_2").addClass("glyphicon-menu-right");
 	$("#c_admin_span_3").removeClass("glyphicon-menu-down");
 	$("#c_admin_span_3").addClass("glyphicon-menu-right");
-	doc_s=false; pat_s=false; cus_s=false;
+	$("#c_admin_span_4").removeClass("glyphicon-menu-down");
+	$("#c_admin_span_4").addClass("glyphicon-menu-right");
+	doc_s=false; for_s=false; pat_s=false; cus_s=false; dash_s=false;
+});
+
+$("#admin_left_nav_chat_btn").click(function(){
+	$("#admin_left_nav_pat").slideUp(100);
+	$("#admin_left_nav_for").slideUp(100);
+	$("#admin_left_nav_doc").slideUp(100);
+	$("#admin_left_nav_cus").slideUp(100);
+	$("#c_admin_span_1").removeClass("glyphicon-menu-down");
+	$("#c_admin_span_1").addClass("glyphicon-menu-right");
+	$("#c_admin_span_2").removeClass("glyphicon-menu-down");
+	$("#c_admin_span_2").addClass("glyphicon-menu-right");
+	$("#c_admin_span_3").removeClass("glyphicon-menu-down");
+	$("#c_admin_span_3").addClass("glyphicon-menu-right");
+	$("#c_admin_span_4").removeClass("glyphicon-menu-down");
+	$("#c_admin_span_4").addClass("glyphicon-menu-right");
+	doc_s=false; for_s=false; pat_s=false; cus_s=false; dash_s=false;
 });
 
 $("#admin_left_nav_doc_btn").click(function(){
@@ -193,12 +211,14 @@ $("#admin_left_nav_for_btn").click(function(){
 	}
 	else{
 		$("#admin_left_nav_for").slideUp(100);
-		$("#c_admin_span_2").removeClass("glyphicon-menu-down");
-		$("#c_admin_span_2").addClass("glyphicon-menu-right");
-		$("#c_admin_span_1").removeClass("glyphicon-menu-down");
-		$("#c_admin_span_1").addClass("glyphicon-menu-right");
+		$("#c_admin_span_3").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_3").addClass("glyphicon-menu-right");
 		$("#c_admin_span_4").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_4").addClass("glyphicon-menu-right");
+		$("#c_admin_span_1").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_1").addClass("glyphicon-menu-right");
+		$("#c_admin_span_2").removeClass("glyphicon-menu-down");
+		$("#c_admin_span_2").addClass("glyphicon-menu-right");
 		$("#c_admin_span_0").removeClass("glyphicon-menu-down");
 		$("#c_admin_span_0").addClass("glyphicon-menu-right");
 		for_s=false;cus_s=false; pat_s=false; doc_s=false; dash_s=false;
@@ -561,6 +581,21 @@ function load_dashboard(){
 	});
 };
 
+
+//load edit featured dotors page to the customize panel
+function load_chat(){
+	$.ajax({
+		type:'GET',
+		dataType:"json",
+		url: '/admin_panel/chat',
+		cache:false,
+		success: function(data){
+			//console.log(data);
+			$("#admin_home_div").html(data.page);
+			GetChatUsers();
+		}
+	});
+};
 
 
 
@@ -2272,3 +2307,133 @@ function blockConfirmPopupClose(){
 
 }
 
+ /*
+ * Admin Side Chat View Page
+ */
+
+/*
+ * Get Available Chat Users
+ */
+function GetChatUsers(){
+	var base_url = $("#base_url_admin").val();
+	var new_url = '/Admin_get_chat_users';
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		cache: false,
+		success: function (data) {
+			var txt="";
+			for(var i=0;i<Object(data).length;i++) {
+				var image = "";
+				if(data[i]['user_type'] == "DOCTOR"){
+					image = base_url+"profile_images/doctor_images/doc_profile_img_"+data[i]['user_id']+".png";
+				}else{
+					image = base_url+"profile_images/user_images/user_profile_img_"+data[i]['user_id']+".png";
+				}
+				var txt = txt+'<div class="col-lg-4 c_no_padding"><div class="chat_active_div" width="100%" style="height: 250px;';
+				if(i%3 < 2) {
+					txt = txt + 'margin-right: 10px;';
+				}
+				txt = txt +	'margin-bottom:10px"><div class="chat_user_icon" style="background-image: url('+image+')"></div>' +
+						'<div class="col-lg-12" style="margin-top: 8px">' +
+						'<p class="chat_fonr_1" style="font-weight: 500">'+data[i]['user_data'][0]['first_name']+" "+data[i]['user_data'][0]['last_name']+'</p>' +
+						'<p class="chat_fonr_1" style="font-size: 13px !important">'+data[i]['user_data'][0]['email']+'</p></div><div class="col-lg-12"><div class="col-lg-4"></div>' +
+						'<div class="col-lg-4 chat_start_btn" onclick="OpenChat('+data[i]['user_id']+',\''+data[i]['user_data'][0]['first_name']+' '+data[i]['user_data'][0]['last_name']+'\')"><img src="'+base_url+'assets_admin/img/start_chat.png">&nbsp;&nbsp;Chat</div>' +
+						'<div class="col-lg-4"></div></div></div></div>';
+			}
+		 	$("#av_users_list").html(txt);
+		}
+	});
+};
+
+/* set interval */
+var tid='';// holds timer id
+function abortTimer() { // to be called when you want to stop the timer
+	clearInterval(tid);
+}
+
+// Chat Pop up Close
+function CloseAdminChat(){
+	abortTimer();
+	$(".c_chat_pop_up_container").fadeOut();
+};
+
+/*
+ *	Open Chat Pop up
+ * 	@para-> User ID
+ */
+function OpenChat(para_1,para_2){
+	$("#user_name_chat_pop_up").html(para_2);
+	$(".c_chat_pop_up_container").fadeIn();
+	$("#current_user_id").val(para_1);
+	LoadChat();
+	// this will start chat session
+	tid = setInterval(LoadChat, 5000);
+};
+
+/*
+ * LoadChat Details From DB
+ * Via Ajax
+ * @para -> User ID
+ */
+function LoadChat(){
+	var para_1 = $("#current_user_id").val();
+
+	var base_url = $("#home_base_url").val();
+	var new_url = '/Admin_get_chat_message';
+	var dataString  = "user_id="+para_1;
+	$.ajax({
+		type: 'POST',
+		data: dataString,
+		dataType: "json",
+		url: new_url,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			var txt='<table style="width: 100%">';
+			for(var i=0;i<Object(data.chat_data).length;i++){
+				if(data.chat_data[i]["sender_id"] == 0) {
+					txt = txt + '<tr><td><div class="c_chat_msg_row"><table style="width: 100%"><tr><td style="width: 90%;"><div class="c_chat_msg_text_1">'+data.chat_data[i]["message"]+'</div></td>';
+					txt = txt + '<td style="width: 10%"><img src="'+base_url+'/oparator_icon.jpg" class="c_chat_icon_1"></td></tr><tr><td style="height: 17px"></td></tr></table></div></td></tr>';
+				}else{
+					txt = txt + '<tr><td><div class="c_chat_msg_row"><table style="width: 100%"><tr><td style="width: 10%"><img src="'+base_url+'/user_chat.png" class="c_chat_icon_2"></td>';
+					txt = txt + '<td style="width: 90%;"><div class="c_chat_msg_text_2">'+data.chat_data[i]["message"]+'</div></td></tr><tr><td style="height: 17px"></td></tr></table></div></td></tr>';
+				}
+			}
+
+			$(".c_chat_box").html(txt);
+		}
+	});
+};
+
+/*
+ * This function used to send messages to users
+ * on Livechat App
+ */
+function SendMessage(){
+	var new_url = '/Admin_send_chat_message';
+	var dataString  = "user_id="+$("#current_user_id").val()+"&message="+$("#chat_message_txt").val();
+	$.ajax({
+		type: 'POST',
+		data: dataString,
+		dataType: "json",
+		url: new_url,
+		cache: false,
+		success: function (data) {
+			$("#chat_message_txt").val("");
+			LoadChat($("#current_user_id").val());
+			$('.c_chat_box').animate({scrollTop: $('.c_chat_box')[0].scrollHeight}, 1000);
+		}
+	});
+};
+
+/**
+ * Chat Send Message Submit event
+ */
+function ChatSubmitCLick(){
+	//e.preventDefault();
+	SendMessage();
+	return false;
+	//SendMessage();
+};

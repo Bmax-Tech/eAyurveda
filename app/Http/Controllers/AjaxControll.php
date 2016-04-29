@@ -498,15 +498,15 @@ class AjaxControll extends ExceptionController
 
 
 	}
- public function getDocName($doc_name,$skip,$end){
+	public function getDocName($doc_name,$skip,$end){
 
-	 $doctor = \DB::table('doctors')->join('specialization', 'doctors.id', '=', 'specialization.doc_id')
-			 ->where(function ($q4) use ($doc_name) {
-				 $q4->where('first_name', 'like', '%' . $doc_name . '%')
-						 ->orWhere('last_name', 'like', '%' . $doc_name . '%');
-			 })->skip($skip)->take($end)->get();
- return $doctor;
- }
+		 $doctor = \DB::table('doctors')->join('specialization', 'doctors.id', '=', 'specialization.doc_id')
+				 ->where(function ($q4) use ($doc_name) {
+					 $q4->where('first_name', 'like', '%' . $doc_name . '%')
+							 ->orWhere('last_name', 'like', '%' . $doc_name . '%');
+				 })->skip($skip)->take($end)->get();
+	 	return $doctor;
+	}
 
 
 	/*
@@ -609,8 +609,17 @@ class AjaxControll extends ExceptionController
 	 * Returns Json Object with message send SUCCESS Keyword
 	 */
 	public function send_chat_message_by_user(Request $request){
-		$user = json_decode($_COOKIE['user'], true);
-		$user_id = $user[0]['id'];
+		if(isset($_COOKIE['doctor_user'])){
+			$user_type = "DOCTOR";
+			$doc = json_decode($_COOKIE['doctor_user'], true);
+			$user_id = $doc[0]['id'];// Assign logged user`s id
+		} else{
+			if(isset($_COOKIE['user'])){
+				$user_type = "NORMAL";
+				$user = json_decode($_COOKIE['user'],true);
+				$user_id = $user[0]['id'];// Assign logged user`s id
+			}
+		}
 
 		try {
 			/* Create Chat Message */
@@ -618,6 +627,7 @@ class AjaxControll extends ExceptionController
 					'sender_id' => $user_id,
 					'receiver_id' => 0,
 					'message' => Input::get('message'),
+					'user_type' => $user_type,
 					'posted_date_time' => new \DateTime()
 			]);
 
@@ -634,8 +644,15 @@ class AjaxControll extends ExceptionController
 	 * Return All Chat Messages by user
 	 */
 	public function get_chat_message_by_user(Request $request){
-		$user = json_decode($_COOKIE['user'], true);
-		$user_id = $user[0]['id'];
+		if(isset($_COOKIE['doctor_user'])){
+			$doc = json_decode($_COOKIE['doctor_user'], true);
+			$user_id = $doc[0]['id'];// Assign logged user`s id
+		} else{
+			if(isset($_COOKIE['user'])){
+				$user = json_decode($_COOKIE['user'],true);
+				$user_id = $user[0]['id'];// Assign logged user`s id
+			}
+		}
 
 		try {
 			$chat_data = Chat_data::where('sender_id', '=', $user_id)->orwhere('receiver_id', '=', $user_id)->get();
@@ -810,4 +827,156 @@ class AjaxControll extends ExceptionController
 			$this->LogError('Confirmation Email Send Function',$e);
 		}
 	}
+
+	/*
+	 * This function will be used by Physicians Page to load Doctors Profiles
+	 * First result will be pass into physicians_result.blade and render
+	 * return will be rendered result in String format
+	 */
+	public function GetPhysiciansPaginated(Request $request){
+		$results_per_page = 9;
+		/*
+		 * Build Up Query Depending on users selections
+		 */
+		if(Input::get('type') == "ALL"){
+			$query = "SELECT * FROM doctors ORDER BY id";
+		}else{
+			$query = "SELECT * FROM doctors WHERE last_name LIKE '".Input::get('type')."%' ORDER BY id";
+		}
+
+		/*
+		 * DataBase Array Slicing and Pagination >>>
+		 */
+		try {
+			$all_doctors = DB::select(DB::raw($query));
+
+			$doctors = array_slice($all_doctors, $results_per_page * (Input::get('page', 1) - 1), $results_per_page);
+
+			$paginate_data = new LengthAwarePaginator($all_doctors, count($all_doctors), $results_per_page,
+					Paginator::resolveCurrentPage(), ['path' => Paginator::resolveCurrentPath()]);
+		}catch (Exception $e){
+			$this->LogError('AjaxController GetPhysiciansPaginated Function',$e);
+		}
+		/*
+		 * DataBase Array Slicing and Pagination <<<
+		 */
+
+		/* This will convert view into String, Which can parse through json object */
+		$HtmlView = (String) view('physicians_result')->with(['doctors'=>$doctors]);
+		$res['pagination'] = $paginate_data;
+		$res['page'] = $HtmlView;
+
+		/* Return Json Type Object */
+		return response()->json($res);
+	}
+
+	/*
+	 * This function check whether email and username is existing or not from Doctors Table
+	 * Return Json Object with 'USING' / 'NOTHING' Keywords
+	 */
+	public function UpdateDoctorCheck(Request $request){
+		$type = Input::get('type');
+		$data = Input::get('data');
+		try {
+			if ($type == 'username') {
+				/* Check for username is taken or not */
+				$patients = User::whereEmail($data)->first();
+			} else if ($type == 'email') {
+				/* Check for email is taken or not */
+				$patients = Doctors::whereEmail($data)->first();
+			}
+		}catch (Exception $e){
+			$this->LogError('AjaxController UpdateDoctorCheck Function',$e);
+		}
+
+		if(isset($patients)){
+			$res['msg'] = "USING";
+		}else{
+			$res['msg'] = "NOTHING";
+		}
+
+		return response()->json($res);
+	}
+
+	/*
+	 * This function returns users comments on doctor
+	 * which used in Doctor Account page
+	 */
+	public function GetCommentsOnDoctor(){
+		$doc = json_decode($_COOKIE['doctor_user'], true);
+		$doc_id = $doc[0]['doc_id'];// this should be replaced by $COOKIE reference
+
+		try {
+			$comments = Comments::whereDoctor_id($doc_id)->orderBy('id', 'DESC')->limit(20)->get();
+
+			foreach ($comments as $com) {
+				$pat = Patients::whereUser_id($com->user_id)->first();
+				$img = Images::whereUser_id($pat->user_id)->first();
+				$main_ob['com_data'] = $com;
+				$main_ob['pat_first_name'] = $pat->first_name;
+				$main_ob['pat_last_name'] = $pat->last_name;
+				$main_ob['pat_img'] = $img->image_path;
+
+				$res[] = $main_ob;
+			}
+		}catch (Exception $e){
+			$this->LogError('AjaxController Get Comments On Doctor Function',$e);
+		}
+
+		return response()->json($res);
+	}
+
+	/*
+	 * This function returns the View Area chart Data
+	 * to the Doctor Account Page
+	 */
+	public function GetAreaChartOnDoc(){
+		$doc = json_decode($_COOKIE['doctor_user'], true);
+		$doc_id = $doc[0]['doc_id'];// this should be replaced by $COOKIE reference
+
+		try {
+			$query = "SELECT DATE(created_at) AS d,COUNT(*) AS c FROM profile_view_hits WHERE doctor_id = ".$doc_id." GROUP BY DATE(created_at) ORDER BY DATE(created_at) DESC LIMIT 5";
+			$area_data = DB::select(DB::raw($query));
+			$area_data = array_reverse($area_data);
+			foreach ($area_data as $data) {
+				$main_ob['date'] = $data->d;
+				$main_ob['count'] = $data->c;
+
+				$res[] = $main_ob;
+			}
+		}catch (Exception $e){
+			$this->LogError('AjaxController Get Area Chart On Doc Function',$e);
+		}
+
+		return response()->json($res);
+	}
+
+	/*
+         * This function returns the View Pie chart Data
+         * to the Doctor Account Page
+         */
+	public function GetPieChartOnDoc(){
+		$doc = json_decode($_COOKIE['doctor_user'], true);
+		$doc_id = $doc[0]['doc_id'];// this should be replaced by $COOKIE reference
+
+		try {
+			$query = "SELECT  rating,COUNT(*) AS c FROM comments WHERE doctor_id = ".$doc_id." GROUP BY rating";
+			$pie_data = DB::select(DB::raw($query));
+			for($i=0;$i<5;$i++) {
+				if(isset($pie_data[$i]->rating)){
+					$main_ob['rating'] = $pie_data[$i]->rating;
+					$main_ob['count'] = $pie_data[$i]->c;
+				}else{
+					$main_ob['rating'] = 0;
+					$main_ob['count'] = 0;
+				}
+				$res[] = $main_ob;
+			}
+		}catch (Exception $e){
+			$this->LogError('AjaxController Get Pie Chart On Doc Function',$e);
+		}
+
+		return response()->json($res);
+	}
+
 }
