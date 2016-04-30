@@ -18,6 +18,7 @@ use App\Formal_doctors;
 use App\Non_Formal_doctors;
 use App\Therapies;
 
+
 use Exception;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -27,6 +28,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 
 use App\Chat_data;
+
+
+
 
 
 
@@ -1441,114 +1445,46 @@ public function registerAdminPageValidate(Request $request,$type,$data){
         return $count;
     }
 
-  /*
-   * get the  users counts according to date and user types
-   */
-   public function graph1Count(){
-       try{
-        //get the count af users accordig to registered dates
-       $graph1  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM patients GROUP BY DATE(reg_date)'));
-
-       //get the count af doctors accordig to registered dates
-       $graph2  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM doctors GROUP BY DATE(reg_date)'));
-
-       //get the count af doctors accordig to registered dates and doctor types
-       $graph3  = DB::select(DB::raw('SELECT DATE(reg_date) AS y ,SUM(CASE WHEN doc_type = "FORMAL" THEN 1 ELSE 0 END) AS item1, SUM(CASE WHEN doc_type = "NON_FORMAL" THEN 1 ELSE 0 END) AS item2    FROM doctors  GROUP BY DATE(reg_date)'));
-
-      //get all user count
-       $Patients = Patients::all();
-
-       //Get formal doctor count
-       $Formal_doctors = Formal_doctors::all();
-
-       //Get non formal doctor count
-       $Non_Formal_doctors = Non_Formal_doctors::all();
-
-       //get the number of results in each quary result
-       $graph41 = sizeof($Patients);
-       $graph42 = sizeof($Formal_doctors);
-       $graph43 = sizeof($Non_Formal_doctors);
-
-       //pass the values through json
-       $res['graph_1'] = $graph1;
-       $res['graph_2'] = $graph2;
-       $res['graph_3'] = $graph3;
-       $res['graph_41'] = $graph41;
-       $res['graph_42'] = $graph42;
-       $res['graph_43'] = $graph43;
-
-       }catch (Exception $e) {
-           $this->LogError('AdminController Register_Page Function',$e);
-       }
-
-      return response()->json($res);
-
-    }
-
     /*
-     * This Function Gets all available chat users
-     * through DataBase Chatdata table
-     */
-    public function GetAvailableChatUsers(Request $request){
-        $sql = "SELECT sender_id FROM chat_data GROUP BY sender_id ORDER BY DATE(posted_date_time) DESC";
-        $av_users = DB::select(DB::raw($sql));
-        $all_users = array();
-        foreach($av_users as $user_t){
-            if($user_t->sender_id != "0"){
-                $sql_2 = "SELECT first_name,last_name,email FROM patients WHERE user_id = ".$user_t->sender_id;
-                $user_data = DB::select(DB::raw($sql_2));
-                $temp = array();
-                $temp["user_id"] = $user_t->sender_id;
-                $temp["user_data"] = $user_data;
-                $all_users[] = $temp;
-            }
-        }
+       * get the  users counts according to date and user types
+       */
+    public function graph1Count(){
+        try{
+            //get the count af users accordig to registered dates
+            $graph1  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM patients GROUP BY DATE(reg_date)'));
 
-		/* Return Json Type Object */
-		return response()->json($all_users);
-    }
+            //get the count af doctors accordig to registered dates
+            $graph2  = DB::select(DB::raw('SELECT DATE(reg_date) AS y,COUNT(*) AS item1 FROM doctors GROUP BY DATE(reg_date)'));
 
-    /*
-	 * This function will get chat messages feature
-	 * Return All Chat Messages by user
-	 */
-    public function GetAdminChat(Request $request){
-        $userId = $request->user_id;
-        try {
-            $chat_data = Chat_data::where('sender_id', '=', $userId)->orwhere('receiver_id', '=', $userId)->get();
+            //get the count af doctors accordig to registered dates and doctor types
+            $graph3  = DB::select(DB::raw('SELECT DATE(reg_date) AS y ,SUM(CASE WHEN doc_type = "FORMAL" THEN 1 ELSE 0 END) AS item1, SUM(CASE WHEN doc_type = "NON_FORMAL" THEN 1 ELSE 0 END) AS item2    FROM doctors  GROUP BY DATE(reg_date)'));
 
-            $res['chat_data'] = $chat_data;
-        }catch (Exception $e){
-            $this->LogError('AjaxController Get_Chat_Message_by_User Function',$e);
+            //get all user count
+            $Patients = Patients::all();
+
+            //Get formal doctor count
+            $Formal_doctors = Formal_doctors::all();
+
+            //Get non formal doctor count
+            $Non_Formal_doctors = Non_Formal_doctors::all();
+
+            //get the number of results in each quary result
+            $graph41 = sizeof($Patients);
+            $graph42 = sizeof($Formal_doctors);
+            $graph43 = sizeof($Non_Formal_doctors);
+
+            //pass the values through json
+            $res['graph_1'] = $graph1;
+            $res['graph_2'] = $graph2;
+            $res['graph_3'] = $graph3;
+            $res['graph_41'] = $graph41;
+            $res['graph_42'] = $graph42;
+            $res['graph_43'] = $graph43;
+
+        }catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function',$e);
         }
 
         return response()->json($res);
+
     }
-
-    /*
-     * Send Chat Admin
-     * @param => user_id
-     */
-    public function SendAdminChat(Request $request){
-        $user_id = $request->user_id;
-        $message = $request->message;
-        try {
-            /* Create Chat Message */
-            Chat_data::create([
-                'sender_id' => 0,
-                'receiver_id' => $user_id,
-                'message' => $message,
-                'posted_date_time' => new \DateTime()
-            ]);
-
-            $res['response'] = "SUCCESS";
-        }catch (Exception $e){
-            $this->LogError('AjaxController Send_Chat_Message Function',$e);
-        }
-
-
-        return response()->json($res);
-    }
-
-
-}

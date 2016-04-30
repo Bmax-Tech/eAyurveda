@@ -29,38 +29,55 @@
                 <div class="c_top_menu_bar">
                     <ul class="c_top_ul">
                         <?php
+
+                            if(isset($_COOKIE['doctor_user'])){
+                                $doc = json_decode($_COOKIE['doctor_user'], true);
+                        ?>
+                            <li style="margin-right:25px">
+                                <a class="c_href" href="#">
+                                    <img class="c_user_top_logo" src="{{ URL::asset('assets/img/user_logo.png') }}">
+                                    <span>Dr. <?php echo $doc[0]['first_name']; ?></span>
+                                </a>
+                            </li>
+                            <li>
+                                <img class="c_user_top_logo" src="{{ URL::asset('assets/img/logout.png') }}" style="width:33px">
+                                <span style="color:#FFFFFF"><a class="c_href" href="{{ URL::asset('DoctorLogout') }}" >Sign Out</a></span>
+                            </li>
+                        <?php
+                            }else{
                             if(isset($_COOKIE['user'])){
                             $user = json_decode($_COOKIE['user'],true);
                         ?>
-                        <li style="margin-right:25px">
-                            <a class="c_href" href="{{ URL::asset('adddoctor') }}">
-                                <img class="c_user_top_logo" src="{{ URL::asset('assets/img/add_doc.png') }}">
-                                <span>Add Doctor</span>
-                            </a>
-                        </li>
-                        <li style="margin-right:25px">
-                            <a class="c_href" href="{{ URL::asset('myaccount/'.$user[0]['first_name']) }}">
-                                <img class="c_user_top_logo" src="{{ URL::asset('assets/img/user_logo.png') }}">
-                                <span><?php echo $user[0]['first_name']; ?></span>
-                            </a>
-                        </li>
+                            <li style="margin-right:25px">
+                                <a class="c_href" href="{{ URL::asset('adddoctor') }}">
+                                    <img class="c_user_top_logo" src="{{ URL::asset('assets/img/add_doc.png') }}">
+                                    <span>Add Doctor</span>
+                                </a>
+                            </li>
+                            <li style="margin-right:25px">
+                                <a class="c_href" href="{{ URL::asset('myaccount/'.$user[0]['first_name']) }}">
+                                    <img class="c_user_top_logo" src="{{ URL::asset('assets/img/user_logo.png') }}">
+                                    <span><?php echo $user[0]['first_name']; ?></span>
+                                </a>
+                            </li>
                         <?php
                             }
                         ?>
                         <li>
-                            <?php
-                            if(isset($_COOKIE['user'])){
-                            ?>
+                        <?php
+                                if(isset($_COOKIE['user'])){
+                        ?>
                                 <img class="c_user_top_logo" src="{{ URL::asset('assets/img/logout.png') }}" style="width:33px">
                                 <span style="color:#FFFFFF"><a class="c_href" href="{{ URL::asset('logout') }}" >Sign Out</a></span>
-                            <?php
+                        <?php
                                 }else{
-                            ?>
+                        ?>
                                 <img class="c_user_top_logo" src="{{ URL::asset('assets/img/sign_in.png') }}" style="width:33px">
                                 <span style="color:#FFFFFF"><a class="c_href" href="#" id="sign_in_up_btn">Sign in</a> / <a class="c_href" href="/register">Register</a></span>
-                            <?php
+                        <?php
                                 }
-                            ?>
+                            }
+                        ?>
                         </li>
                     </ul>
                 </div>
@@ -398,9 +415,14 @@
 <?php
     // Check whether user in logged or not
     $user_id=0;// If user is not logged user
-    if(isset($_COOKIE['user'])){
-        $user = json_decode($_COOKIE['user'],true);
-        $user_id = $user[0]['id'];// Assign logged user`s id
+    if(isset($_COOKIE['doctor_user'])){
+        $doc = json_decode($_COOKIE['doctor_user'], true);
+        $user_id = $doc[0]['id'];// Assign logged user`s id
+    } else{
+        if(isset($_COOKIE['user'])){
+            $user = json_decode($_COOKIE['user'],true);
+            $user_id = $user[0]['id'];// Assign logged user`s id
+        }
     }
 ?>
 <input type="hidden" name="user_id" id="hidden_user_id" value="<?php echo $user_id; ?>">

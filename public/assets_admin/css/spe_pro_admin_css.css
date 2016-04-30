@@ -1,5 +1,24 @@
 @charset "utf-8";
 /* CSS Document */
+.topBarLogoDiv {
+	z-index: 99;
+	height: 120px;
+	width: 120px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+	padding: 10px 0px;
+	background-color: #F0F0F0;
+	border-bottom-right-radius: 90%;
+	box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.05),-1px 4px 5px rgba(0,0,0,0.2);
+}
+.topBarLogo {
+	position: relative;
+	height: 85px;
+}
+
+
 .c_body{
 	background:#F9F9F9;
 	font-family:Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;

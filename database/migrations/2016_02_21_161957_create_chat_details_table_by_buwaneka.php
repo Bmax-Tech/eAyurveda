@@ -17,6 +17,7 @@ class CreateChatDetailsTableByBuwaneka extends Migration
             $table->integer('sender_id');
             $table->integer('receiver_id');
             $table->text('message');
+            $table->text('user_type');
             $table->dateTime('posted_date_time');
             $table->timestamps();
         });

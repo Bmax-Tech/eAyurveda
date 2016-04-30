@@ -611,8 +611,17 @@ class AjaxControll extends ExceptionController
 	 * Returns Json Object with message send SUCCESS Keyword
 	 */
 	public function send_chat_message_by_user(Request $request){
-		$user = json_decode($_COOKIE['user'], true);
-		$user_id = $user[0]['id'];
+		if(isset($_COOKIE['doctor_user'])){
+			$user_type = "DOCTOR";
+			$doc = json_decode($_COOKIE['doctor_user'], true);
+			$user_id = $doc[0]['id'];// Assign logged user`s id
+		} else{
+			if(isset($_COOKIE['user'])){
+				$user_type = "NORMAL";
+				$user = json_decode($_COOKIE['user'],true);
+				$user_id = $user[0]['id'];// Assign logged user`s id
+			}
+		}
 
 		try {
 			/* Create Chat Message */
@@ -620,6 +629,7 @@ class AjaxControll extends ExceptionController
 					'sender_id' => $user_id,
 					'receiver_id' => 0,
 					'message' => Input::get('message'),
+					'user_type' => $user_type,
 					'posted_date_time' => new \DateTime()
 			]);
 
@@ -636,8 +646,15 @@ class AjaxControll extends ExceptionController
 	 * Return All Chat Messages by user
 	 */
 	public function get_chat_message_by_user(Request $request){
-		$user = json_decode($_COOKIE['user'], true);
-		$user_id = $user[0]['id'];
+		if(isset($_COOKIE['doctor_user'])){
+			$doc = json_decode($_COOKIE['doctor_user'], true);
+			$user_id = $doc[0]['id'];// Assign logged user`s id
+		} else{
+			if(isset($_COOKIE['user'])){
+				$user = json_decode($_COOKIE['user'],true);
+				$user_id = $user[0]['id'];// Assign logged user`s id
+			}
+		}
 
 		try {
 			$chat_data = Chat_data::where('sender_id', '=', $user_id)->orwhere('receiver_id', '=', $user_id)->get();
@@ -888,7 +905,8 @@ class AjaxControll extends ExceptionController
 	 * which used in Doctor Account page
 	 */
 	public function GetCommentsOnDoctor(){
-		$doc_id = 1; // this should be replaced by $COOKIE reference
+		$doc = json_decode($_COOKIE['doctor_user'], true);
+		$doc_id = $doc[0]['doc_id'];// this should be replaced by $COOKIE reference
 
 		try {
 			$comments = Comments::whereDoctor_id($doc_id)->orderBy('id', 'DESC')->limit(20)->get();
@@ -915,7 +933,8 @@ class AjaxControll extends ExceptionController
 	 * to the Doctor Account Page
 	 */
 	public function GetAreaChartOnDoc(){
-		$doc_id = 1; // this should be replaced by $COOKIE reference
+		$doc = json_decode($_COOKIE['doctor_user'], true);
+		$doc_id = $doc[0]['doc_id'];// this should be replaced by $COOKIE reference
 
 		try {
 			$query = "SELECT DATE(created_at) AS d,COUNT(*) AS c FROM profile_view_hits WHERE doctor_id = ".$doc_id." GROUP BY DATE(created_at) ORDER BY DATE(created_at) DESC LIMIT 5";
@@ -939,16 +958,20 @@ class AjaxControll extends ExceptionController
          * to the Doctor Account Page
          */
 	public function GetPieChartOnDoc(){
-		$doc_id = 1; // this should be replaced by $COOKIE reference
+		$doc = json_decode($_COOKIE['doctor_user'], true);
+		$doc_id = $doc[0]['doc_id'];// this should be replaced by $COOKIE reference
 
 		try {
 			$query = "SELECT  rating,COUNT(*) AS c FROM comments WHERE doctor_id = ".$doc_id." GROUP BY rating";
 			$pie_data = DB::select(DB::raw($query));
-
-			foreach ($pie_data as $data) {
-				$main_ob['rating'] = $data->rating;
-				$main_ob['count'] = $data->c;
-
+			for($i=0;$i<5;$i++) {
+				if(isset($pie_data[$i]->rating)){
+					$main_ob['rating'] = $pie_data[$i]->rating;
+					$main_ob['count'] = $pie_data[$i]->c;
+				}else{
+					$main_ob['rating'] = 0;
+					$main_ob['count'] = 0;
+				}
 				$res[] = $main_ob;
 			}
 		}catch (Exception $e){

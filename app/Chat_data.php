@@ -11,6 +11,7 @@ class Chat_data extends Model
         'sender_id',
         'receiver_id',
         'message',
+        'user_type',
         'posted_date_time',
         'created_at',
         'updated_at'

@@ -2663,7 +2663,7 @@ function GetDoctorPagePieChart(){
 		url:new_url,
 		cache: false,
 		success: function (data) {
-			//console.log(data);
+			console.log(data);
 			var rating = [];
 			var count = [];
 			for(var i=0;i<Object(data).length;i++){
