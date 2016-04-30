@@ -260,13 +260,178 @@ function load_dash_board(){
 //Doctor Home pages
 function load_doc_page(para_1){
 	$.ajax({
-		url:'doc_admin/home_'+para_1+'.php',
+		type:'GET',
+		url:'doc_admin/home_'+para_1,
+		dataType:'json',
 		cache: false,
 		success: function(data){
-			$("#admin_home_div").html(data);
+			if(para_1 == 4){
+				$("#admin_home_div").html(data.page);
+				LoadDoctorList();
+			}
 		}
 	});
 };
+
+/**
+ * Doctor Confirm Submit Event
+ */
+function DoctorConfirmSubmit(){
+	LoadDoctorList();
+	return false;
+};
+
+/**
+ * Load Doctor Confirm List
+ */
+function LoadDoctorList(){
+	var newUrl = "/LoadDoctorList";
+	var dataString = "search_text="+$("#searc_con_text").val();
+	$.ajax({
+		type:'POST',
+		url:newUrl,
+		dataType:'json',
+		data:dataString,
+		cache:false,
+		success:function(data){
+			//console.log(data);
+			var txt = '<table style="width: 100%;font-weight: 400;background: #FFF">';
+			for(var i=0;i<data.length;i++){
+				txt = txt + '<tr class="doc_con_tr" onclick="ViewDoctorPro('+data[i]['doc_id']+')">' +
+						'<td style="width: 5%" class="doc_com_first_td">'+(i+1)+'</td>' +
+						'<td style="width: 25%" class="doc_con_com_td">'+data[i]['doc_name']+'</td>' +
+						'<td style="width: 15%" class="doc_con_com_td">'+data[i]['doc_ayurvedic_id']+'</td>' +
+						'<td style="width: 15%" class="doc_con_com_td">'+data[i]['doc_type']+'</td>' +
+						'<td style="width: 25%" class="doc_con_com_td">'+data[i]['doc_email']+'</td>' +
+						'<td style="width: 15%" class="doc_con_com_td">'+data[i]['doc_contact_no']+'</td>' +
+						'</tr>';
+			}
+			txt = txt + '</table>';
+			$("#doctor_result").html(txt);
+		}
+	});
+};
+
+/**
+ * ViewDoctorPro Pop Up
+ * Details from Ajax request
+ */
+function ViewDoctorPro(para_1){
+	var baseUrl = $("#base_url_admin").val();
+	var newUrl = "/GetDoctorProfileAdmin";
+	var dataString = "doctor_id="+para_1;
+	$.ajax({
+		type:'POST',
+		url:newUrl,
+		data:dataString,
+		dataType:'json',
+		case:false,
+		success:function(data){
+			console.log(data);
+			$("#doctor_id_con").val(data['doc_id']);
+			$("#doctor_user_id_con").val(data['doc_user_id']);
+
+			$("#doc_con_load_img").css("background-image",'url('+baseUrl+''+data['doc_image']+')');
+			$("#doc_con_load_aid").html(data['doc_ayurvedic_id']);
+			$("#doc_con_load_name").html('Dr. '+data['doc_name']);
+			$("#doc_con_load_type").html(data['doc_type']);
+			$("#doc_con_load_username").val("");
+			$("#doc_con_load_password").val("");
+
+			$("#doc_confirm_pop_up").fadeIn();
+		}
+	});
+}
+
+/**
+ * Close Doctor Confirm Pop Up
+ * @param para_1
+ */
+function CloseDocConfirmPopup(){
+	$("#doc_confirm_pop_up").fadeOut();
+}
+
+/**
+ * Save Doctor Confirmation Details
+ * @param para_1
+ */
+function SaveDocConfirm(){
+	if($("#doc_con_load_username").val() == "" || $("#doc_con_load_password").val() == ""){
+		if($("#doc_con_load_username").val() == ""){
+			alert("Enter Username");
+		}else{
+			alert("Enter Password");
+		}
+	}else{
+		var doctor_id = $('#doctor_id_con').val();
+		var user_id = $('#doctor_user_id_con').val();
+		var newUrl = '/SaveDoctorConfirm';
+		var dataString = "doctor_id="+doctor_id+'&user_id='+user_id+'&username='+$("#doc_con_load_username").val()+'&password='+$("#doc_con_load_password").val();
+
+		$.ajax({
+			type:'POST',
+			url:newUrl,
+			data:dataString,
+			dataType:'json',
+			case:false,
+			success:function(data){
+				console.log(data);
+				$("#doc_confirm_form").hide();
+				$(".confirm_success").fadeIn();
+				$("#doc_confirm_pop_up").delay(1500).fadeOut(100,function(){
+					$(".confirm_success").fadeOut();
+					$("#doc_confirm_form").fadeIn();
+				});
+			}
+		});
+	}
+}
+
+/**
+ * Save Doctor Confirmation Details
+ * @param para_1
+ */
+function SaveAndSendMailDocConfirm(){
+	if($("#doc_con_load_username").val() == "" || $("#doc_con_load_password").val() == ""){
+		if($("#doc_con_load_username").val() == ""){
+			alert("Enter Username");
+		}else{
+			alert("Enter Password");
+		}
+	}else{
+		var doctor_id = $('#doctor_id_con').val();
+		var user_id = $('#doctor_user_id_con').val();
+		var newUrl = '/SaveSendEmailDoctorConfirm';
+		var dataString = "doctor_id="+doctor_id+'&user_id='+user_id+'&username='+$("#doc_con_load_username").val()+'&password='+$("#doc_con_load_password").val();
+
+		$("#doc_confirm_form").hide();
+		$(".waiting_confirm").fadeIn();
+		$.ajax({
+			type:'POST',
+			url:newUrl,
+			data:dataString,
+			dataType:'json',
+			case:false,
+			success:function(data){
+				console.log(data);
+				if(data.CHECK == "Changed"){
+					$(".waiting_confirm").hide();
+					$(".confirm_success").fadeIn();
+					$("#doc_confirm_pop_up").delay(1500).fadeOut(100,function(){
+						$(".confirm_success").fadeOut();
+						$("#doc_confirm_form").fadeIn();
+					});
+				}else{
+					alert("Some thing went wrong !!...");
+					$(".waiting_confirm").hide();
+					$("#doc_confirm_pop_up").delay(1500).fadeOut(100,function(){
+						$("#doc_confirm_form").fadeIn();
+					});
+				}
+			}
+		});
+	}
+}
 
 //Patient Home pages
 function load_pat_page(para_1){
@@ -2356,7 +2521,7 @@ function abortTimer() { // to be called when you want to stop the timer
 // Chat Pop up Close
 function CloseAdminChat(){
 	abortTimer();
-	$(".c_chat_pop_up_container").fadeOut();
+	$("#chat_pop_up_container").fadeOut();
 };
 
 /*
@@ -2365,7 +2530,7 @@ function CloseAdminChat(){
  */
 function OpenChat(para_1,para_2){
 	$("#user_name_chat_pop_up").html(para_2);
-	$(".c_chat_pop_up_container").fadeIn();
+	$("#chat_pop_up_container").fadeIn();
 	$("#current_user_id").val(para_1);
 	LoadChat();
 	// this will start chat session

@@ -340,6 +340,64 @@
 	color: #FFF !important;
 }
 
+
+/**
+ * Doctor Confirm Page CSS
+ */
+.doc_con_th_table{
+	background: #888888;
+	color: #FFF;
+	width: 100%;
+}
+.doc_con_first_th{
+	width: 5%;
+	text-align: center;
+	padding: 5px 0px;
+	border-right: 1px solid #635E5E;
+	border-left: 1px solid #635E5E;
+}
+.doc_con_com_th{
+	text-align: center;
+	padding: 5px 0px;
+	border-right: 1px solid #635E5E;
+}
+.doc_com_first_td{
+	text-align: center;
+	padding: 5px 0px;
+	border-right: 1px solid #635E5E;
+	border-left: 1px solid #635E5E;
+	border-bottom: 1px solid #635E5E;
+}
+.doc_con_com_td{
+	overflow-x: hidden;
+	text-align: center;
+	padding: 5px 0px;
+	border-right: 1px solid #635E5E;
+	border-bottom: 1px solid #635E5E;
+}
+.doc_con_tr{
+	cursor: pointer;
+}
+.doc_con_tr:hover{
+	background: rgba(24, 146, 0, 0.56);
+	color: #FFF;
+}
+#doc_con_load_img{
+	height: 172px;
+	background-size: 185px;
+	background-position: -3px;
+}
+.doc_pop_container{
+	top: 66px;
+	position: fixed;
+	background: rgba(0, 0, 0, 0.44);
+	width: 914px;
+	height: 100%;
+}
+#doc_confirm_pop_up{
+
+}
+
 /*
  * Admin Chat CSS >>> Start
  */
@@ -392,6 +450,24 @@
 	background: #ffffff;
 	margin: auto;
 	margin-top: 45px;
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.66);
+}
+.waiting_confirm{
+	padding: 30px 118px;
+	width: 450px;
+	height: 110px;
+	background: #ffffff;
+	margin: auto;
+	margin-top: 210px;
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.66);
+}
+.confirm_success{
+	padding: 30px 100px;
+	width: 450px;
+	height: 110px;
+	background: #ffffff;
+	margin: auto;
+	margin-top: 210px;
 	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.66);
 }
 .c_chat_msg_text_1{

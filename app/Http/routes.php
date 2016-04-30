@@ -49,7 +49,11 @@ Route::get('/admin_panel_home','Admin_Front@admin_home');
 Route::resource('/admin_login_auth','Admin_Front@admin_login_auth');
 Route::resource('/admin_logout','Admin_Front@logout');
 
-
+Route::get('doc_admin/{page_name}','Admin_Front@doctorAdminPageLoad');
+Route::post('/LoadDoctorList','Admin_Front@DoctorList');
+Route::post('/GetDoctorProfileAdmin','Admin_front@GetDoctorProfileAdmin');
+Route::post('/SaveDoctorConfirm','Admin_front@SaveDoctorConfirm');
+Route::post('/SaveSendEmailDoctorConfirm','Admin_front@SaveSendEmailDoctorConfirm');
 Route::get('/pat_admin/{page_name}','Admin_Front@patientAdminPageLoad');
 Route::get('/admin_panel/user_comments/{skip}/{end}','Admin_Front@userCommentsLoad');
 Route::get('/admin_panel/customize/featured','Admin_Front@featuredDocLoad');
