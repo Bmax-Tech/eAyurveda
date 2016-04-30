@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\View;
 
 use App\Chat_data;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Mail;
+
 
 
 

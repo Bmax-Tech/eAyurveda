@@ -2716,6 +2716,7 @@ function SendMessage(){
 	});
 };
 
+
 /**
  * Chat Send Message Submit event
  */
