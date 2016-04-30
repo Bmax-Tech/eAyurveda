@@ -465,6 +465,8 @@ class AjaxControll extends ExceptionController
 
 			}
 			else if($doc_name != '' && $location =='' &&  $spec == '' && $treat == ''){
+
+				//caall teh method getDocname function
 				$doctors =self::getDocName($doc_name,$skip,$end);
 
 				//get the count of retrieving results

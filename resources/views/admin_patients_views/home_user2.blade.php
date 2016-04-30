@@ -94,7 +94,7 @@
                         </div>
                         <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
                             <ul><li>
-                                   Inapropriate comments
+                                   Blocked comments
                                 </li></ul>
                         </div>
                         <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">

@@ -710,6 +710,8 @@ class Front extends ExceptionController
         return $featured_main;
     }
 
+
+
     /*
      * This function returns Health Tips
      */

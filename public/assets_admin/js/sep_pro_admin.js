@@ -377,13 +377,22 @@ function user_rem(id){
 
 	var dataString="user_id="+id;
 	var new_url = '/admin_panel/removeusers/'+id;
+
+	$("#blockConfirmPopup").hide();
+	$("#c_blocking_msg").show();
+
 	$.ajax({
 		type:'GET',
 		url:new_url,
 		data: dataString,
 		cache: false,
 		success: function(data){
-			load_users_via_ajax();
+			if(data["error"] == true){
+				$("#admin_home_div").html(data.page);
+			}else {
+
+				load_users_via_ajax();
+			}
 		}
 	});
 };
@@ -392,8 +401,12 @@ function user_rem(id){
 //add id of the comment to the hidden variable inorder to remove
 function comment_pass_remove(id){
 	$("#hidden_click_com_id").val(id);
-	$("#featuredpoup").show();
+	$("#commentRemovePopup").show();
+}
 
+function commentRemovePopupClose(){
+	$("#hidden_click_com_id").val("");
+	$("#commentRemovePopup").hide();
 }
 
 
@@ -474,7 +487,7 @@ function del_tip(id){
 function feat_addno(count){
 	$('#docChoosePopup').show();
 	$("#hidden_click_count").val(count);
-	/*$("#featuredpoup").show();*/
+
 }
 
 //Add a new featured doctor
@@ -486,31 +499,84 @@ function featuredAddNew(){
 
 }
 
-
+//featured doctor update confirm popup show
 function feturedDoctorUpdatePopUp(){
+	var id = $("#hidden_click_id").val();
 
-	$('#featureddocpoup').show();
+
+	if(id==0){
+		$('#featuredRowpoup').show();
+	}
+	else {
+		$('#featureddocpoup').show();
+	}
 }
 
+//featured doctor select warning popup close
+function featuredRowPopupClose(){
+
+	$('#featuredRowpoup').hide();
+
+}
+
+//featured doctor update confirm popup hide
 function feturedDoctorUpdatePopUpClose(){
 
 	$('#featureddocpoup').hide();
-	$("#hidden_click_count").val("");
+	$("#hidden_click_count").val(0);
+	$("#hidden_click_id").val(0);
 }
-//update the featured dotor table
-function updatefet(){
-	var id11 = $("#hidden_click_id").val();
+
+//featured doctor field remove confirm popup show
+function feturedDoctorRemovePopUp(){
+	$('#docChoosePopup').hide();
+	$('#featureddocRemovepoup').show();
+	docChooseClose();
+}
+
+//featured doctor field remove confirm popup hide
+function feturedDoctorRemovePopUpClose(){
+	$('#featureddocRemovepoup').hide();
+}
+
+//Remove field from featured doctors
+function removeFet(){
+
+
 	var count1= $("#hidden_click_count").val();
 
+		var dataString = "idfet=" + count1;
+		var new_url = '/admin_panel/removefet';
+		$.ajax({
+			type: 'POST',
+			url: new_url,
+			data: dataString,
+			cache: false,
+			success: function (data) {
+				//console.log(data);
+				if(data['error']==true){
+					$("#admin_home_div").html(data.page);
+				}
+				else {
+					$('#featureddocRemovepoup').hide();
+					//$("#admin_home_div").html(data.com_data);
+					load_cos_page1_via_ajax();
+				}
+
+			}
+		});
+
+};
 
 
-	if(id11==0){
-		alert("Please select a raw");
-		}
-	else {
+
+//update the featured dotor table
+function updatefet(){
+	var id = $("#hidden_click_id").val();
+	var count= $("#hidden_click_count").val();
 
 
-		var dataString = "count=" + count1 +"&doc_id="+id11;
+	var dataString = "count=" + count +"&doc_id="+id;
 		var new_url = '/admin_panel/updatefet';
 		$.ajax({
 			type: 'POST',
@@ -523,7 +589,7 @@ function updatefet(){
 
 			}
 		});
-	 }
+
 
 
 };
@@ -610,23 +676,27 @@ function getrate(){
 		url:new_url,
 		data: dataString,
 		cache: false,
-		success: function(data){
+		success: function(data) {
+			if (data["error"] == true) {
+				$("#admin_home_div").html(data.page);
 
-		var txt = '<table id="kawa" class="col-lg-12 tabledesign1"  >';
-			for(var i=0;i<Object(data.page).length;i++) {
+			} else{
 
-				txt = txt+'<tr class="trid_'+data["page"][i]["id"]+' common"	style = "background-color:#fff;height:35px;border:1px solid #ddd;"	onclick = "getdocid('+data["page"][i]["id"]+')" >';
-				txt = txt+'<td class = "col-lg-5" >'+data["page"][i]["first_name"]+'&nbsp&nbsp'+data["page"][i]["last_name"]+'</td >';
-				txt = txt+'<td class	= "col-lg-2"  style="border-left: 1px solid #ddd;">'+data["page"][i]["rating"]+'</td >';
-				txt = txt+'<td	class = "col-lg-5"  style="border-left: 1px solid #ddd;">'+data["page"][i]["city"]+'</td ></tr>';
+				var txt = '<table id="kawa" class="col-lg-12 tabledesign1"  >';
+			for (var i = 0; i < Object(data.page).length; i++) {
+
+				txt = txt + '<tr class="trid_' + data["page"][i]["id"] + ' common"	style = "background-color:#fff;height:35px;border:1px solid #ddd;"	onclick = "getdocid(' + data["page"][i]["id"] + ')" >';
+				txt = txt + '<td class = "col-lg-5" >' + data["page"][i]["first_name"] + '&nbsp&nbsp' + data["page"][i]["last_name"] + '</td >';
+				txt = txt + '<td class	= "col-lg-2"  style="border-left: 1px solid #ddd;">' + data["page"][i]["rating"] + '</td >';
+				txt = txt + '<td	class = "col-lg-5"  style="border-left: 1px solid #ddd;">' + data["page"][i]["city"] + '</td ></tr>';
 			}
 
-			txt=txt+'</table>';
+			txt = txt + '</table>';
 
 			//console.log(txt);
 			$("#featuredDocTable").html(txt);
 
-
+		}
 		}
 	});
 	document.getElementById("rate").value = "all";
@@ -792,13 +862,8 @@ function onChangetip()
 
 
 
-//close the popup
-function feature_pop_close(){
-	$("#featuredpoup").hide();
-	$(".pat_close_btn").hide();
 
-};
-
+//popup close
 function feature_pop_close1(){
 	$("#featuredpoup").hide();
 	$(".pat_close_btn").hide();
@@ -816,7 +881,7 @@ function admin_pop_close(){
 	$("#adminpoup").hide();
 	$("#adminpoup1").hide();
 	$("#adminpoup2").hide();
-	$(".pat_close_btn").hide();
+
 
 };
 
@@ -829,14 +894,52 @@ function admin_pop_close1(){
 };
 
 function admin_pop_close2(){
-	$("#adminpoup2").hide();
+	$("#adminpopup2").hide();
 	$("#adminpoup1").hide();
 	$("#adminpoup").hide();
+
+
+};
+
+function tipAddPopupClose(){
+	$("#tipAddPopup").hide();
+}
+
+function adminregpoup_close(){
+	$("#adminregpoup").hide();
 	$(".pat_close_btn").hide();
 
 };
 
 
+function therapySaveClose(){
+	$("#therapySavePopup").hide();
+
+}
+
+
+//feature doctor choose popup close
+function docChooseClose(){
+	//doctor select popup
+	$("#docChoosePopup").hide();
+
+    //renove highlight of selected field
+	$(".common").removeClass('colortable');
+
+	//selected doctor id to 0
+	$("#hidden_click_id").val(0);
+
+	//selected featured doctor id to 0
+	$("#hidden_click_count").val(0);
+
+}
+
+function adminSaveClose(){
+	$("#adminSavePopup").hide();
+
+}
+
+//Add health tips
 function confirm_addtip() {
 
 
@@ -855,17 +958,13 @@ function confirm_addtip() {
 	}
 	else {
 
-	$("#featuredpoup").show();
+	$("#tipAddPopup").show();
 	$(".pat_close_btn").show();
     }
 
 };
 
-function adminregpoup_close(){
-	$("#adminregpoup").hide();
-	$(".pat_close_btn").hide();
 
-};
 
 
 function display_priv(){
@@ -880,7 +979,7 @@ function display_priv(){
 }
 
 
-
+//display health tip table div
 function display_all_tip(){
 	$("#tabdiv").slideDown();
 	$("#preview").slideUp();
@@ -888,6 +987,7 @@ function display_all_tip(){
 	$("#tipbut").hide();
 }
 
+//add therapy
 function addTherapy(){
 	//$(".pat_close_btn").show();
 	if (valid_length_input('tname1') ||  ($("#tdes1").val().length==0 || $('#profile_thumb').attr('src')=="")) {
@@ -909,33 +1009,16 @@ function addTherapy(){
 	}
 }
 
-function therapySaveClose(){
-	$("#therapySavePopup").hide();
-
-}
-
-function docChooseClose(){
-	$("#docChoosePopup").hide();
-	$(".common").removeClass('colortable');
-	$("#hidden_click_id").val(0);
-
-}
-
-function adminSaveClose(){
-	$("#adminSavePopup").hide();
-
-}
 
 
 
 
+//add a new ayurvedic thrapy or update existing one
 function confirm_addTherapy() {
 
+      if($('#hidden_click_therapy_up_status').val()=="true"){
+		  //update existing therapy
 
-
-
-
-       if($('#hidden_click_therapy_up_status').val()=="true"){
 		   var updateId=$('#hidden_click_therapy_id').val();
 		   var formData = new FormData($('#therapies_form')[0]);
 		   var new_url = '/admin_panel_home/updatetherapy/'+updateId;
@@ -948,14 +1031,19 @@ function confirm_addTherapy() {
 			   processData: false,
 			   success: function (data) {
 
-
-				   therapyLoad();
+				   if (data['error'] == true) {
+					   $("#admin_home_div").html(data.page);
+				   }
+				    else{
+					   therapyLoad();
+			      }
 			   }
 			   // ... Other options like success and etc
 		   })
 	   }
        else
 		{
+			//Add new thrapy
 
 			var formData = new FormData($('#therapies_form')[0]);
 			var new_url = '/admin_panel_home/addtherapy';
@@ -968,8 +1056,12 @@ function confirm_addTherapy() {
 				processData: false,
 				success: function (data) {
 
-
-					therapyLoad();
+					if (data['error'] == true) {
+						$("#admin_home_div").html(data.page);
+					}
+					else{
+						therapyLoad();
+					}
 				}
 				// ... Other options like success and etc
 			})
@@ -1061,8 +1153,14 @@ function confirmDeleteTherapy() {
 		data: dataString,
 		cache: false,
 		success: function (data) {
+			if (data['error'] == true) {
 
-			therapyLoad();
+				$("#admin_home_div").html(data.page);
+
+			} else
+			{
+				therapyLoad();
+		    }
 		}
 	});
 }
@@ -1124,7 +1222,7 @@ function admin_reg_via_ajax(){
 
 
 
-
+//load blocked user page
 
 function blockedUsers(){
 	$.ajax({
@@ -1312,6 +1410,7 @@ function valid_registration(){
 
 		return false;
 	}else{
+
                $("#adminregpoup").show();
                $(".pat_close_btn").show();
 	}
@@ -1324,6 +1423,8 @@ function addadmin(){
 	var email =$( "#email" ).val();
 	var uname =$( "#user_name" ).val();
 	var pwrd =$( "#password" ).val();
+	$('#adminregpoup').hide();
+	$('#c_thanking_msg').show();
 
 	var dataString="fname="+fname+"lname="+lname+"uname="+uname+"email="+email+"pwrd11="+pwrd;
 	var new_url = '/admin_panel_home/'+fname+"/"+lname+"/"+uname+"/"+email+"/"+pwrd;
@@ -1428,6 +1529,8 @@ function del_admin(id){
 function del_admin_1(){
 	var del_id = $("#hidden_click_admin_del_id").val();
 
+	$("#adminpopup1").hide();
+	$("#c_admin_block_msg").show();
 
 	var dataString="id="+del_id;
 	var new_url = '/admin/admindel/'+del_id;
@@ -1455,6 +1558,8 @@ function del_admin_1(){
 function access_admin_1(){
 	var del_id = $("#hidden_click_admin_del_id").val();
 
+	$("#adminpopup2").hide();
+	$("#c_admin_activate_msg").show();
 
 	var dataString="id="+del_id;
 	var new_url = '/admin/adminAccess/'+del_id;
@@ -1548,7 +1653,7 @@ function doc_load_ajax(){
 		success: function (data) {
 
 			$("#c_doctor_result_ajax_boxqq").html(data.page);
-
+           if(data["count"][0]["count"] != null){
 			/////////////////////////////////////////////////
 			// Pagination ///////////////////////////////////
 
@@ -1585,6 +1690,7 @@ function doc_load_ajax(){
 			}
 
 
+
 			if (data["count"][0]["count"] > end) {
 				var tot = parseInt(skip) + parseInt(data["count1"]);
 				$("#search_doc_pagination_panelqq").html(txt);
@@ -1606,7 +1712,7 @@ function doc_load_ajax(){
 			/////////////////////////////////////////////////
 
 
-		},
+		}},
 		error: function (data) {
 			console.log('Error:', data);
 		}
@@ -1664,13 +1770,21 @@ function rem_com(){
 	var id=	$("#hidden_click_com_id").val();
 	var dataString="user_id="+id;
 	var new_url = '/admin_panel/rem_com/'+id;
+
 	$.ajax({
 		type:'GET',
 		url:new_url,
 		data: dataString,
 		cache: false,
 		success: function(data){
-			load_comments_via_ajax();
+
+			if(data["error"]== true){
+				$("#admin_home_div").html(data.page);
+
+			}else {
+
+				load_comments_via_ajax();
+			}
 		}
 	});
 
@@ -1695,8 +1809,11 @@ function comments_load_via_ajax(){
 		cache: false,
 		data: dataString,
 		success: function (data){
-
 			$("#c_comment_result_ajax_box").html(data.page);
+			if(data["count"] != null){
+
+
+
 			/////////////////////////////////////////////////
 			// Pagination ///////////////////////////////////
 
@@ -1755,7 +1872,7 @@ function comments_load_via_ajax(){
 			/////////////////////////////////////////////////
 
 
-		},
+		}},
 		error: function (data) {
 			console.log('Error:', data);
 		}
@@ -1792,8 +1909,10 @@ function user_load_ajax1(){
 		cache: false,
 		data: dataString,
 		success: function (data) {
-
 			$("#user1").html(data.page);
+
+
+			if(data["count"] != null){
 
 			/////////////////////////////////////////////////
 			// Pagination ///////////////////////////////////
@@ -1853,7 +1972,7 @@ function user_load_ajax1(){
 			/////////////////////////////////////////////////
 
 
-		},
+		}},
 		error: function (data) {
 			console.log('Error:', data);
 		}
@@ -1945,6 +2064,10 @@ function user_load_ajax2(){
 		success: function (data) {
 
 			$("#user2").html(data.page);
+			if(data["count"] != null){
+
+
+
 
 			/////////////////////////////////////////////////
 			// Pagination ///////////////////////////////////
@@ -2001,7 +2124,7 @@ function user_load_ajax2(){
 			/////////////////////////////////////////////////
 
 
-		},
+		}},
 		error: function (data) {
 			console.log('Error:', data);
 		}

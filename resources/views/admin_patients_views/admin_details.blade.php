@@ -18,19 +18,19 @@
             <b>Quick Actions </b>
         </div>
     </div>
-    <div id="" class="col-lg-12" Style="height:234px;overflow-y: scroll">
+    <div id="" class="col-lg-12" Style="height:213px;overflow-y: scroll">
         <table id="" class="col-lg-12 over tabledesign2" >
             <?php foreach($user as $admin) {?>
             <tr  class="admin_id_<?php echo $admin->id; ?> common" style="background-color:#fff;height:35px;border:1px solid #ddd;" >
                 <td class="col-lg-3 "> <div style="width:110px; overflow:hidden;"><?php echo $admin->email; ?></div></td>
                 <td class="col-lg-4" style="border-left: 1px solid #ddd;"> <div style="width:180px; overflow:hidden;"><?php echo $admin->aemail; ?></div></td>
 
-                <td class="col-lg-1" style="border-left: 1px solid #ddd;"><button type="button" name="update"  class="c_pat_view_btn_tip" onClick="get_admin_id('<?php echo $admin->id;?>','<?php echo $admin->email; ?>' ,'<?php echo $admin->aemail;?>' )"><img src="assets_admin\img\Edit-52.png" height="20px">&nbsp&nbsp Update</button></td>
+                <td class="col-lg-1" style="border-left: 1px solid #ddd;"><button type="button" name="update"  class="c_pat_view_btn_tip" onClick="get_admin_id('<?php echo $admin->id;?>','<?php echo $admin->email; ?>' ,'<?php echo $admin->aemail;?>' )" <?php  if($admin->mode == 0) {?> disabled  <?php } ?> ><img src="assets_admin\img\Edit-52.png" height="20px" >&nbsp&nbsp Update</button></td>
 
                <?php if($admin->mode == 1) {?>
-                <td ><button type="button" name="delete"  class="c_pat_view_btn_tip" onclick="del_admin('<?php echo $admin->id;?>')" ><img src="assets_admin\img\Delete-52.png" height="20px">&nbsp&nbsp Block</button></td>
+                <td ><button type="button" name="delete"  class="c_pat_view_btn_tip" onclick="del_admin('<?php echo $admin->id;?>')" ><img src="assets_admin\img\Delete-52.png" height="20px">&nbsp&nbsp Deactivate</button></td>
               <?php } else if($admin->mode == 0) {?>
-                <td ><button type="button" name="delete"  class="c_pat_view_btn_tip" onclick="access_admin('<?php echo $admin->id;?>')" ><img src="assets_admin\img\access-52.png" height="25px">&nbsp&nbsp Access</button></td>
+                <td ><button type="button" name="delete"  class="c_pat_view_btn_tip" onclick="access_admin('<?php echo $admin->id;?>')" ><img src="assets_admin\img\access-52.png" height="25px">&nbsp&nbsp Activate</button></td>
 
             <?php } ?>
             </tr>
@@ -134,7 +134,7 @@
                 {{--  <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><h1>Confirm</h1></div>--}}
                 <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
                     <ul class="c_ul_1">
-                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Access </span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Activate </span></li>
 
                         <li> <div style="padding-top: 30px">
                                 <div class="col-lg-3 ">
@@ -163,7 +163,7 @@
                 {{--  <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><h1>Confirm</h1></div>--}}
                 <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
                     <ul class="c_ul_1">
-                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Delete </span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Deactivate </span></li>
 
                         <li> <div style="padding-top: 30px">
                                 <div class="col-lg-3 ">
@@ -174,6 +174,44 @@
                                 </div>
                             </div>
                         </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Thanking Messages -->
+<div class="container c_pop_up_box_thank1" id="c_admin_block_msg" style="display: none">
+    <div class="center-block c_pop_box_1_wrapper" style="margin-right:55%;margin-top: 20%;width: 412px">
+        <div style="background: #DAA100;height: 145px;padding-top: 32px">
+
+            <div class="container c_no_padding col-lg-12">
+                <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><img src="{{ URL::asset('assets/img/thanking.png') }}" style="width: 80px"></div>
+                <div class="col-lg-8 c_no_padding" style="margin-top: -75px;margin-left: 114px">
+                    <ul class="c_ul_1">
+                        <li><span style="font-size: 27px;font-weight: 100;margin-left: 30px;color: #FFF">successfully</span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Deactivated</span></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Thanking Messages -->
+<div class="container c_pop_up_box_thank1" id="c_admin_activate_msg" style="display: none">
+    <div class="center-block c_pop_box_1_wrapper" style="margin-right:55%;margin-top: 20%;width: 412px">
+        <div style="background: #DAA100;height: 145px;padding-top: 32px">
+
+            <div class="container c_no_padding col-lg-12">
+                <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><img src="{{ URL::asset('assets/img/thanking.png') }}" style="width: 80px"></div>
+                <div class="col-lg-8 c_no_padding" style="margin-top: -75px;margin-left: 114px">
+                    <ul class="c_ul_1">
+                        <li><span style="font-size: 27px;font-weight: 100;margin-left: 30px;color: #FFF">successfully</span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Activated</span></li>
                     </ul>
                 </div>
             </div>

@@ -100,7 +100,7 @@
                 <ul class="c_admin_ul_in">
                     <li class="c_admin_ul_li" onClick="load_users_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>View Users</li>
                     <li class="c_admin_ul_li" onClick="load_comments_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>User Comments</li>
-                    <li class="c_admin_ul_li" onClick="blockedUsers()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Inapropriate Users</li>
+                    <li class="c_admin_ul_li" onClick="blockedUsers()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Blocked Users</li>
 
                     <?php if(  $admin_user[0]['mode'] == 2) {?>
                     <li class="c_admin_ul_li" onClick="admin_reg_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Admin Registration</li>
