@@ -21,7 +21,6 @@
  */
 Route::get('/','Front@index');
 Route::get('/search','Front@search');
-Route::get('/search','Front@search_query');
 Route::get('/advanced_search','Front@advanced_search');
 Route::get('/register','Front@register');
 Route::get('/profile/{doc_name}/{doc_id}','Front@view_profile');
@@ -39,6 +38,8 @@ Route::resource('/update_doctor_account','Front@UpdateDoctorAccount');
 Route::get('/DoctorAccountLogin','Front@DoctorLogin');
 Route::post('/doctor_login_auth','Front@DoctorLoginAuth');
 Route::get('/DoctorLogout','Front@DoctorLogout');
+Route::get('/ContactUs','Front@ContactUs');
+Route::get('/AboutUs','Front@AboutUs');
 
 /*
  * Admin Side Routing

@@ -36,18 +36,31 @@ class Front extends ExceptionController
         }
     }
 
-    /*
-     * This function loads default results
+    /**
+     * Contact Us Page
      */
-    public function search(){
-        return view('search',array('search_text' => '','spec' => self::get_specializations()));
+    public function ContactUs(){
+        return view('contact_us');
+    }
+
+    /**
+     * About Us Page
+     */
+    public function AboutUs(){
+        return view('about_us');
     }
 
     /*
-     * This function loads results according to user requests
+     * This function loads search results
      */
-    public function search_query(Request $request){
-        return view('search',array('search_text' => $request->search_text,'spec' => self::get_specializations()));
+    public function search(Request $request){
+        if(isset($request->search_text) && !isset($request->location)){
+            return view('search',array('search_text' => $request->search_text,'location' => "-",'spec' => self::get_specializations()));
+        }else if(isset($request->location)){
+            return view('search',array('search_text' => '','location' => $request->location,'spec' => self::get_specializations()));
+        }else{
+            return view('search',array('search_text' => '','location' => "-",'spec' => self::get_specializations()));
+        }
     }
 
     /*

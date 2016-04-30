@@ -79,7 +79,7 @@ class AjaxControll extends ExceptionController
             }else if(Input::get('filter_loc') != '-' && Input::get('filter_spec') == '-'){
 
 				$query = "SELECT doc.*,spec.* FROM doctors AS doc INNER JOIN specialization AS spec on doc.id = spec.doc_id ";
-				$query = $query."WHERE doc.district = '".Input::get('district')."' ORDER BY doc.id";
+				$query = $query."WHERE doc.district = '".Input::get('filter_loc')."' ORDER BY doc.id";
 
 			}else if(Input::get('filter_loc') == '-' && Input::get('filter_spec') != '-'){
 
@@ -90,7 +90,7 @@ class AjaxControll extends ExceptionController
 			}else if(Input::get('filter_loc') != '-' && Input::get('filter_spec') != '-'){
 
 				$query = "SELECT doc.*,spec.* FROM doctors AS doc INNER JOIN specialization AS spec on doc.id = spec.doc_id ";
-				$query = $query."WHERE doc.district = '".Input::get('district')."' AND (spec.spec_1 = '".Input::get('specialization')."' OR spec.spec_2 = '".Input::get('specialization')."' ";
+				$query = $query."WHERE doc.district = '".Input::get('filter_loc')."' AND (spec.spec_1 = '".Input::get('specialization')."' OR spec.spec_2 = '".Input::get('specialization')."' ";
 				$query = $query."OR spec.spec_3 = '".Input::get('specialization')."' OR spec.spec_4 = '".Input::get('specialization')."' OR spec.spec_5 = '".Input::get('specialization')."') ORDER BY doc.id";
 
 			}
