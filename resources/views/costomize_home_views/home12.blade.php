@@ -19,14 +19,14 @@
                        <div class=" col-lg-12 c_no_padding" style="width:880px;margin-left:10px;margin-top:50px">
                         <ul class="c_top_ul">
                             <?php
-
+                                $size=sizeof($featured_doc1);
                                 $count=1;
                                 foreach($featured_doc1 as $f_ob)
                                 {
                                 $check = $count%2;
                             ?>
-                              <li class="col-lg-3" style="margin-top:10px " onmouseover="load_cos_page12('change_<?php echo $count; ?>')" onmouseout="load_cos_page123('change_<?php echo $count; ?>')">
-							   <div class="a_doc_box col-lg-12 " onclick="feat_addno('<?php echo $count;?>')"  >
+                              <li class="col-lg-3" style="margin-top:10px " onmouseover="load_cos_page12('change_<?php echo $f_ob->fid; ?>')" onmouseout="load_cos_page123('change_<?php echo $f_ob->fid; ?>')">
+							   <div class="a_doc_box col-lg-12 " onclick="feat_addno('<?php echo $f_ob->fid;?>')"  >
 								   <ul class="c_ul_1 " style="width:180px" >
 								   <li style="width:100%"><div align="center"><img src="assets/img/community.png" width="70px"></div></li>
 								   <li style="width:100%;margin-top:20px"><div class="c_font_5" style="text-align:center"><?php echo $f_ob->first_name; ?>&nbsp&nbsp<?php echo $f_ob->last_name; ?></div></li>
@@ -34,8 +34,15 @@
 								   <li style="width:100%;margin-top:15px"><div class="c_font_5" style="text-align:center;font-size:13px"><?php echo $f_ob->city; ?></div></li>
 
 								   </ul>
-                                    <div class="change_<?php echo $count; ?>"  style="	bottom: 30%;position: absolute;z-index: 999;width:100%;display:none;margin-top:15px;"><div class="c_font_5" style="opacity: 0.6;padding:40px;text-align:center;font-size:18px;background-color:#14FF10;"><p style="font-weight: bold;">change</p></div></div>
-								</div>
+
+                                    <div class="change_<?php echo $f_ob->fid; ?>"  style="	bottom: 30%;position: absolute;z-index: 999;width:100%;display:none;margin-top:15px;"><div class="c_font_5" style="opacity: 0.6;padding:40px;text-align:center;font-size:18px;background-color:#14FF10;"><p style="font-weight: bold;">change</p></div></div>
+
+                                   <?php if($size > 5){?>
+                                   <div  class="change_<?php echo $f_ob->fid; ?>"  style="margin-left:170px;bottom: 90%;position: absolute;z-index: 999;width:100%;display:none;margin-top:15px;">
+                                       <button  class="fet_doc_hover_btn" onclick="feturedDoctorRemovePopUp()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+                                   </div>
+                                   <?php } ?>
+                               </div>
                               </li>
                             <?php
                                     $count++;
@@ -47,7 +54,12 @@
                                         <ul class="c_ul_1 " style="width:180px" >
                                             <li style="width:100%"><div align="center"style="margin-top:56px;margin-bottom:33px"><img src="assets_admin\img\addDoctor2.png" style="width:90px"></div></li>
                                         </ul>
-                                        <div class="change_add"  style="	bottom: 30%;position: absolute;z-index: 999;width:100%;display:none;margin-top:15px;"><div class="c_font_5" style="opacity: 0.6;padding:40px;text-align:center;font-size:18px;background-color:#14FF10;"><p style="font-weight: bold;">Add</p></div></div>
+                                        <div class="change_add"  style="bottom: 30%;position: absolute;z-index: 888;width:100%;display:none;margin-top:15px;">
+                                            <div class="c_font_5" style="opacity: 0.6;padding:40px;text-align:center;font-size:18px;background-color:#14FF10;">
+                                                <p style="font-weight: bold;">Add</p>
+                                            </div>
+                                        </div>
+
 
                                     </div>
                                 </li>
@@ -59,16 +71,17 @@
                            <input type="hidden" id="hidden_click_id11" value="0"/>
 
 
+
                            <div id="docChoosePopup" class="container pat_confirm1_box" >
                                <div class="center-block pat_success1_box_wrapper" style="margin-right: 100%;margin-top: 10%;width: 870px">
                                    <button  class="fet_doc_close_btn" onclick="docChooseClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
-                                   <div style="background: #4CBC5B;height: 445px;padding-top: 32px">
+                                   <div style="background: #4CBC83;height: 445px;padding-top: 32px">
 
                                        <div class="container c_no_padding col-lg-12">
                                            <div class="col-lg-11 c_no_padding" style="margin-left: 10px">
                                                <ul class="c_ul_1">
                                                    <li><span style="font-size: 28px;font-weight: 300;margin-left: 20px;color: #FFF">Select a Doctor </span>
-                                                       <button class="pat_view_btn_1" onclick="docChooseClose()" ><img src="assets_admin\img\Delete-52.png" height="15px">&nbspCancel</button>
+
                                                    </li>
 
                                                    <li> <div style="padding-top: 10px">
@@ -122,7 +135,7 @@
                                                                            <div class="col-lg-12" style="width:250px;margin-top: 20px;" >
                                                                                <div  >
                                                                                    <ul>
-                                                                                       <li>
+                                                                                       <li style="color: #FFF">
                                                                                            Rating
                                                                                        </li>
                                                                                    </ul>
@@ -143,7 +156,7 @@
                                                                            <div  style="width:250px">
                                                                                <div  style="">
                                                                                    <ul>
-                                                                                       <li>
+                                                                                       <li style="color: #FFF">
                                                                                            Spcialization
                                                                                        </li>
                                                                                    </ul>
@@ -165,7 +178,7 @@
                                                                            <div class="col-lg-12" style="width:250px">
                                                                                <div  style="">
                                                                                    <ul>
-                                                                                       <li>
+                                                                                       <li style="color: #FFF">
                                                                                            Treatments
                                                                                        </li>
                                                                                    </ul>
@@ -206,22 +219,22 @@
                            </div>
 
 
-                           <div id="featureddocpoup" class="container pat_confirm1_box" >
+                           <div id="featureddocRemovepoup" class="container pat_confirm1_box" >
 
                               <div class="center-block pat_confirm1_box_wrapper" style="margin-right: 55%;margin-top: 15%;width: 375px">
-                                  <button  class="pat_close_btn" onclick="feturedDoctorUpdatePopUpClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+                                  <button  class="pat_close_btn" onclick="feturedDoctorRemovePopUpClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
                                   <div style="background: #4CBC5B;height: 145px;padding-top: 32px">
                                       <div class="container c_no_padding col-lg-12">
                                           <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
                                               <ul class="c_ul_1">
-                                                  <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm The Update </span></li>
+                                                  <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm The Remove </span></li>
 
                                                   <li> <div style="padding-top: 30px">
                                                           <div class="col-lg-3 ">
-                                                               <button class="pat_view_btn_1" onclick="updatefet()" ><img src="assets_admin\img\confirm_img.png" height="15px">&nbsp Confirm</button>
+                                                               <button class="pat_view_btn_1" onclick="removeFet()" ><img src="assets_admin\img\confirm_img.png" height="15px">&nbsp Confirm</button>
                                                           </div>
                                                           <div class="col-lg-3" style="margin-left: 100px">
-                                                               <button class="pat_view_btn_1" onclick="feturedDoctorUpdatePopUpClose()" ><img src="assets_admin\img\Delete-52.png" height="15px">&nbsp Cancel</button>
+                                                               <button class="pat_view_btn_1" onclick="feturedDoctorRemovePopUpClose()" ><img src="assets_admin\img\Delete-52.png" height="15px">&nbsp Cancel</button>
                                                           </div>
                                                        </div>
                                                   </li>
@@ -232,10 +245,62 @@
                                   </div>
                               </div>
                           </div>
+                           <div id="featureddocpoup" class="container pat_confirm1_box" >
+
+                               <div class="center-block pat_confirm1_box_wrapper" style="margin-right: 55%;margin-top: 15%;width: 375px">
+                                   <button  class="pat_close_btn" onclick="feturedDoctorUpdatePopUpClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+                                   <div style="background: #4CBC5B;height: 145px;padding-top: 32px">
+                                       <div class="container c_no_padding col-lg-12">
+                                           <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
+                                               <ul class="c_ul_1">
+                                                   <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm The Update </span></li>
+
+                                                   <li> <div style="padding-top: 30px">
+                                                           <div class="col-lg-3 ">
+                                                               <button class="pat_view_btn_1" onclick="updatefet()" ><img src="assets_admin\img\confirm_img.png" height="15px">&nbsp Confirm</button>
+                                                           </div>
+                                                           <div class="col-lg-3" style="margin-left: 100px">
+                                                               <button class="pat_view_btn_1" onclick="feturedDoctorUpdatePopUpClose()" ><img src="assets_admin\img\Delete-52.png" height="15px">&nbsp Cancel</button>
+                                                           </div>
+                                                       </div>
+                                                   </li>
+                                               </ul>
+                                           </div>
+                                       </div>
+
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div id="featuredRowpoup" class="container pat_confirm1_box" >
+
+                               <div class="center-block pat_confirm1_box_wrapper" style="margin-right: 55%;margin-top: 15%;width: 375px">
+                                   <button  class="pat_close_btn" onclick="featuredRowPopupClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+                                   <div style="background: #4CBC5B;height: 145px;padding-top: 32px">
+                                       <div class="container c_no_padding col-lg-12">
+                                           <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
+                                               <ul class="c_ul_1">
+                                                   <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please select a doctor !</span></li>
+
+                                                   <li> <div style="padding-top: 30px">
+
+                                                           <div class="col-lg-3" style="margin-left: 85px">
+                                                               <button class="pat_view_btn_1" onclick="featuredRowPopupClose()" ><img src="assets_admin\img\confirm_img.png" height="15px">&nbsp OK</button>
+                                                           </div>
+                                                       </div>
+                                                   </li>
+                                               </ul>
+                                           </div>
+                                       </div>
+
+                                   </div>
+                               </div>
+                           </div>
 
 
-                      
 
-                      
 
-</div>
+
+
+
+                       </div>

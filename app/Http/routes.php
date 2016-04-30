@@ -75,6 +75,7 @@ Route::get('/admin_panel/inapusers/test/{skip}/{end}','Admin_Front@inapUsersView
 Route::get('/admin_panel/removeusers/{user_id}','Admin_Front@blockUser');
 Route::get('/admin_panel/filterdoc/{rate}/{spec}/{treat}','Admin_Front@filterDoctors');
 Route::post('/admin_panel/updatefet','Admin_Front@featuredDoctorUpdate');
+Route::post('/admin_panel/removefet','Admin_Front@featuredDoctorRemove');
 
 
 Route::post('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
@@ -87,6 +88,7 @@ Route::get('/reg_admin.php','Admin_Front@registerAdmin');
 Route::get('/inap_users','Admin_Front@blockedUsers');
 
 Route::get('/user_view','Admin_Front@usersViewDirect');
+Route::get('/errorView','Admin_Front@errorLog');
 Route::get('/comments_view','Admin_Front@commentsViewDirect');
 Route::get('/dash_board_view','Admin_Front@dashBoardViewDirect');
 Route::get('/admin_panel_home/{fname}/{lname}/{uname}/{email}/{pwrd}','Admin_Front@addAdmin');

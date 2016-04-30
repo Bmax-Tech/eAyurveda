@@ -2,10 +2,10 @@
     Admin Registration
 </div>
 <div class="container c_container" style="background-color:#E8E8E8">
-    <div class="col-lg-6" style="padding-top:50px;padding-left: 50px">
+    <div class="col-lg-6" style="padding-top:10px;padding-left: 50px">
        <div>
 
-
+           <p class="doc_admin_hd_1" style="margin-bottom: 25px">General Information</p>
             <ul class="c_ul_1" >
 
                 <li>
@@ -44,7 +44,10 @@
                 <li class="c_add_margin_20 c_form_margin_10">
                     <input type="password" class="c_text_box_1 " spellcheck="false" name="confirm_password" id="confirm_password" onkeypress="remove_wrn('confirm_password')" onchange="remove_wrn('confirm_password')" autocomplete="off"/>
                 </li>
-                <li style="padding:0px 8px;margin-top:55px">
+                <li class="c_add_margin_20 c_form_margin_10">
+                <input  onclick="admin_reg_via_ajax()" style="background-color: #E8E8E8;vertical-align:bottom;overflow:visible; font-size:16px; display:inline;  margin-left:461px; padding:0; border:0; border-bottom:1px solid Green; color:green; cursor:pointer;" name="Reset" type="button" value="Reset">
+                </li>
+                <li style="padding:0px 8px;margin-top:25px">
                     <button type="submit" class="c_button_1" onClick="valid_registration()">Register</button>
                 </li>
             </ul>
@@ -84,6 +87,25 @@
                                 </div>
                             </div>
                         </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Thanking Messages -->
+<div class="container c_pop_up_box_thank1" id="c_thanking_msg" style="display: none">
+    <div class="center-block c_pop_box_1_wrapper" style="margin-right:55%;margin-top: 20%;width: 412px">
+        <div style="background: #DAA100;height: 145px;padding-top: 32px">
+
+            <div class="container c_no_padding col-lg-12">
+                <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><img src="{{ URL::asset('assets/img/thanking.png') }}" style="width: 80px"></div>
+                <div class="col-lg-8 c_no_padding" style="margin-top: -75px;margin-left: 114px">
+                    <ul class="c_ul_1">
+                        <li><span style="font-size: 27px;font-weight: 100;margin-left: 30px;color: #FFF">successfully</span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF"> registered</span></li>
                     </ul>
                 </div>
             </div>

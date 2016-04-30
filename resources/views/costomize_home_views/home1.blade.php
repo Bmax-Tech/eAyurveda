@@ -123,10 +123,10 @@
      </div>
 
 
-<div id="featuredpoup" class="container pat_success1_box" >
+<div id="tipAddPopup" class="container pat_success1_box" >
 
 	<div class="center-block pat_success1_box_wrapper" style="margin-right: 55%;margin-top: 15%;width: 375px">
-		<button  class="pat_close_btn" onclick="feature_pop_close()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
+		<button  class="pat_close_btn" onclick="tipAddPopupClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
 		<div style="background: #4CBC5B;height: 145px;padding-top: 32px">
 
 			<div class="container c_no_padding col-lg-12">
@@ -140,7 +140,7 @@
 									<button class="pat_view_btn_1" onclick="addtip()" >Confirm</button>
 								</div>
 								<div class="col-lg-3" style="margin-left: 100px">
-									<button class="pat_view_btn_1" onclick="feature_pop_close()" >Cancel</button>
+									<button class="pat_view_btn_1" onclick="tipAddPopupClose()" >Cancel</button>
 								</div>
 							</div>
 						</li>

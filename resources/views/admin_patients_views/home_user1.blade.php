@@ -106,10 +106,10 @@
                     </div>
                     <div style="clear:both">
                     </div>
-                    <div class="col-lg-offset-8"style="clear:both;margin-top: 10px">
-                         <div class="col-lg-4">
-                             <input style="background-color: #B0BAB2;vertical-align:bottom;overflow:visible; font-size:2em; display:inline;  margin:0; padding:0; border:0; border-bottom:1px solid blue; color:blue; cursor:pointer;" name="Block User" type="button" value="Block User">
-                           <button class="c_pat_view_btn" onclick="blockConfirmPopupshow()">Block iUser</button>
+                    <div class=""style="clear:both;margin-top: 10px;margin-left: 30px">
+                         <div class="col-lg-5">
+                             <input  onclick="blockConfirmPopupshow()" style="background-color: #B0BAB2;vertical-align:bottom;overflow:visible; font-size:1.5em; display:inline;  margin:0; padding:0; border:0; border-bottom:1px solid blue; color:blue; cursor:pointer;" name="Block User" type="button" value="Deactivate User">
+
                         </div>
                         
                    </div>
@@ -132,7 +132,7 @@
              <div class="container c_no_padding col-lg-12">
                  <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
                      <ul class="c_ul_1">
-                         <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Delete </span></li>
+                         <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Deactivate </span></li>
 
                          <li> <div style="padding-top: 30px">
                                  <div class="col-lg-3 ">
@@ -143,6 +143,25 @@
                                  </div>
                              </div>
                          </li>
+                     </ul>
+                 </div>
+             </div>
+
+         </div>
+     </div>
+ </div>
+
+ <!-- Thanking Messages -->
+ <div class="container c_pop_up_box_thank1" id="c_blocking_msg" style="display: none">
+     <div class="center-block c_pop_box_1_wrapper" style="margin-right:55%;margin-top: 20%;width: 412px">
+         <div style="background: #DAA100;height: 145px;padding-top: 32px">
+
+             <div class="container c_no_padding col-lg-12">
+                 <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><img src="{{ URL::asset('assets/img/thanking.png') }}" style="width: 80px"></div>
+                 <div class="col-lg-8 c_no_padding" style="margin-top: -75px;margin-left: 114px">
+                     <ul class="c_ul_1">
+                         <li><span style="font-size: 27px;font-weight: 100;margin-left: 30px;color: #FFF">successfully</span></li>
+                         <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF"> Deactivated</span></li>
                      </ul>
                  </div>
              </div>
