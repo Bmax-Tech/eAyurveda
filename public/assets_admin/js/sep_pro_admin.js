@@ -260,13 +260,178 @@ function load_dash_board(){
 //Doctor Home pages
 function load_doc_page(para_1){
 	$.ajax({
-		url:'doc_admin/home_'+para_1+'.php',
+		type:'GET',
+		url:'doc_admin/home_'+para_1,
+		dataType:'json',
 		cache: false,
 		success: function(data){
-			$("#admin_home_div").html(data);
+			if(para_1 == 4){
+				$("#admin_home_div").html(data.page);
+				LoadDoctorList();
+			}
 		}
 	});
 };
+
+/**
+ * Doctor Confirm Submit Event
+ */
+function DoctorConfirmSubmit(){
+	LoadDoctorList();
+	return false;
+};
+
+/**
+ * Load Doctor Confirm List
+ */
+function LoadDoctorList(){
+	var newUrl = "/LoadDoctorList";
+	var dataString = "search_text="+$("#searc_con_text").val();
+	$.ajax({
+		type:'POST',
+		url:newUrl,
+		dataType:'json',
+		data:dataString,
+		cache:false,
+		success:function(data){
+			//console.log(data);
+			var txt = '<table style="width: 100%;font-weight: 400;background: #FFF">';
+			for(var i=0;i<data.length;i++){
+				txt = txt + '<tr class="doc_con_tr" onclick="ViewDoctorPro('+data[i]['doc_id']+')">' +
+						'<td style="width: 5%" class="doc_com_first_td">'+(i+1)+'</td>' +
+						'<td style="width: 25%" class="doc_con_com_td">'+data[i]['doc_name']+'</td>' +
+						'<td style="width: 15%" class="doc_con_com_td">'+data[i]['doc_ayurvedic_id']+'</td>' +
+						'<td style="width: 15%" class="doc_con_com_td">'+data[i]['doc_type']+'</td>' +
+						'<td style="width: 25%" class="doc_con_com_td">'+data[i]['doc_email']+'</td>' +
+						'<td style="width: 15%" class="doc_con_com_td">'+data[i]['doc_contact_no']+'</td>' +
+						'</tr>';
+			}
+			txt = txt + '</table>';
+			$("#doctor_result").html(txt);
+		}
+	});
+};
+
+/**
+ * ViewDoctorPro Pop Up
+ * Details from Ajax request
+ */
+function ViewDoctorPro(para_1){
+	var baseUrl = $("#base_url_admin").val();
+	var newUrl = "/GetDoctorProfileAdmin";
+	var dataString = "doctor_id="+para_1;
+	$.ajax({
+		type:'POST',
+		url:newUrl,
+		data:dataString,
+		dataType:'json',
+		case:false,
+		success:function(data){
+			console.log(data);
+			$("#doctor_id_con").val(data['doc_id']);
+			$("#doctor_user_id_con").val(data['doc_user_id']);
+
+			$("#doc_con_load_img").css("background-image",'url('+baseUrl+''+data['doc_image']+')');
+			$("#doc_con_load_aid").html(data['doc_ayurvedic_id']);
+			$("#doc_con_load_name").html('Dr. '+data['doc_name']);
+			$("#doc_con_load_type").html(data['doc_type']);
+			$("#doc_con_load_username").val("");
+			$("#doc_con_load_password").val("");
+
+			$("#doc_confirm_pop_up").fadeIn();
+		}
+	});
+}
+
+/**
+ * Close Doctor Confirm Pop Up
+ * @param para_1
+ */
+function CloseDocConfirmPopup(){
+	$("#doc_confirm_pop_up").fadeOut();
+}
+
+/**
+ * Save Doctor Confirmation Details
+ * @param para_1
+ */
+function SaveDocConfirm(){
+	if($("#doc_con_load_username").val() == "" || $("#doc_con_load_password").val() == ""){
+		if($("#doc_con_load_username").val() == ""){
+			alert("Enter Username");
+		}else{
+			alert("Enter Password");
+		}
+	}else{
+		var doctor_id = $('#doctor_id_con').val();
+		var user_id = $('#doctor_user_id_con').val();
+		var newUrl = '/SaveDoctorConfirm';
+		var dataString = "doctor_id="+doctor_id+'&user_id='+user_id+'&username='+$("#doc_con_load_username").val()+'&password='+$("#doc_con_load_password").val();
+
+		$.ajax({
+			type:'POST',
+			url:newUrl,
+			data:dataString,
+			dataType:'json',
+			case:false,
+			success:function(data){
+				console.log(data);
+				$("#doc_confirm_form").hide();
+				$(".confirm_success").fadeIn();
+				$("#doc_confirm_pop_up").delay(1500).fadeOut(100,function(){
+					$(".confirm_success").fadeOut();
+					$("#doc_confirm_form").fadeIn();
+				});
+			}
+		});
+	}
+}
+
+/**
+ * Save Doctor Confirmation Details
+ * @param para_1
+ */
+function SaveAndSendMailDocConfirm(){
+	if($("#doc_con_load_username").val() == "" || $("#doc_con_load_password").val() == ""){
+		if($("#doc_con_load_username").val() == ""){
+			alert("Enter Username");
+		}else{
+			alert("Enter Password");
+		}
+	}else{
+		var doctor_id = $('#doctor_id_con').val();
+		var user_id = $('#doctor_user_id_con').val();
+		var newUrl = '/SaveSendEmailDoctorConfirm';
+		var dataString = "doctor_id="+doctor_id+'&user_id='+user_id+'&username='+$("#doc_con_load_username").val()+'&password='+$("#doc_con_load_password").val();
+
+		$("#doc_confirm_form").hide();
+		$(".waiting_confirm").fadeIn();
+		$.ajax({
+			type:'POST',
+			url:newUrl,
+			data:dataString,
+			dataType:'json',
+			case:false,
+			success:function(data){
+				console.log(data);
+				if(data.CHECK == "Changed"){
+					$(".waiting_confirm").hide();
+					$(".confirm_success").fadeIn();
+					$("#doc_confirm_pop_up").delay(1500).fadeOut(100,function(){
+						$(".confirm_success").fadeOut();
+						$("#doc_confirm_form").fadeIn();
+					});
+				}else{
+					alert("Some thing went wrong !!...");
+					$(".waiting_confirm").hide();
+					$("#doc_confirm_pop_up").delay(1500).fadeOut(100,function(){
+						$("#doc_confirm_form").fadeIn();
+					});
+				}
+			}
+		});
+	}
+}
 
 //Patient Home pages
 function load_pat_page(para_1){
@@ -2429,3 +2594,134 @@ function blockConfirmPopupClose(){
 	$('#blockConfirmPopup').hide();
 
 }
+
+ /*
+ * Admin Side Chat View Page
+ */
+
+/*
+ * Get Available Chat Users
+ */
+function GetChatUsers(){
+	var base_url = $("#base_url_admin").val();
+	var new_url = '/Admin_get_chat_users';
+	$.ajax({
+		type: 'POST',
+		dataType: "json",
+		url: new_url,
+		cache: false,
+		success: function (data) {
+			var txt="";
+			for(var i=0;i<Object(data).length;i++) {
+				var image = "";
+				if(data[i]['user_type'] == "DOCTOR"){
+					image = base_url+"profile_images/doctor_images/doc_profile_img_"+data[i]['user_id']+".png";
+				}else{
+					image = base_url+"profile_images/user_images/user_profile_img_"+data[i]['user_id']+".png";
+				}
+				var txt = txt+'<div class="col-lg-4 c_no_padding"><div class="chat_active_div" width="100%" style="height: 250px;';
+				if(i%3 < 2) {
+					txt = txt + 'margin-right: 10px;';
+				}
+				txt = txt +	'margin-bottom:10px"><div class="chat_user_icon" style="background-image: url('+image+')"></div>' +
+						'<div class="col-lg-12" style="margin-top: 8px">' +
+						'<p class="chat_fonr_1" style="font-weight: 500">'+data[i]['user_data'][0]['first_name']+" "+data[i]['user_data'][0]['last_name']+'</p>' +
+						'<p class="chat_fonr_1" style="font-size: 13px !important">'+data[i]['user_data'][0]['email']+'</p></div><div class="col-lg-12"><div class="col-lg-4"></div>' +
+						'<div class="col-lg-4 chat_start_btn" onclick="OpenChat('+data[i]['user_id']+',\''+data[i]['user_data'][0]['first_name']+' '+data[i]['user_data'][0]['last_name']+'\')"><img src="'+base_url+'assets_admin/img/start_chat.png">&nbsp;&nbsp;Chat</div>' +
+						'<div class="col-lg-4"></div></div></div></div>';
+			}
+		 	$("#av_users_list").html(txt);
+		}
+	});
+};
+
+/* set interval */
+var tid='';// holds timer id
+function abortTimer() { // to be called when you want to stop the timer
+	clearInterval(tid);
+}
+
+// Chat Pop up Close
+function CloseAdminChat(){
+	abortTimer();
+	$("#chat_pop_up_container").fadeOut();
+};
+
+/*
+ *	Open Chat Pop up
+ * 	@para-> User ID
+ */
+function OpenChat(para_1,para_2){
+	$("#user_name_chat_pop_up").html(para_2);
+	$("#chat_pop_up_container").fadeIn();
+	$("#current_user_id").val(para_1);
+	LoadChat();
+	// this will start chat session
+	tid = setInterval(LoadChat, 5000);
+};
+
+/*
+ * LoadChat Details From DB
+ * Via Ajax
+ * @para -> User ID
+ */
+function LoadChat(){
+	var para_1 = $("#current_user_id").val();
+
+	var base_url = $("#home_base_url").val();
+	var new_url = '/Admin_get_chat_message';
+	var dataString  = "user_id="+para_1;
+	$.ajax({
+		type: 'POST',
+		data: dataString,
+		dataType: "json",
+		url: new_url,
+		cache: false,
+		success: function (data) {
+			//console.log(data);
+			var txt='<table style="width: 100%">';
+			for(var i=0;i<Object(data.chat_data).length;i++){
+				if(data.chat_data[i]["sender_id"] == 0) {
+					txt = txt + '<tr><td><div class="c_chat_msg_row"><table style="width: 100%"><tr><td style="width: 90%;"><div class="c_chat_msg_text_1">'+data.chat_data[i]["message"]+'</div></td>';
+					txt = txt + '<td style="width: 10%"><img src="'+base_url+'/oparator_icon.jpg" class="c_chat_icon_1"></td></tr><tr><td style="height: 17px"></td></tr></table></div></td></tr>';
+				}else{
+					txt = txt + '<tr><td><div class="c_chat_msg_row"><table style="width: 100%"><tr><td style="width: 10%"><img src="'+base_url+'/user_chat.png" class="c_chat_icon_2"></td>';
+					txt = txt + '<td style="width: 90%;"><div class="c_chat_msg_text_2">'+data.chat_data[i]["message"]+'</div></td></tr><tr><td style="height: 17px"></td></tr></table></div></td></tr>';
+				}
+			}
+
+			$(".c_chat_box").html(txt);
+		}
+	});
+};
+
+/*
+ * This function used to send messages to users
+ * on Livechat App
+ */
+function SendMessage(){
+	var new_url = '/Admin_send_chat_message';
+	var dataString  = "user_id="+$("#current_user_id").val()+"&message="+$("#chat_message_txt").val();
+	$.ajax({
+		type: 'POST',
+		data: dataString,
+		dataType: "json",
+		url: new_url,
+		cache: false,
+		success: function (data) {
+			$("#chat_message_txt").val("");
+			LoadChat($("#current_user_id").val());
+			$('.c_chat_box').animate({scrollTop: $('.c_chat_box')[0].scrollHeight}, 1000);
+		}
+	});
+};
+
+/**
+ * Chat Send Message Submit event
+ */
+function ChatSubmitCLick(){
+	//e.preventDefault();
+	SendMessage();
+	return false;
+	//SendMessage();
+};

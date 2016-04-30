@@ -85,9 +85,9 @@
             </li>
             <li id="admin_left_nav_doc" style="display:none;padding:0px">
                 <ul class="c_admin_ul_in">
-                    <li class="c_admin_ul_li " onClick="load_doc_page('1')" style="padding-top: 20px"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Add Physician</li>
-                    <li class="c_admin_ul_li" onClick="load_doc_page('2')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Update Physician</li>
-                    <li class="c_admin_ul_li" onClick="load_doc_page('3')"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Remove Physician</li>
+                    <li class="c_admin_ul_li " style="padding-top: 20px"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Add Physician</li>
+                    <li class="c_admin_ul_li"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Update Physician</li>
+                    <li class="c_admin_ul_li"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Remove Physician</li>
                     <li class="c_admin_ul_li" onClick="load_doc_page('4')" style="padding-bottom: 20px"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Confirm Physician</li>
                 </ul>
             </li>
@@ -334,11 +334,11 @@
 <script src="assets/js/jquery-1.12.0.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/wow.min.js"></script>
-<script src="assets_admin/js/sep_pro_admin.js"></script>
-
 <!-- Morris.js charts -->
 <script src="assets_admin/plugins/reachel.js"></script>
 <script src="assets_admin/plugins/morris/morris.min.js"></script>
+<script src="assets_admin/js/sep_pro_admin.js"></script>
+
 <!-- page script -->
 
 <script>

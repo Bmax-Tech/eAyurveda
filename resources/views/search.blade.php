@@ -34,7 +34,7 @@
                 ?>
                     <input type="hidden" name="advanced_search" value="NO">
                     <input type="hidden" name="search_text_hidden" id="search_text_hidden" value="{{ $search_text }}">
-                    <input type="hidden" name="filter_loc" id="filter_loc_hidden" value="-">
+                    <input type="hidden" name="filter_loc" id="filter_loc_hidden" value="{{ $location }}">
                     <input type="hidden" name="filter_spec" id="filter_spec_hidden" value="-">
                 <?php
                 }

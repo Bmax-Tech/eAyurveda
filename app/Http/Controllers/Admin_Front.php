@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 
 use App\Chat_data;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -763,14 +765,146 @@ class Admin_Front extends ExceptionController
         return response()->json($res);
     }
 
+    public function doctorAdminPageLoad(Request $request,$page_name){
+        $HTMLView = (String) view('admin_doctor_views.'.$page_name);
+        $res['page'] = $HTMLView;
+        return response()->json($res);
+    }
+
+    /**
+     * Search List for Doctors from doctors DB table
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function DoctorList(Request $request){
+        try {
+            $sql = "SELECT * FROM doctors WHERE first_name LIKE '%".$request->search_text."%' OR last_name LIKE '%".$request->search_text."%'";
+            $doc_result = DB::select(DB::raw($sql));
+            $resultArray = array();
+            foreach($doc_result as $doc){
+                $temp = array();
+                $temp["doc_id"] = $doc->id;
+                $temp["doc_name"] = $doc->first_name." ".$doc->last_name;
+                $temp["doc_type"] = $doc->doc_type;
+                $temp["doc_email"] = $doc->email;
+                $temp["doc_contact_no"] = $doc->contact_number;
+                if($doc->doc_type == "FORMAL"){
+                    $sql_2 = "SELECT * FROM formal_docs WHERE doctor_id = ".$doc->id;
+                    $formal_doc = DB::select(DB::raw($sql_2));
+                    $temp["doc_ayurvedic_id"] = $formal_doc[0]->ayurvedic_id;
+                }else{
+                    $temp["doc_ayurvedic_id"] = "-";
+                }
+                $resultArray[] = $temp;
+            }
+            return response()->json($resultArray);
+        }catch (Exception $e){
+            $this->LogError('Admin_Front DoctorList Function',$e);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $doctor ID
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function GetDoctorProfileAdmin(Request $request){
+        try{
+            $sql  = "SELECT A.id,A.user_id,A.first_name,A.last_name,A.doc_type,B.email AS username,B.password,C.image_path FROM doctors A,users B,images C WHERE A.id = ".$request->doctor_id." AND B.id = A.user_id AND C.user_id = A.user_id";
+            $doc_data = DB::select(DB::raw($sql));
+            $resultArray = array();
+            $resultArray['doc_id'] = $doc_data[0]->id;
+            $resultArray['doc_user_id'] = $doc_data[0]->user_id;
+            $resultArray['doc_name'] = $doc_data[0]->first_name." ".$doc_data[0]->last_name;
+            $resultArray['doc_type'] = $doc_data[0]->doc_type;
+            if($doc_data[0]->doc_type == "FORMAL"){
+                $sql_2 = "SELECT * FROM formal_docs WHERE doctor_id = ".$doc_data[0]->id;
+                $formal_doc = DB::select(DB::raw($sql_2));
+                $resultArray["doc_ayurvedic_id"] = $formal_doc[0]->ayurvedic_id;
+            }else{
+                $resultArray["doc_ayurvedic_id"] = "-";
+            }
+            $resultArray["doc_username"] = $doc_data[0]->username;
+            $resultArray["doc_password"] = $doc_data[0]->password;
+            $resultArray["doc_image"] = $doc_data[0]->image_path;
+            return response()->json($resultArray);
+        }catch (Exception $e){
+            $this->LogError('Admin_Front GetDoctorProfileAdmin Function',$e);
+        }
+    }
+
+    /**
+     * save confirm doctor details
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function SaveDoctorConfirm(Request $request){
+        try{
+            $doctor_id = $request->doctor_id;
+            $user_id = $request->user_id;
+            $username = $request->username;
+            $password = $request->password;
+
+            /* Select patient record from table*/
+            $re_patient = User::find($user_id);
+
+            $re_patient->email = $username;
+            $re_patient->password = md5($password);
+            $re_patient->save();
+
+            $res['CHECK'] = "Changed";
+            return response()->json($res);
+        }catch (Exception $e){
+            $this->LogError('Admin_Front SaveDoctorConfirm Function',$e);
+        }
+    }
+
+    /**
+     * save & send email confirm doctor details
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function SaveSendEmailDoctorConfirm(Request $request){
+        try{
+            $doctor_id = $request->doctor_id;
+            $user_id = $request->user_id;
+            $username = $request->username;
+            $password = $request->password;
+
+            /* Select patient record from table*/
+            $re_patient = User::find($user_id);
+
+            $re_patient->email = $username;
+            $re_patient->password = md5($password);
+            $re_patient->save();
+
+            $doctor = Doctors::whereId($doctor_id)->first();
+
+            $url = URL::asset('')."DoctorAccount";
+            $subject['sub'] = "Account Activated at eAyurveda.lk";
+            $subject['email'] = $doctor->email;
+            $subject['name'] = $doctor->first_name . ' ' . $doctor->last_name;
+
+            Mail::send('emails.doctor_login_mail', ['name' => $subject['name'],'url' => $url,'username' => $username,'password' => $password], function ($message) use ($subject) {
+                $message->to($subject['email'], $subject['name'])->subject($subject['sub']);
+            });
+
+            $res['CHECK'] = "Changed";
+
+        }catch (Exception $e){
+            $res['CHECK'] = "Fail";
+            $this->LogError('Admin_Front SaveDoctorConfirm Function',$e);
+        }
+        return response()->json($res);
+    }
+
     /*
      * Navigate through the pages
      */
-    public function patientAdminPageLoad(Request $request, $page_name)
-    {
-        $HTMLView = (String)view('admin_patients_views.' . $page_name);
-        $res['page'] = $HTMLView;
-        return response()->json($res);
+	public function patientAdminPageLoad(Request $request,$page_name){
+       $HTMLView = (String) view('admin_patients_views.'.$page_name);
+		$res['page'] = $HTMLView;
+		return response()->json($res);
     }
 
 
@@ -1368,7 +1502,6 @@ class Admin_Front extends ExceptionController
 
         return $count;
     }
-
 
     /*
      * Get count of new user registered with thw site within 30 days

@@ -198,23 +198,25 @@
             </li>
             <li>
                 <div style="width:345px;padding-right:40px;border-right:5px solid rgb( 57, 181, 74 );margin-top:40px;padding-bottom:80px">
-                    <ul class="c_ul_1">
-                        <li>
-                            <ul class="c_top_ul">
-                                <li><img src="assets/img/geo_pin.png" width="42px"></li>
-                                <li style="margin-left:15px;height:80px;vertical-align:text-top;margin-top:-13px"><span class="c_font_4" style="bottom:10px">Find by Area</span></li>
-                            </ul>
-                        </li>
-                        <li style="width:100%">
-                            Seleted Area
-                        </li>
-                        <li style="width:100%;margin-top:20px">
-                            <input type="text" id="location_txt" class="c_text_box_1" style="width:100%" placeholder=""/>
-                        </li>
-                        <li  style="width:100%;margin-top:30px">
-                            <button type="button" class="c_button_1">Search</button>
-                        </li>
-                    </ul>
+                    <form action="{{ URL::asset('/search') }}" method="get" onsubmit="return searchByArea();">
+                        <ul class="c_ul_1">
+                            <li>
+                                <ul class="c_top_ul">
+                                    <li><img src="assets/img/geo_pin.png" width="42px"></li>
+                                    <li style="margin-left:15px;height:80px;vertical-align:text-top;margin-top:-13px"><span class="c_font_4" style="bottom:10px">Find by Area</span></li>
+                                </ul>
+                            </li>
+                            <li style="width:100%">
+                                Seleted Area
+                            </li>
+                            <li style="width:100%;margin-top:20px">
+                                <input type="text" name="location" id="location_txt" class="c_text_box_1" style="width:100%" placeholder=""/>
+                            </li>
+                            <li  style="width:100%;margin-top:30px">
+                                <button type="submit" class="c_button_1">Search</button>
+                            </li>
+                        </ul>
+                    </form>
                 </div>
             </li>
         </ul>

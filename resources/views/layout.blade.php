@@ -143,8 +143,8 @@
                     </div>
                 </li>
                 <li><a href="/Physicians">Physicians</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">About</a></li>
+                <li><a href="/ContactUs">Contact</a></li>
+                <li><a href="/AboutUs">About</a></li>
                 <li><a href="/forum">Forum</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="margin-right:30px">

@@ -927,6 +927,10 @@ body::-webkit-scrollbar-thumb
 	font-size: 16px;
 	margin-top: 3px;
 }
+#mapc{
+	height: 250px;
+	max-height: 265px;
+}
 #map-canvas{
 	height: 350px;
 	max-height: 350px;

@@ -609,7 +609,7 @@ function doc_load_ajax(){
 	$("#c_loading_msg").fadeIn();
 	var dataString = $("#filter_selections").serialize();// this serialize the form in search results page
 	var method_type='POST';
-
+	console.log(dataString);
 	$.ajax({
 		type: method_type,
 		dataType: "json",
@@ -685,7 +685,7 @@ function doc_load_ajax(){
 $(document).ready(function(e){
 	/* Check whether current page is Search results page or not */
 	if($("#doc_search_page").val()=='YES') {
-		doc_load_ajax(1);
+		doc_load_ajax();
 	}
 });
 
@@ -2750,3 +2750,16 @@ $("#pick").click(function(){
 /*
  * Doctor Account Manage Page End
  */
+
+/**
+ * Home Page Find by Area
+ * Param => Selected Area
+ */
+function searchByArea(){
+	var area = $("#location_txt").val();
+	if(area == ""){
+		return false;
+	}else{
+		return true;
+	}
+};

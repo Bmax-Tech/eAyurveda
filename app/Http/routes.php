@@ -21,7 +21,6 @@
  */
 Route::get('/','Front@index');
 Route::get('/search','Front@search');
-Route::get('/search','Front@search_query');
 Route::get('/advanced_search','Front@advanced_search');
 Route::get('/register','Front@register');
 Route::get('/profile/{doc_name}/{doc_id}','Front@view_profile');
@@ -39,6 +38,8 @@ Route::resource('/update_doctor_account','Front@UpdateDoctorAccount');
 Route::get('/DoctorAccountLogin','Front@DoctorLogin');
 Route::post('/doctor_login_auth','Front@DoctorLoginAuth');
 Route::get('/DoctorLogout','Front@DoctorLogout');
+Route::get('/ContactUs','Front@ContactUs');
+Route::get('/AboutUs','Front@AboutUs');
 
 /*
  * Admin Side Routing
@@ -49,7 +50,11 @@ Route::get('/admin_panel_home','Admin_Front@admin_home');
 Route::resource('/admin_login_auth','Admin_Front@admin_login_auth');
 Route::resource('/admin_logout','Admin_Front@logout');
 
-
+Route::get('doc_admin/{page_name}','Admin_Front@doctorAdminPageLoad');
+Route::post('/LoadDoctorList','Admin_Front@DoctorList');
+Route::post('/GetDoctorProfileAdmin','Admin_front@GetDoctorProfileAdmin');
+Route::post('/SaveDoctorConfirm','Admin_front@SaveDoctorConfirm');
+Route::post('/SaveSendEmailDoctorConfirm','Admin_front@SaveSendEmailDoctorConfirm');
 Route::get('/pat_admin/{page_name}','Admin_Front@patientAdminPageLoad');
 Route::get('/admin_panel/user_comments/{skip}/{end}','Admin_Front@userCommentsLoad');
 Route::get('/admin_panel/customize/featured','Admin_Front@featuredDocLoad');
