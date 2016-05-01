@@ -25,6 +25,18 @@
             border: 0px solid #e9e9e9 !important;
             background: #fff;
         }
+        .verifiedBadge {
+            display:inline;
+            padding-left: 20px;
+            margin-left: 20px;
+            background-image:url('{{ URL::asset('assets_social/img/check2_awesome_active.png')}}');
+            overflow-y: hidden ! important;
+            overflow-x: hidden ! important;
+            background-color: #fff;
+            background-size: 25%;
+            background-repeat: no-repeat;
+            background-position: 0%;
+        }
 
         .note-btn {
             width: auto !important;
@@ -198,7 +210,7 @@
                         <div class="Media__body">
 
                             <h5>
-                                <a href=""><?= $answer->name ?></a>
+                                <a href=""><?= $answer->name ?></a> <div class="verifiedBadge">verified</div>
 
 
                                         {{--<span class="utility-muted utility-text-light Comment__days-ago">--}}

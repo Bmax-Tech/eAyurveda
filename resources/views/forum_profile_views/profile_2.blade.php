@@ -128,5 +128,48 @@
             <div style="clear: both;"></div>
         </div>
     </div>
+    <div class="contentCard" style="margin-right: 1%; margin-top: 2%;">
+        <div class="contentCardHead">Down Voted by Me</div>
+        <div id="contentCardBody">
+
+            <a href="">
+                <div class="contentCardItem">
+                    Hello Word Text
+                    <div class="btnContentCardItem"></div>
+                    <div class="btnContentCardItem"></div>
+                </div>
+            </a>
+            <a href="">
+                <div class="contentCardItem">
+                    Hello Word Text
+                    <div class="btnContentCardItem"></div>
+                    <div class="btnContentCardItem"></div>
+                </div>
+            </a>
+            <a href="">
+                <div class="contentCardItem">
+                    Hello Word Text
+                    <div class="btnContentCardItem"></div>
+                    <div class="btnContentCardItem"></div>
+                </div>
+            </a>
+            <a href="">
+                <div class="contentCardItem">
+                    Hello Word Text
+                    <div class="btnContentCardItem"></div>
+                    <div class="btnContentCardItem"></div>
+                </div>
+            </a>
+            <a href="">
+                <div class="contentCardItem">
+                    Hello Word Text
+                    <div class="btnContentCardItem"></div>
+                    <div class="btnContentCardItem"></div>
+                </div>
+            </a>
+
+            <div style="clear: both;"></div>
+        </div>
+    </div>
     <div style="clear: both;"></div>
 </div>

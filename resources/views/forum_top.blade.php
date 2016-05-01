@@ -100,7 +100,7 @@
                                         </div>
                                         <div id="dropButtons">
                                             <div id="innerLogout">
-                                                <input type="button" id="Button1" formnovalidate value="Log out" class="BtnInnerLogout">
+                                                <input type="button" id="Button1" formnovalidate onclick="window.location = 'logout'; value="Log out" class="BtnInnerLogout">
                                             </div>
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@
         if(!$login) {
         ?>
         <div id="LoginButtonTopDiv">
-            <input type="button" id="BtnLoginTop" class="loginButtonTop" value="Sign in" onclick="window.location = '';"
+            <input type="button" id="BtnLoginTop" class="loginButtonTop" value="Sign in" onclick="window.location = 'login';"
                    formnovalidate/>
         </div>
         <?php     }

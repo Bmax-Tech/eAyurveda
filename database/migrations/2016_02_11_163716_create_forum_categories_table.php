@@ -95,7 +95,7 @@ class CreateForumCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('forumStats');
+        Schema::drop('forumUser');
         Schema::drop('forumQuestionFlags');
         Schema::drop('forumAnswerFlags');
         Schema::drop('forumAnswerVotes');
