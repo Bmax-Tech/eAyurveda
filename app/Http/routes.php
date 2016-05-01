@@ -104,55 +104,59 @@ Route::get('/forum/profile','ForumController@returnProfile');
 Route::get('/for_admin/{page_name}','ForumController@returnView');
 Route::get('/forum/profilepage/{page_name}','ForumController@returnProfileView');
 
-
-Route::get('/forum/search/{query}','ForumController@searchForum');
+/* Browse and search for Questions and Categories */
+Route::get('forum/search/{query}','ForumController@searchForum');
 Route::get('forum/getcategories/','ForumController@getCategories');
+Route::get('forum/browse/{category}','ForumController@getBrowseCategory');
+Route::get('forum/view', 'ForumController@displayQuestion');
+
+/* Forum Actions */
+Route::get('forum/category/delete/{catname}','ForumController@deleteCategory');
+Route::get('forum/submitanswer/{questionid}/{userid}/{subject}/{body}', 'ForumController@submitAnswer');
+Route::post('forum/sendnewsletter', 'ForumController@sendNewsletter');
+Route::resource('forum/addcategory', 'ForumController@addcategory');
+Route::resource('forum/postquestion', 'ForumController@postquestion');
+
+
+/* Forum Question related functions */
 Route::get('forum/questions/getrecent/','ForumController@getRecentQuestions');
 Route::get('forum/questions/getflagged/','ForumController@getFlaggedQuestions');
+Route::get('forum/questions/browserecent/','ForumController@browseRecent');
+Route::get('forum/question/delete/{qid}','ForumController@deleteQuestion');
+Route::get('forum/question/approve/{qid}','ForumController@approveQuestion');
+
+/* Forum Answer related functions */
 Route::get('forum/answers/getflagged/','ForumController@getFlaggedAnswers');
 Route::get('forum/answers/getrecent/','ForumController@getRecentAnswers');
-Route::get('forum/questions/browserecent/','ForumController@browseRecent');
 Route::get('forum/answer/upvote/{answerid}/{userid}','ForumController@upVoteAnswer');
 Route::get('forum/answer/downvote/{answerid}/{userid}','ForumController@downVoteAnswer');
 Route::get('forum/answer/flaganswer/{answerid}/{userid}','ForumController@flagAnswer');
 Route::get('forum/answer/flagquestion/{questionid}/{userid}','ForumController@flagQuestion');
-Route::get('/forum/browse/{category}','ForumController@getBrowseCategory');
-Route::get('/forum/question/delete/{qid}','ForumController@deleteQuestion');
-Route::get('/forum/question/approve/{qid}','ForumController@approveQuestion');
-Route::get('/forum/answer/delete/{aid}','ForumController@deleteAnswer');
-Route::get('/forum/answer/approve/{aid}','ForumController@approveAnswer');
-Route::get('/forum/category/delete/{catname}','ForumController@deleteCategory');
+Route::get('forum/answer/delete/{aid}','ForumController@deleteAnswer');
+Route::get('forum/answer/approve/{aid}','ForumController@approveAnswer');
 
 
-Route::get('/forum/view', 'ForumController@displayQuestion');
-
-Route::get('/forum/submitanswer/{questionid}/{userid}/{subject}/{body}', 'ForumController@submitAnswer');
-
-Route::post('/forum/sendnewsletter', 'ForumController@sendNewsletter');
-Route::resource('/forum/addcategory', 'ForumController@addcategory');
-Route::resource('/forum/postquestion', 'ForumController@postquestion');
+Route::get('forum/messages/inbox','ForumController@loadInbox');
 
 
-//Route::resource('/forum/addcategory','ForumController@addCategory()');
+//
+//Route::get('/messages/inbox/', function () {
+//    $head = "received";
+//    $current_user = "muabdulla@gmail.com";
+//    $messages = DB::table('messages')->where('mTo', '=' , $current_user)->get();
+//    return View::make('messages')
+//        ->with('messages', $messages)
+//        ->with('head', $head);
+//});
 
-
-Route::get('/messages/inbox/', function () {
-    $head = "received";
-    $current_user = "muabdulla@gmail.com";
-    $messages = DB::table('messages')->where('mTo', '=' , $current_user)->get();
-    return View::make('messages')
-        ->with('messages', $messages)
-        ->with('head', $head);
-});
-
-Route::get('/messages/sent/', function () {
-    $head = "sent";
-    $current_user = "muabdulla@gmail.com";
-    $messages = DB::table('messages')->where('mFrom', '=' , $current_user)->get();
-    return View::make('messages')
-        ->with('messages', $messages)
-        ->with('head', $head);
-});
+//Route::get('/messages/sent/', function () {
+//    $head = "sent";
+//    $current_user = "muabdulla@gmail.com";
+//    $messages = DB::table('messages')->where('mFrom', '=' , $current_user)->get();
+//    return View::make('messages')
+//        ->with('messages', $messages)
+//        ->with('head', $head);
+//});
 
 // -------------------------  Forum Routes End  ----------------------------
 ///////////////////////////////////////////////////////////////////////////
