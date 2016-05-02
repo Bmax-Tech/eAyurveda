@@ -25,6 +25,19 @@
             border: 0px solid #e9e9e9 !important;
             background: #fff;
         }
+        .verifiedBadge {
+            color: #00ae23;
+            display:inline;
+            padding-left: 25px;
+            margin-left: 20px;
+            background-image:url('{{ URL::asset('assets_social/img/check2_awesome_active.png')}}');
+            overflow-y: hidden ! important;
+            overflow-x: hidden ! important;
+            background-color: #fff;
+            background-size: 19%;
+            background-repeat: no-repeat;
+            background-position: 0%;
+        }
 
         .note-btn {
             width: auto !important;
@@ -58,6 +71,53 @@
             width: 400px !important;
             margin: 20% auto !important;
         }
+        .btnSubscribe {
+            height: 40px;
+            line-height: 40px;
+            width: 100%;
+            margin-top: 0px;
+            /*background-color: #e59a40;*/
+            overflow-y: hidden ! important;
+            overflow-x: hidden ! important;
+            background-size: 30%;
+            border:1px solid rgba(0,0,0,0);
+            border-radius: 3px;
+            background-repeat: no-repeat;
+            background-position: 0%;
+            opacity: 0.7;
+            padding-left: 30px;
+            background-image: url('{{ URL::asset('assets_social/img/subscribe_awesome.png')}}');
+        }
+        .btnSubscribe:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+        .loadinBar {
+            background-color: white;
+            position: fixed;
+            margin: 0px auto;
+            top: 50%;
+            left: 50%;
+            height: 200px;
+            width: 500px;
+            z-index: 11;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        .holder {
+
+            text-align: center;
+            background-color: rgba(102, 102, 102, .5);
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            z-index: 10;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -70,8 +130,13 @@
             $("#signInMessage").hide();
             $("#AlreadyFlaggedMessage").hide();
             $("#FlagSuccess").hide();
+            $("#AlreadySubscribedMessage").hide();
+            $("#SubscribeSuccess").hide();
+            $("#MarkBestSuccess").hide();
+            $("#MarkBestUpdated").hide();
             $("#SuccessPop").hide();
             $("#DangerPop").hide();
+            $(".holder").hide();
             var ans = getUrlParameter('answer');
             if($.isNumeric(ans)) {
                 $('html, body').animate({
@@ -84,13 +149,11 @@
 
         function postReply(uid) {
             var question = getUrlParameter('question');
-            $subject = $("#subjectText").val();
             $body = $("#summernote").val();
-
-
+            $(".holder").show();
             $.ajax({
                 type:'GET',
-                url: '/forum/submitanswer/'+question+'/'+uid+'/'+$subject+'/'+$body,
+                url: '/forum/submitanswer/'+question+'/'+uid+'/'+$body,
                 cache: true,
                 success: function(data){
                     location.reload();
@@ -105,18 +168,22 @@
     <?php
     $user = "";
     $login = false;
+            $adminLogin = false;
     $firstname = "";
     $userid = "";
+    $bestAnswerAvailable = false;
     if (isset($_COOKIE['user'])) {
         $user = json_decode($_COOKIE['user'], true);
         $firstname = $user[0]['first_name'];
         $userid = $user[0]['id'];
         $login = true;
+        $adminLogin = false;
     } else if (isset($_COOKIE['admin_user'])) {
         $user = json_decode($_COOKIE['admin_user'], true);
         $firstname = $user[0]['first_name'];
         $userid = $user[0]['id'];
         $login = true;
+        $adminLogin = true;
     }
 
     if($questionResult) {
@@ -125,7 +192,9 @@
 <div class="forumDetailsBar">
     <div style="padding: 0px 50px 0 130px;line-height: 40px;">
         Ayurveda.lk > Forum > <?= $questionResult->qCategory ?> > <?= $questionResult->qSubject ?>
+
     </div>
+
 </div>
 <div id="root" class="page " style="padding-top: 50px;">
 
@@ -147,7 +216,7 @@
 
                     <div class="Media__body">
                         <h5>
-                            <a href="https://google.com/+AbdullaUnais"><?= $questionResult->name ?></a>
+                            <a href=""><?= $questionResult->name ?></a>
                                     {{--<span class="utility-muted utility-text-light Comment__days-ago">--}}
                                         {{--— 6 months ago--}}
                                     {{--</span>--}}
@@ -199,6 +268,12 @@
 
                             <h5>
                                 <a href=""><?= $answer->name ?></a>
+                            <?php if($answer->bestAnswer) {
+                                $bestAnswerAvailable = true;
+                                ?>
+
+                                    <div class="verifiedBadge">Best Answer</div>
+                                    <?php } ?>
 
 
                                         {{--<span class="utility-muted utility-text-light Comment__days-ago">--}}
@@ -211,14 +286,16 @@
                             <!-- The Formatted Body Text -->
                             <div class="js-reply-body">
                                 <div>
-                                    <p><?= $answer->aSubject ?></p>
                                     <p><?= $answer->aBody ?></p>
                                 </div>
                             </div>
 
                             <footer class="Comment__footer" style="float: right;">
-                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Mark as Best Answer" class="btnForumStyle btnForumMarkBest btnForumLeft">
-                                <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Flag Answer" class="btnForumStyle btnForumFlag btnForumRight" onclick="flagAnswer('<?= $answer->aid ?>', '<?= $userid ?>', this);">
+                                <?php if($adminLogin) { ?>
+                                    <?php if(!$answer->bestAnswer) { ?>
+                                    <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Mark as Best Answer" onclick="markAsBestAnswer('<?= $questionResult->qID ?>', '<?= $answer->aid ?>');" class="btnForumStyle btnForumMarkBest btnForumLeft">
+                                <?php }} ?>
+                                    <input type="button" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Flag Answer" class="btnForumStyle btnForumFlag <?php if($adminLogin) { echo "btnForumRight"; } else { echo "btnForumSingle"; } ?>" onclick="flagAnswer('<?= $answer->aid ?>', '<?= $userid ?>', this);">
                             </footer>
                         </div>
 
@@ -260,9 +337,7 @@
                     <div class="Media__body">
 
                             <div class="form-group">
-                                <div>
-                                    <input type="text" id="subjectText" name="subjectText" placeholder="Title" required="required" class="subjectTextInput">
-                                </div>
+
                                 <div>
                                     <textarea name="bodyText" id="summernote" placeholder="Type your answer here" class="bodyTextInput"></textarea>
                                 </div>
@@ -280,14 +355,33 @@
 
                 <div id="question-stats" class="Box utility-center">
                     <div>
-                        <strong><?= $numAns ?></strong> replies with no best answer
+                        <strong><?= $numAns ?></strong> replies with <?php if($bestAnswerAvailable) { ?>
+                        a <strong>Best Answer</strong>
+                        <?php } else { ?>
+                        no best answer
+                        <?php } ?>
                     </div>
                 </div>
                 <div id="question-stats" class="Box utility-center" style="margin-top: 15px;">
                     <div>
-                        Thread marked as Not Solved
+                        <?php if($bestAnswerAvailable) { ?>
+                            Thread marked as Solved
+                        <?php } else { ?>
+                            Thread marked as Not Solved
+                        <?php } ?>
+
                     </div>
                 </div>
+
+                <?php if($login) { ?>
+                <div id="question-stats" class="Box utility-center" style="margin-top: 15px;">
+                    <div>
+                        <div class="btnSubscribe" title="Subscribe to Thread" onclick="subscribeToForum('<?= $questionResult->qID ?>', '<?= $userid ?>')">Subscribe</div>
+                    </div>
+                </div>
+
+                <?php } ?>
+
 
             </div>
 
@@ -312,11 +406,43 @@
             </div>
         </div>
     </div>
+    <div id="AlreadySubscribedMessage" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
+        <div class="container" style="text-align: left; position: relative;">
+            <div class="alert alert-warning fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div>You have <strong>Unsubscribed</strong> from this thread</div>
+            </div>
+        </div>
+    </div>
     <div id="FlagSuccess" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
         <div class="container" style="text-align: left; position: relative;">
             <div class="alert alert-warning fade in">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <div>Post is <strong>flagged</strong> for review</div>
+            </div>
+        </div>
+    </div>
+    <div id="SubscribeSuccess" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
+        <div class="container" style="text-align: left; position: relative;">
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div>You have <strong>Subscribed</strong> to this thread</div>
+            </div>
+        </div>
+    </div>
+    <div id="MarkBestSuccess" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
+        <div class="container" style="text-align: left; position: relative;">
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div>Answer marked as <strong>Best Answer</strong></div>
+            </div>
+        </div>
+    </div>
+    <div id="MarkBestUpdated" style="text-align: center; position: fixed; bottom: 0px; width: 100%;">
+        <div class="container" style="text-align: left; position: relative;">
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div>Answer updated as <strong>Best Answer</strong></div>
             </div>
         </div>
     </div>
@@ -335,6 +461,16 @@
                 <div id="dangertitle"></div>
             </div>
         </div>
+    </div>
+    <div class="holder">
+    <div class="container loadinBar" id="c_loading_msg">
+        <div class="center-block c_pop_box_1_wrapper" style="">
+            <ul class="c_top_ul" style="margin-left: 27px">
+                <li style="width: 40%; margin-left: 20%; margin-top: 5%;"><img src="{{ URL::asset('assets/img/loading.gif')}}"></li>
+                <li><span style="font-size: 30px;font-weight: 100;color: #000000 !important;margin-left: -20%;">Posting Answer</span></li>
+            </ul>
+        </div>
+    </div>
     </div>
 
 

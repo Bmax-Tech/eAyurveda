@@ -449,6 +449,101 @@ function flagQuestion(qid, user, elem) {
     }
 }
 
+
+function subscribeToForum(qid, user) {
+
+    if(user == "") {
+        $("#signInMessage").show();
+        $("#signInMessage").animate({
+            'margin-bottom': '15px'
+        });
+    } else {
+        bootbox.dialog({
+            message: "Subscribe to this Thread?",
+            title: "Subscribe",
+            buttons: {
+                danger: {
+                    label: "Subscribe",
+                    className: "btn-success",
+                    callback: function() {
+                        /* Ajax call to subscribe to the post */
+                        $.ajax({
+                            type:'GET',
+                            url:'subscribe/'+qid+'/'+user+'/',
+                            cache: true,
+                            success: function(data){
+                                if(data == "success") {
+                                    $('#SubscribeSuccess').show(0).delay(5000).hide(0);
+                                    $("#SubscribeSuccess").animate({
+                                        'margin-bottom': '15px'
+                                    });
+
+                                } else if(data == "unsubscribed") {
+                                    $('#AlreadySubscribedMessage').show(0).delay(5000).hide(0);
+                                    $("#AlreadySubscribedMessage").animate({
+                                        'margin-bottom': '15px'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                },
+                main: {
+                    label: "Cancel",
+                    className: "btn-primary",
+                    callback: function() {
+                        show: false
+                    }
+                }
+            }
+        });
+    }
+}
+
+function markAsBestAnswer(qid, aid) {
+
+        bootbox.dialog({
+            message: "Mar as Best Answer?",
+            title: "Mark Best Answer",
+            buttons: {
+                danger: {
+                    label: "Submit",
+                    className: "btn-success",
+                    callback: function() {
+                        /* Ajax call to subscribe to the post */
+                        $.ajax({
+                            type:'GET',
+                            url:'markbestanswer/'+qid+'/'+aid+'/',
+                            cache: true,
+                            success: function(data){
+                                if(data == "success") {
+                                    $('#MarkBestSuccess').show(0).delay(5000).hide(0);
+                                    $("#MarkBestSuccess").animate({
+                                        'margin-bottom': '15px'
+                                    });
+
+                                } else if(data == "updated") {
+                                    $('#MarkBestUpdated').show(0).delay(5000).hide(0);
+                                    $("#MarkBestUpdated").animate({
+                                        'margin-bottom': '15px'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                },
+                main: {
+                    label: "Cancel",
+                    className: "btn-primary",
+                    callback: function() {
+                        show: false
+                    }
+                }
+            }
+        });
+
+}
+
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
         sURLVariables = sPageURL.split('&'),

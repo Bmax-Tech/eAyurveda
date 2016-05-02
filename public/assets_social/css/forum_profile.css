@@ -123,8 +123,69 @@
     background-image: url('../img/view_awesome_w.png');
     border-color: #34a334 #30a430 #228722 #2fa52f !important;
 }
+.profileHead{
+    color: #999;
+    font-size: 18px;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue';
+}
+.profileHeadSeperator {
+    height: 1px;
+    width:100%;
+    background-color: #ddd;
+}
 
+#sidebarNav {
+    float:left;
+    width:25%;
+    height:800px;
+    background-color: #eee;
+}
+#messagesDiv {
+    float:left;
+    display: inline;
+    width: 75%;
+    height: 800px;
+}
+.LeftBarLink {
+    width: 100%;
+    padding: 10px 0 10px 0;
+    cursor: pointer;
+}
+.LeftBarLink:hover{
+     color:#fff;
+     background-color: #00B000;
+ }
+.LeftBarLinkActive{
+    width: 100%;
+    padding: 10px 0 10px 0;
+    color:#fff;
+    background-color: #00a100;
+}
+.messageFrom, .messageSubject, .messageTime {
+    text-align: left;
+    float: left;
+    padding: 10px 15px 10px 15px;
+    font-family: Arial;
+    background-color: #fff;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+}
+.messageDisplay {
+    width: 100%;
 
+}
+.messageFrom {
+    width: 20%;
+    border-right: 1px solid #eee;
+}
+.messageSubject {
+    width: 60%;
+    border-right: 1px solid #eee;
+}
+.messageTime {
+    width: 20%;
+    border-right: 1px solid #eee;
+}
 @media screen and (max-width: 960px){
     #topNavTabs {
         padding-left: 70px;
