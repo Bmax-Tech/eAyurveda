@@ -42,11 +42,13 @@ class ForumController extends Controller
     /* Pass All recent Questions to ajax call*/
     function getRecentQuestions() {
         $questions = \DB::table('forumQuestion')->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
-        $HtmlView = (String) view('forum_question_result_admin')->with([
-            'questions'=>$questions
+        $answers = \DB::table('forumAnswer')->get();
+        $HtmlView =  view('forum_question_result_admin')->with([
+            'questions'=>$questions,
+            'answers' => $answers
         ]);
         $res['pagination'] = $questions;
-        $res['page'] = $HtmlView;
+        $res['page'] = $HtmlView->render();
 
 
         return response()->json($res);
@@ -100,11 +102,13 @@ class ForumController extends Controller
     /* Get and return all recent posts */
     function browseRecent() {
         $questions = \DB::table('forumQuestion')->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
-        $HtmlView = (String) view('forum_question_result_admin')->with([
-            'questions'=>$questions
+        $answers = \DB::table('forumAnswer')->get();
+        $HtmlView = view('forum_question_result_admin')->with([
+            'questions'=>$questions,
+            'answers' =>$answers
         ]);
         $res['pagination'] = $questions;
-        $res['page'] = $HtmlView;
+        $res['page'] = $HtmlView->render();
 
 
         return response()->json($res);
@@ -113,8 +117,11 @@ class ForumController extends Controller
     function displayQuestion() {
         $question = Request::get('question');
         $questionResult = \DB::table('forumQuestion')->where('qID', '=' , $question)->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->first();
-        $answerResultSet = \DB::table('forumAnswer')->where('qID', '=' , $question)->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')->get();
+        $answerResultSet = \DB::table('forumAnswer')->where('qID', '=' , $question)->leftJoin('users', 'forumAnswer.afrom', '=', 'users.email')
+            ->orderBy('bestAnswer', 'DESC')->orderBy('upVotes', 'DESC')->get();
 
+        $numViews = $questionResult->numViews + 1;
+        \DB::table('forumQuestion')->where('qid', $question)->update(['numViews' => $numViews]);
         return View::make('forum')->with('questionResult', $questionResult)->with('answerResultSet', $answerResultSet);
     }
 
@@ -124,12 +131,15 @@ class ForumController extends Controller
         $first = $arr[0];
 
         $questions = \DB::table('forumQuestion')->where('qBody', 'like', '%' . $first . '%')->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
-        $HtmlView = (String) view('forum_question_result')->with([
+        $answers = \DB::table('forumAnswer')->get();
+
+        $HtmlView = view('forum_question_result')->with([
             'questions'=>$questions,
+            'answers' => $answers,
             'searchquery' => $first
         ]);
         $res['pagination'] = $questions;
-        $res['page'] = $HtmlView;
+        $res['page'] = $HtmlView->render();
 
 
         return response()->json($res);
@@ -142,12 +152,14 @@ class ForumController extends Controller
         $first = $arr[0];
 
         $questions = \DB::table('forumQuestion')->where('qCategory', '=', $first)->leftJoin('users', 'forumQuestion.qfrom', '=', 'users.email')->get();
-        $HtmlView = (String) view('forum_question_result')->with([
+        $answers = \DB::table('forumAnswer')->get();
+        $HtmlView = view('forum_question_result')->with([
             'questions'=>$questions,
+            'answers' => $answers,
             'searchquery' => $first
         ]);
         $res['pagination'] = $questions;
-        $res['page'] = $HtmlView;
+        $res['page'] = $HtmlView->render();
 
 
         return response()->json($res);
@@ -166,13 +178,17 @@ class ForumController extends Controller
             $destinationPath = base_path() . '\public\assets_social\img\forum_categories';
             Input::file('catImage')->move($destinationPath, $imageName);
 
+            /*Enter the filname.extentsion to Database */
             \DB::table('forumCategory')->insert(
                 array('catName' => $catName,
                     'catDescription' => $catDescription,
                     'imageURL' => $catName.".".$extension)
             );
         } else {
-            /* Submitted without uploading an image */
+            /*
+            Submitted without uploading an image
+            The default.jpg will be the image entered
+             */
             \DB::table('forumCategory')->insert(
                 array('catName' => $catName,
                     'catDescription' => $catDescription,
@@ -184,19 +200,39 @@ class ForumController extends Controller
     }
 
     /* Post an answer to question */
-    function submitAnswer(Request $request, $questionid, $userid, $subject, $body) {
-        $theSubject = $subject;
+    function submitAnswer(Request $request, $questionid, $userid, $body) {
         $theAnswer = $body;
 
         $result = \DB::table('users')->select('email')->where('id', $userid)->first();
         $email = $result->email;
 
+
+        /* DB insertion of the Answer */
         \DB::table('forumanswer')->insert(
             array('qID' => $questionid,
                 'aFrom' => $email,
-                'aSubject' => $theSubject,
                 'aBody' => $theAnswer
             ));
+
+        $theQuestion = \DB::table('forumQuestion')->where('qID', '=', $questionid)->get();
+        $qHead = "null";
+        $qBody = "null";
+        foreach($theQuestion as $q) {
+            $qHead = $q->qSubject;
+            $qBody = $q->qBody;
+        }
+
+        $theSubject = "A new reply has recieved for one of your subscribed threads";
+        $bodyText = "Thread \n".$qHead."\n".$qBody."\n has recieved a new reply";
+
+
+        $subscribers = \DB::table('forumsubscribe')->where('qID', '=', $questionid)->leftJoin('users', 'forumsubscribe.user', '=', 'users.id')->get();
+
+        foreach($subscribers as $user) {
+            /* enable this method call later */
+            self::sendMailNewsletter($theSubject, $bodyText, $user->email);
+        }
+
         return Request::__toString();
     }
 
@@ -207,6 +243,7 @@ class ForumController extends Controller
         $category = Input::get('category');
         $currentUser = "muabdulla@gmail.com";
 
+        /* DB insertion of the Question */
         \DB::table('forumQuestion')->insert(
             array('qFrom' => $currentUser,
                 'qSubject' => $title,
@@ -226,6 +263,7 @@ class ForumController extends Controller
 
         \DB::table('forumQuestion')->where('qID', '=', $first)->delete();
 
+        /* Resend the updated data after deletion */
         $questions = \DB::table('forumQuestion')
             ->join('forumquestionflags', 'forumQuestion.qID', '=', 'forumquestionflags.qID')
             ->join('users', 'forumQuestion.qfrom', '=', 'users.email')
@@ -471,14 +509,16 @@ class ForumController extends Controller
         $bodyText = Input::get('content');
         $theSubject = Input::get('subject');
 
-        $users = \DB::table('users')->get();
+        $users = \DB::table('newsletter_subscriber')->get();
 
-        /* method for testing, comment this method call later */
-        /*self::sendMailNewsletter($theSubject, $bodyText, "muabdulla@ymail.com");*/
+
+
+//        /* method for testing, comment this method call later */
+//        self::sendMailNewsletter($theSubject, $bodyText, "muabdulla@ymail.com");
 
         foreach($users as $user) {
             /* enable this method call later */
-            self::sendMailNewsletter($theSubject, $bodyText, $user->email);
+            self::sendMailNewsletter($theSubject, $bodyText, $user->nsEmail);
         }
 
         return Redirect::intended('/admin_panel_home/');
@@ -486,12 +526,100 @@ class ForumController extends Controller
 
     /* Call this method to send any mail, pass parameters */
     public function sendMailNewsletter($subject, $body, $toMail){
-        $data = array('bodyText' => $body);
+        //$questions = \DB::table('forumQuestion')->orderBy('postedOn', 'ASC')->take(10)->get();
+        $data = array(
+            "bodyText" => $body,
+            "subjectText" => $subject
+        );
         Mail::queue('forum_mail.newsletter', $data, function($message) use ($subject, $toMail)
         {
             $message->from('muabdulla@outlook.com', 'Ayurveda.lk Newsletter');
             $message->to($toMail)->subject($subject);
         });
+    }
+
+    function loadInbox() {
+        $head = "received";
+        $current_user = "muabdulla@gmail.com";
+        $messages = \DB::table('messages')->where('mTo', '=', $current_user)->get();
+
+        $HtmlView = view('forum_profile_views/profile_messages_inbox')->with([
+            'messages'=>$messages,
+            'head' => $head
+        ]);
+        $res['pagination'] = $messages;
+        $res['page'] = $HtmlView->render();
+
+
+        return response()->json($res);
+    }
+
+    function loadSent() {
+        $head = "sent";
+        $current_user = "muabdulla@gmail.com";
+        $messages = \DB::table('messages')->where('mFrom', '=', $current_user)->get();
+
+        $HtmlView = view('forum_profile_views/profile_messages_sent')->with([
+            'messages'=>$messages,
+            'head' => $head
+        ]);
+        $res['pagination'] = $messages;
+        $res['page'] = $HtmlView->render();
+
+
+        return response()->json($res);
+    }
+
+    function subscribeToForum(Request $request, $qid, $uid) {
+        $arr = explode("?", $qid, 2);
+        $qid = $arr[0];
+
+        $arr = explode("?", $uid, 2);
+        $uid = $arr[0];
+
+        /* Check if already subscribed */
+        $getFlagged = \DB::table('forumSubscribe')->where('qid', '=', $qid)->where('user', $uid)->first();
+        if (count($getFlagged) != 0) {
+            /* already flagged */
+            \DB::table('forumSubscribe')->where('qid', '=', $qid)->where('user', '=', $uid)->delete();
+            return "unsubscribed";
+        } else {
+            /* haven't subscribed before */
+            \DB::table('forumSubscribe')->insert(
+                array('qID' => $qid,
+                    'user' => $uid
+                ));
+            return "success";
+        }
+    }
+
+    function markBestAnswer(Request $request, $qid, $aid) {
+        $arr = explode("?", $qid, 2);
+        $qid = $arr[0];
+
+        $arr = explode("?", $aid, 2);
+        $aid = $arr[0];
+
+        $markedBefore = false;
+
+
+        $answerResultSet = \DB::table('forumAnswer')->where('qID', '=' , $qid)->orderBy('bestAnswer', 'DESC')->orderBy('upVotes', 'DESC')->get();
+
+
+        foreach($answerResultSet as $answer) {
+            if($answer->bestAnswer) {
+                \DB::table('forumAnswer')->where('aid', $answer->aid)->update(array('bestAnswer' => false));
+                $markedBefore = true;
+            }
+        }
+
+        \DB::table('forumAnswer')->where('qid', '=', $qid)->where('aid', '=', $aid)->update(array('bestAnswer' => true));
+
+        if($markedBefore) {
+            return "updated";
+        } else {
+            return "success";
+        }
     }
 
 }
