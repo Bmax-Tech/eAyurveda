@@ -85,7 +85,7 @@ Route::post('admin/update/profile/uname','Admin_Front@updateUName');
 Route::post('admin/update/profile/password','Admin_Front@updatePassword');
 Route::post('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
 Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipUpdate');
-Route::get('/admin/update/{id}/{username}/{email}/{password}','Admin_Front@adminUpdate');
+Route::post('/admin/update/{id}/{username}/{email}/{password}','Admin_Front@adminUpdate');
 Route::get('/admin/tipdel/{id}','Admin_Front@tipDelete');
 Route::get('/admin/admindel/{id}','Admin_Front@adminDelete');
 Route::get('/admin/adminAccess/{id}','Admin_Front@adminAccess');
