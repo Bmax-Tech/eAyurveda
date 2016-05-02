@@ -56,16 +56,18 @@ class ForumController extends Controller
 
     /* Pass All flagged Questions to ajax call*/
     function getFlaggedQuestions() {
+        $answers = \DB::table('forumAnswer')->get();
         $questions = \DB::table('forumQuestion')
             ->join('forumquestionflags', 'forumQuestion.qID', '=', 'forumquestionflags.qID')
             ->join('users', 'forumQuestion.qfrom', '=', 'users.email')
             ->where('forumQuestion.approvedStatus', '=', false)
             ->get();
-        $HtmlView = (String) view('forum_question_result_admin')->with([
-            'questions'=>$questions
+        $HtmlView = view('forum_question_result_admin')->with([
+            'questions'=>$questions,
+            'answers'=>$answers
         ]);
         $res['pagination'] = $questions;
-        $res['page'] = $HtmlView;
+        $res['page'] = $HtmlView->render();
 
         return response()->json($res);
     }
@@ -77,11 +79,11 @@ class ForumController extends Controller
             ->join('users', 'forumAnswer.afrom', '=', 'users.email')
             ->where('forumAnswer.approvedStatus', '=', false)
             ->get();
-        $HtmlView = (String) view('forum_answer_result_admin')->with([
+        $HtmlView = view('forum_answer_result_admin')->with([
             'answers'=>$answers
         ]);
         $res['pagination'] = $answers;
-        $res['page'] = $HtmlView;
+        $res['page'] = $HtmlView->render();
 
         return response()->json($res);
     }
@@ -200,7 +202,8 @@ class ForumController extends Controller
     }
 
     /* Post an answer to question */
-    function submitAnswer(Request $request, $questionid, $userid, $body) {
+    function submitAnswer(Request $request, $questionid, $userid, $body)
+    {
         $theAnswer = $body;
 
         $result = \DB::table('users')->select('email')->where('id', $userid)->first();
@@ -217,20 +220,22 @@ class ForumController extends Controller
         $theQuestion = \DB::table('forumQuestion')->where('qID', '=', $questionid)->get();
         $qHead = "null";
         $qBody = "null";
-        foreach($theQuestion as $q) {
+
+        foreach ($theQuestion as $q) {
             $qHead = $q->qSubject;
             $qBody = $q->qBody;
         }
 
         $theSubject = "A new reply has recieved for one of your subscribed threads";
-        $bodyText = "Thread \n".$qHead."\n".$qBody."\n has recieved a new reply";
+        $bodyText = "Thread \n" . $qHead . "\n" . $qBody . "\n has recieved a new reply";
 
 
         $subscribers = \DB::table('forumsubscribe')->where('qID', '=', $questionid)->leftJoin('users', 'forumsubscribe.user', '=', 'users.id')->get();
-
-        foreach($subscribers as $user) {
-            /* enable this method call later */
-            self::sendMailNewsletter($theSubject, $bodyText, $user->email);
+        if (count($subscribers) > 0) {
+            foreach ($subscribers as $user) {
+                /* enable this method call later */
+                self::sendMailNewsletter($theSubject, $bodyText, $user->email);
+            }
         }
 
         return Request::__toString();
@@ -293,11 +298,11 @@ class ForumController extends Controller
             ->join('users', 'forumQuestion.qfrom', '=', 'users.email')
             ->where('forumQuestion.approvedStatus', '=', false)
             ->get();
-        $HtmlView = (String) view('forum_question_result_admin')->with([
+        $HtmlView =  view('forum_question_result_admin')->with([
             'questions'=>$questions
         ]);
         $res['pagination'] = $questions;
-        $res['page'] = $HtmlView;
+        $res['page'] = $HtmlView->render();
 
 
         return response()->json($res);
@@ -338,11 +343,11 @@ class ForumController extends Controller
             ->join('users', 'forumAnswer.afrom', '=', 'users.email')
             ->where('forumAnswer.approvedStatus', '=', false)
             ->get();
-        $HtmlView = (String) view('forum_answer_result_admin')->with([
+        $HtmlView = view('forum_answer_result_admin')->with([
             'answers'=>$answers
         ]);
         $res['pagination'] = $answers;
-        $res['page'] = $HtmlView;
+        $res['page'] = $HtmlView->render();
 
         return response()->json($res);
     }

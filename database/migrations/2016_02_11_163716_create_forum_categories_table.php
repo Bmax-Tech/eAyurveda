@@ -30,6 +30,7 @@ class CreateForumCategoriesTable extends Migration
             $table->integer('qCategory');
             $table->integer('upvotes')->default(0);
             $table->integer('downvotes')->default(0);
+            $table->integer('numViews')->default(0);
             $table->boolean('approvedStatus')->default(false);
             $table->timestamp('postedOn')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
@@ -40,7 +41,6 @@ class CreateForumCategoriesTable extends Migration
             $table->increments('aid');
             $table->integer('qID');
             $table->text('aFrom');
-            $table->text('aSubject');
             $table->text('aBody');
             $table->integer('upVotes')->default(0);
             $table->integer('downVotes')->default(0);
@@ -78,7 +78,7 @@ class CreateForumCategoriesTable extends Migration
         Schema::create('forumUser', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->text('user');
-            $table->text('userType')->default("Member");
+            $table->text('userType');
             $table->boolean('verified')->default(false);
             $table->integer('numQuestions');
             $table->integer('numAnswers');
@@ -95,7 +95,7 @@ class CreateForumCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('forumStats');
+        Schema::drop('forumUser');
         Schema::drop('forumQuestionFlags');
         Schema::drop('forumAnswerFlags');
         Schema::drop('forumAnswerVotes');

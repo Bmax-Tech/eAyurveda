@@ -156,6 +156,7 @@
                 url: '/forum/submitanswer/'+question+'/'+uid+'/'+$body,
                 cache: true,
                 success: function(data){
+                    $(".holder").hide();
                     location.reload();
                 }
             });
