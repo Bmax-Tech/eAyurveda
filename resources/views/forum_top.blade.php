@@ -118,7 +118,7 @@
         if(!$login) {
         ?>
         <div id="LoginButtonTopDiv">
-            <input type="button" id="BtnLoginTop" class="loginButtonTop" value="Sign in" onclick="window.location = 'login';"
+            <input type="button" id="BtnLoginTop" class="loginButtonTop" value="Sign in" onclick="window.location = '../login';"
                    formnovalidate/>
         </div>
         <?php     }

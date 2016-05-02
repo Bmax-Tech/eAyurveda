@@ -28,7 +28,15 @@
 </script>
 
 <?php
+        $numAnswers = 0;
+$totalUpVotes = 0;
 foreach($questions as $question) {
+    foreach($answers as $answer) {
+        if($question->qID == $answer->qID) {
+            $numAnswers++;
+            $totalUpVotes = $totalUpVotes+$answer->upVotes-$answer->downVotes;
+        }
+    }
 ?>
 <div class="searchCard">
     <div>
@@ -36,9 +44,9 @@ foreach($questions as $question) {
         <div class="searchCardLeftPane">
             <div class="byUserDiv">from <?= $question->name ?></div>
             <div style="height: 50px;">
-                <div class="upVotesDiv"><?= $question->upvotes ?></div>
-                <div class="numAnswersDiv">2</div>
-                <div class="numViewsDiv">10</div>
+                <div class="upVotesDiv"><?= $totalUpVotes ?></div>
+                <div class="numAnswersDiv"><?= $numAnswers ?></div>
+                <div class="numViewsDiv"><?= $question->numViews ?></div>
             </div>
         </div>
         <div class="questionContentDiv" onclick="window.location.href = '/forum/view?question=<?= $question->qID ?>'">
@@ -52,6 +60,9 @@ foreach($questions as $question) {
     </div>
 </div>
 
-<?php }
+<?php
+$numAnswers = 0;
+$totalUpVotes = 0;
+}
 ?>
 

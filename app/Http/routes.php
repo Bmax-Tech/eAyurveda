@@ -112,7 +112,7 @@ Route::get('forum/view', 'ForumController@displayQuestion');
 
 /* Forum Actions */
 Route::get('forum/category/delete/{catname}','ForumController@deleteCategory');
-Route::get('forum/submitanswer/{questionid}/{userid}/{subject}/{body}', 'ForumController@submitAnswer');
+Route::get('forum/submitanswer/{questionid}/{userid}/{body}', 'ForumController@submitAnswer');
 Route::post('forum/sendnewsletter', 'ForumController@sendNewsletter');
 Route::resource('forum/addcategory', 'ForumController@addcategory');
 Route::resource('forum/postquestion', 'ForumController@postquestion');
@@ -137,6 +137,11 @@ Route::get('forum/answer/approve/{aid}','ForumController@approveAnswer');
 
 
 Route::get('forum/messages/inbox','ForumController@loadInbox');
+Route::get('forum/messages/sent','ForumController@loadSent');
+
+
+Route::get('forum/subscribe/{qid}/{uid}','ForumController@subscribeToForum');
+Route::get('forum/markbestanswer/{qid}/{aid}','ForumController@markBestAnswer');
 
 
 //

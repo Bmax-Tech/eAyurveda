@@ -19,7 +19,7 @@ class CreateMessagesTable extends Migration
             $table->text('mSubject');
             $table->text('mBody');
             $table->boolean('readStatus');
-            $table->dateTime('sent');
+            $table->dateTime('sent')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
     }
