@@ -104,7 +104,7 @@
                 {{--  <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><h1>Confirm</h1></div>--}}
                 <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
                     <ul class="c_ul_1">
-                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Save </span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Update </span></li>
 
                         <li> <div style="padding-top: 30px">
                                 <div class="col-lg-3 ">
@@ -212,6 +212,25 @@
                     <ul class="c_ul_1">
                         <li><span style="font-size: 27px;font-weight: 100;margin-left: 30px;color: #FFF">successfully</span></li>
                         <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Activated</span></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Thanking Messages -->
+<div class="container c_pop_up_box_thank1" id="c_admin_update_msg" style="display: none">
+    <div class="center-block c_pop_box_1_wrapper" style="margin-right:55%;margin-top: 20%;width: 412px">
+        <div style="background: #DAA100;height: 145px;padding-top: 32px">
+
+            <div class="container c_no_padding col-lg-12">
+                <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><img src="{{ URL::asset('assets/img/thanking.png') }}" style="width: 80px"></div>
+                <div class="col-lg-8 c_no_padding" style="margin-top: -75px;margin-left: 114px">
+                    <ul class="c_ul_1">
+                        <li><span style="font-size: 27px;font-weight: 100;margin-left: 30px;color: #FFF">successfully</span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Updated</span></li>
                     </ul>
                 </div>
             </div>

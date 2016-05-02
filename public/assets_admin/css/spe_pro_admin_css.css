@@ -804,7 +804,7 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	padding:8px;
 	background:#4CBC5B;
 	width:338px;
-	height:338px;
+
 	margin-top:10%;
 
 	box-shadow:0px 0px 10px #000000;
@@ -1098,6 +1098,15 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 }
 .profile_edit_span:hover{
 	font-size: 16px;
+
+}
+
+
+.c_user_name{
+	font-size: 12px;
+}
+.c_user_name:hover{
+	font-size: 14px;
 
 }
 /*--------------------------End patient admin CSS  --------------------------------------*/
