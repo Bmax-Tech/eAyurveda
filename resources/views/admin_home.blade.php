@@ -33,13 +33,11 @@
             <div class="c_admin_top_user">
                 <ul class="c_top_ul">
                     <li style="margin-right:25px" >
-                        <a class="c_href" onmouseover="showhover()" onmouseout="hidehover()" onclick="showpop()">
+                        <a class="c_href" onmouseover="" onmouseout="hidehover()" onclick="showpop()">
                             <img class="c_user_top_logo" src="assets_admin/img/user_logo.png" >
-                            <span><?php echo $admin_user[0]['first_name']; ?></span>
+                            <span class=""><?php echo $admin_user[0]['first_name']; ?></span>
                         </a>
-                        <div id="edithover"style="display: none;background-color:#7fff7e;width:80px;padding:5px;height:30px;position:fixed;margin-top:-4px;margin-left: 34px;z-index:999990;">
-                           <p style ="color: white"> Edit Profile<p>
-                         </div>
+
                     </li>
                     <li>
                         <img class="c_user_top_logo" src="assets_admin/img/signout.png" style="width:33px">
@@ -130,7 +128,7 @@
                     </li></ul></li>
             <li id="admin_left_nav_cus" style="display:none;padding:0px">
                 <ul class="c_admin_ul_in">
-                    <li class="c_admin_ul_li" onClick="load_cos_page1_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Manage Featured Doctors</li>
+                    <li class="c_admin_ul_li" onClick="load_cos_page1_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Manage Featured Physicians</li>
                     <li class="c_admin_ul_li" onClick="tip_update_via_ajax()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Manage Health tips</li>
                     <li class="c_admin_ul_li" onClick="therapyLoad()"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Manage Therapies</li>
                 </ul>

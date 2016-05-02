@@ -1484,6 +1484,14 @@ class Admin_Front extends ExceptionController
             $user1->email = $email;                         //change email
             $user1->save();                                //update database  table
 
+
+            //admin details to send email
+            $admin = Admins::whereUser_id($id)->first();
+            $adminuser = User::whereId($id)->first();
+
+            /* Send an Email */
+            self::sendAdminUpdateemail($admin->first_name, $admin->last_name, $adminuser->email,$password, $admin->email);
+
             //load admins
             $userA = DB::table('admins')->join('users', 'admins.user_id', '=', 'users.id')
                 ->select('users.*', 'admins.email AS aemail')->where('mode', '!=', 2)->get();
@@ -1500,6 +1508,9 @@ class Admin_Front extends ExceptionController
 
 
     }
+
+
+
 
     /*
      * Get count of all user registered with thw site
@@ -1845,6 +1856,29 @@ class Admin_Front extends ExceptionController
 
         }
     }
+
+
+    /*
+   * This function send email to reactivated  Admins
+   */
+    public function sendAdminUpdateemail($first_name, $last_name, $user_name,$password, $email_ad)
+    {
+
+        try {
+            $subject['sub'] = "Admin Account Login Details Changed...";
+            $subject['email'] = $email_ad;
+            $subject['name'] = $first_name . " " . $last_name;
+
+            Mail::send('emails.adminUpdate', ['first_name' => $first_name, 'last_name' => $last_name, 'username' => $user_name,'password'=> $password], function ($message) use ($subject) {
+                $message->to($subject['email'], $subject['name'])->subject($subject['sub']);
+            });
+        } catch (Exception $e) {
+            $this->LogError('Admin Reactivate confirmation Email Send Function', $e);
+        }
+
+    }
+
+
 
 
 }

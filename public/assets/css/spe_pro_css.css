@@ -1573,3 +1573,13 @@ body::-webkit-scrollbar-thumb
 .c_confirm_loc_btn:hover{
 	background: #15003E;
 }
+
+
+#c_loading_msg1{
+	display:none;
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0px;
+	z-index:999999;
+}

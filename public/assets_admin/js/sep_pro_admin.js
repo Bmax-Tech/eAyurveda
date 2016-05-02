@@ -1800,16 +1800,19 @@ function updateAdmin(){
 
 	if(cmp =="true"){
 
+		$("#c_admin_update_msg").show();
+		$("#adminpoup").hide();
+
 
 		var username=$("#unameA").val();
 		var email=$("#email").val();
 		var password=$("#pwrd").val();
 		var adminid =$("#hidden_click_admin_id").val();
-		var dataString = "id=" + adminid + "username=" + username + "email=" + email +"password=" +password;
+		var dataString = "id=" + adminid + "&username=" + username + "&email=" + email +"&password=" +password;
 		var new_url = '/admin/update/' + adminid + '/' + username + "/" + email +"/" +password;
 
 		$.ajax({
-			type: 'GET',
+			type: 'post',
 			dataType: "json",
 			url: new_url,
 			data: dataString,
@@ -1823,9 +1826,7 @@ function updateAdmin(){
 
 		});
 	}
-	else {
 
-	}
 };
 
 
