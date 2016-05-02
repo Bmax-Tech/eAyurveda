@@ -5,7 +5,7 @@
 <input type="hidden" id="register_page" value="YES"/>
 <div class="container c_container">
     <div class="col-lg-6" style="padding-top:10px">
-        <form action="{{URL::to('register/save')}}" method="post" onsubmit="return valid_registration()" name="registration">
+        <form action="{{URL::to('register/save')}}" method="post" id="registration_form" onsubmit="return valid_registration()" name="registration">
         <ul class="c_ul_1">
             <li class="c_add_margin_20" style="margin-bottom:30px">
                 <span class="c_font_2" style="color:#39B54A">Register</span>
@@ -177,23 +177,9 @@
 </div>
 <!-- Registration Form -->
 
-<?php
-    if(isset($success_reg)){
-?>
-<script>
-    // This function will be using to redirect into a page
-    function change_window_location(para_1){
-        setTimeout(function(){
-            window.location = para_1;
-        },3000);
-    };
-
-    window.change_window_location("{{ URL::asset('') }}");
-</script>
-
 <!-- Thanking Messages -->
-<div class="container c_pop_up_box_2" id="c_thanking_msg" style="display: block">
-    <div class="center-block c_pop_box_1_wrapper" style="margin-top: 15%;width: 412px">
+<div class="container c_pop_up_box_2" id="c_thanking_msg" style="background: rgba(0, 0, 0, 0.44)">
+    <div class="center-block c_pop_box_1_wrapper" style="margin-top: 20%;width: 412px;display: none" id="registration_success">
         <div style="background: #DAA100;height: 145px;padding-top: 32px">
 
             <div class="container c_no_padding col-lg-12">
@@ -208,10 +194,45 @@
 
         </div>
     </div>
+    <div class="center-block c_pop_box_1_wrapper" style="margin-top: 20%;width: 412px;display: none" id="registration_pending">
+        <div style="background: #1554B3;height: 145px;padding-top: 32px">
+
+            <div class="container c_no_padding col-lg-12">
+                <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px">
+                    <img src="{{ URL::asset('assets/img/loading_3.gif') }}" style="width: 100px;margin-top: 25px">
+                </div>
+                <div class="col-lg-8 c_no_padding" style="margin-top: -46px;margin-left: 138px">
+                    <ul class="c_ul_1">
+                        <li><span style="font-size: 27px;font-weight: 100;margin-left: 30px;color: #FFF">Submitting</span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF"> your registration details</span></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <input type="hidden" id="redirect_url" value="{{ URL::asset('') }}"/>
 </div>
 <!-- Thanking Messages -->
+
+<?php
+    if(isset($success_reg)){
+?>
+<script>
+    // This function will be using to redirect into a page
+    function change_window_location(para_1){
+        setTimeout(function(){
+            window.location = para_1;
+        },3000);
+    };
+
+    window.change_window_location("{{ URL::asset('') }}");
+</script>
+
 <?php
 }
 ?>
+
+
 
 @stop

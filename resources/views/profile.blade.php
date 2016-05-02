@@ -331,7 +331,7 @@
         function startup() {
             setTimeout( function() {
                 mapCanvas = document.getElementById("map-canvas");
-                mapInitialize( new google.maps.LatLng(7.0917, 80.0000), 15 );
+                mapInitialize( new google.maps.LatLng({{ $doctor['doctor_data']->latitude }}, {{ $doctor['doctor_data']->longitude }}), 15 );
             }, 125 );
         }
     </script>

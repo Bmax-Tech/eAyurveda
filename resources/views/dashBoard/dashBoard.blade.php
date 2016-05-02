@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-lime">
+                    <div class="small-box bg-lime" style="background: #0CDC29 !important">
                         <div class="inner">
                             <h3><?php echo $top_count; ?> </h3>
                             <p>Registered Users</p>
@@ -30,7 +30,7 @@
                 </div><!-- ./col -->
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-teal">
+                    <div class="small-box bg-teal" style="background: #39CC6D !important">
                         <div class="inner">
                             <!-- <h3>53<sup style="font-size: 20px">%</sup></h3> -->
                             <h3><?php echo $new_count; ?> </h3>
@@ -44,7 +44,7 @@
                 </div><!-- ./col -->
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-olive">
+                    <div class="small-box bg-olive" style="background: #19C5A6 !important">
                         <div class="inner">
                             <h3><?php echo $formal_doctor_count; ?> </h3>
                             <p>Formal Doctors</p>
@@ -57,7 +57,7 @@
                 </div><!-- ./col -->
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-green">
+                    <div class="small-box bg-green" style="background: #23A4C1 !important">
                         <div class="inner">
                             <h3><?php echo $nonformal_doctor_count; ?></h3>
                             <p>Non Formal Doctors</p>

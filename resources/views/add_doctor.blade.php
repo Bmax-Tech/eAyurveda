@@ -8,7 +8,7 @@
 <!-- Add Doctor Form -->
 <div class="container c_container">
     <div class="col-lg-8" style="padding-top:10px">
-        <form action="{{URL::to('adddoctor/save')}}" method="post" onsubmit="return valid_registration()" name="registration">
+        <form action="{{URL::to('adddoctor/save')}}" id="doctor_add_form" method="post" onsubmit="return valid_registration()" name="registration">
         <ul class="c_ul_1">
             <li class="c_add_margin_20" style="margin-bottom:30px">
                 <img src="{{ URL::asset('assets/img/idea.png') }}" style="width: 45px;margin-top: -25px;margin-right: 15px;"><span class="c_font_2" style="color:#39B54A">Suggest Doctor to Community</span>
@@ -183,75 +183,76 @@
 </div>
 
 <!-- Preview Pop Up -->
-<div class="container c_pop_up_box_2" style="background: rgba(218, 218, 218, 0.19)" id="c_preview_pop_up">
-    <div class="center-block c_pop_box_1_wrapper" style="margin-top: 4.65%;width:70%;max-width: 1056px" id="c_preview_pop_up_inner">
-        <div style="background: #DAA100;padding-top: 2px">
-            <div class="container c_no_padding" style="max-width: 100%;width: 100%;padding: 0px 15px">
-                <div class="col-lg-7 c_no_padding" style="padding-right: 20px">
+<div class="container c_pop_up_box_2" style="background: rgba(0, 0, 0, 0.44);display: none" id="c_preview_pop_up">
+    <div class="center-block c_pop_box_1_wrapper" style="padding: 0px;margin-top: 4.65%;width:70%;max-width: 1056px" id="c_preview_pop_up_inner">
+        <div style="background: #39B54A">
+            <span style="color: #FFF;margin-left: 20px;font-size: 20px" id="user_name_chat_pop_up"><img src="{{ URL::asset('assets/img/visible_icon.png') }}" style="margin-right: 20px;">Profile Preview</span>
+            <img src="{{ URL::asset('assets/img/close_chat_btn.png') }}" style="float: right;width: 20px;margin: 15px;cursor: pointer" onclick="preview_close()">
+        </div>
+        <div style="background: #ffffff;">
+            <div class="container c_no_padding" style="max-width: 100%;width: 100%;padding: 0px">
+                <div class="col-lg-7 c_no_padding" style="padding: 20px">
                     <ul class="c_ul_1" style="margin-bottom: 0px">
-                        <li style="margin-top: 15px;margin-bottom:25px">
-                           <span class="c_font_2" style="color:#ffffff"><img src="{{ URL::asset('assets/img/visible_icon.png') }}" style="margin-right: 20px;margin-top: -8px">Profile Preview</span>
-                        </li>
                         <li>
-                            <ul class="c_top_ul" style="color: #FFF">
-                                <li style="width: 130px"><span style="font-size: 16px">Name</span></li>
+                            <ul class="c_top_ul" style="color: rgba(0, 0, 0, 0.56)">
+                                <li style="width: 130px"><span style="font-size: 15px;font-weight: 500">Name</span></li>
                                 <li style="width: 20px">:</li>
                                 <li><span id="c_pre_name" style="color: #000"></span></li>
                             </ul>
                         </li>
                         <li style="margin-top: 10px">
-                            <ul class="c_top_ul" style="color: #FFF">
-                                <li style="width: 130px"><span style="font-size: 16px">Gender</span></li>
+                            <ul class="c_top_ul" style="color: rgba(0, 0, 0, 0.56)">
+                                <li style="width: 130px"><span style="font-size: 15px;font-weight: 500">Gender</span></li>
                                 <li style="width: 20px">:</li>
                                 <li><span id="c_pre_gender"  style="color: #000"></span></li>
                             </ul>
                         </li>
                         <li style="margin-top: 10px">
-                            <ul class="c_top_ul" style="color: #FFF">
-                                <li style="width: 130px"><span style="font-size: 16px">Address 1</span></li>
+                            <ul class="c_top_ul" style="color: rgba(0, 0, 0, 0.56)">
+                                <li style="width: 130px"><span style="font-size: 15px;font-weight: 500">Address 1</span></li>
                                 <li style="width: 20px">:</li>
                                 <li><span id="c_pre_address_1"  style="color: #000"></span></li>
                             </ul>
                         </li>
                         <li style="margin-top: 10px">
-                            <ul class="c_top_ul" style="color: #FFF">
-                                <li style="width: 130px"><span style="font-size: 16px">Address 2</span></li>
+                            <ul class="c_top_ul" style="color: rgba(0, 0, 0, 0.56)">
+                                <li style="width: 130px"><span style="font-size: 15px;font-weight: 500">Address 2</span></li>
                                 <li style="width: 20px">:</li>
                                 <li><span id="c_pre_address_2"  style="color: #000"></span></li>
                             </ul>
                         </li>
                         <li style="margin-top: 10px">
-                            <ul class="c_top_ul" style="color: #FFF">
-                                <li style="width: 130px"><span style="font-size: 16px">City</span></li>
+                            <ul class="c_top_ul" style="color: rgba(0, 0, 0, 0.56)">
+                                <li style="width: 130px"><span style="font-size: 15px;font-weight: 500">City</span></li>
                                 <li style="width: 20px">:</li>
                                 <li><span id="c_pre_city"  style="color: #000"></span></li>
                             </ul>
                         </li>
                         <li style="margin-top: 10px">
-                            <ul class="c_top_ul" style="color: #FFF">
-                                <li style="width: 130px"><span style="font-size: 16px">District</span></li>
+                            <ul class="c_top_ul" style="color: rgba(0, 0, 0, 0.56)">
+                                <li style="width: 130px"><span style="font-size: 15px;font-weight: 500">District</span></li>
                                 <li style="width: 20px">:</li>
                                 <li><span id="c_pre_district"  style="color: #000"></span></li>
                             </ul>
                         </li>
                         <li style="margin-top: 10px">
-                            <ul class="c_top_ul" style="color: #FFF">
-                                <li style="width: 130px"><span style="font-size: 16px">Contact No</span></li>
+                            <ul class="c_top_ul" style="color: rgba(0, 0, 0, 0.56)">
+                                <li style="width: 130px"><span style="font-size: 15px;font-weight: 500">Contact No</span></li>
                                 <li style="width: 20px">:</li>
                                 <li><span id="c_pre_contact_no"  style="color: #000"></span></li>
                             </ul>
                         </li>
                         <li style="margin-top: 10px">
-                            <ul class="c_top_ul" style="color: #FFF">
-                                <li style="width: 130px"><span style="font-size: 16px">Email Address</span></li>
+                            <ul class="c_top_ul" style="color: rgba(0, 0, 0, 0.56)">
+                                <li style="width: 130px"><span style="font-size: 15px;font-weight: 500">Email Address</span></li>
                                 <li style="width: 20px">:</li>
                                 <li><span id="c_pre_email"  style="color: #000"></span></li>
                             </ul>
                         </li>
                         <li style="margin-top: 10px">
                             <table width="100%">
-                                <tr style="color: #FFF">
-                                    <td style="width: 130px" valign="top"><span style="font-size: 16px">About Doctor</span></td>
+                                <tr style="color: rgba(0, 0, 0, 0.56)">
+                                    <td style="width: 130px" valign="top"><span style="font-size: 15px;font-weight: 500">About Doctor</span></td>
                                     <td style="width: 27px" valign="top">&nbsp;:</td>
                                     <td><div id="c_pre_description"></div></td>
                                 </tr>
@@ -259,32 +260,43 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-lg-5 c_no_padding" style="padding-left: 10px;padding-top: 10px">
+                <div class="col-lg-5 c_no_padding" style="">
                     <ul class="c_ul_1">
                         <li style="margin-top: 15px;margin-bottom:15px">
-                            <span class="c_font_2" style="color:#ffffff;font-size: 24px">Specializations</span>
+                            <span class="c_font_2" style="color:rgba(0, 0, 0, 0.56);font-size: 24px;font-weight: 500">Specializations</span>
                         </li>
-                        <li>
+                        <li style="padding-right: 20px">
                             <div class="c_pre_opt" id="c_pre_spec_div">
                                 <!-- Load Specializations -->
                             </div>
                         </li>
                         <li style="margin-top: 15px;margin-bottom:15px">
-                            <span class="c_font_2" style="color:#ffffff;font-size: 24px">Treatments</span>
+                            <span class="c_font_2" style="color:rgba(0, 0, 0, 0.56);font-size: 24px;font-weight: 500">Treatments</span>
                         </li>
-                        <li>
+                        <li style="padding-right: 20px">
                             <div class="c_pre_opt" id="c_pre_treat_div">
                                 <!-- Load Treatments -->
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="col-lg-12 c_no_padding" style="padding-top: 40px;padding-bottom: 15px;padding-left: 26%">
-                    <button type="button" class="c_pre_btn" onclick="preview_submit()" style="padding-bottom: 12px;margin-right: 8px"><img src="{{ URL::asset('assets/img/save_icon.png') }}" style="width: 25px;margin-right: 20px;">Submit</button>
-                    <button type="button" class="c_pre_btn" onclick="preview_close()" style="padding: 7px 50px"><img src="{{ URL::asset('assets/img/cancel_icon.png') }}" style="width: 35px;margin-right: 20px;">Cancel</button>
+                <div class="col-lg-12 c_no_padding" style="padding:20px">
+                    <div class="col-lg-6 c_no_padding" style="padding: 0px 5px 0px 0px">
+                        <button type="button" class="c_pre_btn" onclick="preview_submit()" style="background: #39B54A;padding: 10px 50px;width: 100%"><img src="{{ URL::asset('assets/img/save_icon.png') }}" style="width: 25px;margin-right: 20px;">Submit</button>
+                    </div>
+                    <div class="col-lg-6 c_no_padding" style="padding: 0px 0px 0px 5px">
+                        <button type="button" class="c_pre_btn" onclick="preview_close()" style="background: #393DB5;padding: 6px 50px;width: 100%"><img src="{{ URL::asset('assets/img/cancel_icon.png') }}" style="width: 35px;margin-right: 20px;">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="waiting_confirm" style="padding: 28px 93px;display: none">
+        <img style="float: left;width: 55px" src="{{ URL::asset('assets/img/doctor.png') }}"><p style="float: left;font-size: 18px;margin: 10px 25px;">Adding New Doctor</p>
+    </div>
+    <div class="confirm_success" style="display: none">
+        <img style="float: left" src="{{ URL::asset('assets/img/ok_3.png') }}"><p style="float: left;font-size: 18px;margin: 10px 25px;">Successfully Saved</p>
     </div>
 </div>
 <!-- Preview Pop Up -->

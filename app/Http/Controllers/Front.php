@@ -11,6 +11,7 @@ use App\Patients;
 use App\ProfileViews;
 use App\RecentlyViewed;
 use App\Specialization;
+use App\Therapies;
 use App\Treatments;
 use App\User;
 use App\Doctors;
@@ -173,7 +174,10 @@ class Front extends ExceptionController
                 /* Send an Email */
                 self::send_email($request->first_name,$request->last_name,$request->username,$request->email);
 
-                return view('register', array('success_reg' => 'YES'));
+                //return view('register', array('success_reg' => 'YES'));
+                $res['CHECK'] = "SUCCESS";
+                /* Return Json Type Object */
+                return response()->json($res);
             } else {
 
                 /*
@@ -186,7 +190,8 @@ class Front extends ExceptionController
 
     public function login(Request $request){
         try {
-            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereMode(2)->first();
+            // Users only allowed to login if Mode is in 1 ro 2
+            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->whereIn("mode",array(1,2))->first();
         }catch (Exception $e){
             $this->LogError('Login function in User Search',$e);
         }
@@ -328,7 +333,8 @@ class Front extends ExceptionController
             User::create([
                 'name' => Input::get('first_name'),
                 'email' => $time_stamp,
-                'password' => md5($time_stamp)
+                'password' => md5($time_stamp),
+                'mode' => 1
             ]);
             $user = User::whereEmail($time_stamp)->wherePassword(md5($time_stamp))->first();
 
@@ -403,14 +409,17 @@ class Front extends ExceptionController
             $this->LogError('Non Formal Doctor Create Function',$e);
         }
 
-        return Redirect::to('/adddoctor');
+        $res['CHECK'] = "SUCCESS";
+        /* Return Json Type Object */
+        return response()->json($res);
     }
 
     /*
      * Ayurvedic Therapies
      */
     public function spa(Request $request){
-        return view('ayurvedic_therapies');
+        $therapies_data = Therapies::get();
+        return view('ayurvedic_therapies',array('therapies' => $therapies_data));
     }
 
     /*

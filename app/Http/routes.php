@@ -126,6 +126,8 @@ Route::post('/CheckDoctorEmailUserName','AjaxControll@UpdateDoctorCheck');
 Route::post('/get_comments_on_doctor','AjaxControll@GetCommentsOnDoctor');
 Route::post('/GetDoctorPageAreaChart','AjaxControll@GetAreaChartOnDoc');
 Route::post('/GetDoctorPagePieChart','AjaxControll@GetPieChartOnDoc');
+Route::post('/CheckSubscriberEmail','AjaxControll@CheckSubscriberEmail');
+Route::post('/SaveNewsLetterSub','AjaxControll@SaveNewsLetterSub');
 
 /*
  * ---------------------  Ajax Routes End  ----------------------

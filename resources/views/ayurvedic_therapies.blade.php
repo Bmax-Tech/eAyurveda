@@ -15,31 +15,16 @@
             <h1 style=" color: #39B54A;margin: 0px;padding-top: 275px;font-size: 45px">Ayurvedic Therapies</h1>
         </div>
     </div>
-
     <div class="col-lg-12 c_no_padding" style="margin-top: 30px">
     <?php
-        for($i=0;$i<3;$i++)
+        for($i=0;$i<sizeof($therapies);$i++)
         {
     ?>
         <div class="col-lg-4 wow slideInUp">
             <div class="c_therapy_cards">
-                <div style="background-image: url({{ URL::asset('assets/ayurvedic_therapies/ayurvedic_therapy_1.jpg') }})" class="c_therapy_icon"></div>
-                <p class="c_therapy_heading">Panchakarma</p>
-                <p class="c_therapy_des">Panchakarma can help by reversing these negative effects of daily living. It can restore your natural state of health and wellness by cleansing your body of toxins, bringing balance into your system and improving bodily function. It can also help you sustain this process by making positive changes in lifestyle</p>
-            </div>
-        </div>
-        <div class="col-lg-4 wow slideInUp">
-            <div class="c_therapy_cards">
-                <div style="background-image: url({{ URL::asset('assets/ayurvedic_therapies/ayurvedic_therapy_2.jpg') }})" class="c_therapy_icon"></div>
-                <p class="c_therapy_heading">Pranayama</p>
-                <p class="c_therapy_des">Panchakarma can help by reversing these negative effects of daily living. It can restore your natural state of health and wellness by cleansing your body of toxins, bringing balance into your system and improving bodily function. It can also help you sustain this process by making positive changes in lifestyle</p>
-            </div>
-        </div>
-        <div class="col-lg-4 wow slideInUp">
-            <div class="c_therapy_cards">
-                <div style="background-image: url({{ URL::asset('assets/ayurvedic_therapies/ayurvedic_therapy_3.jpg') }})" class="c_therapy_icon"></div>
-                <p class="c_therapy_heading">Abhyanga</p>
-                <p class="c_therapy_des">Panchakarma can help by reversing these negative effects of daily living. It can restore your natural state of health and wellness by cleansing your body of toxins, bringing balance into your system and improving bodily function. It can also help you sustain this process by making positive changes in lifestyle</p>
+                <div style="background-image: url({{ URL::asset($therapies[$i]->image_path) }})" class="c_therapy_icon"></div>
+                <p class="c_therapy_heading">{{ $therapies[$i]->name }}</p>
+                <p class="c_therapy_des">{{ $therapies[$i]->description }}</p>
             </div>
         </div>
     <?php
