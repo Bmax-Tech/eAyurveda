@@ -19,6 +19,7 @@ class Patients extends Model
         'nic',
         'contact_number',
         'email',
+        'comments',
         'spam_count',
         'reg_date',
         'created_at',

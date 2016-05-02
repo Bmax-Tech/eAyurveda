@@ -1,7 +1,7 @@
 <div style="font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue'">
     <div><img style="width: 250px" src="http://php-eayurveda.rhcloud.com/assets/img/logo.png"></div>
     <div><span style="color: #339a44;font-size: 24px">Welcome Again</span>&nbsp;&nbsp;{{ $first_name }}&nbsp;{{ $last_name }}</div>
-    <div style="margin-top: 10px">Youre Ayurveda.lk Admin account has reactivated. </div>
+    <div style="margin-top: 10px">Your Ayurveda.lk Admin account has reactivated. </div>
     <br/>
     <div>Your eAyurveda user name is : <span style="color:#2b669a">{{ $username }}</span></div>
     <br/>

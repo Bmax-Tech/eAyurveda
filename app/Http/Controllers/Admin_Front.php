@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\URL;
 
 
 
+
 class Admin_Front extends ExceptionController
 {
     /*
@@ -133,7 +134,8 @@ class Admin_Front extends ExceptionController
     {
         try {
 
-            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))->where(function ($q4) {
+            $user = User::whereEmail($request->username)->wherePassword(md5($request->password))
+                ->where(function ($q4) {
                 $q4->whereMode(1)->orWhere('mode', '=', 2);
             })->first();
         } catch (Exception $e) {
@@ -142,10 +144,12 @@ class Admin_Front extends ExceptionController
 
         // Check whether username and password are matching
         if (isset($user)) {
+
             // Create session to store logged user details
             $user_ob = array(['id' => $user->id, 'first_name' => $user->name, 'mode' => $user->mode]);
             setcookie('admin_user', json_encode($user_ob), time() + 3600); // Cookie is set for 2 hour
             return redirect('/admin_panel_home');
+
         } else {
             if (User::whereEmail($request->username)->first()) {
                 // Check whether password is incorrect
@@ -335,7 +339,11 @@ class Admin_Front extends ExceptionController
 
             $count1 = sizeof($patients);  //get the count of users in the current page
 
-            $count = DB::select('SELECT COUNT(*) AS count FROM patients  INNER JOIN images ON patients.user_id = images.user_id ');
+
+            $patientsAll = DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')
+                ->join('users', 'patients.user_id', '=', 'users.id')->select('images.image_path', 'patients.*')
+                ->where('users.mode', '!=', 0)->get();
+            $count = sizeof($patientsAll);
 
             $HTMLView = (String)view('admin_patients_views.user_view')->with(['patients' => $patients]);
             $res['count'] = $count;
@@ -380,7 +388,10 @@ class Admin_Front extends ExceptionController
              */
 
             $count2 = DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')
-                ->orderBy('reg_date', 'desc')->where('reg_date', '>=', gmdate('Y-m-d 00:00:00 ', strtotime('-7 days')))
+                ->join('users', 'patients.user_id', '=', 'users.id')->select('images.image_path', 'patients.*')
+                ->orderBy('reg_date', 'desc')
+                ->where('users.mode', '!=', 0)
+                ->where('reg_date', '>=', gmdate('Y-m-d 00:00:00 ', strtotime('-7 days')))
                 ->get();
 
             $count = sizeof($count2);  //count of all the users registered within 7 days
@@ -424,8 +435,12 @@ class Admin_Front extends ExceptionController
             $count1 = sizeof($patients);
 
             //Get count of all users having count greater than 4
-            $count = DB::select('SELECT COUNT(*) AS count FROM patients INNER JOIN images  ON patients.user_id = images.user_id INNER JOIN users  ON patients.user_id = users.id Where spam_count >= 4');
-
+            //Get user data from patients and users table
+            $patientsTot = DB::table('patients')->join('images', 'patients.user_id', '=', 'images.user_id')
+                ->join('users', 'patients.user_id', '=', 'users.id')->select('images.image_path', 'patients.*')
+                ->orderBy('reg_date', 'desc')
+                ->where("spam_count", ">=", 4)->orWhere("users.mode", "=", 0)->get();
+            $count = sizeof($patientsTot);
             /*     $patients1= Patients::orderBy('reg_date','desc');*/
             $HTMLView = (String)view('admin_patients_views.inap_user')->with(['comment' => $patients]);
             $res['count'] = $count;
@@ -1287,10 +1302,11 @@ class Admin_Front extends ExceptionController
      */
     public function blockUser(Request $request, $user_id)
     {
-
+           $reason = Input::get('reason');
         try {
             //block the user
             User::where('id', $user_id)->update(['mode' => 0]);
+            Patients::where('user_id', $user_id)->update(['comments' => $reason]);
 
             $user = Patients::whereUser_id($user_id)->first();
             /* Send an Email */
@@ -1670,4 +1686,169 @@ class Admin_Front extends ExceptionController
 
         return response()->json($res);
     }
+
+
+/*
+ * Change profile first name
+ */
+    public function updateFName(Request $request){
+
+        $name =Input::get('fname');
+        if (isset($_COOKIE['admin_user'])) {
+            $id = json_decode($_COOKIE['admin_user'], true);
+
+            try{
+
+            $user = User::whereId($id[0]['id'])->first();
+             $user->name=$name;
+             $user->save();
+
+            $admin = Admins::whereUser_id($id[0]['id'])->first();
+            $admin->first_name = $name;
+            $admin->save();
+
+
+            $res['name'] = $name;
+            return response()->json($res);
+
+            } catch (Exception $e) {
+                $this->LogError('AdminController Register_Page Function', $e);
+            }
+
+        } else {
+
+            return redirect('/admin_panel_login');
+
+        }
+    }
+
+
+    /*
+     * Change profile last name
+     */
+    public function updateLName(Request $request){
+
+        $name =Input::get('lname');
+        if (isset($_COOKIE['admin_user'])) {
+            $id = json_decode($_COOKIE['admin_user'], true);
+
+             try{
+
+            $admin = Admins::whereUser_id($id[0]['id'])->first();
+            $admin->last_name = $name;
+            $admin->save();
+
+
+            $res['name'] = $name;
+            return response()->json($res);
+
+             } catch (Exception $e) {
+                 $this->LogError('AdminController Register_Page Function', $e);
+             }
+
+        } else {
+
+            return redirect('/admin_panel_login');
+
+        }
+    }
+
+
+    /*
+    * Change profile email
+    */
+    public function updateEmail(Request $request){
+
+        $name =Input::get('email');
+        if (isset($_COOKIE['admin_user'])) {
+            $id = json_decode($_COOKIE['admin_user'], true);
+
+            try{
+
+
+                $admin = Admins::whereUser_id($id[0]['id'])->first();
+                $admin->email = $name;
+                $admin->save();
+
+
+                $res['name'] = $name;
+                return response()->json($res);
+
+            } catch (Exception $e) {
+                $this->LogError('AdminController Register_Page Function', $e);
+            }
+
+        } else {
+
+            return redirect('/admin_panel_login');
+
+        }
+    }
+
+
+    /*
+         * Change profile user name
+         */
+    public function updateUName(Request $request){
+
+        $name =Input::get('uname');
+        if (isset($_COOKIE['admin_user'])) {
+            $id = json_decode($_COOKIE['admin_user'], true);
+
+
+          try{
+            $user = User::whereId($id[0]['id'])->first();
+            $user->email=$name;
+            $user->save();
+
+
+            $res['name'] = $name;
+            return response()->json($res);
+
+          } catch (Exception $e) {
+              $this->LogError('AdminController Register_Page Function', $e);
+          }
+
+        } else {
+
+            return redirect('/admin_panel_login');
+
+        }
+    }
+
+
+    /*
+     * Change profile Password
+     */
+    public function updatePassword(Request $request){
+
+        $name =Input::get('password');
+        if (isset($_COOKIE['admin_user'])) {
+            $id = json_decode($_COOKIE['admin_user'], true);
+
+
+           try {
+               $user = User::whereId($id[0]['id'])->first();
+               $user->password = md5($name);
+               $user->save();
+
+               $res['name'] = $name;
+               return response()->json($res);
+
+           } catch (Exception $e) {
+            $this->LogError('AdminController Register_Page Function', $e);
+        }
+
+        } else {
+
+            return redirect('/admin_panel_login');
+
+        }
+    }
+
+
 }
+
+
+
+

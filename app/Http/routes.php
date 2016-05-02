@@ -78,6 +78,11 @@ Route::post('/admin_panel/updatefet','Admin_Front@featuredDoctorUpdate');
 Route::post('/admin_panel/removefet','Admin_Front@featuredDoctorRemove');
 
 
+Route::post('admin/update/profile/fname','Admin_Front@updateFName');
+Route::post('admin/update/profile/lname','Admin_Front@updateLName');
+Route::post('admin/update/profile/email','Admin_Front@updateEmail');
+Route::post('admin/update/profile/uname','Admin_Front@updateUName');
+Route::post('admin/update/profile/password','Admin_Front@updatePassword');
 Route::post('/admin/tip/{des1}/{des2}/{tip}','Admin_Front@tip');
 Route::get('/admin/tip/{des1}/{des2}/{tip}/{hid}','Admin_Front@tipUpdate');
 Route::get('/admin/update/{id}/{username}/{email}/{password}','Admin_Front@adminUpdate');

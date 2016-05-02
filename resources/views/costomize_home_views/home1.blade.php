@@ -16,8 +16,8 @@
 						<table style="width:540px;margin-left: -15px;">
 							<tr>
 								<td >
-									<p id="head1" style=" background:rgba(85,85,85,0.87);font-size:10px;color:rgba(255,255,255,1.00);display:inline-block;padding:5px 5px;padding-left:15px;padding-right:15px">
-										Hint 1
+									<p id="tip1" style=" background:rgba(85,85,85,0.87);font-size:10px;color:rgba(255,255,255,1.00);display:inline-block;padding:5px 5px;padding-left:15px;padding-right:15px">
+										Health Tip
 									</p>
 								</td>
 
@@ -26,8 +26,8 @@
 						<table style="width:540px;margin-top: 15px;margin-left: -15px;margin-top:-5px">
 							<tr>
 								<td >
-									<p id="head2" style=" background:rgba(0,0,0,0.87);font-size:12px;color:rgba(255,255,255,1.00);display:inline-block;padding:5px 5px;padding-left:15px;padding-right:15px">
-										Hint 2
+									<p id="head1" style=" background:rgba(0,0,0,0.87);font-size:12px;color:rgba(255,255,255,1.00);display:inline-block;padding:5px 5px;padding-left:15px;padding-right:15px">
+										Hint 1
 									</p>
 								</td>
 
@@ -36,8 +36,8 @@
 				</div>
 				<span class="pat_health_head">Health Tip !</span>
 				<div class="pat_sub_banner container" >
-                        <p id="tip1">
-							 Health Tip Loads Here
+                        <p id="head2">
+							Hint 2
 						</p>
                 </div>
 		  </div>
@@ -62,7 +62,7 @@
 						  <b>Quick Actions </b>
 					  </div>
 				  </div>
-				  <div id="" class="col-lg-12" Style="height:184px;overflow-y: scroll">
+				  <div id="" class="col-lg-12" Style="height:178px;overflow-y: scroll">
 					  <table id="" class="col-lg-12 over tabledesign2" >
                          <?php foreach($tipload as $tipset) {?>
 						  <tr  class="tipid_<?php echo $tipset->hid; ?> common" style="background-color:#fff;height:35px;border:1px solid #ddd;" >
@@ -89,33 +89,33 @@
 
 		<div class="col-lg-6" style="margin-left: -14px;">
 		   <div class="col-lg-6" style="margin-top: 7px">
-			   Hint 1
-		   </div><span class="c_warning_tips_reg " id="wrn_header1"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Empty Hint</span>
+			   Health Tip
+		   </div><span class="c_warning_tips_reg " id="wrn_tip"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Empty Tip</span>
 		   <div id="ii" class="col-lg-12" style="margin-top: 5px">
-			   <input onkeyup="onChange();" onkeypress="remove_wrn('header1')" onchange="remove_wrn('header1')" id="des1" class="c_text_box_1" name="header1" type="text" maxlength="100"autocomplete="off" spellcheck="false">
+			   <input onkeyup="onChangetip();" onkeypress="remove_wrn('tip')" onchange="remove_wrn('tip')" id="tiptip" class="c_text_box_1" name="tip" type="text" maxlength="50"autocomplete="off" spellcheck="false " placeholder="Allowed only 50 characters ">
 		   </div>
         </div>
 		<div class="col-lg-6">
 		   <div class="col-lg-6" style="margin-top: 7px">
-		     	 Hint 2
-	    	</div><span class="c_warning_tips_reg" id="wrn_header2"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Empty Hint</span>
+		     	 Hint 1
+	    	</div><span class="c_warning_tips_reg" id="wrn_header1"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Empty Hint</span>
 		   <div class="col-lg-12" style="margin-top: 5px">
-			   <input onkeyup="onChange1();" onkeypress="remove_wrn('header2')" onchange="remove_wrn('header2')" id="des2" class="c_text_box_1" maxlength="80" name="header2" type="text" autocomplete="off" spellcheck="false">
+			   <input onkeyup="onChange();" onkeypress="remove_wrn('header1')" onchange="remove_wrn('header1')" id="des1" class="c_text_box_1" maxlength="40" name="header1" type="text" autocomplete="off" spellcheck="false" placeholder="Allowed only 40 characters ">
 		   </div>
 		</div>
 
 		 <div class="col-lg-3" style="margin-top: 12px">
-			 Health Tip
-		 </div><span class="c_warning_tips_reg" id="wrn_tip" style="margin-top: 12px"><span class="glyphicon glyphicon-asterisk" aria-hidden="true" ></span> Empty Tip</span>
+			 Hint 2
+		 </div><span class="c_warning_tips_reg" id="wrn_header2" style="margin-top: 12px"><span class="glyphicon glyphicon-asterisk" aria-hidden="true" ></span> Empty Hint</span>
 		 <div class="col-lg-12" style="margin-top: 5px">
-			 <textarea  onkeyup="onChangetip();" id="tiptip" class="pat_admin_text_area1" name="tip"  style="width:830px;" maxlength="280"  onkeypress="remove_wrn('tip')" onchange="remove_wrn('tip')" spellcheck="false"></textarea>
+			 <textarea  onkeyup="onChange1();" id="des2" class="pat_admin_text_area1" name="header2"  style="width:830px;" maxlength="280"  onkeypress="remove_wrn('header2')" onchange="remove_wrn('header2')" spellcheck="false" placeholder="Allowed only 280 characters "></textarea>
 		 </div>
          <div class="col-lg-12" style="margin-top: 20px">
 			 <div  style="margin-left: 420px">
 				 <button type="button" id="prebut" onclick="display_priv()" class="c_pat_view_btn " style="width:100px"><img src="assets_admin\img\View-50.png" height="15px">&nbsp&nbsp Preview</button>
 				 <button type="button" id="tipbut" onclick="display_all_tip()" class="c_pat_view_btn " style="width:100px;display:none"><img src="assets_admin\img\View-50.png" height="15px">&nbsp&nbsp Tips</button>
 				 <button type="button" onclick="tip_update_via_ajax()" class="c_pat_view_btn" style="width:100px"><img src="assets_admin\img\Refresh-52.png" height="15px">&nbsp&nbsp Refresh</button>
-			     <button type="button" onclick="confirm_addtip()" class="c_pat_view_btn" ><img src="assets_admin\img\Add-48.png" height="15px">&nbsp&nbsp Add</button>
+			     <button type="button" onclick="confirm_addtip()" class="c_pat_view_btn" ><img src="assets_admin\img\Add-48.png" height="15px">&nbsp&nbsp Save</button>
 
 			  </div>
 		 </div>
@@ -133,7 +133,7 @@
 				{{--  <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><h1>Confirm</h1></div>--}}
 				<div class="col-lg-10 c_no_padding" style="margin-left: 30px">
 					<ul class="c_ul_1">
-						<li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Update </span></li>
+						<li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm To Save </span></li>
 
 						<li> <div style="padding-top: 30px">
 								<div class="col-lg-3 ">

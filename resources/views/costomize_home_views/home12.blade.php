@@ -37,11 +37,7 @@
 
                                     <div class="change_<?php echo $f_ob->fid; ?>"  style="	bottom: 30%;position: absolute;z-index: 999;width:100%;display:none;margin-top:15px;"><div class="c_font_5" style="opacity: 0.6;padding:40px;text-align:center;font-size:18px;background-color:#14FF10;"><p style="font-weight: bold;">change</p></div></div>
 
-                                   <?php if($size > 5){?>
-                                   <div  class="change_<?php echo $f_ob->fid; ?>"  style="margin-left:170px;bottom: 90%;position: absolute;z-index: 999;width:100%;display:none;margin-top:15px;">
-                                       <button  class="fet_doc_hover_btn" onclick="feturedDoctorRemovePopUp()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
-                                   </div>
-                                   <?php } ?>
+
                                </div>
                               </li>
                             <?php
@@ -69,19 +65,24 @@
 
                            <input type="hidden" id="hidden_click_count" value="0"/>
                            <input type="hidden" id="hidden_click_id11" value="0"/>
+                           <input type="hidden" id="hidden_click_remove" value="0"/>
 
 
 
                            <div id="docChoosePopup" class="container pat_confirm1_box" >
                                <div class="center-block pat_success1_box_wrapper" style="margin-right: 100%;margin-top: 10%;width: 870px">
                                    <button  class="fet_doc_close_btn" onclick="docChooseClose()"><img src="{{ URL::asset('assets/img/close_btn.png') }}"></button>
-                                   <div style="background: #4CBC83;height: 445px;padding-top: 32px">
+                                   <div style="background: #4CBC83;height: 445px;padding: 5px">
+                                       <?php if($size > 5){?>
+                                       <button style="" class="pat_view_btn_1" onclick="feturedDoctorRemovePopUp()" ><img src="assets_admin\img\Delete-52.png" height="15px">&nbsp Remove</button>
 
+                                       <?php } ?>
                                        <div class="container c_no_padding col-lg-12">
                                            <div class="col-lg-11 c_no_padding" style="margin-left: 10px">
                                                <ul class="c_ul_1">
-                                                   <li><span style="font-size: 28px;font-weight: 300;margin-left: 20px;color: #FFF">Select a Doctor </span>
+                                                   <li><span style="font-size: 28px;font-weight: 300;color: #FFF">Select a Doctor
 
+                                                         </span>
                                                    </li>
 
                                                    <li> <div style="padding-top: 10px">
@@ -117,7 +118,7 @@
                                                                 </div>
                                                                <div style="clear:both;padding-top: 40px;margin-left: 320px">
                                                                    <div class=" ">
-                                                                       <button class="pat_view_btn_1" onclick="feturedDoctorUpdatePopUp()" ><img src="assets_admin\img\confirm_img.png" height="15px">&nbsp Confirm</button>
+                                                                       <button class="pat_view_btn_1" onclick="feturedDoctorUpdatePopUp()" ><img src="assets_admin\img\confirm_img.png" height="15px">&nbsp Save</button>
 
                                                                        <button class="pat_view_btn_1" onclick="docChooseClose()" ><img src="assets_admin\img\Delete-52.png" height="15px">&nbspCancel</button>
                                                                    </div>
@@ -253,7 +254,7 @@
                                        <div class="container c_no_padding col-lg-12">
                                            <div class="col-lg-10 c_no_padding" style="margin-left: 30px">
                                                <ul class="c_ul_1">
-                                                   <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm The Update </span></li>
+                                                   <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF">Please Confirm The Save </span></li>
 
                                                    <li> <div style="padding-top: 30px">
                                                            <div class="col-lg-3 ">

@@ -1,5 +1,5 @@
 <div style="background: rgb(113, 125, 97);color: #FFF;font-size: 15px;padding: 7px 10px;border-bottom: 3px solid #035600;margin-bottom: 10px">
-    All Users
+    Blocked Users
 </div>
 
 <div class=" col-lg-12 c_no_padding" style="width:920px;margin-left:10px">
@@ -32,5 +32,8 @@
         <?php
         }
         ?>
+            <div id="resultNoInap" style="display: none;padding-top: 150px">
+                <span style="font-size: 32px;margin-left: 300px">No Result Found ! </span>
+            </div>
     </ul>
 </div>
