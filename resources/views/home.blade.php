@@ -69,10 +69,12 @@
             </ul>
         </div>
         <div style="width:100%" align="center" >
-            <ul class="c_top_ul" style="cursor:pointer">
-                <li style="margin-top:15px"><img src="assets/img/Plus Filled-100.png" width="25px"></li>
-                <li style="color:#39b54a;margin-left:10px">Loadmore</li>
-            </ul>
+            <a href="{{ URL::asset('/search') }}" style="text-decoration: none">
+                <ul class="c_top_ul" style="cursor:pointer">
+                    <li style="margin-top:15px"><img src="assets/img/Plus Filled-100.png" width="25px"></li>
+                    <li style="color:#39b54a;margin-left:10px">Loadmore</li>
+                </ul>
+            </a>
         </div>
     </div>
     <!-- Featured Physician -->
@@ -124,10 +126,12 @@
             </ul>
         </div>
         <div style="width:100%" align="center">
-            <ul class="c_top_ul" style="cursor:pointer">
-                <li style="margin-top:15px"><img src="assets/img/Plus Filled-100.png" width="25px"></li>
-                <li style="color:#39b54a;margin-left:10px">Loadmore</li>
-            </ul>
+            <a href="{{ URL::asset('/search') }}" style="text-decoration: none">
+                <ul class="c_top_ul" style="cursor:pointer">
+                    <li style="margin-top:15px"><img src="assets/img/Plus Filled-100.png" width="25px"></li>
+                    <li style="color:#39b54a;margin-left:10px">Loadmore</li>
+                </ul>
+            </a>
         </div>
     </div>
     <!-- Top Rated Physician -->
@@ -163,10 +167,12 @@
             </ul>
         </div>
         <div style="width:100%" align="center">
-            <ul class="c_top_ul" style="cursor:pointer">
-                <li style="margin-top:15px"><img src="assets/img/Plus Filled-100.png" width="25px"></li>
-                <li style="color:#39b54a;margin-left:10px">Loadmore</li>
-            </ul>
+            <a href="{{ URL::asset('/search') }}" style="text-decoration: none">
+                <ul class="c_top_ul" style="cursor:pointer">
+                    <li style="margin-top:15px"><img src="assets/img/Plus Filled-100.png" width="25px"></li>
+                    <li style="color:#39b54a;margin-left:10px">Loadmore</li>
+                </ul>
+            </a>
         </div>
     </div>
     <!-- Community Suggestions -->

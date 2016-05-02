@@ -2855,6 +2855,11 @@ function CheckNewsletterSub(){
  * Submit Newsletter Subscribe Form
  */
 function SubmitNewsLetter(){
+	if(valid_length_input('email') || !valid_email('email')){
+		$("#wrn_al_sub").hide();
+		$("#wrn_email").show();
+		NEWS_LETTER_SUB = false;
+	}
 	if(NEWS_LETTER_SUB){
 		SubmitNewsLetterRequest();
 		return false;

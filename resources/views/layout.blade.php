@@ -34,7 +34,7 @@
                                 $doc = json_decode($_COOKIE['doctor_user'], true);
                         ?>
                             <li style="margin-right:25px">
-                                <a class="c_href" href="#">
+                                <a class="c_href" href="/DoctorAccount">
                                     <img class="c_user_top_logo" src="{{ URL::asset('assets/img/user_logo.png') }}">
                                     <span>Dr. <?php echo $doc[0]['first_name']; ?></span>
                                 </a>
