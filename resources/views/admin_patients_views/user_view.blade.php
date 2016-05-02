@@ -3,7 +3,7 @@
     foreach($patients as $pa) {
     ?><li>
 
-        <div class="c_user_view_box container" onclick="user_view('<?php echo $pa->user_id; ?>')" >
+        <div class="c_user_view_box container" style="cursor:pointer" onclick="user_view('<?php echo $pa->user_id; ?>')" >
 
             <div  style="float:left;height:51px;width:51px;border-radius: 30px;background-color: white;margin-left:-14px;margin-top:2px">
                 <?php

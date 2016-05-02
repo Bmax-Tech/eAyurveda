@@ -9,7 +9,7 @@
         ?>
         <li>
 
-            <div class="c_inap_user_view_box container" onclick="inapuser_view('<?php echo $pa->user_id; ?>')" style="">
+            <div class="c_inap_user_view_box container" style="cursor:pointer" onclick="inapuser_view('<?php echo $pa->user_id; ?>')" style="">
 
                 <div  style="float:left;height:51px;width:51px;border-radius: 30px;background-color: white;margin-left:-14px;margin-top:2px">
                     <?php
