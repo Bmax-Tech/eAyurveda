@@ -222,23 +222,26 @@
         </ul>
     </div>
     <div class="col-lg-5 c_no_padding" style="padding:40px 40px">
-        <ul class="c_ul_1">
-            <li>
-                <ul class="c_top_ul">
-                    <li><img src="assets/img/rss.png" width="40px"></li>
-                    <li style="margin-left:15px;height:80px;vertical-align:text-top;margin-top:-13px"><span class="c_font_4" style="bottom:10px">Subscribe to Newsletter</span></li>
-                </ul>
-            </li>
-            <li style="width:100%">
-                Email Address
-            </li>
-            <li style="width:100%;margin-top:20px">
-                <input type="text" class="c_text_box_1" style="width:100%" placeholder=""/>
-            </li>
-            <li  style="width:100%;margin-top:30px">
-                <button type="button" class="c_button_2">Subscribe</button>
-            </li>
-        </ul>
+        <form id="newslatter_subscribe" onsubmit="return SubmitNewsLetter();">
+            <ul class="c_ul_1">
+                <li>
+                    <ul class="c_top_ul">
+                        <li><img src="assets/img/rss.png" width="40px"></li>
+                        <li style="margin-left:15px;height:80px;vertical-align:text-top;margin-top:-13px"><span class="c_font_4" style="bottom:10px">Subscribe to Newsletter</span></li>
+                    </ul>
+                </li>
+                <li style="width:100%">
+                    Email Address<span class="c_warning_tips_reg" id="wrn_email"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> enter email address</span>
+                    <span class="c_warning_tips_reg" id="wrn_al_sub"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> already subscribed</span>
+                </li>
+                <li style="width:100%;margin-top:20px">
+                    <input type="text" name="email" autocomplete="off" class="c_text_box_1" id="newsletter_email" onkeyup="CheckNewsletterSub()" style="width:100%" placeholder=""/>
+                </li>
+                <li  style="width:100%;margin-top:30px">
+                    <button type="submit" class="c_button_2">Subscribe</button>
+                </li>
+            </ul>
+        </form>
     </div>
     <!-- Find by Area -->
 </div>

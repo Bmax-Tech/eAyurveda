@@ -9,6 +9,7 @@ use App\Doctors;
 use App\Images;
 use App\Patients;
 use App\User;
+use App\NewsLetterSubscriber;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -19,6 +20,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Input;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use Symfony\Component\HttpFoundation\Response;
 
 class AjaxControll extends ExceptionController
 {
@@ -978,6 +980,34 @@ class AjaxControll extends ExceptionController
 			$this->LogError('AjaxController Get Pie Chart On Doc Function',$e);
 		}
 
+		return response()->json($res);
+	}
+
+	/**
+	 * Check Subscriber Email from DB
+	 */
+	public function CheckSubscriberEmail(Request $request){
+		$checkSub = NewsLetterSubscriber::where('nsEmail','=',Input::get('email'))->first();
+		if(isset($checkSub)){
+			$res['result'] = "AV";
+		}else{
+			$res['result'] = "NO";
+		}
+
+		return response()->json($res);
+	}
+
+	/**
+	 * Save News Letter Subscribers
+	 */
+	public function SaveNewsLetterSub(Request $request){
+		/* Second -> Images Record */
+		NewsLetterSubscriber::create([
+			'nsEmail' => Input::get('email')
+		]);
+
+		$res['CHECK'] = "SUCCESS";
+		/* Return Json Type Object */
 		return response()->json($res);
 	}
 

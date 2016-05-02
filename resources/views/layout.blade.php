@@ -411,6 +411,26 @@
 </div>
 <!-- Thanking Messages -->
 
+<!-- Thanking Messages -->
+<div class="container c_pop_up_box_2" id="c_thanking_msg_subscribe">
+    <div class="center-block c_pop_box_1_wrapper" style="margin-top: 15%;width: 375px">
+        <div style="background: #DAA100;height: 145px;padding-top: 32px">
+
+            <div class="container c_no_padding col-lg-12">
+                <div class="col-lg-4 c_no_padding" style="float: left;margin-left: 27px"><img src="{{ URL::asset('assets/img/thanking.png') }}" style="width: 80px"></div>
+                <div class="col-lg-8 c_no_padding" style="margin-top: -75px;margin-left: 120px">
+                    <ul class="c_ul_1">
+                        <li><span style="font-size: 27px;font-weight: 100;margin-left: 30px;color: #FFF">Thank you</span></li>
+                        <li><span style="font-size: 20px;font-weight: 100;margin-left: 30px;color: #FFF"> for subscribing</span></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Thanking Messages -->
+
 <!-- ***  Site Helper  *** -->
 <?php
     // Check whether user in logged or not

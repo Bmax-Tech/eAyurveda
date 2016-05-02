@@ -357,7 +357,9 @@ function valid_registration(){
 
 			return false;
 		} else {
-			return true;
+			// Call Ajax to Submit
+			SubmitRegistrationForm();
+			return false;
 		}
 	}
 
@@ -366,6 +368,33 @@ function valid_registration(){
 /* Registration form validation
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
+
+/**
+ * Registration Form Ajax
+ */
+function SubmitRegistrationForm(){
+	$("#c_thanking_msg").fadeIn();
+	$("#registration_pending").fadeIn();
+	var redirect_url = $("#redirect_url").val();
+
+	var newUrl = "/register/save";
+	var dataString = $("#registration_form").serialize();
+
+	$.ajax({
+		type: "POST",
+		url: newUrl,
+		data: dataString,
+		dataType: "json",
+		success: function(data){
+			$("#registration_pending").hide();
+			$("#registration_success").fadeIn();
+			$("#c_thanking_msg").delay(1200).fadeOut(function(){
+				//window.change_window_location('"'+redirect_url+'"');
+				window.location.href = redirect_url;
+			});
+		}
+	});
+}
 
 /*
  * This removes highlighted textbox color
@@ -1356,14 +1385,14 @@ function show_profile_preview(){
 		var txt="";
 		var spec_count = $("#spec_count").val();
 		for(var i=1;i<=spec_count;i++){
-			txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#spec_doc_"+i).val()+'</div>';
+			txt=txt+'<div class="c_pre_spec"><span style="background: #39B54A;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#spec_doc_"+i).val()+'</div>';
 		}
 		$("#c_pre_spec_div").html(txt);
 
 		txt="";
 		var treat_count = $("#treat_count").val();
 		for(var i=1;i<=treat_count;i++){
-			txt=txt+'<div class="c_pre_spec"><span style="background: #000;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#treat_doc_"+i).val()+'</div>';
+			txt=txt+'<div class="c_pre_spec"><span style="background: #39B54A;color: #FFF;;padding: 1px 7px;border-radius: 20px;margin-right: 10px">'+i+'</span>'+$("#treat_doc_"+i).val()+'</div>';
 		}
 		$("#c_pre_treat_div").html(txt);
 
@@ -1445,7 +1474,28 @@ function preview_close(){
 };
 
 function preview_submit(){
-	$("#c_add_doc_sub_btn").trigger('click');
+	//$("#c_add_doc_sub_btn").trigger('click');
+	$("#c_preview_pop_up_inner").fadeOut();
+	$(".waiting_confirm").fadeIn();
+
+	var newUrl = "/adddoctor/save";
+	var dataString = $("#doctor_add_form").serialize();
+	$.ajax({
+		type:"POST",
+		url:newUrl,
+		data:dataString,
+		dataType:'json',
+		cache:false,
+		success:function(data){
+			console.log(data);
+			$(".waiting_confirm").hide();
+			$(".confirm_success").fadeIn();
+			$(".confirm_success").delay(1200).fadeOut(function(){
+				$("#c_preview_pop_up").hide();
+				$("#c_preview_pop_up_inner").show();
+			});
+		}
+	});
 };
 
 /*
@@ -2763,3 +2813,71 @@ function searchByArea(){
 		return true;
 	}
 };
+
+/**
+ * newsLetter Subscribe Email Check
+ */
+var NEWS_LETTER_SUB=false;
+
+function CheckNewsletterSub(){
+	var email = $("#newsletter_email").val();
+	if(valid_length_input('email') || !valid_email('email')){
+		$("#wrn_al_sub").hide();
+		$("#wrn_email").show();
+		NEWS_LETTER_SUB = false;
+	}else{
+		$("#wrn_email").hide();
+
+		var newUrl = "/CheckSubscriberEmail";
+
+		$.ajax({
+			type: 'POST',
+			url: newUrl,
+			data: 'email='+email,
+			dataType: 'json',
+			cache: false,
+			success: function(data){
+				console.log(data);
+				if(data.result == "AV"){
+					$("#wrn_email").hide();
+					$("#wrn_al_sub").show();
+					NEWS_LETTER_SUB = false;
+				}else{
+					$("#wrn_al_sub").hide();
+					NEWS_LETTER_SUB = true;
+				}
+			}
+		});
+	}
+};
+
+/**
+ * Submit Newsletter Subscribe Form
+ */
+function SubmitNewsLetter(){
+	if(NEWS_LETTER_SUB){
+		SubmitNewsLetterRequest();
+		return false;
+	}else{
+		return false;
+	}
+};
+function SubmitNewsLetterRequest(){
+	var newUrl = "/SaveNewsLetterSub";
+	var dataString = "email="+$("#newsletter_email").val();
+
+	$.ajax({
+		type: 'POST',
+		url: newUrl,
+		data: dataString,
+		dataType: 'json',
+		cache: false,
+		success: function(data){
+			console.log(data);
+			$("#c_thanking_msg_subscribe").fadeIn();
+			$("#c_thanking_msg_subscribe").delay(1200).fadeOut(function(){
+				$("#newsletter_email").val("");
+			});
+		}
+	});
+}
