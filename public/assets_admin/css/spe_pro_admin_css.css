@@ -579,7 +579,7 @@
 
 .c_pat_result_div{
 	background: rgba(0, 76, 17, 0.14);
-	padding: 15px 7px;
+	padding: 5px 7px;
 	margin-bottom: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.58);
 }
@@ -804,6 +804,7 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	padding:8px;
 	background:#4CBC5B;
 	width:338px;
+	height:338px;
 	margin-top:10%;
 
 	box-shadow:0px 0px 10px #000000;
@@ -1087,6 +1088,17 @@ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.88);
 	position:fixed;
 	top:0px;
 	z-index:999999;
+}
+
+.profile_edit_span{
+	font-size: 14px;
+	float: left;
+	color: green;
+	margin-top: 4px
+}
+.profile_edit_span:hover{
+	font-size: 16px;
+
 }
 /*--------------------------End patient admin CSS  --------------------------------------*/
 

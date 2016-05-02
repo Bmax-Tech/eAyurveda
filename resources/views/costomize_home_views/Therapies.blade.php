@@ -65,7 +65,7 @@
             <span class="c_warning_tips_reg" id="wrn_tdes1" style="margin-top: 12px;margin-left: 168px"><span class="glyphicon glyphicon-asterisk" aria-hidden="true" ></span> Empty Description</span>
             </div>
             <div class="col-lg-12" style="margin-top: 5px;clear:both">
-                <textarea   id="tdes1" class="pat_admin_text_area1" name="tdes1"  style="width:830px;height:120px " maxlength="280"  onkeypress="remove_wrn('tdes1')" onchange="remove_wrn('tdes1')"></textarea>
+                <textarea   id="tdes1" class="pat_admin_text_area1" name="tdes1"  style="width:830px;height:120px " maxlength="280"  onkeypress="remove_wrn('tdes1')" onchange="remove_wrn('tdes1') "maxlength="300"autocomplete="off" spellcheck="false " placeholder="Allowed only 300 characters "></textarea>
             </div>
    </div>
     <div class="col-lg-3 col-lg-offset-2" style="margin-top: 5px">

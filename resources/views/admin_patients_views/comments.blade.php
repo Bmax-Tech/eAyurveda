@@ -36,3 +36,8 @@ foreach($comment as $com) {
              </div>
 </div>
 <?php } ?>
+
+<div id="resultNoComment" style="display: none;padding-top: 150px">
+    <span style="font-size: 32px;margin-left: 300px">No Result Found ! </span>
+</div>
+

@@ -3,7 +3,7 @@
     <input type="hidden" name="page" id="startqq" value="0">
     <input type="hidden" name="page" id="endqq" value="18">
     <ul class="c_ul_1">
-        <li id="c_doctor_result_ajax_boxqq">
+        <li id="c_doctor_result_ajax_boxqq" style="height:470px;width:920px;margin-left:10px">
             <!--  Ajax Results Load Here -->
         </li>
         <li>

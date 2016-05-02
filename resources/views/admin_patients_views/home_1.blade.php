@@ -9,7 +9,7 @@
     <input type="hidden" name="page" id="end2" value="18">
 
            <div class="col-lg-6 pat_admin_tab_1 pat_admin_tab_active" id="pat_type_btn_1" onclick="change_pat_type(1)">
-             <p>All Users</p>
+             <p>Registered Users</p>
            </div>
            <div class="col-lg-6 pat_admin_tab_1" id="pat_type_btn_2"  onclick="change_pat_type(2)">
              <p>New Users</p>
@@ -18,7 +18,7 @@
            <div class="col-lg-12 pat_admin_tab_2 c_no_padding" id="pat_all_user_div">
 
                  <div style="background: rgb(113, 125, 97);color: #FFF;font-size: 15px;padding: 7px 10px;border-bottom: 3px solid #035600;margin-bottom: 10px">
-                     All Users
+                     Registered Users
                  </div>
 
                 <div class=" col-lg-12 c_no_padding" id="user1" style="height:370px;width:920px;margin-left:10px">

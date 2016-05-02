@@ -18,6 +18,7 @@
 
     <div class="col-lg-12 c_no_padding" style="margin-top: 30px">
     <?php
+
         for($i=0;$i<3;$i++)
         {
     ?>

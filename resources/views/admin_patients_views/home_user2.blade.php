@@ -12,9 +12,9 @@
             </div>
 
         </li>
-        <li><div class="col-lg-12 c_pat_result_div">
+        <li style="padding: 20px"><div class="col-lg-12 c_pat_result_div">
 
-                <div class="col-lg-10 c_no_padding" style="padding-left: 10px">
+                <div class="col-lg-12 c_no_padding" style="padding-left: 10px">
 
                     <div style="padding:5px 0px">
                         <div style="margin-left: 10px">
@@ -44,12 +44,12 @@
                         <hr class="c_hr_1"/>
                     </div>
                     <div class="col-lg-12 " style="margin-top:20px">
-                        <div class="col-lg-3  " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">               <ul><li>
+                        <div class="col-lg-4  " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">               <ul><li>
                                     User Name
                                 </li></ul>
                         </div>
-                        <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                            <?php echo $patient->username;?>
+                        <div class="col-lg-6 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
+                            : &nbsp <?php echo $patient->username;?>
                         </div>
                         <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
                             <ul><li>
@@ -57,7 +57,7 @@
                                 </li></ul>
                         </div>
                         <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                            <?php echo $patient->dob;?>
+                            : &nbsp <?php echo $patient->dob;?>
                         </div>
                         <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
                             <ul><li>
@@ -65,7 +65,7 @@
                                 </li></ul>
                         </div>
                         <div class="col-lg-6   col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                            <?php echo $patient->gender;?>
+                            : &nbsp <?php echo $patient->gender;?>
                         </div>
                         <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
                             <ul><li>
@@ -73,15 +73,15 @@
                                 </li></ul>
                         </div>
                         <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                            <?php echo $patient->nic;?>
+                            : &nbsp <?php echo $patient->nic;?>
                         </div>
                         <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
                             <ul><li>
-                                    Contact NO
+                                    Contact Number
                                 </li></ul>
                         </div>
                         <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                            <?php echo $patient->contact_number;?>
+                            : &nbsp <?php echo $patient->contact_number;?>
                         </div>
 
                         <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
@@ -90,15 +90,23 @@
                                 </li></ul>
                         </div>
                         <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                            <?php echo date('Y:m:d', strtotime($patient->reg_date));?>
+                            : &nbsp <?php echo date('Y:m:d', strtotime($patient->reg_date));?>
                         </div>
-                        <div class="col-lg-3 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
+                        <div class="col-lg-4 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
                             <ul><li>
                                    Blocked comments
                                 </li></ul>
                         </div>
-                        <div class="col-lg-6 col-lg-offset-1" style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
-                            <?php echo $patient->spam_count;?>
+                        <div class="col-lg-6 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
+                            : &nbsp <?php echo $patient->spam_count;?>
+                        </div>
+                        <div class="col-lg-4 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
+                            <ul><li>
+                                    Blocked Reason
+                                </li></ul>
+                        </div>
+                        <div class="col-lg-6 " style="padding: 5px 0px;font-size: 20px;color: #3c3c3c;font-weight: 500">
+                            : &nbsp <?php echo $patient->comments;?>
                         </div>
                     </div>
                 </div>

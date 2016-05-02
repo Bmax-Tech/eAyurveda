@@ -19,10 +19,14 @@
             <div class="c_font_5" style="float:left;margin-left:15px;width:150px;margin-top:5px"><?php echo $pa->first_name; ?>&nbsp<?php echo $pa->last_name; ?> </div>
             <div class="c_font_5" style="margin-left:52px;"><?php echo $pa->email; ?></div>
         </div>
+
     </li>
 
     <?php
 
         }
     ?>
+        <div id="resultNo" style="display: none;padding-top: 150px">
+            <span style="font-size: 32px;margin-left: 300px">No Result Found ! </span>
+        </div>
 </ul>
