@@ -32,7 +32,7 @@
         <div class="col-lg-3 c_no_padding">
             <div class="c_admin_top_user">
                 <ul class="c_top_ul">
-                    <li style="margin-right:25px" >
+                    <li style="margin-right:25px ;cursor:pointer" >
                         <a class="c_href" onmouseover="" onmouseout="hidehover()" onclick="showpop()">
                             <img class="c_user_top_logo" src="assets_admin/img/user_logo.png" >
                             <span class=""><?php echo $admin_user[0]['first_name']; ?></span>
